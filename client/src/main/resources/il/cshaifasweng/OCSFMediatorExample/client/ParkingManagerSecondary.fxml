@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkingManagerSecondary">
+   <children>
+      <Button fx:id="backbtn" layoutX="649.0" layoutY="674.0" mnemonicParsing="false" onAction="#backToMain" text="Back" />
+      <Button fx:id="ShowManagerSecondaryBTN" layoutX="669.0" layoutY="271.0" mnemonicParsing="false" onAction="#ShowData" text="Show" />
+      <TextField fx:id="utiNumberTF" layoutX="137.0" layoutY="135.0" onAction="#utiNumberTF" />
+      <TextField fx:id="utiAvgTF" layoutX="308.0" layoutY="135.0" onAction="#utiAvgTF" />
+      <TextField fx:id="cancled1" layoutX="137.0" layoutY="172.0" onAction="#cancled1" />
+      <TextField fx:id="late2" layoutX="308.0" layoutY="214.0" onAction="#late2" />
+      <TextField fx:id="late1" layoutX="137.0" layoutY="214.0" onAction="#late1" />
+      <TextField fx:id="cancled3" layoutX="479.0" layoutY="172.0" onAction="#cancled3" />
+      <TextField fx:id="cancled2" layoutX="308.0" layoutY="172.0" onAction="#cancled2" />
+      <TextField fx:id="uitiMedianTF" layoutX="479.0" layoutY="135.0" onAction="#uitiMedianTF" />
+      <TextField fx:id="late3" layoutX="479.0" layoutY="214.0" onAction="#late3" />
+      <Text layoutX="71.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text layoutX="14.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="canceled reservations" />
+      <Text layoutX="71.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="late" />
+      <Text layoutX="81.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text layoutX="81.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text layoutX="81.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text layoutX="371.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="avg" />
+      <Text layoutX="200.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="number" />
+      <Text layoutX="542.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="median" />
+      <Text layoutX="18.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="utilized reservations" />
+      <TableView fx:id="PricesTable" layoutX="200.0" layoutY="364.0" prefHeight="200.0" prefWidth="274.0">
+         <columns>
+            <TableColumn fx:id="pricetype" prefWidth="172.0" text="Price Type" />
+            <TableColumn fx:id="price" prefWidth="101.20001220703125" text="Price" />
+         </columns>
+      </TableView>
+      <Button fx:id="showPricesBTN" layoutX="503.0" layoutY="589.0" mnemonicParsing="false" onAction="#showPrices" text="ShowPrices" />
+      <Text layoutX="221.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parking i Manger Window  " wrappingWidth="380.31954956054693">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

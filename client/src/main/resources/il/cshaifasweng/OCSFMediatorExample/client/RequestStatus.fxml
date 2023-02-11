@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="191.0" prefWidth="226.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestStatus">
+   <children>
+      <AnchorPane prefHeight="198.0" prefWidth="252.0">
+         <children>
+            <Text layoutX="11.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Status Update">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <AnchorPane layoutX="14.0" layoutY="7.0" prefHeight="185.0" prefWidth="242.0">
+               <children>
+                  <TextField fx:id="CustomerIdTF" layoutY="65.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="223.0" promptText="Customer ID" />
+                  <TextField fx:id="CarNumberTF" layoutY="100.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="223.0" promptText="Car License Num" />
+                  <Button fx:id="SendRequestBtn" layoutX="51.0" layoutY="148.0" mnemonicParsing="false" onAction="#SendRequestBtn" prefHeight="26.0" prefWidth="122.0" text="Send Request" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

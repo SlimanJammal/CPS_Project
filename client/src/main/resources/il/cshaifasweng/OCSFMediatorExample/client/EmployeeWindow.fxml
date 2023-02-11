@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="546.0" prefWidth="754.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.EmployeeWindow">
+   <children>
+      <AnchorPane layoutX="447.0" layoutY="89.0" prefHeight="150.0" prefWidth="280.0">
+         <children>
+            <Button fx:id="submitSendToanotherbtn" layoutX="176.0" layoutY="110.0" mnemonicParsing="false" onAction="#submitSendToanotherbtn" text="submit" />
+            <TextField fx:id="LICENSETF" layoutX="53.0" layoutY="20.0" onAction="#LICENSETF" promptText="license plate" />
+            <TextField fx:id="idnumberTF" layoutX="53.0" layoutY="50.0" onAction="#idnumberTF" promptText="id number" />
+            <TextField fx:id="newParkingId" layoutX="53.0" layoutY="84.0" onAction="#newParkingId" promptText="new parking id" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="59.0" layoutY="81.0" prefHeight="177.0" prefWidth="280.0">
+         <children>
+            <TextField fx:id="spotnumberTF" layoutX="30.0" layoutY="23.0" onAction="#spotnumberTF" promptText="spot number" />
+            <Button fx:id="ONBTN" layoutX="30.0" layoutY="107.0" mnemonicParsing="false" onAction="#ONBTN" text="On" />
+            <Button fx:id="OFFBTN" layoutX="140.0" layoutY="107.0" mnemonicParsing="false" onAction="#OFFBTN" text="Off" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="62.0" layoutY="290.0" prefHeight="177.0" prefWidth="274.0">
+         <children>
+            <Button fx:id="submitStartupBTN" layoutX="160.0" layoutY="138.0" mnemonicParsing="false" onAction="#submitStartupBTN" text="submit" />
+            <TextField fx:id="parkingStartupTF" layoutX="7.0" layoutY="36.0" onAction="#parkingStartupTF" promptText="parking id" />
+            <TextField fx:id="actionIdTf" layoutX="7.0" layoutY="76.0" onAction="#actionIdTf" promptText="action id" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="414.0" layoutY="303.0" prefHeight="177.0" prefWidth="295.0">
+         <children>
+            <TextField fx:id="spotNumberOcasionTF" layoutX="51.0" layoutY="28.0" onAction="#spotNumberOcasionTF" promptText="spot number" />
+            <TextField fx:id="pakringidOcasionTF" layoutX="51.0" layoutY="76.0" onAction="#pakringidOcasionTF" promptText="parking id" />
+            <TextField fx:id="ocasionIDTF" layoutX="51.0" layoutY="123.0" onAction="#ocasionIDTF" promptText="ocasion id" />
+            <Button fx:id="submitOcasion" layoutX="218.0" layoutY="148.0" mnemonicParsing="false" onAction="#submitOcasion" text="submit" />
+         </children>
+      </AnchorPane>
+      <Text fill="#05eb2a" layoutX="456.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save Parking Spot For Ocassion" />
+      <Text fill="#ff0808" layoutX="102.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Systm Startup" wrappingWidth="134.39373779296875" />
+      <Text layoutX="290.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Screen">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Text>
+      <Text fill="#ec1f1f" layoutX="102.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parking Spot update" />
+      <Text fill="#006fff" layoutX="497.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Send Customer To Another Parking" />
+   </children>
+</AnchorPane>
