@@ -14,8 +14,9 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	@Override
-	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
+	protected void handleMessageFromClient(Object msg, ConnectionToClient client) { //
 		String msgString = msg.toString();
+		Message ms= (Message)msg;
 		if (msgString.startsWith("#warning")) {
 			Message message = new Message("Warning from server!");
 			try {
@@ -24,6 +25,13 @@ public class SimpleServer extends AbstractServer {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
+		} else if (ms.getMessage().equals("loginManager")) {
+			//do things
+		}
+		else if(ms.getMessage().equals("loginEmployee"))
+		{
+			// do other things
 		}
 
 	}

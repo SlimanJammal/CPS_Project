@@ -15,8 +15,12 @@ public class SimpleClient extends AbstractClient {
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
-		if (msg.getClass().equals(Message.class)) {
+		Message ms=(Message) msg;
+		if (ms.getMessage().equals("hello")) {
 			EventBus.getDefault().post(new WarningEvent((Message) msg));
+		} else if (ms.getMessage().equals("login manager")) {
+			EventBus.getDefault().post(new loginManagerEvent((Message) msg));
+
 		}
 
 	}
