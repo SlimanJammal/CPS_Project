@@ -75,15 +75,15 @@ public class ParkingManagerSecondary {
     @FXML
     void ShowData(ActionEvent event) {
 
-        Message qq = new Message(msgId++, "ShowData_ParkingManager");
-        try {
-
-            SimpleClient.getClient().sendToServer(qq);
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        Message qq = new Message(msgId++, "ShowData_ParkingManager");
+//        try {
+//
+//            SimpleClient.getClient().sendToServer(qq);
+//
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -124,17 +124,17 @@ public class ParkingManagerSecondary {
 
     @FXML
     void showPrices(ActionEvent event) {
-        Message qq = new Message(msgId++, "ShowPrices_ParkingManager");
-//		MessageTF.clear();
-
-        try {
-
-            SimpleClient.getClient().sendToServer(qq);
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        Message qq = new Message(msgId++, "ShowPrices_ParkingManager");
+////		MessageTF.clear();
+//
+//        try {
+//
+//            SimpleClient.getClient().sendToServer(qq);
+//
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
     }
 
     // prints the numbers and avgs
@@ -163,10 +163,10 @@ public class ParkingManagerSecondary {
     @Subscribe
     public void setPricesData(NewSubscriberEvent event) {
 
-
-        ObservableList<PricesClass> list1 = FXCollections.observableArrayList(event.getMessage().getPricesVector());
-        PricesTable.setItems(list1);
-
+//
+//        ObservableList<PricesClass> list1 = FXCollections.observableArrayList(event.getMessage().getPricesVector());
+//        PricesTable.setItems(list1);
+//
 
     }
 

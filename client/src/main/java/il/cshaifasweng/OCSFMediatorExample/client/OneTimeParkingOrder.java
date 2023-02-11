@@ -43,22 +43,22 @@ public class OneTimeParkingOrder {
 
     @FXML
     void CheckoutBtn(ActionEvent event) {
-        Message qq = new Message(msgId++, "checkout");
-
-        qq.addToOneTimeParkingOrderInfo(CarNumberTF.getText());
-        qq.addToOneTimeParkingOrderInfo(DesiredParkingTF.getText());
-        qq.addToOneTimeParkingOrderInfo(EmailTF.getText());
-        qq.addToOneTimeParkingOrderInfo(EtaTF.getText());
-        qq.addToOneTimeParkingOrderInfo(EtdTF.getText());
-        qq.addToOneTimeParkingOrderInfo(IdNumberTF.getText());
-        try{
-
-            SimpleClient.getClient().sendToServer(qq);
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        Message qq = new Message(msgId++, "checkout");
+//
+//        qq.addToOneTimeParkingOrderInfo(CarNumberTF.getText());
+//        qq.addToOneTimeParkingOrderInfo(DesiredParkingTF.getText());
+//        qq.addToOneTimeParkingOrderInfo(EmailTF.getText());
+//        qq.addToOneTimeParkingOrderInfo(EtaTF.getText());
+//        qq.addToOneTimeParkingOrderInfo(EtdTF.getText());
+//        qq.addToOneTimeParkingOrderInfo(IdNumberTF.getText());
+//        try{
+//
+//            SimpleClient.getClient().sendToServer(qq);
+//
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
     }
 
     @FXML
