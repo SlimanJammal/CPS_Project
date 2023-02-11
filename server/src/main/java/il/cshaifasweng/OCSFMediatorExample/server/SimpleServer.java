@@ -43,6 +43,24 @@ public class SimpleServer extends AbstractServer {
 			Message MSG=new Message("SubRenewed");
 			client.sendToClient(MSG);
 		}
+		else if(ms.getMessage().equals("alterPrices"))
+		{
+			// todo ask regional manager if we need a price change and if agreed then change
+			// todo change prices in database
+			// todo also check which of the objects of the message do not have null in them
+		}
+		else if(ms.getMessage().equals("showPrices"))
+		{
+			// todo get all prices from database and then put them in objects 1 to 5 to present them to manager
+			Message MSG=new Message("pricesReturned");
+			client.sendToClient(MSG);
+		}
+		else if(ms.getMessage().equals("showStats"))
+		{
+			// todo get all stats from database and then put them in objects 1 to 3 to present them to manager
+			Message MSG=new Message("statsReturned");
+			client.sendToClient(MSG);
+		}
 
 	}
 
