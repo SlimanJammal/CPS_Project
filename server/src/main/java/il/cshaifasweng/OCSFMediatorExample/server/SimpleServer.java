@@ -14,7 +14,7 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	@Override
-	protected void handleMessageFromClient(Object msg, ConnectionToClient client) { //
+	protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException { //
 		String msgString = msg.toString();
 		Message ms= (Message)msg;
 		if (msgString.startsWith("#warning")) {
@@ -27,11 +27,21 @@ public class SimpleServer extends AbstractServer {
 			}
 
 		} else if (ms.getMessage().equals("loginManager")) {
-			//do things
+			//todo check in database if exists
+			Message MSG=new Message("AllowManager");
+				client.sendToClient(MSG);
 		}
 		else if(ms.getMessage().equals("loginEmployee"))
 		{
-			// do other things
+			// todo check in database if exists
+			Message MSG=new Message("AllowEmployee");
+			client.sendToClient(MSG);
+		}
+		else if(ms.getMessage().equals("RenewSub"))
+		{
+			// todo check in database if exists
+			Message MSG=new Message("SubRenewed");
+			client.sendToClient(MSG);
 		}
 
 	}
