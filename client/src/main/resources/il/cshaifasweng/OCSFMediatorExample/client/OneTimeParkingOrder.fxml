@@ -21,7 +21,8 @@
             <TextField fx:id="CarNumberTF" layoutX="272.0" layoutY="64.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="220.0" promptText="Car License number" />
             <TextField fx:id="DesiredParkingTF" layoutX="272.0" layoutY="102.0" onAction="#DesiredParkingTF" prefHeight="26.0" prefWidth="220.0" promptText="Desired Parking" />
             <TextField fx:id="EtdTF" layoutX="272.0" layoutY="141.0" onAction="#EtdTF" prefHeight="26.0" prefWidth="220.0" promptText="Estemated leaving time and date" />
-            <Button fx:id="CheckoutBtn" layoutX="359.0" layoutY="202.0" mnemonicParsing="false" onAction="#CheckoutBtn" prefHeight="26.0" prefWidth="133.0" text="Proceed to checkout" />
+            <Button fx:id="CheckoutBtn" layoutX="359.0" layoutY="202.0" mnemonicParsing="false" onAction="#CheckoutBtn" prefHeight="26.0" prefWidth="133.0" text="Submit" />
+            <Button fx:id="backBtn" layoutX="29.0" layoutY="202.0" mnemonicParsing="false" onAction="#backBtn" text="Back" />
          </children>
       </AnchorPane>
    </children>

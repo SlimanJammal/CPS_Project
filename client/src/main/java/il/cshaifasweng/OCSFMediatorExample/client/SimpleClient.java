@@ -21,6 +21,8 @@ public class SimpleClient extends AbstractClient {
 		} else if (ms.getMessage().equals("login manager")) {
 			EventBus.getDefault().post(new loginManagerEvent((Message) msg));
 
+		}else if(ms.getMessage().equals("OneTimeParkingOrder")){
+			EventBus.getDefault().post(new OneTimeParkingOrderEvent((Message) msg));
 		}
 
 	}

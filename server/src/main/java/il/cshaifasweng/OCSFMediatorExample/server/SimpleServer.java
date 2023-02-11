@@ -14,7 +14,7 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	@Override
-	protected void handleMessageFromClient(Object msg, ConnectionToClient client) { //
+	protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException { //
 		String msgString = msg.toString();
 		Message ms= (Message)msg;
 		if (msgString.startsWith("#warning")) {
@@ -32,6 +32,16 @@ public class SimpleServer extends AbstractServer {
 		else if(ms.getMessage().equals("loginEmployee"))
 		{
 			// do other things
+		} else if (ms.getMessage().equals("OneTimeParkingOrder_Submit")){
+			//todo check if in DB
+			// return OneTimeParkingOrder_Success
+			// or OneTimeParkingOrder_Fail
+
+			Message message = new Message("OneTimeParkingOrder");
+			message.setObject1("OneTimeParkingOrder_Success");
+
+			client.sendToClient(message);
+
 		}
 
 	}
