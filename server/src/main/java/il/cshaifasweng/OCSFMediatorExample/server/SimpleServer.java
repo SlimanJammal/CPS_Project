@@ -70,7 +70,7 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(PreOrder.class);
 		configuration.addAnnotatedClass(PricesClass.class);
 		configuration.addAnnotatedClass(regionalManager.class);
-		configuration.addAnnotatedClass(complaint.class);
+		configuration.addAnnotatedClass(Complaint.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
