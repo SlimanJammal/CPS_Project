@@ -73,9 +73,8 @@ public class CpsWebsite {
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
-    public void allowManager(loginManagerEvent allowing)
-    {
-        // App.setRoot(); // todo put in braces manager scene
+    public void allowManager(loginManagerEvent allowing) throws IOException {
+         App.setRoot("ParkingManager.fxml"); // todo put in braces manager scene
     }
 
 

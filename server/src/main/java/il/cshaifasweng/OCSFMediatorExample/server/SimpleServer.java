@@ -1,17 +1,85 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SimpleServer extends AbstractServer {
+	public static Session session;
+	private static List<ParkingLot> ParkingLots;
+	private static List<Employee> employees ;
+	private static List<Manager> managers;
+	public static ArrayList<FullSub> fullSubs=new ArrayList<FullSub>();
+	public static ArrayList<MultiSub> multiSubs=new ArrayList<MultiSub>();
+	private static ArrayList<PreOrder> preOrders= new ArrayList<PreOrder>();
+	private static ArrayList<PartialSub> partialSubs = new ArrayList<PartialSub>();
+	private static ArrayList<PricesClass> Prices= new ArrayList<PricesClass>();
+
+
+
+
 
 	public SimpleServer(int port) {
 		super(port);
-		
 	}
+
+
+
+
+
+
+
+	public void initSesssion() {
+		session = getSessionFactory().openSession();
+		try {
+			session.getTransaction().begin();
+
+
+//			session.save();
+			session.flush();
+			session.getTransaction().commit();
+
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+		}
+
+
+	}
+
+	private static SessionFactory getSessionFactory() {
+		Configuration configuration = new Configuration();
+		configuration.addAnnotatedClass(Employee.class);
+		configuration.addAnnotatedClass(FullSub.class);
+		configuration.addAnnotatedClass(Manager.class);
+		configuration.addAnnotatedClass(MultiSub.class);
+		configuration.addAnnotatedClass(OccCustomer.class);
+		configuration.addAnnotatedClass(ParkingLot.class);
+		configuration.addAnnotatedClass(ParkingSlot.class);
+		configuration.addAnnotatedClass(PartialSub.class);
+		configuration.addAnnotatedClass(PreOrder.class);
+		configuration.addAnnotatedClass(PricesClass.class);
+		configuration.addAnnotatedClass(regionalManager.class);
+		configuration.addAnnotatedClass(complaint.class);
+
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+				.applySettings(configuration.getProperties())
+				.build();
+		return configuration.buildSessionFactory(serviceRegistry);
+	}
+
+
+
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException { //
