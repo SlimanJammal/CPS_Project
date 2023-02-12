@@ -4,10 +4,16 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
 
 public class OcasionalParking {
 
@@ -33,7 +39,32 @@ public class OcasionalParking {
 
     @FXML
     void SubmitBTN(ActionEvent event) {
+        try {
+//            System.out.println("kelhom 4nole wma gedro");
+            Message message = new Message("OcasionalParking");
+            message.setObject1(IdNumberTF.getText());
+            message.setObject2(licensePlateTF.getText());
+            message.setObject3(emailTF.getText());
+            message.setObject4(leavingTimeTF.getText());
 
+            // Id number is saved as a string in object1
+            // license plate number is saved as a string in object2
+            // email is saved as a string in object3
+            // leaving time is saved as a string in object4
+
+            IdNumberTF.clear();
+            licensePlateTF.clear();
+            emailTF.clear();
+            leavingTimeTF.clear();
+
+
+            //send message to the server containing the new prices
+            SimpleClient.getClient().sendToServer(message);
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -48,6 +79,22 @@ public class OcasionalParking {
 
     @FXML
     void licensePlateTF(ActionEvent event) {
+
+    }
+
+    @Subscribe
+    public void HandleMessagesFromServer(OcasionalEvent event){
+        Message msg = event.getMessage();
+
+        System.out.println(msg.getObject1());
+        System.out.println(msg.getObject2());
+        System.out.println(msg.getObject3());
+        System.out.println(msg.getObject4());
+
+    }
+    @FXML
+    void initialize() {
+        EventBus.getDefault().register(this);
 
     }
 

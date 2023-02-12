@@ -548,8 +548,7 @@ public abstract class AbstractServer implements Runnable
    *  sent the message.
    */
   final synchronized void receiveMessageFromClient(
-    Object msg, ConnectionToClient client)
-  {
+    Object msg, ConnectionToClient client) throws IOException {
     this.handleMessageFromClient(msg, client);
   }
 }
