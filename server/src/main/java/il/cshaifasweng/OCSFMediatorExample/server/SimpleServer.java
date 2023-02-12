@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Complaint;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
@@ -14,23 +15,40 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	@Override
-	protected void handleMessageFromClient(Object msg, ConnectionToClient client) { //
+	protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException { //
 		String msgString = msg.toString();
 		Message ms= (Message)msg;
 		if (msgString.startsWith("#warning")) {
 			Message message = new Message("Warning from server!");
-			try {
+
 				client.sendToClient(message);
 				System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+
 
 		} else if (ms.getMessage().equals("loginManager")) {
 			//do things
 		}
 		else if(ms.getMessage().equals("loginEmployee"))
 		{
+			// do other things
+		}else if(ms.getMessage().equals("Complaint"))
+		{
+			Complaint tempComplaint = (Complaint) ms.getObject1();
+			if(tempComplaint.getCustomerId().equals("314640426")){
+				ms.setObject1("we recived the right information");
+				client.sendToClient(ms);
+			}else{
+				ms.setObject1("information is wong");
+				client.sendToClient(ms);
+			}
+			// do other things
+		}else if(ms.getMessage().equals("OcasionalParking"))
+		{
+			client.sendToClient(ms);
+			// Id number is saved as a string in object1
+			// license plate number is saved as a string in object2
+			// email is saved as a string in object3
+			// leaving time is saved as a string in object4
 			// do other things
 		}
 
