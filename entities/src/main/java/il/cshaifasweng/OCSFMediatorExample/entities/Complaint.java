@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class complaint {
+public class Complaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     String ComplaintId;
