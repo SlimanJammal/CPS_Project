@@ -21,7 +21,7 @@ public class MainWindow {
     @FXML
     void KioskBtn(ActionEvent event) throws IOException {
         try{
-            App.setRoot("ComplaintSubmittion");
+            App.setRoot("cpsKiosk");
         }
         catch (IOException e) {
             // TODO Auto-generated catch block
@@ -33,7 +33,7 @@ public class MainWindow {
     @FXML
     void WebsiteBtn(ActionEvent event) throws IOException {
         try{
-            App.setRoot("ocasionalParking");
+            App.setRoot("cpsWebsite");
         }
         catch (IOException e) {
             // TODO Auto-generated catch block

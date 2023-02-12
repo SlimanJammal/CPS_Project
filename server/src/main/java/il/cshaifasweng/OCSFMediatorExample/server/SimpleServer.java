@@ -129,7 +129,7 @@ public class SimpleServer extends AbstractServer {
 			// do other things
 		}else if(ms.getMessage().equals("Complaint"))
 		{
-			Complaint tempComplaint = (Complaint) ms.getObject1();
+			Complaints tempComplaint = (Complaints) ms.getObject1();
 			if(tempComplaint.getCustomerId().equals("314640426")){
 				ms.setObject1("we recived the right information");
 				client.sendToClient(ms);

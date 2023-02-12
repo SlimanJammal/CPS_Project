@@ -4,7 +4,7 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.entities.Complaints;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +37,7 @@ public class ComplaintSubmittion {
         try {
             System.out.println("kelhom 4nole wma gedro");
             Message message = new Message("Complaint");
-            Complaint newComplaint = new Complaint(CustomerIdTF.getText(),ComplaintTA.getText());
+            Complaints newComplaint = new Complaints(CustomerIdTF.getText(),ComplaintTA.getText());
             message.setObject1(newComplaint);
             CustomerIdTF.clear();
             ComplaintTA.clear();
