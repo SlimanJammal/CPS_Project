@@ -19,6 +19,8 @@ public class DataSingleton {
 
     private Object data ;
 
+    private String dataName;
+
     private DataSingleton(){}
 
     public static DataSingleton getInstance(){
@@ -31,5 +33,13 @@ public class DataSingleton {
 
     public void setData(Object input){
         this.data = input;
+    }
+
+    public String getDataName() {
+        return dataName;
+    }
+
+    public void setDataName(String dataName) {
+        this.dataName = dataName;
     }
 }
