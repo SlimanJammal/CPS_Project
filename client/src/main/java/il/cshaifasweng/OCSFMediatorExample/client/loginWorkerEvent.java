@@ -2,9 +2,9 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
-public class loginManagerEvent {
+public class loginWorkerEvent {
     Message msg;
-    public loginManagerEvent(Message msg) {
+    public loginWorkerEvent(Message msg) {
         this.msg=msg;
     }
 }

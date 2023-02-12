@@ -481,7 +481,7 @@ public abstract class AbstractServer implements Runnable
    * that can be thrown by the message handling method implemented by the user.
    *
    * @param client the client that raised the exception.
-   * @param Throwable the exception thrown.
+   * @param exception the exception thrown.
    */
   synchronized protected void clientException(
     ConnectionToClient client, Throwable exception) {}
