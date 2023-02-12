@@ -31,10 +31,10 @@
       <TextField fx:id="PartTimeTF" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
       <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
       <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-      <Text fx:id="PartTimeTF" layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+      <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
       <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
       <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
       <TextField fx:id="MultiTF" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
-      <Button layoutX="183.0" layoutY="306.0" mnemonicParsing="false" text="Submit" />
+      <Button fx:id="SubmitBtn" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#SubmitBtn" text="Submit" />
    </children>
 </AnchorPane>

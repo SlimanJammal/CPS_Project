@@ -4,14 +4,15 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
 
 public class RegionalManager {
 
@@ -92,6 +93,24 @@ public class RegionalManager {
 
     @FXML // fx:id="ShowStatBtn2"
     private Button ShowStatBtn2; // Value injected by FXMLLoader
+
+    @FXML // fx:id="menuPdf1"
+    private MenuItem menuPdf1; // Value injected by FXMLLoader
+
+    @FXML // fx:id="menuPdf2"
+    private MenuItem menuPdf2; // Value injected by FXMLLoader
+
+    @FXML // fx:id="menuPdf3"
+    private MenuItem menuPdf3; // Value injected by FXMLLoader
+
+    @FXML // fx:id="menuStat1"
+    private MenuItem menuStat1; // Value injected by FXMLLoader
+
+    @FXML // fx:id="menuStat2"
+    private MenuItem menuStat2; // Value injected by FXMLLoader
+
+    @FXML // fx:id="menuStat3"
+    private MenuItem menuStat3; // Value injected by FXMLLoader
 
     @FXML // fx:id="price"
     private TableColumn<?, ?> price; // Value injected by FXMLLoader
@@ -174,9 +193,101 @@ public class RegionalManager {
     }
 
     @FXML
+    void menuPdf1(ActionEvent event) {
+        Message msg = new Message("pdf_Parking1");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    void menuPdf2(ActionEvent event) {
+        Message msg = new Message("pdf_Parking2");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void menuPdf3(ActionEvent event) {
+        Message msg = new Message("pdf_Parking3");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void menuStat1(ActionEvent event) {
+        Message msg = new Message("stat_Parking1");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void menuStat2(ActionEvent event) {
+        Message msg = new Message("stat_Parking2");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void menuStat3(ActionEvent event) {
+        Message msg = new Message("stat_Parking3");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void statCatch(RegionalManagerEvent event){
+        // message field decides what case we re in
+
+        if(event.getMessage().getMessage().equals("stat_regional")){
+//            Platform.runLater(() -> {
+//                Alert alert = new Alert(Alert.AlertType.WARNING,
+//                        String.format("Message: %s\n",
+//                                "Submission Failed, Try Again")
+//                );
+//                alert.show();
+//            });
+            //todo alert about stats
+        }
+
+
+
+
+
+
+
+    }
+
+    @FXML
     void requestTF(ActionEvent event) {
 
     }
+
+
 
     @FXML
     void showPrices(ActionEvent event) {

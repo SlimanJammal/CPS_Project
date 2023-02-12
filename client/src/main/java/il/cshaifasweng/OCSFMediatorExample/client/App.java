@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.Subscribe;
 public class App extends Application {
 
     private static Scene scene;
+    private static Object Messenger;
     private SimpleClient client;
 
     @Override
@@ -35,6 +36,8 @@ public class App extends Application {
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
+
+
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
@@ -60,10 +63,19 @@ public class App extends Application {
         	);
         	alert.show();
     	});
+
     	
     }
 
-	public static void main(String[] args) {
+    public static Object getMessenger() {
+        return Messenger;
+    }
+
+    public static void setMessenger(Object messenger) {
+        Messenger = messenger;
+    }
+
+    public static void main(String[] args) {
         launch();
     }
 

@@ -12,7 +12,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="676.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RegionalManager">
    <children>
       <TabPane layoutX="-1.0" layoutY="4.0" prefHeight="676.0" prefWidth="809.0" tabClosingPolicy="UNAVAILABLE">
@@ -26,16 +25,16 @@
                         <Button fx:id="AcceptBtn" layoutX="230.0" layoutY="323.0" mnemonicParsing="false" onAction="#AcceptBtn" text="Accept" />
                         <MenuButton fx:id="ParkingStatisticsMen" layoutX="609.0" layoutY="221.0" mnemonicParsing="false" onAction="#ParkingStatisticsMen" text="Statistics">
                            <items>
-                              <MenuItem mnemonicParsing="false" text="Parking 1" />
-                              <MenuItem mnemonicParsing="false" text="Parking 2" />
-                              <MenuItem mnemonicParsing="false" text="Parking 3" />
+                              <MenuItem fx:id="menuPdf1" mnemonicParsing="false" onAction="#menuPdf1" text="Parking 1" />
+                              <MenuItem fx:id="menuPdf2" mnemonicParsing="false" onAction="#menuPdf2" text="Parking 2" />
+                              <MenuItem fx:id="menuPdf3" mnemonicParsing="false" onAction="#menuPdf3" text="Parking 3" />
                            </items>
                         </MenuButton>
                         <MenuButton fx:id="PDFRequest" layoutX="595.0" layoutY="151.0" mnemonicParsing="false" onAction="#PDFRequest" text="Parking Name">
                            <items>
-                              <MenuItem mnemonicParsing="false" text="Parking 1" />
-                              <MenuItem mnemonicParsing="false" text="Parking 2" />
-                              <MenuItem mnemonicParsing="false" text="Parking 3" />
+                              <MenuItem fx:id="menuStat1" mnemonicParsing="false" onAction="#menuStat1" text="Parking 1" />
+                              <MenuItem fx:id="menuStat2" mnemonicParsing="false" onAction="#menuStat2" text="Parking 2" />
+                              <MenuItem fx:id="menuStat3" mnemonicParsing="false" onAction="#menuStat3" text="Parking 3" />
                            </items>
                         </MenuButton>
                         <Text fill="#1b8ec0" layoutX="282.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Regional Manager" wrappingWidth="280.93670654296875">

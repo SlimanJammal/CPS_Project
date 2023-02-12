@@ -2,10 +2,6 @@
  * Sample Skeleton for 'ParkingManager.fxml' Controller Class
  */
 
-/**
- * Sample Skeleton for 'ParkingManager.fxml' Controller Class
- */
-
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import javafx.event.ActionEvent;
@@ -14,8 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
-import org.greenrobot.eventbus.Subscribe;
 
 public class ParkingManager {
 
@@ -29,7 +23,7 @@ public class ParkingManager {
     private TextField OcasionalTF; // Value injected by FXMLLoader
 
     @FXML // fx:id="PartTimeTF"
-    private Text PartTimeTF; // Value injected by FXMLLoader
+    private TextField PartTimeTF; // Value injected by FXMLLoader
 
     @FXML // fx:id="PreOrderTF"
     private TextField PreOrderTF; // Value injected by FXMLLoader
@@ -39,6 +33,9 @@ public class ParkingManager {
 
     @FXML // fx:id="ShowStatBtn"
     private Button ShowStatBtn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="SubmitBtn"
+    private Button SubmitBtn; // Value injected by FXMLLoader
 
     @FXML // fx:id="price"
     private TableColumn<?, ?> price; // Value injected by FXMLLoader
@@ -80,30 +77,13 @@ public class ParkingManager {
     }
 
     @FXML
+    void SubmitBtn(ActionEvent event) {
+
+    }
+
+    @FXML
     void showPrices(ActionEvent event) {
 
     }
 
-    @Subscribe
-    public void setPricesData(NewSubscriberEvent event) {
-
-//
-//        ObservableList<PricesClass> list1 = FXCollections.observableArrayList(event.getMessage().getPricesVector());
-//        PricesTable.setItems(list1);
-//
-
-    }
-
-//    @FXML
-//    void initialize() {
-////        App.getDefault().register(this);
-////        msgId = 222222222;
-////        price.setCellValueFactory(new PropertyValueFactory<PricesClass, Integer>("price"));
-////        pricetype.setCellValueFactory(new PropertyValueFactory<PricesClass, String>("priceType"));
-////
-//
-//    }
-
 }
-
-
