@@ -14,7 +14,7 @@ public class PartialSub {
     @NotNull
     String CarNumber;
     @NotNull
-    Date StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
+    String StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
     boolean Entered;
     @NotNull
     String SubNum;
@@ -53,7 +53,7 @@ public class PartialSub {
         return Entered;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return StartDate;
     }
 
@@ -65,7 +65,7 @@ public class PartialSub {
         CustomerId = customerId;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         StartDate = startDate;
     }
 
