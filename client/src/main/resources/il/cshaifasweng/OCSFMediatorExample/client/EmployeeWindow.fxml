@@ -8,29 +8,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="627.0" tabClosingPolicy="ALL_TABS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.EmployeeWindow">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="629.0" tabClosingPolicy="ALL_TABS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.EmployeeWindow">
   <tabs>
-    <Tab closable="false" text="Parking Spot update">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="619.0">
-               <children>
-                  <Label layoutX="131.0" layoutY="82.0" prefHeight="26.0" prefWidth="149.0" text="Parking Spot ID:">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="UpdateParkingSpot" layoutX="327.0" layoutY="80.0" onAction="#UpdateTheParkingSpot" prefHeight="29.0" prefWidth="153.0" promptText="#ID" />
-                  <Button fx:id="ActivateParkingSpot" layoutX="157.0" layoutY="137.0" mnemonicParsing="false" onAction="#ActivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Active" />
-                  <Button fx:id="DectivateParkingSpot" layoutX="334.0" layoutY="137.0" mnemonicParsing="false" onAction="#DeactivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Deactive" />
-                  <Label layoutX="167.0" layoutY="27.0" prefHeight="38.0" prefWidth="265.0" text="Parking Spot Status Update" textFill="#fc0000">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="PreviousWindowBT1" layoutX="22.0" layoutY="317.0" mnemonicParsing="false" onAction="#OnPreviousWindowButton1" prefHeight="34.0" prefWidth="135.0" text="Previous Window" />
-               </children></AnchorPane>
-      </content>
-    </Tab>
     <Tab closable="false" text="System Startup">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -128,5 +107,26 @@
             </AnchorPane>
         </content>
       </Tab>
+    <Tab closable="false" text="Parking Spot update">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="619.0">
+               <children>
+                  <Label layoutX="131.0" layoutY="82.0" prefHeight="26.0" prefWidth="149.0" text="Parking Spot ID:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="UpdateParkingSpot" layoutX="327.0" layoutY="80.0" onAction="#UpdateTheParkingSpot" prefHeight="29.0" prefWidth="153.0" promptText="#ID" />
+                  <Button fx:id="ActivateParkingSpot" layoutX="171.0" layoutY="132.0" mnemonicParsing="false" onAction="#ActivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Active" />
+                  <Button fx:id="DectivateParkingSpot" layoutX="327.0" layoutY="132.0" mnemonicParsing="false" onAction="#DeactivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Deactive" />
+                  <Label layoutX="167.0" layoutY="27.0" prefHeight="38.0" prefWidth="265.0" text="Parking Spot Status Update" textFill="#fc0000">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="PreviousWindowBT1" layoutX="22.0" layoutY="317.0" mnemonicParsing="false" onAction="#OnPreviousWindowButton1" prefHeight="34.0" prefWidth="135.0" text="Previous Window" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
   </tabs>
 </TabPane>

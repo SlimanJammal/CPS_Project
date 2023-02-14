@@ -8,9 +8,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="279.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestStatus">
+<AnchorPane prefHeight="310.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestStatus">
    <children>
-      <Pane layoutX="4.0" layoutY="65.0" prefHeight="200.0" prefWidth="350.0">
+      <Pane layoutX="4.0" layoutY="65.0" prefHeight="168.0" prefWidth="350.0">
          <children>
             <TextField fx:id="CustomerIdTF" layoutX="93.0" layoutY="29.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="223.0" promptText="Customer ID" />
             <TextField fx:id="CarNumberTF" layoutX="93.0" layoutY="72.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="223.0" promptText="Car License Num" />
@@ -20,10 +20,11 @@
             <Label fx:id="LabelOutput" layoutX="14.0" layoutY="123.0" prefHeight="26.0" prefWidth="94.0" text="Label" visible="false" />
          </children>
       </Pane>
-      <Text layoutX="63.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Status Update">
+      <Text layoutX="51.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Status Update">
          <font>
-            <Font size="23.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
       </Text>
+      <Button fx:id="PreviousButton" layoutX="14.0" layoutY="235.0" mnemonicParsing="false" onAction="#OnPreviousButton" prefHeight="31.0" prefWidth="122.0" text="Previous Window" />
    </children>
 </AnchorPane>

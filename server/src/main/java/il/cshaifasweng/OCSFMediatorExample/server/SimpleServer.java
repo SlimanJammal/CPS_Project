@@ -73,10 +73,10 @@ public class SimpleServer extends AbstractServer {
 		{
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Parking Slot ID
-			//Object #2 - Vehicle Parking ID
+			//Object #2 - Car ID
 			//Object #3 - Occasion ID
 			String ParkingSlotID = ms.getObject1().toString();
-			String VehicleID = ms.getObject2().toString();
+			String CarNumber = ms.getObject2().toString();
 			String OccasionID = ms.getObject3().toString();
 		}
 		//===================================================================================
@@ -87,16 +87,18 @@ public class SimpleServer extends AbstractServer {
 			//Object #1 - Subscriber Type
 			//Object #2 - Customer ID
 			//Object #3 - Starting Date
-			//Object #4 - Regular Leaving Hour
-			//Object #5 - Car License ID
-			//Object #6 - Regular Parking Lot
+			//Object #4 - Entrance Hour
+			//Object #5 - Departure Hour
+			//Object #6 - Car License ID
+			//Object #7 - Regular Parking Lot
 
 			String SubscriberType = ms.getObject1().toString();
 			String CustomerID = ms.getObject2().toString();
 			String StartingDate = ms.getObject3().toString();
-			String RegularLeavingHour = ms.getObject4().toString();
-			String CarLicenseID = ms.getObject5().toString();
-			String RegularParkingLot = ms.getObject6().toString();
+			String EntranceHour = ms.getObject4().toString();
+			String DepartureHour = ms.getObject5().toString();
+			String CarLicenseID = ms.getObject6().toString();
+			String RegularParkingLot = ms.getObject7().toString();
 
 
 			if(SubscriberType.equals("Single Monthly Subscription"))
@@ -116,6 +118,13 @@ public class SimpleServer extends AbstractServer {
 				input.setStartDate(StartingDate);
 			}
 
+		}
+		//===================================================================================
+		//BASHAR Check Status Window
+		else if(ms.getMessage().equals("Check Client Spot Status"))
+		{
+			String CustomerId = ms.getObject1().toString();
+			String CarNumber = ms.getObject2().toString();
 		}
 	}
 

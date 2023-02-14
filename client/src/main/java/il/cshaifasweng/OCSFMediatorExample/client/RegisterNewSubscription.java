@@ -3,14 +3,13 @@
  */
 
 package il.cshaifasweng.OCSFMediatorExample.client;
-
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.io.IOException;
-
+//Previous Buttons doesn't work just yet
 public class RegisterNewSubscription {
 
     @FXML // fx:id="CarNumberTF"
@@ -19,11 +18,14 @@ public class RegisterNewSubscription {
     @FXML // fx:id="CustomerIdTF"
     private TextField CustomerIdTF; // Value injected by FXMLLoader
 
-    @FXML // fx:id="REgisterBtn"
-    private Button REgisterBtn; // Value injected by FXMLLoader
+    @FXML // fx:id="RegisterBtn"
+    private Button RegisterBtn; // Value injected by FXMLLoader
 
-    @FXML // fx:id="RegularHoursTF"
-    private TextField RegularHoursTF; // Value injected by FXMLLoader
+    @FXML // fx:id="EntranceHourTF"
+    private TextField EntranceHourTF; // Value injected by FXMLLoader
+
+    @FXML // fx:id="DepatureHourTF"
+    private TextField DepatureHourTF; // Value injected by FXMLLoader
 
     @FXML // fx:id="RegularParkingTF"
     private TextField RegularParkingTF; // Value injected by FXMLLoader
@@ -33,6 +35,9 @@ public class RegisterNewSubscription {
 
     @FXML // fx:id="SubscriptionTypeMenue"
     private MenuButton SubscriptionTypeMenue; // Value injected by FXMLLoader
+
+    @FXML
+    private Button PreviousWindow;
 
     @FXML
     private Label LabelOutput;
@@ -59,6 +64,7 @@ public class RegisterNewSubscription {
         }
     }
 
+    @FXML
     void CustomerIdTF(ActionEvent event) {
         String Customer_ID = CustomerIdTF.getText();
         //int ID = Integer.parseInt(Customer_ID);
@@ -81,12 +87,14 @@ public class RegisterNewSubscription {
     }
 
     @FXML
-    void REgisterBtn(ActionEvent event) {
+    void RegisterBtn(ActionEvent event) {
+        //REgisterBtn.setVisible(false);
         String CustomerID = CustomerIdTF.getText();
         String CarLicense = CarNumberTF.getText();
         String StartingDate = StartingDateTF.toString();
         String RegularParking = RegularParkingTF.getText();
-        String RegularParkingTime = RegularHoursTF.getText();
+        String EntranceParkingTime = EntranceHourTF.getText();
+        String DepartureParkingTime = DepatureHourTF.getText();
         String ParkingType = SubscriptionTypeMenue.getTypeSelector().toString();
 
         //Send Data TO SERVER!!!
@@ -95,8 +103,9 @@ public class RegisterNewSubscription {
         msg.setObject2(CustomerID);
         msg.setObject3(StartingDate);
         msg.setObject4(RegularParking);
-        msg.setObject5(RegularParkingTime);
-        msg.setObject6(ParkingType);
+        msg.setObject5(EntranceParkingTime);
+        msg.setObject6(DepartureParkingTime);
+        msg.setObject7(ParkingType);
 
         try
         {
@@ -109,25 +118,44 @@ public class RegisterNewSubscription {
     }
 
     @FXML
-    void RegularHoursTF(ActionEvent event) {
-        String input = RegularParkingTF.getText();
+    void OnEntranceHourTF(ActionEvent event) {
+        String input = EntranceHourTF.getText();
         switch (input.length()) {
             case 2:
-                RegularParkingTF.setText(input + ":");
+                EntranceHourTF.setText(input + ":");
                 break;
             case 5:
-                RegularParkingTF.setText(input + " - ");
-                break;
-            case 10:
-                RegularParkingTF.setText(input + ":");
-                break;
-            case 12:
                 //Check If Input is Legal
             {
                 char ConvertedInput[] = input.toCharArray();
                 for (int i = 0; i < ConvertedInput.length; i++) {
                     if (ConvertedInput[i] <= 'z' && ConvertedInput[i] >= 'a') {
-                        RegularParkingTF.setText("");
+                        EntranceHourTF.setText("");
+                    }
+                }
+            }
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    @FXML
+    void OnDepatureHourTF(ActionEvent event) {
+        //FORMAT INPUT HH:MM
+        String input = DepatureHourTF.getText();
+        switch (input.length()) {
+            case 2:
+                DepatureHourTF.setText(input + ":");
+                break;
+            case 5:
+                //Check If Input is Legal
+            {
+                char ConvertedInput[] = input.toCharArray();
+                for (int i = 0; i < ConvertedInput.length; i++) {
+                    if (ConvertedInput[i] <= 'z' && ConvertedInput[i] >= 'a') {
+                        DepatureHourTF.setText("");
                     }
                 }
             }
@@ -173,7 +201,15 @@ public class RegisterNewSubscription {
         MenuItem menuItem2 = new MenuItem("Multi Monthly Subscription");
         MenuItem menuItem3 = new MenuItem("Fully Subscription");
 
-        SubscriptionTypeMenue = new MenuButton("Options: ", null,menuItem1,menuItem2,menuItem3);
+        SubscriptionTypeMenue = new MenuButton("Subscription Type: ", null,menuItem1,menuItem2,menuItem3);
+        //to prevent glitching - using Multi in Single/Fully
+        CarNumberTF.setText("");
+    }
+
+    @FXML
+    void OnPreviousWindow(ActionEvent event)
+    {
+        //Go To Previous Window!
     }
 
     public boolean IsNumber(String Input)
