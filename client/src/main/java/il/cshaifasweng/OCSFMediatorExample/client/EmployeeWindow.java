@@ -58,16 +58,16 @@ public class EmployeeWindow {
     private TextField UpdateParkingSpot;
 
     @FXML
-    private TextField PreviousWindowBT1;
+    private Button PreviousWindowBT1;
 
     @FXML
-    private TextField PreviousWindowBT2;
+    private Button PreviousWindowBT2;
 
     @FXML
-    private TextField PreviousWindowBT3;
+    private Button PreviousWindowBT3;
 
     @FXML
-    private TextField PreviousWindowBT4;
+    private Button PreviousWindowBT4;
 
     @FXML
     private Label LabelOutput;
