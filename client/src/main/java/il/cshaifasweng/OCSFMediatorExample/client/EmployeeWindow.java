@@ -70,6 +70,9 @@ public class EmployeeWindow {
     private TextField PreviousWindowBT4;
 
     @FXML
+    private Label LabelOutput;
+
+    @FXML
     void ActivateParkingSpot(ActionEvent event) {
         //Activate Parking Spot
         String ActivateParkingSpotID = UpdateParkingSpot.getText().toString();
