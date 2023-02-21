@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table
-public class parks {
+public class Parks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ParkId;
@@ -16,11 +16,11 @@ public class parks {
     @NotNull
     boolean full;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "park")
-    private List<ParkingSlot> Slots;
+    private List<ParkingSpot> Spots;
 
-    public parks(){
+    public Parks(){
     }
-    public parks(int dims,boolean isfull)
+    public Parks(int dims, boolean isfull)
     {
         this.dimintions=dims;
         this.full=isfull;
@@ -30,7 +30,7 @@ public class parks {
             {
                 for(int k=0;k<3;k++)
                 {
-                    Slots.add(new ParkingSlot(i,j,k,"0",this));
+                    Spots.add(new ParkingSpot(i,j,k,"0",this));
                 }
             }
         }
@@ -48,8 +48,8 @@ public class parks {
         return dimintions;
     }
 
-    public List<ParkingSlot> getSlots() {
-        return Slots;
+    public List<ParkingSpot> getSpots() {
+        return Spots;
     }
 
     public void setDimintions(int dimintions) {
@@ -64,8 +64,8 @@ public class parks {
         this.full = full;
     }
 
-    public void setSlots(List<ParkingSlot> slots) {
-        Slots = slots;
+    public void setSpots(List<ParkingSpot> spots) {
+        Spots = spots;
     }
 
 }

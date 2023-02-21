@@ -75,8 +75,15 @@ public class ParkingManager {
 
     @FXML
     void ShowStatBtn(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer("showStats");
+
+        Message msg = new Message("ParkingManager_showStats");
+
+        //MANAGER NAME/PARKING NUMBER
+        msg.setObject1(DataSingleton.getInstance().getDataName());
+
+        SimpleClient.getClient().sendToServer(msg);
     }
+
     @Subscribe
     void showSTats(showStatsEvent event)
     {
@@ -92,7 +99,7 @@ public class ParkingManager {
 
     @FXML
     void SubmitBtn(ActionEvent event) throws IOException {
-        Message msg=new Message("alterPrices");
+        Message msg=new Message("ParkingManager_alterPrices");
         //data stored in seperate objects
         // ocasional price -> object1
         // preOrder price -> object2
@@ -104,14 +111,23 @@ public class ParkingManager {
         msg.setObject3(PartTimeTF.getText());
         msg.setObject4(FullSubsTF.getText());
         msg.setObject5(MultiTF.getText());
+
+        //MANAGER NAME/PARKING NUMBER
+        msg.setObject6(DataSingleton.getInstance().getDataName());
+
         SimpleClient.getClient().sendToServer(msg);
     }
 
     @FXML
     void showPrices(ActionEvent event) throws IOException {
-        Message msg=new Message("showPrices");
+
+        Message msg=new Message("ParkingManager_showPrices");
+
+        //MANAGER NAME/PARKING NUMBER
+        msg.setObject1(DataSingleton.getInstance().getDataName());
         SimpleClient.getClient().sendToServer(msg);
     }
+
     @Subscribe
     void showingPrices(showPricesEvent event){
         Message returned = event.msg;

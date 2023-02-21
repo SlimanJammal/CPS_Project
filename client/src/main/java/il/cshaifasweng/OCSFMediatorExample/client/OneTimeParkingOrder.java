@@ -59,7 +59,7 @@ public class OneTimeParkingOrder {
         // the data is stored in the following order
         // 0- car number             3- Eta
         // 1- DesiredParking         4- Etd
-        // 2- Email                  5- Id nnumber
+        // 2- Email                  5- Id number
 
         fields.add(CarNumberTF.getText());
         fields.add(DesiredParkingTF.getText());
@@ -83,40 +83,32 @@ public class OneTimeParkingOrder {
     void SubmissionAnswer(OneTimeParkingOrderEvent event){
         //todo  warning pop up if everything is okay/not with info
         // if everything is good clear fields
-//        if(event.getMessage().getObject1().toString().equals("OneTimeParkingOrder_Success")){
-//            Platform.runLater(() -> {
-//                Alert alert = new Alert(Alert.AlertType.WARNING,
-//                        String.format("Message: %s\n",
-//                                "Success")
-//                );
-//                alert.show();
-//            });
+        if(event.getMessage().getObject1().toString().equals("success")) {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING,
+                        String.format("Message: %s\n",
+                                "Success")
+                );
+                alert.show();
+            });
 
-        Message msg = event.getMessage();
-
-//        System.out.println(msg.getMessage());
-        Alert alert = new Alert(Alert.AlertType.WARNING, msg.getMessage());
-        alert.show();
-
-
-        CarNumberTF.clear();
+            CarNumberTF.clear();
             DesiredParkingTF.clear();
             EmailTF.clear();
             EtaTF.clear();
             EtdTF.clear();
             IdNumberTF.clear();
 
-//        } else if(event.getMessage().getObject1().toString().equals("OneTimeParkingOrder_Fail")){
-//            Platform.runLater(() -> {
-//                Alert alert = new Alert(Alert.AlertType.WARNING,
-//                        String.format("Message: %s\n",
-//                                "Submission Failed, Try Again")
-//                );
-//                alert.show();
-//            });
-//        }
-//
-//
+        } else if(event.getMessage().getObject1().toString().equals("fail")){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING,
+                        String.format("Message: %s\n",
+                                "Submission Failed - Wrong Input, Try Again")
+                );
+                alert.show();
+            });
+        }
+
     }
 
     @FXML
@@ -146,7 +138,12 @@ public class OneTimeParkingOrder {
 
     @FXML
     void backBtn(ActionEvent event) {
-
+        String newSceneName = (String) DataSingleton.getInstance().getData();
+        try {
+            App.setRoot(newSceneName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -3,13 +3,13 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import javax.persistence.EntityGraph;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SimpleServer extends AbstractServer {
 	public static Session session;
@@ -34,38 +36,34 @@ public class SimpleServer extends AbstractServer {
 
 
 
-
-
 	public SimpleServer(int port) {
 		super(port);
 	}
 
 
 
+//
+//
+//	public void initSesssion() {
+//		session = getSessionFactory().openSession();
+//		try {
+//			session.getTransaction().begin();
+//
+//
+////			session.save();
+//			session.flush();
+//			session.getTransaction().commit();
+//
+//		} catch (Exception e) {
+//			if (session != null) {
+//				session.getTransaction().rollback();
+//			}
+//		}
+//
+//
+//	}
 
-
-
-
-	public void initSesssion() {
-		session = getSessionFactory().openSession();
-		try {
-			session.getTransaction().begin();
-
-
-//			session.save();
-			session.flush();
-			session.getTransaction().commit();
-
-		} catch (Exception e) {
-			if (session != null) {
-				session.getTransaction().rollback();
-			}
-		}
-
-
-	}
-
-	private static SessionFactory getSessionFactory() {
+	private static SessionFactory getSessionFactory() throws HibernateException {
 		Configuration configuration = new Configuration();
 		configuration.addAnnotatedClass(Employee.class);
 		configuration.addAnnotatedClass(FullSub.class);
@@ -73,7 +71,7 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(MultiSub.class);
 		configuration.addAnnotatedClass(OccCustomer.class);
 		configuration.addAnnotatedClass(ParkingLot.class);
-		configuration.addAnnotatedClass(ParkingSlot.class);
+		configuration.addAnnotatedClass(ParkingSpot.class);
 		configuration.addAnnotatedClass(PartialSub.class);
 		configuration.addAnnotatedClass(PreOrder.class);
 		configuration.addAnnotatedClass(PricesClass.class);
@@ -85,6 +83,7 @@ public class SimpleServer extends AbstractServer {
 				.build();
 		return configuration.buildSessionFactory(serviceRegistry);
 	}
+
 	public static <T> List<T> getAll (Class<T> object) {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<T> criteriaQuery = builder.createQuery(object);
@@ -125,7 +124,7 @@ public class SimpleServer extends AbstractServer {
 			Message MSG=new Message("SubRenewed");
 			client.sendToClient(MSG);
 		}
-		else if(ms.getMessage().equals("alterPrices"))
+		else if(ms.getMessage().equals("ParkingManager_alterPrices"))
 		{
 			// todo ask regional manager if we need a price change and if agreed then change
 			//data stored in seperate objects
@@ -156,7 +155,7 @@ public class SimpleServer extends AbstractServer {
 			// todo change prices in database
 			// todo also check which of the objects of the message do not have null in them
 		}
-		else if(ms.getMessage().equals("showPrices"))
+		else if(ms.getMessage().equals("ParkingManager_showPrices"))
 		{
 			// todo get all prices from database and then put them in objects 1 to 5 to present them to manager
 			Message MSG=new Message("pricesReturned");
@@ -168,7 +167,7 @@ public class SimpleServer extends AbstractServer {
 			session.close();
 			client.sendToClient(MSG);
 		}
-		else if(ms.getMessage().equals("showStats"))
+		else if(ms.getMessage().equals("ParkingManager_showStats"))
 		{
 
 			// todo get all stats from database and then put them in objects 1 to 3 to present them to manager
@@ -242,28 +241,89 @@ public class SimpleServer extends AbstractServer {
 			// 1- DesiredParking         4- Etd
 			// 2- Email                  5- Id nnumber
 			Vector<String> fields = (Vector<String>)ms.getObject1();
-			PreOrder tempParking = new PreOrder(fields.get(5),fields.get(0),fields.get(1),fields.get(2));
-			String tempEta = fields.get(3);
-			String tempEtd = fields.get(4);
-			String[] parsedEta = tempEta.split(":");
-			String[] parsedEtd = tempEtd.split(":");
-			Date Eta = new Date(Integer.parseInt(parsedEta[0]),Integer.parseInt(parsedEta[1]),Integer.parseInt(parsedEta[2]),Integer.parseInt(parsedEta[3]),0);
-			Date Etd = new Date(Integer.parseInt(parsedEtd[0]),Integer.parseInt(parsedEtd[1]),Integer.parseInt(parsedEtd[2]),Integer.parseInt(parsedEtd[3]),0);
-			tempParking.setEntrance(Eta);
-			tempParking.setExit(Etd);
+
+			// checking fields input if okay add the client, else return failed
+			// checked everything except time/date
+			if (fieldsChecker_OneTimeParkingOrder(fields)) {
+				PreOrder tempParking = new PreOrder(fields.get(5), fields.get(0), fields.get(1), fields.get(2));
+				String tempEta = fields.get(3);
+				String tempEtd = fields.get(4);
+				String[] parsedEta = tempEta.split(":");
+				String[] parsedEtd = tempEtd.split(":");
+				Date Eta = new Date(Integer.parseInt(parsedEta[0]), Integer.parseInt(parsedEta[1]), Integer.parseInt(parsedEta[2]), Integer.parseInt(parsedEta[3]), 0);
+				Date Etd = new Date(Integer.parseInt(parsedEtd[0]), Integer.parseInt(parsedEtd[1]), Integer.parseInt(parsedEtd[2]), Integer.parseInt(parsedEtd[3]), 0);
+				tempParking.setEntrance(Eta);
+				tempParking.setExit(Etd);
 
 
+				SessionFactory sessionFactory = getSessionFactory();
+				session = sessionFactory.openSession();
+				session.save(tempParking);
+				session.flush();
 
-			session = getSessionFactory().openSession();
-			session.flush();
-			session.save(tempParking);
-			Message msg2 = new Message("Order completed Successfully!");
-			client.sendToClient(msg2);
-			session.getTransaction().commit();
-			session.close();
+				Message msg2 = new Message("OneTimeParkingOrder");
+				msg2.setObject1("success");
+
+				client.sendToClient(msg2);
+				session.getTransaction().commit();
+				session.close();
+			} else {
+				//failed
+				Message msg2 = new Message("OneTimeParkingOrder");
+				client.sendToClient(msg2);
+				msg2.setObject1("fail");
+			}
 
 		}
 
+	}
+
+	boolean fieldsChecker_OneTimeParkingOrder(Vector<String> fields){
+		//data is contained in a vector inside Object1
+		// the data is stored in the following order
+		// 0- car number             3- Eta
+		// 1- DesiredParking         4- Etd
+		// 2- Email                  5- Id nnumber
+
+		String regex_multi_number = "\\d+";
+		Pattern p = Pattern.compile(regex_multi_number);
+		Matcher m = p.matcher(fields.get(0));
+
+		if(!m.matches()){
+			//0- car number field error
+			return false;
+		}
+
+		String regex_one_number = "\\d";
+		Pattern q = Pattern.compile(regex_multi_number);
+		Matcher s = q.matcher(fields.get(1));
+
+		// 3 is parkings number update if changed !!!!!!!!!
+		if(!s.matches() || s.matches() && (Integer.parseInt(fields.get(1)) > 3 || Integer.parseInt(fields.get(1)) < 1)){
+			// 1- parking number error
+			return false;
+		}
+
+
+		String regex_email = ".+@.+"; // email should start with a char and contain a @ after it and then more chars
+		Pattern pp = Pattern.compile(regex_multi_number);
+		Matcher mail = pp.matcher(fields.get(2));
+
+		if(!mail.matches()){
+			//2- email error
+			return false;
+		}
+
+
+
+		Matcher mma = p.matcher(fields.get(5));
+
+		if(!mma.matches()){
+			//5- id number wrong
+			return false;
+		}
+
+		return true;
 	}
 
 }

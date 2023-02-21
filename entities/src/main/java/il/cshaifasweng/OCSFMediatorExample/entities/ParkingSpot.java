@@ -7,17 +7,17 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class ParkingSlot {
+public class ParkingSpot {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int slotid ;
+    int spotId ;
     @NotNull
     int x,y,z;
     String CurrentState;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ParkId")
-    private parks park;
-    public ParkingSlot(int a,int b,int c,String state,parks thispark)
+    private Parks park;
+    public ParkingSpot(int a, int b, int c, String state, Parks thispark)
     {
         x=a;
         y=b;
@@ -28,7 +28,7 @@ public class ParkingSlot {
     }
 
 
-    public ParkingSlot() {
+    public ParkingSpot() {
 
     }
 }

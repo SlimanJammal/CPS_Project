@@ -1,4 +1,4 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-public class enterance {
+public class Entrance {
 }
