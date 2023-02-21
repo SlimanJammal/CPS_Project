@@ -5,7 +5,7 @@ import java.util.Vector;
 
 @Entity
 @Table
-public class regionalManager extends Employee {
+public class RegionalManager extends Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -13,6 +13,7 @@ public class regionalManager extends Employee {
     @OneToMany
     Vector<ParkingLot> parkingLots;
 
+    @OneToMany
     Vector<PricesUpdateRequest> pricesUpdateRequests;
 
 }

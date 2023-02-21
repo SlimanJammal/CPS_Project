@@ -27,7 +27,7 @@ public class SimpleServer extends AbstractServer {
 	public static Session session;
 	private static List<ParkingLot> ParkingLots;
 	private static List<Employee> employees ;
-	private static List<Manager> managers;
+	private static List<ParkingManager> parkingManagers;
 	public static ArrayList<FullSub> fullSubs=new ArrayList<FullSub>();
 	public static ArrayList<MultiSub> multiSubs=new ArrayList<MultiSub>();
 	private static ArrayList<PreOrder> preOrders= new ArrayList<PreOrder>();
@@ -67,7 +67,7 @@ public class SimpleServer extends AbstractServer {
 		Configuration configuration = new Configuration();
 		configuration.addAnnotatedClass(Employee.class);
 		configuration.addAnnotatedClass(FullSub.class);
-		configuration.addAnnotatedClass(Manager.class);
+		configuration.addAnnotatedClass(ParkingManager.class);
 		configuration.addAnnotatedClass(MultiSub.class);
 		configuration.addAnnotatedClass(OccCustomer.class);
 		configuration.addAnnotatedClass(ParkingLot.class);
@@ -75,7 +75,7 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(PartialSub.class);
 		configuration.addAnnotatedClass(PreOrder.class);
 		configuration.addAnnotatedClass(PricesClass.class);
-		configuration.addAnnotatedClass(regionalManager.class);
+		configuration.addAnnotatedClass(RegionalManager.class);
 		configuration.addAnnotatedClass(Complaint.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()

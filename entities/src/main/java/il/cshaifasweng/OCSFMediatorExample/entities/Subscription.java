@@ -1,18 +1,13 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import javax.persistence.*;
 
+import javax.persistence.*;
 
 @Entity
 @Table
-public class PricesUpdateRequest {
+public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @ManyToOne
-    ParkingManager parkingManager;
-
-    String request;
 
 }

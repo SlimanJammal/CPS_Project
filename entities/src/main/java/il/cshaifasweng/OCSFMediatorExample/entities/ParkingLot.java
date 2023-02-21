@@ -43,6 +43,8 @@ public class ParkingLot implements Serializable {
     public ParkingLot() {
     }
 
+
+
     public PricesClass getOccasionalPrice() {
         return occasionalPrice;
     }

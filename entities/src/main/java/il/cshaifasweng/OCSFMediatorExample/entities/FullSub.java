@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table
-public class FullSub {
+public class FullSub extends Subscription{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     String FullSubId;

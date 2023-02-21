@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table
-public class OccCustomer {
+public class OccCustomer extends Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String OccCustomerId;

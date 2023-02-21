@@ -5,7 +5,7 @@ import java.util.Vector;
 
 @Entity
 @Table
-public class Manager extends Employee {
+public class ParkingManager extends Employee {
 
     @OneToOne
     private ParkingLot parkingLot;
@@ -13,13 +13,13 @@ public class Manager extends Employee {
     @OneToMany
     Vector<PricesUpdateRequest> pricesUpdateRequests;
 
-    public Manager(String firstName, String lastName, String email, String password, ParkingLot parkingLot, Vector<PricesUpdateRequest> pricesUpdateRequests) {
+    public ParkingManager(String firstName, String lastName, String email, String password, ParkingLot parkingLot, Vector<PricesUpdateRequest> pricesUpdateRequests) {
         super(firstName, lastName, email, password);
         this.parkingLot = parkingLot;
         this.pricesUpdateRequests = pricesUpdateRequests;
     }
 
-    public Manager() {
+    public ParkingManager() {
 
     }
 

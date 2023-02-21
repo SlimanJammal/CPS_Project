@@ -1,18 +1,18 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import javax.persistence.*;
 
+import javax.persistence.*;
+import java.util.Vector;
 
 @Entity
 @Table
-public class PricesUpdateRequest {
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    ParkingManager parkingManager;
+    @OneToMany
+    Vector<Complaint> complaintsVector;
 
-    String request;
 
 }
