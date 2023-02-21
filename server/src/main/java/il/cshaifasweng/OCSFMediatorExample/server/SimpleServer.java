@@ -9,9 +9,17 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import javax.persistence.EntityGraph;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 public class SimpleServer extends AbstractServer {
 	public static Session session;
@@ -77,6 +85,14 @@ public class SimpleServer extends AbstractServer {
 				.build();
 		return configuration.buildSessionFactory(serviceRegistry);
 	}
+	public static <T> List<T> getAll (Class<T> object) {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<T> criteriaQuery = builder.createQuery(object);
+		Root<T> rootEntry = criteriaQuery.from(object);
+		CriteriaQuery<T> allCriteriaQuery = criteriaQuery.select(rootEntry);
+		TypedQuery<T> allQuery = session.createQuery(allCriteriaQuery);
+		return allQuery.getResultList();
+	}
 
 
 
@@ -112,6 +128,31 @@ public class SimpleServer extends AbstractServer {
 		else if(ms.getMessage().equals("alterPrices"))
 		{
 			// todo ask regional manager if we need a price change and if agreed then change
+			//data stored in seperate objects
+			// ocasional price -> object1
+			// preOrder price -> object2
+			// partTime price -> object3
+			// FullSubs price -> object4
+			// Multi price -> object5
+			PricesClass ocasionalPrice = new PricesClass((int)ms.getObject1(),"ocasionalPrice");
+			PricesClass preOrderPrice = new PricesClass((int)ms.getObject2(),"preOrderPrice");
+			PricesClass PartTimePrice = new PricesClass((int)ms.getObject3(),"PartTimePrice");
+			PricesClass fullSubPrice = new PricesClass((int)ms.getObject4(),"fullSubPrice");
+			PricesClass MultiCarPrice = new PricesClass((int)ms.getObject5(),"MultiCarPrice");
+			session = getSessionFactory().openSession();
+			session.flush();
+			session.saveOrUpdate(ocasionalPrice);
+			session.saveOrUpdate(preOrderPrice);
+			session.saveOrUpdate(PartTimePrice);
+			session.saveOrUpdate(fullSubPrice);
+			session.saveOrUpdate(MultiCarPrice);
+			Message msg2 = new Message("prices updated successfully!");
+			client.sendToClient(msg2);
+			session.getTransaction().commit();
+			session.close();
+
+
+
 			// todo change prices in database
 			// todo also check which of the objects of the message do not have null in them
 		}
@@ -119,17 +160,38 @@ public class SimpleServer extends AbstractServer {
 		{
 			// todo get all prices from database and then put them in objects 1 to 5 to present them to manager
 			Message MSG=new Message("pricesReturned");
+			session = getSessionFactory().openSession();
+			session.flush();
+			List<PricesClass> pricesList = getAll(PricesClass.class);
+			MSG.setObject1(pricesList);
+			session.getTransaction().commit();
+			session.close();
 			client.sendToClient(MSG);
 		}
 		else if(ms.getMessage().equals("showStats"))
 		{
+
 			// todo get all stats from database and then put them in objects 1 to 3 to present them to manager
 			Message MSG=new Message("statsReturned");
 			client.sendToClient(MSG);
 			// do other things
 		}else if(ms.getMessage().equals("Complaint"))
 		{
+			// the complaint which is a class defined in entities
+			// is inside message in object1
+			// each complaint contains two fields
+			// 1- customer ID
+			// 2- the complaint text
 			Complaints tempComplaint = (Complaints) ms.getObject1();
+			session = getSessionFactory().openSession();
+			session.flush();
+			session.save(tempComplaint);
+			Message msg2 = new Message("Complaint received successfully!");
+			client.sendToClient(msg2);
+			session.getTransaction().commit();
+			session.close();
+
+			// useless code to check if things work
 			if(tempComplaint.getCustomerId().equals("314640426")){
 				ms.setObject1("we recived the right information");
 				client.sendToClient(ms);
@@ -140,21 +202,65 @@ public class SimpleServer extends AbstractServer {
 			// do other things
 		}else if(ms.getMessage().equals("OcasionalParking"))
 		{
+
 			client.sendToClient(ms);
 			// Id number is saved as a string in object1
 			// license plate number is saved as a string in object2
 			// email is saved as a string in object3
 			// leaving time is saved as a string in object4
+			OccCustomer customer = new OccCustomer((String) ms.getObject1(),(String)ms.getObject2(),(String)ms.getObject3());
+			String temp = (String)ms.getObject4();
+			String[] parsed = temp.split(":");
+			System.out.println(parsed[0]);
+			System.out.println(parsed[1]);
+			System.out.println(parsed[2]);
+
+			Time tempTime = new Time(Integer.parseInt(parsed[0]),Integer.parseInt(parsed[1]),Integer.parseInt(parsed[2]));
+			customer.setStartTime(tempTime);
+
+			session = getSessionFactory().openSession();
+			session.flush();
+			session.save(customer);
+			Message msg2 = new Message("Entry Success!");
+			client.sendToClient(msg2);
+			session.getTransaction().commit();
+			session.close();
+
+			//todo figure out how to deal with time(storing and calculating)
+
+
+
+
 			// do other things
 		} else if (ms.getMessage().equals("OneTimeParkingOrder_Submit")){
 			//todo check if in DB
 			// return OneTimeParkingOrder_Success
 			// or OneTimeParkingOrder_Fail
+			//data is contained in a vector inside Object1
+			// the data is stored in the following order
+			// 0- car number             3- Eta
+			// 1- DesiredParking         4- Etd
+			// 2- Email                  5- Id nnumber
+			Vector<String> fields = (Vector<String>)ms.getObject1();
+			PreOrder tempParking = new PreOrder(fields.get(5),fields.get(0),fields.get(1),fields.get(2));
+			String tempEta = fields.get(3);
+			String tempEtd = fields.get(4);
+			String[] parsedEta = tempEta.split(":");
+			String[] parsedEtd = tempEtd.split(":");
+			Date Eta = new Date(Integer.parseInt(parsedEta[0]),Integer.parseInt(parsedEta[1]),Integer.parseInt(parsedEta[2]),Integer.parseInt(parsedEta[3]),0);
+			Date Etd = new Date(Integer.parseInt(parsedEtd[0]),Integer.parseInt(parsedEtd[1]),Integer.parseInt(parsedEtd[2]),Integer.parseInt(parsedEtd[3]),0);
+			tempParking.setEntrance(Eta);
+			tempParking.setExit(Etd);
 
-			Message message = new Message("OneTimeParkingOrder");
-			message.setObject1("OneTimeParkingOrder_Success");
 
-			client.sendToClient(message);
+
+			session = getSessionFactory().openSession();
+			session.flush();
+			session.save(tempParking);
+			Message msg2 = new Message("Order completed Successfully!");
+			client.sendToClient(msg2);
+			session.getTransaction().commit();
+			session.close();
 
 		}
 

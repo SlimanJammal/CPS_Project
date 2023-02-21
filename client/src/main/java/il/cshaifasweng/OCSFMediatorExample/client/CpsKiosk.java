@@ -55,7 +55,7 @@ public class CpsKiosk {
 
     @FXML
     void CustomerBtn(ActionEvent event) throws IOException {
-      App.setRoot("ocasionalParking.fxml");
+      App.setRoot("ocasionalParking");
     }
 
     @FXML
@@ -64,6 +64,8 @@ public class CpsKiosk {
         msg.setLicenesPlate(LICENSE_LOGIN_TF.getText());
         msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
+
+        // todo send alert
     }
 
     @FXML
@@ -84,7 +86,15 @@ public class CpsKiosk {
     }
     @Subscribe
     public void allowWorker(loginWorkerEvent allowing) throws IOException {
-        App.setRoot("EmployeeWindow.fxml");
+        /*
+         * updating a singleton to contain the dateName = manager so we can know who sent the request
+         * */
+
+        DataSingleton data = DataSingleton.getInstance();
+        data.setDataName("Worker");
+        data.setData("");//todo here we need to store an identifier of some sort to know what Worker
+
+        App.setRoot("EmployeeWindow");
     }
 
 
@@ -97,7 +107,15 @@ public class CpsKiosk {
     }
     @Subscribe
     public void allowManager(loginManagerEvent allowing) throws IOException {
-       App.setRoot("ParkingManger.fxml"); // todo put in braces manager scene
+        /*
+         * updating a singleton to contain the dateName = manager so we can know who sent the request
+         * */
+
+        DataSingleton data = DataSingleton.getInstance();
+        data.setDataName("Manager");
+        data.setData("");//todo here we need to store an identifier of some sort to know what manager
+
+       App.setRoot("ParkingManger"); // todo put in braces manager scene
     }
 
 
@@ -128,7 +146,7 @@ public class CpsKiosk {
 
     @FXML
     void ReserveParkingBtn(ActionEvent event) throws IOException {
-        App.setRoot(".fxml");//todo check reservation window
+        App.setRoot("RequestStatus");//todo check reservation window
     }
 
     @FXML
@@ -138,12 +156,12 @@ public class CpsKiosk {
 
     @FXML
     void checkReservBtn(ActionEvent event) throws IOException {
-        App.setRoot(".fxml");//todo check reservation window
+        App.setRoot("RequestStatus");//todo check reservation window
     }
 
     @FXML
     void createNewSubsBtn(ActionEvent event) throws IOException {
-     App.setRoot("RegisterNewSubscription.fxml");
+     App.setRoot("RegisterNewSubscription");
     }
 
 }

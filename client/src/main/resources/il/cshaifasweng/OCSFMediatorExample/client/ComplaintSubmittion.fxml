@@ -21,5 +21,6 @@
          </children>
       </AnchorPane>
       <Button fx:id="SubmitBtn" layoutX="412.0" layoutY="339.0" mnemonicParsing="false" onAction="#SubmitBtn" prefHeight="26.0" prefWidth="72.0" text="Submit" />
+      <Button fx:id="BackBtn" layoutX="329.0" layoutY="340.0" mnemonicParsing="false" onAction="#BackBtn" prefHeight="26.0" prefWidth="72.0" text="Back" />
    </children>
 </AnchorPane>

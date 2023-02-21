@@ -52,7 +52,7 @@ public class CpsWebsite {
 
     @FXML
     void CustomerBtn(ActionEvent event) throws IOException {
-        App.setRoot("ocasionalParking.fxml");
+        App.setRoot("ocasionalParking");
     }
 
     @FXML
@@ -74,7 +74,35 @@ public class CpsWebsite {
     }
     @Subscribe
     public void allowManager(loginManagerEvent allowing) throws IOException {
+        /*
+         * updating a singleton to contain the dateName = manager so we can know who sent the request
+         * */
+
+        DataSingleton data = DataSingleton.getInstance();
+        data.setDataName("Manager");
+        data.setData("");//todo here we need to store an identifier of some sort to know what manager
+
          App.setRoot("ParkingManager.fxml"); // todo put in braces manager scene
+    }
+
+    @FXML
+    void WorkerBtn(ActionEvent event) throws IOException {
+        Message msg= new Message("loginEmployee");
+        msg.setID(ID_LOGIN_TF.getId());
+        msg.setPassword(PW_LOGIN_TF.getText());
+        SimpleClient.getClient().sendToServer(msg);
+    }
+    @Subscribe
+    public void allowWorker(loginWorkerEvent allowing) throws IOException {
+        /*
+         * updating a singleton to contain the dateName = manager so we can know who sent the request
+         * */
+
+        DataSingleton data = DataSingleton.getInstance();
+        data.setDataName("Worker");
+        data.setData("");//todo here we need to store an identifier of some sort to know what Worker
+
+        App.setRoot("EmployeeWindow");
     }
 
 
@@ -110,12 +138,12 @@ public class CpsWebsite {
 
     @FXML
     void checkReservBtn(ActionEvent event) throws IOException {
-        App.setRoot(".fxml");//todo check reservation window
+        App.setRoot("RequestStatus");//todo check reservation window
     }
 
     @FXML
     void createNewSubsBtn(ActionEvent event) throws IOException {
-        App.setRoot("RegisterNewSubscription.fxml");
+        App.setRoot("RegisterNewSubscription");
     }
 
 }

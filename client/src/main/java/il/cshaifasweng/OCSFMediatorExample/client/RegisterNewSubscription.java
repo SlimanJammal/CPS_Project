@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
+
 public class RegisterNewSubscription {
 
     @FXML // fx:id="CarNumberTF"
@@ -33,9 +35,23 @@ public class RegisterNewSubscription {
     @FXML // fx:id="SubscriptionTypeMenue"
     private MenuButton SubscriptionTypeMenue; // Value injected by FXMLLoader
 
+    @FXML // fx:id="BackBtn"
+    private Button BackBtn; // Value injected by FXMLLoader
+
     @FXML
     void CarNumberTF(ActionEvent event) {
 
+    }
+
+    @FXML
+    void BackBtn(ActionEvent event){
+        try{
+            App.setRoot("mainWindow");
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @FXML

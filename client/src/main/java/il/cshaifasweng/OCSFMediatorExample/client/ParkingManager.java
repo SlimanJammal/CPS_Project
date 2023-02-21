@@ -6,12 +6,17 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import antlr.debug.MessageAdapter;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.PricesClass;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ParkingManager {
 
@@ -31,7 +36,7 @@ public class ParkingManager {
     private TextField PreOrderTF; // Value injected by FXMLLoader
 
     @FXML // fx:id="PricesTable"
-    private TableView<?> PricesTable; // Value injected by FXMLLoader
+    private TableView<PricesClass> PricesTable; // Value injected by FXMLLoader
 
     @FXML // fx:id="ShowStatBtn"
     private Button ShowStatBtn; // Value injected by FXMLLoader
@@ -40,10 +45,10 @@ public class ParkingManager {
     private Button SubmitBtn; // Value injected by FXMLLoader
 
     @FXML // fx:id="price"
-    private TableColumn<?, ?> price; // Value injected by FXMLLoader
+    private TableColumn<PricesClass,Integer> price; // Value injected by FXMLLoader
 
     @FXML // fx:id="pricetype"
-    private TableColumn<?, ?> pricetype; // Value injected by FXMLLoader
+    private TableColumn<PricesClass,String> pricetype; // Value injected by FXMLLoader
 
     @FXML // fx:id="showPricesBTN"
     private Button showPricesBTN; // Value injected by FXMLLoader
@@ -88,6 +93,12 @@ public class ParkingManager {
     @FXML
     void SubmitBtn(ActionEvent event) throws IOException {
         Message msg=new Message("alterPrices");
+        //data stored in seperate objects
+        // ocasional price -> object1
+        // preOrder price -> object2
+        // partTime price -> object3
+        // FullSubs price -> object4
+        // Multi price -> object5
         msg.setObject1(OcasionalTF.getText());
         msg.setObject2(PreOrderTF.getText());
         msg.setObject3(PartTimeTF.getText());
@@ -103,7 +114,16 @@ public class ParkingManager {
     }
     @Subscribe
     void showingPrices(showPricesEvent event){
-
+        Message returned = event.msg;
+        if (returned.getMessage().equals("pricesReturned")){
+            //the prices are returned here as a List of PricesClass
+            // i.e List<PricesClass> which is stored in Object1
+            List<PricesClass> pricesList = (List<PricesClass>)returned.getObject1();
+            ObservableList<PricesClass> list = FXCollections.observableArrayList(pricesList);
+            price.setCellValueFactory(new PropertyValueFactory<PricesClass,Integer>("price"));
+            pricetype.setCellValueFactory(new PropertyValueFactory<PricesClass,String>("priceType"));
+            PricesTable.setItems(list);
+        }
     }
 
 }

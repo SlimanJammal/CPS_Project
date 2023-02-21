@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-
+//
 public class RegionalManager {
 
     @FXML // fx:id="AcceptBtn"

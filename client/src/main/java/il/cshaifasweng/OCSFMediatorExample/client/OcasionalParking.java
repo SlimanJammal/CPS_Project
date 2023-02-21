@@ -8,6 +8,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Complaints;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
@@ -86,10 +87,10 @@ public class OcasionalParking {
     public void HandleMessagesFromServer(OcasionalEvent event){
         Message msg = event.getMessage();
 
-        System.out.println(msg.getObject1());
-        System.out.println(msg.getObject2());
-        System.out.println(msg.getObject3());
-        System.out.println(msg.getObject4());
+//        System.out.println(msg.getMessage());
+        Alert alert = new Alert(Alert.AlertType.WARNING,
+                msg.getMessage());
+        alert.show();
 
     }
     @FXML
