@@ -73,8 +73,8 @@
                                     <TableColumn fx:id="price" prefWidth="101.20001220703125" text="Price" />
                                  </columns>
                               </TableView>
-                              <Button fx:id="showPricesBTN" layoutX="321.0" layoutY="621.0" mnemonicParsing="false" onAction="#showPrices" text="ShowPrices" />
-                              <Button fx:id="ShowStatBtn" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
+                              <Button fx:id="showPricesBTN1" layoutX="321.0" layoutY="621.0" mnemonicParsing="false" onAction="#showPrices1" text="ShowPrices" />
+                              <Button fx:id="ShowStatBtn1" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn1" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
                               <Text layoutX="539.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875" />
                               <TextField fx:id="OcasionalTF" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="PreOrderTF" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
@@ -86,7 +86,7 @@
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
-                              <Button layoutX="183.0" layoutY="306.0" mnemonicParsing="false" text="Submit" />
+                              <Button fx:id="submitBTN1" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit1" text="Submit" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -110,8 +110,8 @@
                                     <TableColumn fx:id="price1" prefWidth="101.20001220703125" text="Price" />
                                  </columns>
                               </TableView>
-                              <Button fx:id="showPricesBTN1" layoutX="321.0" layoutY="609.0" mnemonicParsing="false" onAction="#showPrices" text="ShowPrices" />
-                              <Button fx:id="ShowStatBtn1" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
+                              <Button fx:id="showPricesBTN2" layoutX="321.0" layoutY="609.0" mnemonicParsing="false" onAction="#showPrices2" text="ShowPrices" />
+                              <Button fx:id="ShowStatBtn2" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn2" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
                               <Text layoutX="539.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875" />
                               <TextField fx:id="OcasionalTF1" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="PreOrderTF1" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
@@ -123,7 +123,7 @@
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF1" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
-                              <Button layoutX="183.0" layoutY="306.0" mnemonicParsing="false" text="Submit" />
+                              <Button fx:id="submitBtn2" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit2" text="Submit" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -147,8 +147,8 @@
                                     <TableColumn fx:id="price2" prefWidth="101.20001220703125" text="Price" />
                                  </columns>
                               </TableView>
-                              <Button fx:id="showPricesBTN2" layoutX="315.0" layoutY="609.0" mnemonicParsing="false" onAction="#showPrices" text="ShowPrices" />
-                              <Button fx:id="ShowStatBtn2" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
+                              <Button fx:id="showPricesBTN3" layoutX="315.0" layoutY="609.0" mnemonicParsing="false" onAction="#showPrices3" text="ShowPrices" />
+                              <Button fx:id="ShowStatBtn3" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn3" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
                               <Text layoutX="539.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875" />
                               <TextField fx:id="OcasionalTF2" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="PreOrderTF2" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
@@ -160,7 +160,7 @@
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF2" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
-                              <Button layoutX="183.0" layoutY="306.0" mnemonicParsing="false" text="Submit" />
+                              <Button fx:id="submitBtn3" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit3" text="Submit" />
                            </children>
                         </AnchorPane>
                      </children>

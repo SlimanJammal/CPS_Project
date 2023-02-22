@@ -18,6 +18,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //
 public class RegionalManager {
@@ -91,14 +93,14 @@ public class RegionalManager {
     @FXML // fx:id="RequestsTable"
     private TableView<PriceRequest> RequestsTable; // Value injected by FXMLLoader
 
-    @FXML // fx:id="ShowStatBtn"
-    private Button ShowStatBtn; // Value injected by FXMLLoader
+    @FXML
+    private Button ShowStatBtn1;
 
-    @FXML // fx:id="ShowStatBtn1"
-    private Button ShowStatBtn1; // Value injected by FXMLLoader
+    @FXML
+    private Button ShowStatBtn2;
 
-    @FXML // fx:id="ShowStatBtn2"
-    private Button ShowStatBtn2; // Value injected by FXMLLoader
+    @FXML
+    private Button ShowStatBtn3;
 
     @FXML // fx:id="menuPdf1"
     private MenuItem menuPdf1; // Value injected by FXMLLoader
@@ -148,23 +150,64 @@ public class RegionalManager {
     @FXML // fx:id="requestTF"
     private TextField requestTF; // Value injected by FXMLLoader
 
-    @FXML // fx:id="showPricesBTN"
-    private Button showPricesBTN; // Value injected by FXMLLoader
+    @FXML
+    private Button showPricesBTN1;
 
-    @FXML // fx:id="showPricesBTN1"
-    private Button showPricesBTN1; // Value injected by FXMLLoader
+    @FXML
+    private Button showPricesBTN2;
 
-    @FXML // fx:id="showPricesBTN2"
-    private Button showPricesBTN2; // Value injected by FXMLLoader
+    @FXML
+    private Button showPricesBTN3;
+
+    @FXML
+    private Button submitBTN1;
+
+    @FXML
+    private Button submitBtn2;
+
+    @FXML
+    private Button submitBtn3;
+
 
     @FXML
     void AcceptBtn(ActionEvent event) {
 
+        String requestNumber = requestTF.getText();
+        requestTF.clear();
+        Message msg = new Message("accept_price_alter_regional");
+        String regex = "\\d+";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(requestNumber);
+        if(!m.matches()) {
+            return;
+        }
+        msg.setObject1(requestNumber);
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void DeclineBtn(ActionEvent event) {
-
+        String requestNumber = requestTF.getText();
+        requestTF.clear();
+        Message msg = new Message("decline_price_alter_regional");
+        String regex = "\\d+";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(requestNumber);
+        if(!m.matches()) {
+            return;
+        }
+        msg.setObject1(requestNumber);
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -201,15 +244,42 @@ public class RegionalManager {
     void PreOrderTF(ActionEvent event) {
 
     }
+    @FXML
+    void ShowStatBtn1(ActionEvent event) {
+        Message msg = new Message("show_stat1_regional");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
-    void ShowStatBtn(ActionEvent event) {
+    void ShowStatBtn2(ActionEvent event) {
+        Message msg = new Message("show_stat2_regional");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @FXML
+    void ShowStatBtn3(ActionEvent event) {
+        Message msg = new Message("show_stat3_regional");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void menuPdf1(ActionEvent event) {
-        Message msg = new Message("pdf_Parking1");
+        Message msg = new Message("pdf_Parking1_regional");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
@@ -221,7 +291,7 @@ public class RegionalManager {
 
     @FXML
     void menuPdf2(ActionEvent event) {
-        Message msg = new Message("pdf_Parking2");
+        Message msg = new Message("pdf_Parking2_regional");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
@@ -232,7 +302,7 @@ public class RegionalManager {
 
     @FXML
     void menuPdf3(ActionEvent event) {
-        Message msg = new Message("pdf_Parking3");
+        Message msg = new Message("pdf_Parking3_regional");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
@@ -243,7 +313,7 @@ public class RegionalManager {
 
     @FXML
     void menuStat1(ActionEvent event) {
-        Message msg = new Message("stat_Parking1");
+        Message msg = new Message("stat_Parking1_regional");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
@@ -254,7 +324,7 @@ public class RegionalManager {
 
     @FXML
     void menuStat2(ActionEvent event) {
-        Message msg = new Message("stat_Parking2");
+        Message msg = new Message("stat_Parking2_regional");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
@@ -265,7 +335,7 @@ public class RegionalManager {
 
     @FXML
     void menuStat3(ActionEvent event) {
-        Message msg = new Message("stat_Parking3");
+        Message msg = new Message("stat_Parking3_regional");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
@@ -350,10 +420,108 @@ public class RegionalManager {
     }
 
 
+    @FXML
+    void showPrices1(ActionEvent event) {
+        Message msg = new Message("show_prices1_regional");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
-    void showPrices(ActionEvent event) {
+    void showPrices2(ActionEvent event) {
+        Message msg = new Message("show_prices2_regional");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @FXML
+    void showPrices3(ActionEvent event) {
+        Message msg = new Message("show_prices3_regional");
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void submit1(ActionEvent event) {
+        Message msg=new Message("alterPrices1_regional");
+        //data stored in seperate objects
+        // ocasional price -> object1
+        // preOrder price -> object2
+        // partTime price -> object3
+        // FullSubs price -> object4
+        // Multi price -> object5
+        msg.setObject1(OcasionalTF.getText());
+        msg.setObject2(PreOrderTF.getText());
+        msg.setObject3(PartTimeTF.getText());
+        msg.setObject4(FullSubsTF.getText());
+        msg.setObject5(MultiTF.getText());
+
+
+
+        try {
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void submit2(ActionEvent event) {
+        Message msg=new Message("alterPrices2_regional");
+        //data stored in seperate objects
+        // ocasional price -> object1
+        // preOrder price -> object2
+        // partTime price -> object3
+        // FullSubs price -> object4
+        // Multi price -> object5
+        msg.setObject1(OcasionalTF1.getText());
+        msg.setObject2(PreOrderTF1.getText());
+        msg.setObject3(PartTimeTF1.getText());
+        msg.setObject4(FullSubsTF1.getText());
+        msg.setObject5(MultiTF1.getText());
+
+
+
+        try {
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void submit3(ActionEvent event) {
+        Message msg=new Message("alterPrices3_regional");
+        //data stored in seperate objects
+        // ocasional price -> object1
+        // preOrder price -> object2
+        // partTime price -> object3
+        // FullSubs price -> object4
+        // Multi price -> object5
+        msg.setObject1(OcasionalTF2.getText());
+        msg.setObject2(PreOrderTF2.getText());
+        msg.setObject3(PartTimeTF2.getText());
+        msg.setObject4(FullSubsTF2.getText());
+        msg.setObject5(MultiTF2.getText());
+
+
+        try {
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     void initialize() {
