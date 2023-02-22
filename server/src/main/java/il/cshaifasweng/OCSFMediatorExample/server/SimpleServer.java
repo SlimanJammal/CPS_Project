@@ -132,7 +132,7 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("ParkingManager_alterPrices"))
 		{
-			// todo ask regional manager if we need a price change and if agreed then change
+			// adds a price change request to the regional manager's requests list
 			//data stored in seperate objects
 			// ocasional price -> object1
 			// preOrder price -> object2
@@ -316,6 +316,7 @@ public class SimpleServer extends AbstractServer {
 
 				SessionFactory sessionFactory = getSessionFactory();
 				session = sessionFactory.openSession();
+				session.beginTransaction();
 				session.save(tempParking);
 				session.flush();
 
@@ -373,20 +374,148 @@ public class SimpleServer extends AbstractServer {
 
 	}
 
-	private Message pdfRegional(Message ms) {
-		return null;
-	}
+
 
 
 	private Message alterPricesRegionalReq(Message ms) {
-		return null;
+		//data stored in seperate objects
+		// ocasional price -> object1
+		// preOrder price -> object2
+		// partTime price -> object3
+		// FullSubs price -> object4
+		// Multi price -> object5
+		PricesClass occasionalPrice = new PricesClass((int)ms.getObject1(),"occasionalPrice");
+		PricesClass preOrderPrice = new PricesClass((int)ms.getObject2(),"preOrderPrice");
+		PricesClass PartTimePrice = new PricesClass((int)ms.getObject3(),"PartTimePrice");
+		PricesClass fullSubPrice = new PricesClass((int)ms.getObject4(),"fullSubPrice");
+		PricesClass MultiCarPrice = new PricesClass((int)ms.getObject5(),"MultiCarPrice");
+
+		Vector<PricesClass> prices_request_vector = new Vector<PricesClass>();
+
+		prices_request_vector.add(occasionalPrice);
+		prices_request_vector.add(preOrderPrice);
+		prices_request_vector.add(PartTimePrice);
+		prices_request_vector.add(fullSubPrice);
+		prices_request_vector.add(MultiCarPrice);
+
+		//get manger's name of current window to alter accordingly
+
+
+
+		//make new request to add to the DB
+
+		Message msg2 = new Message("prices update request sent");
+
+		try {
+
+			session = getSessionFactory().openSession();
+			session.beginTransaction();
+
+			CriteriaBuilder builder1 = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingLot> query1 = builder1.createQuery(ParkingLot.class);
+			query1.from(ParkingLot.class);
+			List<ParkingLot> parkingLots = session.createQuery(query1).getResultList();
+			ParkingManager Manager = new ParkingManager();
+
+			if(ms.getMessage().equals("alterPrices1_regional")){
+				Manager = parkingLots.get(0).getParkingManager();
+			}else if(ms.getMessage().equals("alterPrices2_regional")){
+				Manager = parkingLots.get(1).getParkingManager();
+			}else if(ms.getMessage().equals("alterPrices3_regional")){
+				Manager = parkingLots.get(2).getParkingManager();
+			} else {
+				System.out.println("MO3AAAAAAAAAAAAAAAAAAAAAAD_BLA HBL");
+			}
+
+			PricesUpdateRequest new_request = new PricesUpdateRequest(Manager,prices_request_vector,"plz_change");
+			// add new request for the list so the regional manager can see it.
+			session.save(new_request);
+
+			session.flush();
+			session.getTransaction().commit();
+
+
+			msg2 = new Message("prices update request sent regional");
+
+		} catch (Exception exception) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			 msg2 = new Message("failed_transaction");
+
+			System.err.println("An error occurred, changes have been rolled back.");
+			exception.printStackTrace();
+		} finally {
+			assert session != null;
+			session.close();
+		}
+
+		return msg2;
 	}
 
+
+
 	private Message showPricesRegional(Message ms) {
-		return null;
+		Message MSG = new Message("show_prices_regional");
+		// index is parking manager getter helper
+		int index = 0;
+		if(ms.getMessage().equals("show_prices1_regional")){
+			MSG.setObject1("1");
+			index = 0;
+		}else if(ms.getMessage().equals("show_prices2_regional")){
+			MSG.setObject1("2");
+			index = 1;
+		}else  if(ms.getMessage().equals("show_prices3_regional")){
+			MSG.setObject1("3");
+			index = 2;
+		}
+
+		try{
+
+			session = getSessionFactory().openSession();
+			session.beginTransaction();
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingLot> query = builder.createQuery(ParkingLot.class);
+			query.from(ParkingLot.class);
+			List<ParkingLot> data = session.createQuery(query).getResultList();
+			ParkingManager parkingManager = data.get(index).getParkingManager();
+			int id_ = parkingManager.getParkingLot().getParking_id();
+			List<PricesClass> pricesList = null;
+
+			for (ParkingLot datum : data) {
+				if (datum.getParking_id() == id_) {
+
+					pricesList.add(datum.getOccasionalPrice());
+					pricesList.add(datum.getPreOrderPrice());
+					pricesList.add(datum.getPartTimePrice());
+					pricesList.add(datum.getFullSubPrice());
+					pricesList.add(datum.getMultiCarPrice());
+				}
+			}
+
+			MSG.setObject1(pricesList);
+			session.flush();
+			session.getTransaction().commit();
+		} catch (Exception exception) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			MSG.setMessage("failed_transaction");
+			System.err.println("An error occurred, changes have been rolled back.");
+			exception.printStackTrace();
+		} finally {
+
+			assert session != null;
+			session.close();
+		}
+		return MSG;
 	}
 
 	private Message showStatRegional(Message ms) {
+		return null;
+	}
+
+	private Message pdfRegional(Message ms) {
 		return null;
 	}
 
@@ -418,7 +547,7 @@ public class SimpleServer extends AbstractServer {
 
 			CriteriaBuilder builder1 = session.getCriteriaBuilder();
 			CriteriaQuery<ParkingLot> query1 = builder1.createQuery(ParkingLot.class);
-			query.from(ParkingLot.class);
+			query1.from(ParkingLot.class);
 			List<ParkingLot> parkingLots = session.createQuery(query1).getResultList();
 
 			for(ParkingLot parkingLot : parkingLots){

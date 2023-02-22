@@ -14,11 +14,24 @@ public class ParkingLot implements Serializable {
     static int count = 0;
     private int width;
     private int slots_num;
+
+    @OneToOne
     private PricesClass occasionalPrice;
+
+    @OneToOne
     private PricesClass preOrderPrice;
+
+    @OneToOne
     private PricesClass partTimePrice;
+
+    @OneToOne
     private PricesClass fullSubPrice;
+
+    @OneToOne
     private PricesClass MultiCarPrice;
+
+    @OneToOne
+    private ParkingManager parkingManager;
 
 
     public ParkingLot(int width_)
@@ -99,5 +112,9 @@ public class ParkingLot implements Serializable {
 
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    public ParkingManager getParkingManager() {
+        return parkingManager;
     }
 }
