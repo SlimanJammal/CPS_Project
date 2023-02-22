@@ -238,12 +238,19 @@ public class SimpleServer extends AbstractServer {
 			// each complaint contains two fields
 			// 1- customer ID
 			// 2- the complaint text
+			// bruv u gud ?
+
 			Complaints tempComplaint = (Complaints) ms.getObject1();
+			Complaint new_complaint = new Complaint();
+			new_complaint.setComplaintText(tempComplaint.getComplaintText());
+			new_complaint.setCustomerId(tempComplaint.getCustomerId());
+
 			session = getSessionFactory().openSession();
-			session.flush();
+			session.beginTransaction();
 			session.save(tempComplaint);
 			Message msg2 = new Message("Complaint received successfully!");
 			client.sendToClient(msg2);
+			session.flush();
 			session.getTransaction().commit();
 			session.close();
 
@@ -274,13 +281,11 @@ public class SimpleServer extends AbstractServer {
 			Time tempTime = new Time(Integer.parseInt(parsed[0]),Integer.parseInt(parsed[1]),Integer.parseInt(parsed[2]));
 			customer.setStartTime(tempTime);
 
-			session = getSessionFactory().openSession();
-			session.flush();
-			session.save(customer);
-			Message msg2 = new Message("Entry Success!");
+
+			//todo return msg woth "OcasionalParking" in name object1 a string success/fail
+			Message msg2 = ParkingEnter(customer,"OccCustomer");
+
 			client.sendToClient(msg2);
-			session.getTransaction().commit();
-			session.close();
 
 			//todo figure out how to deal with time(storing and calculating)
 
@@ -314,18 +319,14 @@ public class SimpleServer extends AbstractServer {
 				tempParking.setExit(Etd);
 
 
-				SessionFactory sessionFactory = getSessionFactory();
-				session = sessionFactory.openSession();
-				session.beginTransaction();
-				session.save(tempParking);
-				session.flush();
 
-				Message msg2 = new Message("OneTimeParkingOrder");
-				msg2.setObject1("success");
+
+				//todo in parkingEnter return message store "OneTimeParkingOrder" in the title,
+				// and the first object fail/success as a string, rest of the info choose when implementing
+				Message msg2 = ParkingEnter(tempParking,"PreOrder");
 
 				client.sendToClient(msg2);
-				session.getTransaction().commit();
-				session.close();
+
 			} else {
 				//failed
 				Message msg2 = new Message("OneTimeParkingOrder");
@@ -335,38 +336,14 @@ public class SimpleServer extends AbstractServer {
 
 		} else if(ms.getMessage().endsWith("regional")){
 			Message msg2 = new Message("return_regional");
-			switch (ms.getMessage()){
-				case "accept_price_alter_regional":
-					msg2 = price_alter(ms,"accept");
-					break;
-				case "decline_price_alter_regional":
-					msg2 = price_alter(ms,"decline");
-					break;
-				case "show_stat1_regional":
-				case "stat_Parking3_regional":
-				case "stat_Parking2_regional":
-				case "stat_Parking1_regional":
-				case "show_stat3_regional":
-				case "show_stat2_regional":
-					msg2 = showStatRegional(ms);
-					break;
-				case "pdf_Parking1_regional":
-				case "pdf_Parking3_regional":
-				case "pdf_Parking2_regional":
-					msg2 = pdfRegional(ms);
-					break;
-				case "show_prices1_regional":
-				case "show_prices3_regional":
-				case "show_prices2_regional":
-					msg2 = showPricesRegional(ms);
-					break;
-				case "alterPrices1_regional":
-				case "alterPrices3_regional":
-				case "alterPrices2_regional":
-					msg2 = alterPricesRegionalReq(ms);
-					break;
-				default:
-					System.out.println("Simple server regional manager error");
+			switch (ms.getMessage()) {
+				case "accept_price_alter_regional" -> msg2 = price_alter(ms, "accept");
+				case "decline_price_alter_regional" -> msg2 = price_alter(ms, "decline");
+				case "show_stat1_regional", "stat_Parking3_regional", "stat_Parking2_regional", "stat_Parking1_regional", "show_stat3_regional", "show_stat2_regional" -> msg2 = showStatRegional(ms);
+				case "pdf_Parking1_regional", "pdf_Parking3_regional", "pdf_Parking2_regional" -> msg2 = pdfRegional(ms);
+				case "show_prices1_regional", "show_prices3_regional", "show_prices2_regional" -> msg2 = showPricesRegional(ms);
+				case "alterPrices1_regional", "alterPrices3_regional", "alterPrices2_regional" -> msg2 = alterPricesRegionalReq(ms);
+				default -> System.out.println("Simple server regional manager error");
 			}
 
 
@@ -374,7 +351,15 @@ public class SimpleServer extends AbstractServer {
 
 	}
 
+	private Message ParkingEnter(Object ParkingEntryOrder, String type) {
+		//todo
+		// this function takes an order such as preorder or occasional customer etc.., and the type in "type"
+		// so we can convert it to the given type and add it. it returns a Message and it's fields are set according to
+		// the caller.
 
+		return null;
+
+	}
 
 
 	private Message alterPricesRegionalReq(Message ms) {

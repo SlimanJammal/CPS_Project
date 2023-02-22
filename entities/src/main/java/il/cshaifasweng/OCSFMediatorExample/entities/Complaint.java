@@ -14,7 +14,31 @@ public class Complaint {
     boolean Entered;
 
 
+    String  customerId;
+    String  complaintText;
 
+    public Complaint(String customerId, String complaintText) {
+        this.customerId = customerId;
+        this.complaintText = complaintText;
+    }
 
+    public Complaint() {
 
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getComplaintText() {
+        return complaintText;
+    }
+
+    public void setComplaintText(String complaintText) {
+        this.complaintText = complaintText;
+    }
 }
