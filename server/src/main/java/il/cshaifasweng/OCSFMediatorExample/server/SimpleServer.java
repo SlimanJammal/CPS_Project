@@ -133,39 +133,89 @@ public class SimpleServer extends AbstractServer {
 			// partTime price -> object3
 			// FullSubs price -> object4
 			// Multi price -> object5
-			PricesClass ocasionalPrice = new PricesClass((int)ms.getObject1(),"ocasionalPrice");
+			PricesClass occasionalPrice = new PricesClass((int)ms.getObject1(),"occasionalPrice");
 			PricesClass preOrderPrice = new PricesClass((int)ms.getObject2(),"preOrderPrice");
 			PricesClass PartTimePrice = new PricesClass((int)ms.getObject3(),"PartTimePrice");
 			PricesClass fullSubPrice = new PricesClass((int)ms.getObject4(),"fullSubPrice");
 			PricesClass MultiCarPrice = new PricesClass((int)ms.getObject5(),"MultiCarPrice");
+
+			Vector<PricesClass> prices_request_vector = new Vector<PricesClass>();
+
+			prices_request_vector.add(occasionalPrice);
+			prices_request_vector.add(preOrderPrice);
+			prices_request_vector.add(PartTimePrice);
+			prices_request_vector.add(fullSubPrice);
+			prices_request_vector.add(MultiCarPrice);
+
+			//get manger's name of current window to alter accordingly
+			ParkingManager Manager =  (ParkingManager) ms.getObject6();
+
+			//make new request to add to the DB
+			PricesUpdateRequest new_request = new PricesUpdateRequest(Manager,prices_request_vector,"plz_change");
+			try {
 			session = getSessionFactory().openSession();
+			session.beginTransaction();
+			// add new request for the list so the regional manager can see it.
+			session.save(new_request);
+
 			session.flush();
-			session.saveOrUpdate(ocasionalPrice);
-			session.saveOrUpdate(preOrderPrice);
-			session.saveOrUpdate(PartTimePrice);
-			session.saveOrUpdate(fullSubPrice);
-			session.saveOrUpdate(MultiCarPrice);
-			Message msg2 = new Message("prices updated successfully!");
-			client.sendToClient(msg2);
 			session.getTransaction().commit();
-			session.close();
 
 
+			Message msg2 = new Message("prices update request sent");
+			client.sendToClient(msg2);
+				} catch (Exception exception) {
+					if (session != null) {
+					session.getTransaction().rollback();
+			}
+				Message msg2 = new Message("failed_transaction");
+				client.sendToClient(msg2);
+				System.err.println("An error occurred, changes have been rolled back.");
+				exception.printStackTrace();
+				} finally {
+				session.close();
+			}
 
-			// todo change prices in database
-			// todo also check which of the objects of the message do not have null in them
 		}
 		else if(ms.getMessage().equals("ParkingManager_showPrices"))
 		{
-			// todo get all prices from database and then put them in objects 1 to 5 to present them to manager
 			Message MSG=new Message("pricesReturned");
-			session = getSessionFactory().openSession();
-			session.flush();
-			List<PricesClass> pricesList = getAll(PricesClass.class);
-			MSG.setObject1(pricesList);
-			session.getTransaction().commit();
-			session.close();
-			client.sendToClient(MSG);
+			try{
+
+				session = getSessionFactory().openSession();
+				session.beginTransaction();
+				CriteriaBuilder builder = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingLot> query = builder.createQuery(ParkingLot.class);
+				query.from(ParkingLot.class);
+				List<ParkingLot> data = session.createQuery(query).getResultList();
+				ParkingManager parkingManager = (ParkingManager)ms.getObject1();
+				int id_ = parkingManager.getParkingLot().getParking_id();
+				List<PricesClass> pricesList = null;
+
+				for (ParkingLot datum : data) {
+					if (datum.getParking_id() == id_) {
+						pricesList.add(datum.getOccasionalPrice());
+						pricesList.add(datum.getPreOrderPrice());
+						pricesList.add(datum.getPartTimePrice());
+						pricesList.add(datum.getMultiCarPrice());
+					}
+				}
+
+//			MSG.setObject1(pricesList);
+				session.flush();
+				session.getTransaction().commit();
+			} catch (Exception exception) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+				MSG.setMessage("failed_transaction");
+				System.err.println("An error occurred, changes have been rolled back.");
+				exception.printStackTrace();
+			} finally {
+				client.sendToClient(MSG);
+				session.close();
+		}
+
 		}
 		else if(ms.getMessage().equals("ParkingManager_showStats"))
 		{

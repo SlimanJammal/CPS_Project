@@ -123,8 +123,8 @@ public class ParkingManager {
 
         Message msg=new Message("ParkingManager_showPrices");
 
-        //MANAGER NAME/PARKING NUMBER
-        msg.setObject1(DataSingleton.getInstance().getDataName());
+        //PARKING MANGER MANAGER LOAD
+        msg.setObject1(DataSingleton.getInstance());
         SimpleClient.getClient().sendToServer(msg);
     }
 
