@@ -77,6 +77,12 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(PricesClass.class);
 		configuration.addAnnotatedClass(RegionalManager.class);
 		configuration.addAnnotatedClass(Complaint.class);
+		configuration.addAnnotatedClass(Customer.class);
+		configuration.addAnnotatedClass(ParkingWorker.class);
+		configuration.addAnnotatedClass(Parks.class);
+		configuration.addAnnotatedClass(PricesUpdateRequest.class);
+		configuration.addAnnotatedClass(Subscriber.class);
+		configuration.addAnnotatedClass(Subscription.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -197,6 +203,7 @@ public class SimpleServer extends AbstractServer {
 						pricesList.add(datum.getOccasionalPrice());
 						pricesList.add(datum.getPreOrderPrice());
 						pricesList.add(datum.getPartTimePrice());
+						pricesList.add(datum.getFullSubPrice());
 						pricesList.add(datum.getMultiCarPrice());
 					}
 				}
@@ -294,6 +301,7 @@ public class SimpleServer extends AbstractServer {
 
 			// checking fields input if okay add the client, else return failed
 			// checked everything except time/date
+			//todo check if there is empty space in parking
 			if (fieldsChecker_OneTimeParkingOrder(fields)) {
 				PreOrder tempParking = new PreOrder(fields.get(5), fields.get(0), fields.get(1), fields.get(2));
 				String tempEta = fields.get(3);
@@ -324,7 +332,125 @@ public class SimpleServer extends AbstractServer {
 				msg2.setObject1("fail");
 			}
 
+		} else if(ms.getMessage().endsWith("regional")){
+			Message msg2 = new Message("return_regional");
+			switch (ms.getMessage()){
+				case "accept_price_alter_regional":
+					msg2 = price_alter(ms,"accept");
+					break;
+				case "decline_price_alter_regional":
+					msg2 = price_alter(ms,"decline");
+					break;
+				case "show_stat1_regional":
+				case "stat_Parking3_regional":
+				case "stat_Parking2_regional":
+				case "stat_Parking1_regional":
+				case "show_stat3_regional":
+				case "show_stat2_regional":
+					msg2 = showStatRegional(ms);
+					break;
+				case "pdf_Parking1_regional":
+				case "pdf_Parking3_regional":
+				case "pdf_Parking2_regional":
+					msg2 = pdfRegional(ms);
+					break;
+				case "show_prices1_regional":
+				case "show_prices3_regional":
+				case "show_prices2_regional":
+					msg2 = showPricesRegional(ms);
+					break;
+				case "alterPrices1_regional":
+				case "alterPrices3_regional":
+				case "alterPrices2_regional":
+					msg2 = alterPricesRegionalReq(ms);
+					break;
+				default:
+					System.out.println("Simple server regional manager error");
+			}
+
+
 		}
+
+	}
+
+	private Message pdfRegional(Message ms) {
+		return null;
+	}
+
+
+	private Message alterPricesRegionalReq(Message ms) {
+		return null;
+	}
+
+	private Message showPricesRegional(Message ms) {
+		return null;
+	}
+
+	private Message showStatRegional(Message ms) {
+		return null;
+	}
+
+	private Message price_alter(Message ms, String res) {
+		//changes price with a given update price request
+		Message msg1 = new Message("requests_list_update_regional");
+		Message ms2 = new Message("price_decline_regional");
+
+		if(res.equals("accept")){
+
+			try{
+			session = getSessionFactory().openSession();
+			session.beginTransaction();
+
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<PricesUpdateRequest> query = builder.createQuery(PricesUpdateRequest.class);
+			query.from(PricesUpdateRequest.class);
+			List<PricesUpdateRequest> requestList = session.createQuery(query).getResultList();
+
+			int request_num = (Integer) ms.getObject1();
+			PricesUpdateRequest temp = new PricesUpdateRequest();
+			for(PricesUpdateRequest ptr : requestList){
+				if(ptr.getId() == request_num){
+					temp=ptr;
+				}
+			}
+
+
+
+			CriteriaBuilder builder1 = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingLot> query1 = builder1.createQuery(ParkingLot.class);
+			query.from(ParkingLot.class);
+			List<ParkingLot> parkingLots = session.createQuery(query1).getResultList();
+
+			for(ParkingLot parkingLot : parkingLots){
+				if(parkingLot.getParking_id() == temp.getParkingManager().getParkingLot().getParking_id()){
+					parkingLot.setOccasionalPrice(temp.getPricesClassVector().get(0));
+					parkingLot.setPreOrderPrice(temp.getPricesClassVector().get(1));
+					parkingLot.setPartTimePrice(temp.getPricesClassVector().get(2));
+					parkingLot.setFullSubPrice(temp.getPricesClassVector().get(3));
+					parkingLot.setMultiCarPrice(temp.getPricesClassVector().get(4));
+				}
+			}
+			session.update(parkingLots);
+			session.flush();
+			session.getTransaction().commit();
+
+		} catch (Exception exception) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+
+			System.err.println("An error occurred, changes have been rolled back.");
+			exception.printStackTrace();
+			} finally {
+
+			session.close();
+		}
+
+		}else{
+
+			return ms2;
+		}
+		return msg1;
 
 	}
 
@@ -333,7 +459,7 @@ public class SimpleServer extends AbstractServer {
 		// the data is stored in the following order
 		// 0- car number             3- Eta
 		// 1- DesiredParking         4- Etd
-		// 2- Email                  5- Id nnumber
+		// 2- Email                  5- Id number
 
 		String regex_multi_number = "\\d+";
 		Pattern p = Pattern.compile(regex_multi_number);
@@ -375,5 +501,9 @@ public class SimpleServer extends AbstractServer {
 
 		return true;
 	}
+
+
+
+
 
 }

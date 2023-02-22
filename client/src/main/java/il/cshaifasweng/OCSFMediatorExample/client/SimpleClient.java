@@ -38,6 +38,8 @@ public class SimpleClient extends AbstractClient {
 		}
 		else if (ms.getMessage().equals("OcasionalParking")){
 			EventBus.getDefault().post(new OcasionalEvent((Message) msg));
+		} else if(ms.getMessage().endsWith("regional")){
+			EventBus.getDefault().post(new RegionalManagerEvent((Message) msg));
 		}
 
 	}

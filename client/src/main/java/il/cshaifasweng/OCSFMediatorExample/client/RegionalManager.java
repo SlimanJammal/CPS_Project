@@ -504,8 +504,8 @@ public class RegionalManager {
     @FXML
     void submit3(ActionEvent event) {
         Message msg=new Message("alterPrices3_regional");
-        //data stored in seperate objects
-        // ocasional price -> object1
+        //data stored in separate objects
+        // occasional price -> object1
         // preOrder price -> object2
         // partTime price -> object3
         // FullSubs price -> object4
