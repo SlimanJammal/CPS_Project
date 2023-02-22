@@ -47,9 +47,9 @@
                         <AnchorPane layoutX="168.0" layoutY="540.0" prefHeight="200.0" prefWidth="463.0" />
                         <TableView fx:id="RequestsTable" layoutX="27.0" layoutY="107.0" prefHeight="200.0" prefWidth="437.0">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Number" />
-                              <TableColumn prefWidth="96.39994812011719" text="Manager Name" />
-                              <TableColumn prefWidth="264.40001220703124" text="Request" />
+                              <TableColumn fx:id="NumberColMainWin" prefWidth="75.0" text="Number" />
+                              <TableColumn fx:id="ManagerNameCol" prefWidth="96.39994812011719" text="Manager Name" />
+                              <TableColumn fx:id="RequestCol" prefWidth="264.40001220703124" text="Request" />
                            </columns>
                         </TableView>
                      </children>

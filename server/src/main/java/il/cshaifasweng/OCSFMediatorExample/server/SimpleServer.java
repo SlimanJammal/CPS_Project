@@ -201,7 +201,7 @@ public class SimpleServer extends AbstractServer {
 					}
 				}
 
-//			MSG.setObject1(pricesList);
+				MSG.setObject1(pricesList);
 				session.flush();
 				session.getTransaction().commit();
 			} catch (Exception exception) {

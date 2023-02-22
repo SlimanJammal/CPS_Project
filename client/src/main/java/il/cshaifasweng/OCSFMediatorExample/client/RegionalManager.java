@@ -5,14 +5,20 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
-import javafx.application.Platform;
+import il.cshaifasweng.OCSFMediatorExample.entities.PricesClass;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.List;
+
 //
 public class RegionalManager {
 
@@ -74,16 +80,16 @@ public class RegionalManager {
     private TextField PreOrderTF2; // Value injected by FXMLLoader
 
     @FXML // fx:id="PricesTable"
-    private TableView<?> PricesTable; // Value injected by FXMLLoader
+    private TableView<PricesClass> PricesTable; // Value injected by FXMLLoader
 
     @FXML // fx:id="PricesTable1"
-    private TableView<?> PricesTable1; // Value injected by FXMLLoader
+    private TableView<PricesClass> PricesTable1; // Value injected by FXMLLoader
 
     @FXML // fx:id="PricesTable2"
-    private TableView<?> PricesTable2; // Value injected by FXMLLoader
+    private TableView<PricesClass> PricesTable2; // Value injected by FXMLLoader
 
     @FXML // fx:id="RequestsTable"
-    private TableView<?> RequestsTable; // Value injected by FXMLLoader
+    private TableView<PriceRequest> RequestsTable; // Value injected by FXMLLoader
 
     @FXML // fx:id="ShowStatBtn"
     private Button ShowStatBtn; // Value injected by FXMLLoader
@@ -113,22 +119,31 @@ public class RegionalManager {
     private MenuItem menuStat3; // Value injected by FXMLLoader
 
     @FXML // fx:id="price"
-    private TableColumn<?, ?> price; // Value injected by FXMLLoader
+    private TableColumn<PricesClass,Integer> price; // Value injected by FXMLLoader
 
     @FXML // fx:id="price1"
-    private TableColumn<?, ?> price1; // Value injected by FXMLLoader
+    private TableColumn<PricesClass,Integer> price1; // Value injected by FXMLLoader
 
     @FXML // fx:id="price2"
-    private TableColumn<?, ?> price2; // Value injected by FXMLLoader
+    private TableColumn<PricesClass,Integer> price2; // Value injected by FXMLLoader
 
     @FXML // fx:id="pricetype"
-    private TableColumn<?, ?> pricetype; // Value injected by FXMLLoader
+    private TableColumn<PricesClass,String> pricetype; // Value injected by FXMLLoader
 
     @FXML // fx:id="pricetype1"
-    private TableColumn<?, ?> pricetype1; // Value injected by FXMLLoader
+    private TableColumn<PricesClass,String> pricetype1; // Value injected by FXMLLoader
 
     @FXML // fx:id="pricetype2"
-    private TableColumn<?, ?> pricetype2; // Value injected by FXMLLoader
+    private TableColumn<PricesClass,String> pricetype2; // Value injected by FXMLLoader
+
+    @FXML
+    private TableColumn<PriceRequest, String> RequestCol;
+
+    @FXML
+    private TableColumn<PriceRequest, Integer> NumberColMainWin;
+
+    @FXML
+    private TableColumn<PriceRequest, String> ManagerNameCol;
 
     @FXML // fx:id="requestTF"
     private TextField requestTF; // Value injected by FXMLLoader
@@ -260,18 +275,65 @@ public class RegionalManager {
     }
 
     @Subscribe
-    public void statCatch(RegionalManagerEvent event){
+    public void HandleMessageFromServer(RegionalManagerEvent event){
         // message field decides what case we re in
-
-        if(event.getMessage().getMessage().equals("stat_regional")){
-//            Platform.runLater(() -> {
-//                Alert alert = new Alert(Alert.AlertType.WARNING,
-//                        String.format("Message: %s\n",
-//                                "Submission Failed, Try Again")
-//                );
-//                alert.show();
-//            });
+        //the first stat is for main window and show stat regional is for secondary windows
+        if(event.getMessage().getMessage().equals("stat_regional") || event.getMessage().getMessage().equals("show_stat_regional")){
+            Alert alert = new Alert(Alert.AlertType.WARNING,
+                    String.format(": \n"+event.getMessage().getObject1(),
+                            ": \n"+event.getMessage().getObject2(),
+                            ": \n"+event.getMessage().getObject3()
+                    )
+            );
+            alert.show();
             //todo alert about stats
+        } else if(event.getMessage().getMessage().equals("requests_list_update_regional")){
+
+            List<PriceRequest> pricesList = (List<PriceRequest>)event.getMessage().getObject1();
+            ObservableList<PriceRequest> list = FXCollections.observableArrayList();
+            NumberColMainWin.setCellValueFactory(new PropertyValueFactory<PriceRequest,Integer>("number"));
+            ManagerNameCol.setCellValueFactory(new PropertyValueFactory<PriceRequest,String>("managerName"));
+            RequestCol.setCellValueFactory(new PropertyValueFactory<PriceRequest,String>("Request"));
+            RequestsTable.setItems(list);
+
+        } else if(event.getMessage().getMessage().equals("show_prices_regional")){
+
+           String parkingName = (String) event.getMessage().getObject1();
+
+            if(parkingName.equals("1")){
+
+                List<PricesClass> pricesList = (List<PricesClass>)event.getMessage().getObject2();
+                ObservableList<PricesClass> list = FXCollections.observableArrayList(pricesList);
+                price.setCellValueFactory(new PropertyValueFactory<PricesClass,Integer>("price"));
+                pricetype.setCellValueFactory(new PropertyValueFactory<PricesClass,String>("priceType"));
+                PricesTable.setItems(list);
+
+            }else if(parkingName.equals("2")){
+
+                List<PricesClass> pricesList = (List<PricesClass>)event.getMessage().getObject2();
+                ObservableList<PricesClass> list = FXCollections.observableArrayList(pricesList);
+                price1.setCellValueFactory(new PropertyValueFactory<PricesClass,Integer>("price"));
+                pricetype1.setCellValueFactory(new PropertyValueFactory<PricesClass,String>("priceType"));
+                PricesTable1.setItems(list);
+
+            } else {
+
+                List<PricesClass> pricesList = (List<PricesClass>)event.getMessage().getObject2();
+                ObservableList<PricesClass> list = FXCollections.observableArrayList(pricesList);
+                price2.setCellValueFactory(new PropertyValueFactory<PricesClass,Integer>("price"));
+                pricetype2.setCellValueFactory(new PropertyValueFactory<PricesClass,String>("priceType"));
+                PricesTable2.setItems(list);
+
+            }
+
+
+        } else if(event.getMessage().getMessage().equals("pdf_regional")){
+            //todo do stuuffff
+            Alert alert = new Alert(Alert.AlertType.WARNING,
+                    "PDF SENT"
+            );
+            alert.show();
+
         }
 
 
@@ -291,6 +353,12 @@ public class RegionalManager {
 
     @FXML
     void showPrices(ActionEvent event) {
+
+    }
+    @FXML
+    void initialize() {
+        //todo print requests list for the regional manger on startup
+        EventBus.getDefault().register(this);
 
     }
 
