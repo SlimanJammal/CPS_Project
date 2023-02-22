@@ -99,9 +99,15 @@ public class RequestStatus {
     }
 
     @FXML
-    void OnPreviousButton(ActionEvent event) throws IOException {
-        App.setRoot("mainWindow.fxml");
-
+    void OnPreviousButton(ActionEvent event){
+        try
+        {
+            App.setRoot("mainWindow");
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     //_________________________________________________________________________________________________________________
     //_________________________________________________________________________________________________________________

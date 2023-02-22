@@ -17,7 +17,7 @@ public class FullSub {
     String CustomerId;
 
     @NotNull
-    String StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
+    Date StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
     @NotNull
     Date StartParking; //format includes days we will use it as a counter for if it reaches 14
     @NotNull
@@ -30,7 +30,7 @@ public class FullSub {
         this.CarNumber=carnum;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return StartDate;
     }
 
@@ -62,7 +62,7 @@ public class FullSub {
         CarNumber = carNumber;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         StartDate = startDate;
     }
 

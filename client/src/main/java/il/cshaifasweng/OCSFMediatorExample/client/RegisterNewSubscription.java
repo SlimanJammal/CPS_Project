@@ -9,8 +9,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.util.Vector;
+
+
 //Previous Buttons doesn't work just yet
 public class RegisterNewSubscription {
+
+/*
+    Vector<String> CarList = new Vector<>();
+*/
 
     @FXML // fx:id="CarNumberTF"
     private TextField CarNumberTF; // Value injected by FXMLLoader
@@ -49,7 +56,7 @@ public class RegisterNewSubscription {
         boolean IsNumber = true;
         for(char a : Car_ID.toCharArray())
         {
-            if(a < '0' || a > '9')
+            if((a < '0' || a > '9')  || a != ' ')
                 IsNumber = false;
         }
         if(IsNumber)
@@ -90,22 +97,29 @@ public class RegisterNewSubscription {
     void RegisterBtn(ActionEvent event) {
         //REgisterBtn.setVisible(false);
         String CustomerID = CustomerIdTF.getText();
-        String CarLicense = CarNumberTF.getText();
+        String CarNumber = CarNumberTF.getText();
         String StartingDate = StartingDateTF.toString();
         String RegularParking = RegularParkingTF.getText();
         String EntranceParkingTime = EntranceHourTF.getText();
         String DepartureParkingTime = DepatureHourTF.getText();
         String ParkingType = SubscriptionTypeMenue.getTypeSelector().toString();
 
+        /*//Loading Cars Number if Parking Type equals to "Multi Monthly Subscription"
+        String Cars[] = CarNumber.split(" ");
+        for(int i = 0 ; i < Cars.length ;i++)
+        {
+            CarList.add(Cars[i]);
+        }*/
+
         //Send Data TO SERVER!!!
         Message msg = new Message("Register New Subscriber");
         msg.setObject1(ParkingType);
         msg.setObject2(CustomerID);
-        msg.setObject3(StartingDate);
-        msg.setObject4(RegularParking);
+        msg.setObject3(CarNumber);
+        msg.setObject4(StartingDate);
         msg.setObject5(EntranceParkingTime);
         msg.setObject6(DepartureParkingTime);
-        msg.setObject7(ParkingType);
+        msg.setObject7(RegularParking);
 
         try
         {
@@ -210,6 +224,14 @@ public class RegisterNewSubscription {
     void OnPreviousWindow(ActionEvent event)
     {
         //Go To Previous Window!
+        try
+        {
+            App.setRoot("mainWindow");
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public boolean IsNumber(String Input)

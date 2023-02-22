@@ -11,6 +11,21 @@ public class Message implements Serializable {
 	private LocalTime time;
 	private Object Object1;
 
+
+	private Object Object2;
+	private Object Object3;
+	private Object Object4;
+	private Object Object5;
+	private Object Object6;
+	private Object Object7;
+	private Object Object8;
+	private Object Object9;
+
+	private  String Password;
+	private  String ID;
+	private  String LicenesPlate;
+	private String  SubNum;
+
 	public void setTime(LocalTime time) {
 		this.time = time;
 	}
@@ -71,6 +86,22 @@ public class Message implements Serializable {
 		Object7 = object7;
 	}
 
+	public Object getObject8() {
+		return Object8;
+	}
+
+	public void setObject8(Object object8) {
+		Object8 = object8;
+	}
+
+	public Object getObject9() {
+		return Object9;
+	}
+
+	public void setObject9(Object object9) {
+		Object9 = object9;
+	}
+
 	public String getPassword() {
 		return Password;
 	}
@@ -103,16 +134,6 @@ public class Message implements Serializable {
 		SubNum = subNum;
 	}
 
-	private Object Object2;
-	private Object Object3;
-	private Object Object4;
-	private Object Object5;
-	private Object Object6;
-	private Object Object7;
-	private  String Password;
-	private  String ID;
-	private  String LicenesPlate;
-	private String  SubNum;
 
 	public String getMessage() {
 		return message;

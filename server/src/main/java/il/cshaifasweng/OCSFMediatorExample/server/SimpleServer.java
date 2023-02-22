@@ -8,6 +8,7 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class SimpleServer extends AbstractServer {
 
@@ -86,36 +87,46 @@ public class SimpleServer extends AbstractServer {
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Subscriber Type
 			//Object #2 - Customer ID
-			//Object #3 - Starting Date
-			//Object #4 - Entrance Hour
-			//Object #5 - Departure Hour
-			//Object #6 - Car License ID
-			//Object #7 - Regular Parking Lot
+			//Object #3 - Car Number
+			//Object #4 - Starting Date ; YYYY:MM:DD
+			//Object #5 - Entrance Hour	; HH:MM
+			//Object #6 - Departure Hour ; HH:MM
+			//Object #7 - Regular Parking Lot - Parking Slot
 
 			String SubscriberType = ms.getObject1().toString();
 			String CustomerID = ms.getObject2().toString();
-			String StartingDate = ms.getObject3().toString();
-			String EntranceHour = ms.getObject4().toString();
-			String DepartureHour = ms.getObject5().toString();
-			String CarLicenseID = ms.getObject6().toString();
+			String CarNumber = ms.getObject3().toString();
+			String StartingDate = ms.getObject4().toString();
+			String EntranceHour = ms.getObject5().toString();
+			String DepartureHour = ms.getObject6().toString();
 			String RegularParkingLot = ms.getObject7().toString();
 
+			//Staring Date Components
+			int Year = Integer.parseInt(StartingDate.substring(0,3));
+			int Month = Integer.parseInt(StartingDate.substring(5,6));
+			int Day = Integer.parseInt(StartingDate.substring(8,9));
+
+			//Entrance Hour Components
+				//No Need For Now
+			//Departure Hour Components
+				//No Need For Now
 
 			if(SubscriberType.equals("Single Monthly Subscription"))
 			{
-				PartialSub input = new PartialSub(CustomerID,CarLicenseID);
-				input.setStartDate(StartingDate);
+				PartialSub input = new PartialSub(CustomerID,CarNumber);
+				Date Temp = new Date(Year,Month,Day);
+				input.setStartDate(Temp);
 
 			}
 			else if(SubscriberType.equals("Multi Monthly Subscription"))
 			{
 				MultiSub input = new MultiSub();
-
 			}
 			else if(SubscriberType.equals("Fully Subscription"))
 			{
-				FullSub input = new FullSub(CustomerID,CarLicenseID);
-				input.setStartDate(StartingDate);
+				FullSub input = new FullSub(CustomerID,CarNumber);
+				Date Temp = new Date(Year,Month,Day);
+				input.setStartDate(Temp);
 			}
 
 		}
