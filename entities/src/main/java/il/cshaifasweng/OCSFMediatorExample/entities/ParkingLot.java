@@ -1,12 +1,15 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table
-public class ParkingLot implements Serializable {
+public class ParkingLot implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -14,6 +17,8 @@ public class ParkingLot implements Serializable {
     static int count = 0;
     private int width;
     private int slots_num;
+
+
 
     @OneToOne
     private PricesClass occasionalPrice;
@@ -33,13 +38,38 @@ public class ParkingLot implements Serializable {
     @OneToOne
     private ParkingManager parkingManager;
 
+    @NotNull
+    int dimensions;
+    @NotNull
 
-    public ParkingLot(int width_)
+    boolean full;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "park")
+    private List<ParkingSpot> Spots;
+
+
+
+
+
+    public ParkingLot(int width_, int dims, boolean isFull)
     {
         slots_num = width_ *9;
-        parking_id = count;
-        count++;
+        //kept both to avoid errors
+        parking_id = id;
         width=width_;
+
+        this.dimensions =dims;
+        this.full=isFull;
+        for(int i = 0; i< dimensions; i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                for(int k=0;k<3;k++)
+                {
+                    Spots.add(new ParkingSpot(i,j,k,"0",this));
+                }
+            }
+        }
 
         //per hour
         occasionalPrice = new PricesClass(8,"ocasionalPrice");
@@ -56,7 +86,57 @@ public class ParkingLot implements Serializable {
     public ParkingLot() {
     }
 
+    public boolean isFull() {
+        return full;
+    }
 
+
+    public int getDimensions() {
+        return dimensions;
+    }
+
+    public List<ParkingSpot> getSpots() {
+        return Spots;
+    }
+
+    public void setDimensions(int dimintions) {
+        this.dimensions = dimintions;
+    }
+
+
+    public void setFull(boolean full) {
+        this.full = full;
+    }
+
+    public void setSpots(List<ParkingSpot> spots) {
+        Spots = spots;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+
+    public void setParking_id(int parking_id) {
+        this.parking_id = parking_id;
+    }
+
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        ParkingLot.count = count;
+    }
+
+    public void setSlots_num(int slots_num) {
+        this.slots_num = slots_num;
+    }
+
+
+    public void setParkingManager(ParkingManager parkingManager) {
+        this.parkingManager = parkingManager;
+    }
 
     public PricesClass getOccasionalPrice() {
         return occasionalPrice;
