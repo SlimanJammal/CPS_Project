@@ -8,13 +8,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class ParkingWorker extends Employee{
+public class ParkingWorker extends User{
 
     @ManyToOne
     private ParkingLot parkingLot;
 
-    public ParkingWorker(String firstName, String lastName, String email, String password, ParkingLot parkingLot) {
-        super(firstName, lastName, email, password);
+    public ParkingWorker(String userName, String password, String firstName, String lastName, int permission, ParkingLot parkingLot) {
+        super(userName, password, firstName, lastName, permission);
         this.parkingLot = parkingLot;
     }
 

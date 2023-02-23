@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.query.Query;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -16,6 +17,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.sql.Time;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,16 +29,6 @@ import java.util.regex.Pattern;
 
 public class SimpleServer extends AbstractServer {
 	public static Session session;
-	private static List<ParkingLot> ParkingLots;
-	private static List<Employee> employees ;
-	private static List<ParkingManager> parkingManagers;
-	public static ArrayList<FullSub> fullSubs=new ArrayList<FullSub>();
-	public static ArrayList<MultiSub> multiSubs=new ArrayList<MultiSub>();
-	private static ArrayList<PreOrder> preOrders= new ArrayList<PreOrder>();
-	private static ArrayList<PartialSub> partialSubs = new ArrayList<PartialSub>();
-	private static ArrayList<PricesClass> Prices= new ArrayList<PricesClass>();
-
-
 
 	public SimpleServer(int port) {
 		super(port);
@@ -42,30 +36,9 @@ public class SimpleServer extends AbstractServer {
 
 
 
-//
-//
-//	public void initSesssion() {
-//		session = getSessionFactory().openSession();
-//		try {
-//			session.getTransaction().begin();
-//
-//
-////			session.save();
-//			session.flush();
-//			session.getTransaction().commit();
-//
-//		} catch (Exception e) {
-//			if (session != null) {
-//				session.getTransaction().rollback();
-//			}
-//		}
-//
-//
-//	}
-
 	private static SessionFactory getSessionFactory() throws HibernateException {
 		Configuration configuration = new Configuration();
-		configuration.addAnnotatedClass(Employee.class);
+
 		configuration.addAnnotatedClass(FullSub.class);
 		configuration.addAnnotatedClass(ParkingManager.class);
 		configuration.addAnnotatedClass(MultiSub.class);
@@ -79,7 +52,6 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(Complaint.class);
 		configuration.addAnnotatedClass(Customer.class);
 		configuration.addAnnotatedClass(ParkingWorker.class);
-		configuration.addAnnotatedClass(Parks.class);
 		configuration.addAnnotatedClass(PricesUpdateRequest.class);
 		configuration.addAnnotatedClass(Subscriber.class);
 		configuration.addAnnotatedClass(Subscription.class);
@@ -283,7 +255,7 @@ public class SimpleServer extends AbstractServer {
 
 
 			//todo return msg woth "OcasionalParking" in name object1 a string success/fail
-			Message msg2 = ParkingEnter(customer,"OccCustomer");
+			Message msg2 = routingOrders(customer,"OccCustomer");
 
 			client.sendToClient(msg2);
 
@@ -323,7 +295,7 @@ public class SimpleServer extends AbstractServer {
 
 				//todo in parkingEnter return message store "OneTimeParkingOrder" in the title,
 				// and the first object fail/success as a string, rest of the info choose when implementing
-				Message msg2 = ParkingEnter(tempParking,"PreOrder");
+				Message msg2 = routingOrders(tempParking,"PreOrder");
 
 				client.sendToClient(msg2);
 
@@ -350,6 +322,7 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("Deactivate Parking Spot"))
 		{
+			//todo all
 			//Deactivate Parking Slot
 			//Object #1 - Parking Slot ID
 			String ParkingID = ms.getObject1().toString();
@@ -357,12 +330,14 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("Activate Parking Spot"))
 		{
+			//todo all
 			//Activate Parking Slot
 			//Object #1 - Parking Slot ID
 			String ParkingID = ms.getObject1().toString();
 		}
 		else if(ms.getMessage().equals("System Request"))
 		{
+			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Parking ID
 			//Object #2 - System Command ID
@@ -371,6 +346,7 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("Send To Other Parking"))
 		{
+			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - License Plate ID
 			//Object #2 - User ID
@@ -381,6 +357,7 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("Occasion Request"))
 		{
+			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Parking Slot ID
 			//Object #2 - Car ID
@@ -393,6 +370,7 @@ public class SimpleServer extends AbstractServer {
 		// RegisterNewSubscription Window
 		else if(ms.getMessage().equals("Register New Subscriber"))
 		{
+			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Subscriber Type
 			//Object #2 - Customer ID
@@ -443,6 +421,7 @@ public class SimpleServer extends AbstractServer {
 		// Check Status Window
 		else if(ms.getMessage().equals("Check Client Spot Status"))
 		{
+			//todo all
 			String CustomerId = ms.getObject1().toString();
 			String CarNumber = ms.getObject2().toString();
 		}
@@ -479,15 +458,25 @@ public class SimpleServer extends AbstractServer {
 
 
 
-	private Message ParkingEnter(Object ParkingEntryOrder, String type) {
+	private Message routingOrders(Object ParkingEntryOrder, String type) {
 		//todo
 		// this function takes an order such as preorder or occasional customer etc.., and the type in "type"
 		// so we can convert it to the given type and add it. it returns a Message and it's fields are set according to
 		// the caller.
+		// it should every order to function that saves it/or let's the customer enter the parking
 
 		return null;
 
 	}
+
+
+	private void DeleteParkingOrder(Message msg, ConnectionToClient client){
+		//todo
+	}
+
+
+
+
 
 
 	private Message alterPricesRegionalReq(Message ms) {
@@ -625,10 +614,13 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	private Message showStatRegional(Message ms) {
+		//todo
 		return null;
 	}
 
 	private Message pdfRegional(Message ms) {
+
+		//todo
 		return null;
 	}
 
@@ -745,7 +737,172 @@ public class SimpleServer extends AbstractServer {
 	}
 
 
+	private static Message tryLogIn(String[] data) {
+		/** checks login pw and username in db with two strings given
+		*returns the user in object1 in message
+		* and in the name of the message the result
+		* you can check what's the users type according to his permission lvl in field permission in User
+		* 0 is regional manager, 1 is a branch manager, 2 parking worker.
+		 * if user logged in his status set to active in field connected*/
 
+
+		String userName = data[0];
+		String password = data[1];
+		Message msg = new Message("LoginTry");
+		SessionFactory sessionFactory = getSessionFactory();
+		session = sessionFactory.openSession();
+		String sqlQ = "FROM User U WHERE U.userName = :user_name";
+		Query query = session.createQuery(sqlQ);
+		query.setParameter("user_name", userName);
+		List<User> list = query.list();
+		if (!list.isEmpty()) {
+			User user = list.get(0);
+			if (user.checkPassword(password)) {
+				if (user.getConnected()) msg.setMessage("tryLogin_UserAlreadyConnected");
+				else {
+					user.setConnected(true);
+					System.out.println(user.getFirstName() + " " + user.getLastName());
+					try {
+						session.beginTransaction();
+						session.update(user);
+						session.getTransaction().commit();
+						msg.setObject1(user);
+						msg.setMessage("tryLogin_UserFound");
+						System.out.println("tryLogin_UserFound");
+					} catch (HibernateException e) {
+						if (session != null)
+							session.getTransaction().rollback();
+						e.printStackTrace();
+						msg.setMessage("tryLogin_User_UnknownLogInError");
+					}
+				}
+			} else msg.setMessage("tryLogin_UserNotFound");
+
+		} else msg.setMessage("tryLogin_UserNotFound");
+
+
+		return msg;
+	}
+
+
+	private static Message tryLogOut(User user) {
+
+		Message msg = new Message("");
+		try {
+			user.setConnected(false);
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			session.update(user);
+			session.getTransaction().commit();
+			msg.setMessage("tryLogOut_LoggedOut");
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			msg.setMessage("tryLogOut_UnknownLogOutError");
+		}
+
+		return msg;
+
+	}
+
+
+
+	public static void addRegionalManager() {
+		try {
+			Vector<PricesUpdateRequest> prices_update_req = new Vector<PricesUpdateRequest>();
+			RegionalManager regionalManager = new RegionalManager("Sliman1","0123456789","Sliman","Jammal",0,1,null,prices_update_req);
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			session.save(regionalManager);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+
+		}
+	}
+
+	public static void addParkingManagers() {
+		try {
+			//Parking lot for each manager is updated later
+			Vector<PricesUpdateRequest> prices_update_req1 = new Vector<PricesUpdateRequest>();
+			User MANGER_1 = new ParkingManager("MO_EID","PASS","MOHAMMED","EID",1,null,prices_update_req1);
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			session.save(MANGER_1);
+			Vector<PricesUpdateRequest> prices_update_req2 = new Vector<PricesUpdateRequest>();
+			User MANGER_2 = new ParkingManager("MO_SAAED","PASS2","MOHAMMED","KODSIE",1,null,prices_update_req2);
+			session.save(MANGER_2);
+			Vector<PricesUpdateRequest> prices_update_req3 = new Vector<PricesUpdateRequest>();
+			User MANGER_3 = new ParkingManager("BASHAR","PASS3","BASHAR","BASHOTY",1,null,prices_update_req3);
+
+			session.save(MANGER_3);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+	public static void addParkingWorkers( ) {
+		// 3 parking workers 1 for each parking
+		int index = 3;
+		//assigned parking lot is added later
+		try {
+			for(int i =0 ; i < index; i++) {
+				User ParkingWorker = new ParkingWorker("WORKER"+Integer.toString(index),"pass"+Integer.toString(index),"worker"+Integer.toString(index),"fam"+Integer.toString(index),2,null);
+				SessionFactory sessionFactory = getSessionFactory();
+				session = sessionFactory.openSession();
+				session.beginTransaction();
+				session.save(ParkingWorker);
+				session.getTransaction().commit();
+				 }
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	private static void Data_Base_initializer() {
+		try {
+			/** adds three parking lots to db **/
+			//todo needed time zone addition
+			//todo add each parking lot to a manager and a worker and vise versa
+			System.out.println("Parking Lot1");
+			//Getting the default zone id
+			ZoneId defaultZoneId = ZoneId.systemDefault();
+
+
+			ParkingLot parkingLot1 = new ParkingLot("German_Colony",4,4,false);
+			session.save(parkingLot1);
+			session.flush();
+//			Date d = new Date(2021 - 1900, 7, 11);
+//			instant = d.toInstant();
+//			LocalDate localD1 = instant.atZone(defaultZoneId).toLocalDate();
+
+			//___________________________________________________________________________________________
+			System.out.println("Parking Lot2");
+			ParkingLot parkingLot2 = new ParkingLot("Hanmal",4,5,false);
+			session.save(parkingLot1);
+			session.flush();
+//			Date d = new Date(2021 - 1900, 7, 11);
+//			instant = d.toInstant();
+//			LocalDate localD1 = instant.atZone(defaultZoneId).toLocalDate();
+			//________________________________________________________________________________________________________________
+			System.out.println("Parking Lot2");
+
+			ParkingLot parkingLot3 = new ParkingLot("Bat-Galim",4,5,false);
+			session.save(parkingLot1);
+			session.flush();
+//			Date d = new Date(2021 - 1900, 7, 11);
+//			instant = d.toInstant();
+//			LocalDate localD1 = instant.atZone(defaultZoneId).toLocalDate();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
 
 }

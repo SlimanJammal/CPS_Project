@@ -17,7 +17,7 @@ public class ParkingLot implements Serializable{
     static int count = 0;
     private int width;
     private int slots_num;
-
+    private String name;
 
 
     @OneToOne
@@ -51,13 +51,13 @@ public class ParkingLot implements Serializable{
 
 
 
-    public ParkingLot(int width_, int dims, boolean isFull)
+    public ParkingLot(String name_,int width_, int dims, boolean isFull)
     {
         slots_num = width_ *9;
         //kept both to avoid errors
         parking_id = id;
         width=width_;
-
+        this.name = name_;
         this.dimensions =dims;
         this.full=isFull;
         for(int i = 0; i< dimensions; i++)
@@ -84,6 +84,14 @@ public class ParkingLot implements Serializable{
     }
 
     public ParkingLot() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isFull() {
