@@ -36,6 +36,7 @@ public class SimpleServer extends AbstractServer {
 
 
 
+
 	private static SessionFactory getSessionFactory() throws HibernateException {
 		Configuration configuration = new Configuration();
 
