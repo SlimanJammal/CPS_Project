@@ -209,6 +209,13 @@ public class RegisterNewSubscription {
     @FXML
     void OnPreviousWindow(ActionEvent event)
     {
+
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //Go To Previous Window!
     }
 

@@ -21,6 +21,9 @@ public class DataSingleton {
 
     private String dataName;
 
+    private String caller;
+
+
     private DataSingleton(){}
 
     public static DataSingleton getInstance(){
@@ -41,5 +44,13 @@ public class DataSingleton {
 
     public void setDataName(String dataName) {
         this.dataName = dataName;
+    }
+
+    public String getCaller() {
+        return caller;
+    }
+
+    public void setCaller(String caller) {
+        this.caller = caller;
     }
 }

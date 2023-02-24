@@ -97,6 +97,7 @@ public class CpsKiosk {
             ParkingWorker parkingWorker = (ParkingWorker) allowing.getMsg().getObject1();
             data.setData(parkingWorker);
 
+            data.setCaller("cpsKiosk");
             App.setRoot("EmployeeWindow");
         } else {
             Platform.runLater(() -> {
@@ -128,6 +129,7 @@ public class CpsKiosk {
             data.setDataName("ParkingManager");
             ParkingManager parkingManager = (ParkingManager) allowing.getMsg().getObject1();
             data.setData(parkingManager);
+            data.setCaller("cpsKiosk");
             App.setRoot("ParkingManger");
 
             } else  if(allowing.getMsg().getObject1().toString().equals("success") && permission ==  0){
@@ -136,6 +138,7 @@ public class CpsKiosk {
             data.setDataName("RegionalManager");
             RegionalManager regionalManager = (RegionalManager) allowing.getMsg().getObject1();
             data.setData(regionalManager);
+            data.setCaller("cpsKiosk");
             App.setRoot("RegionalManager");
 
         }else {
@@ -177,6 +180,8 @@ public class CpsKiosk {
 
     @FXML
     void ReserveParkingBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsKiosk");
         App.setRoot("RequestStatus");//todo check reservation window
     }
 
@@ -187,11 +192,15 @@ public class CpsKiosk {
 
     @FXML
     void checkReservBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsKiosk");
         App.setRoot("RequestStatus");//todo check reservation window
     }
 
     @FXML
     void createNewSubsBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsKiosk");
      App.setRoot("RegisterNewSubscription");
     }
 

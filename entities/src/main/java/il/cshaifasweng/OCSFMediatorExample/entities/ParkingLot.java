@@ -18,6 +18,9 @@ public class ParkingLot implements Serializable{
     private int width;
     private int slots_num;
     private String name;
+    private int numberOfFullSubs;
+    private int numberOfPreOrders;
+
 
 
     @OneToOne
@@ -124,6 +127,21 @@ public class ParkingLot implements Serializable{
         return id;
     }
 
+    public int getNumberOfSubs() {
+        return numberOfFullSubs;
+    }
+
+    public void setNumberOfSubs(int numberOfSubs) {
+        this.numberOfFullSubs = numberOfSubs;
+    }
+
+    public int getNumberOfPreOrders() {
+        return numberOfPreOrders;
+    }
+
+    public void setNumberOfPreOrders(int numberOfPreOrders) {
+        this.numberOfPreOrders = numberOfPreOrders;
+    }
 
     public void setParking_id(int parking_id) {
         this.parking_id = parking_id;

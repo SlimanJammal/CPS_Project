@@ -910,7 +910,7 @@ public class SimpleServer extends AbstractServer {
 	}
 
 
-	private static void Data_Base_initializer() {
+	public static void Add_Parking_Lots() {
 		try {
 			/** adds three parking lots to db **/
 			//todo needed time zone addition
