@@ -86,14 +86,47 @@ public class SimpleServer extends AbstractServer {
 
 
 		} else if (ms.getMessage().equals("loginManager")) {
-			//todo check in database if exists
-			Message MSG=new Message("AllowManager");
+
+				Message MSG=new Message("AllowManager");
+				String[] data = {ms.getID(),ms.getPassword()} ;
+
+				Message msg1 = tryLogIn(data);
+				User user1 = (User) msg1.getObject1();
+				int permission_check = user1.getPermission();
+				if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 0 ){
+					//regional
+					MSG.setObject1("success");
+					MSG.setObject2(msg1.getObject1()); // return User
+					MSG.setObject3(permission_check);
+				} else if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 1 ){
+					//regular manager
+					MSG.setObject1("success");
+					MSG.setObject2(msg1.getObject1()); // return User
+					MSG.setObject3(permission_check);
+				}else {
+
+					MSG.setObject1("fail");
+				}
+
 				client.sendToClient(MSG);
 		}
 		else if(ms.getMessage().equals("loginEmployee"))
 		{
-			// todo check in database if exists
+
 			Message MSG=new Message("AllowEmployee");
+			String[] data = {ms.getID(),ms.getPassword()} ;
+
+			Message msg1 = tryLogIn(data);
+			User user1 = (User) msg1.getObject1();
+			int permission_check = user1.getPermission();
+			if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 2 ){
+				//parking worker
+				MSG.setObject1("success");
+				MSG.setObject2(msg1.getObject1()); // return User
+				MSG.setObject3(permission_check);
+			}else {
+				MSG.setObject1("fail");
+			}
 			client.sendToClient(MSG);
 		}
 		else if(ms.getMessage().equals("RenewSub"))
@@ -105,8 +138,8 @@ public class SimpleServer extends AbstractServer {
 		else if(ms.getMessage().equals("ParkingManager_alterPrices"))
 		{
 			// adds a price change request to the regional manager's requests list
-			//data stored in seperate objects
-			// ocasional price -> object1
+			//data stored in separate objects
+			// occasional price -> object1
 			// preOrder price -> object2
 			// partTime price -> object3
 			// FullSubs price -> object4
@@ -259,12 +292,6 @@ public class SimpleServer extends AbstractServer {
 
 			client.sendToClient(msg2);
 
-			//todo figure out how to deal with time(storing and calculating)
-
-
-
-
-			// do other things
 		} else if (ms.getMessage().equals("OneTimeParkingOrder_Submit")){
 			//todo check if in DB
 			// return OneTimeParkingOrder_Success
@@ -322,18 +349,31 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("Deactivate Parking Spot"))
 		{
-			//todo all
-			//Deactivate Parking Slot
-			//Object #1 - Parking Slot ID
-			String ParkingID = ms.getObject1().toString();
+
+			//Deactivate Parking Spot
+			//Object #1 - Parking Spot ID
+			//object #2 parkingLot
+
+			Integer ParkingSpotID = Integer.parseInt(ms.getObject1().toString());
+			ParkingLot parkingLot = (ParkingLot) ms.getObject2();
+			Message msg12 = ParkingSpotStateUpdate(ParkingSpotID,parkingLot, "Deactivate");
+			msg12.setMessage("EmployeeWindow");
+			client.sendToClient(msg12);
 
 		}
 		else if(ms.getMessage().equals("Activate Parking Spot"))
 		{
-			//todo all
+
 			//Activate Parking Slot
 			//Object #1 - Parking Slot ID
-			String ParkingID = ms.getObject1().toString();
+			//object #2 parkingLot
+
+			Integer ParkingSpotID = Integer.parseInt(ms.getObject1().toString());
+			ParkingLot parkingLot = (ParkingLot) ms.getObject2();
+			Message msg12 = ParkingSpotStateUpdate(ParkingSpotID,parkingLot, "Activate");
+			msg12.setMessage("EmployeeWindow");
+			client.sendToClient(msg12);
+
 		}
 		else if(ms.getMessage().equals("System Request"))
 		{
@@ -430,8 +470,7 @@ public class SimpleServer extends AbstractServer {
 
 
 
-
-/**.....................................................................................................................
+	/**.....................................................................................................................
 .MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
 .MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH....OOOOOOOOOOOOO....DDDDDDDDDDDDDD....SSSSSSSSSSSS....
 .MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH...OOOOOOOOOOOOOOO...DDDDDDDDDDDDDD...SSSSSSSSSSSSS....
@@ -455,6 +494,11 @@ public class SimpleServer extends AbstractServer {
 
 
 
+	private Message ParkingSpotStateUpdate(Integer parkingSpotID, ParkingLot parkingLot, String state) {
+		//todo
+
+		return null;
+	}
 
 
 
@@ -472,6 +516,7 @@ public class SimpleServer extends AbstractServer {
 
 	private void DeleteParkingOrder(Message msg, ConnectionToClient client){
 		//todo
+
 	}
 
 

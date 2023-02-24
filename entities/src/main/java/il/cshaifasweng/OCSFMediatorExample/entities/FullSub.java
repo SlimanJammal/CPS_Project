@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table
+@Table(name = "Subscription")
 public class FullSub extends Subscription{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

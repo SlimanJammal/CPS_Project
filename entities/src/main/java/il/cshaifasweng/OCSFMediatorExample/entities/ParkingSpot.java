@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "ParkingSpot")
 public class ParkingSpot {
 
     @Id

@@ -2,6 +2,8 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 //System StartUp (Parking ID,Command) has no input validation due to lack of knowledge about their functionality...
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -83,13 +85,16 @@ public class EmployeeWindow {
         //send message to server ...
         Message msg = new Message("Activate Parking Spot");
         msg.setObject1(ActivateParkingSpotID);
+        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
+        ParkingLot parkingLot =  parkingWorker.getParkingLot();
+        msg.setObject2(parkingLot);
         try
         {
             SimpleClient.getClient().sendToServer(msg);
         }
         catch (IOException e)
         {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
 
@@ -106,13 +111,16 @@ public class EmployeeWindow {
         //send message to server ...
         Message msg = new Message("Deactivate Parking Spot");
         msg.setObject1(DeactivateParkingSpotID);
+        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
+        ParkingLot parkingLot =  parkingWorker.getParkingLot();
+        msg.setObject2(parkingLot);
         try
         {
             SimpleClient.getClient().sendToServer(msg);
         }
         catch (IOException e)
         {
-            // TODO Auto-generated  catch block
+
             e.printStackTrace();
         }
 

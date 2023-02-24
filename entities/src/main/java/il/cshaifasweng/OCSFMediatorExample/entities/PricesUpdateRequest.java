@@ -5,7 +5,7 @@ import java.util.Vector;
 
 
 @Entity
-@Table
+@Table(name = "PricesUpdateRequest")
 public class PricesUpdateRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

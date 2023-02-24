@@ -8,7 +8,7 @@ import java.sql.Time;
 import java.util.Date;
 
 @Entity
-@Table
+@Table(name = "Customer")
 public class OccCustomer extends Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

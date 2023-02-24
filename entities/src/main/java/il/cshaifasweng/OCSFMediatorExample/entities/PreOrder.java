@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table
-public class PreOrder extends Customer{
+public class PreOrder {
     @Id
     String PreOrderId;
     @NotNull

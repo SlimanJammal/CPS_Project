@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
-public class MultiSub {
+@Table(name = "Subscription" )
+public class MultiSub extends Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     String MultiSubId;
