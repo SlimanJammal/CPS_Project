@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+import java.io.IOException;
+
 public class MainWindow {
 
     @FXML // fx:id="KioskBtn"
@@ -17,12 +19,26 @@ public class MainWindow {
     private Button WebsiteBtn; // Value injected by FXMLLoader
 
     @FXML
-    void KioskBtn(ActionEvent event) {
+    void KioskBtn(ActionEvent event) throws IOException {
+        try{
+            App.setRoot("cpsKiosk");
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
     @FXML
-    void WebsiteBtn(ActionEvent event) {
+    void WebsiteBtn(ActionEvent event) throws IOException {
+        try{
+            App.setRoot("cpsWebsite");
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 

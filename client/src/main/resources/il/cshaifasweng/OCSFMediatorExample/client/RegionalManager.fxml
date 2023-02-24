@@ -1,26 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="567.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RegionalManager">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="676.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RegionalManager">
    <children>
-      <Text layoutX="188.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Regional Manager" wrappingWidth="280.93670654296875">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Text>
-      <Button layoutX="416.0" layoutY="409.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="142.0" text="Button" />
-      <TableView layoutX="128.0" layoutY="99.0" prefHeight="228.0" prefWidth="228.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-            <TableColumn prefWidth="75.0" text="Column X" />
-        </columns>
-      </TableView>
+      <TabPane layoutX="-1.0" layoutY="4.0" prefHeight="676.0" prefWidth="809.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Main Window">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="requestTF" layoutX="53.0" layoutY="323.0" onAction="#requestTF" promptText="Request Number" />
+                        <Button fx:id="DeclineBtn" layoutX="323.0" layoutY="323.0" mnemonicParsing="false" onAction="#DeclineBtn" text="Decline" />
+                        <Button fx:id="AcceptBtn" layoutX="230.0" layoutY="323.0" mnemonicParsing="false" onAction="#AcceptBtn" text="Accept" />
+                        <MenuButton fx:id="ParkingStatisticsMen" layoutX="609.0" layoutY="221.0" mnemonicParsing="false" onAction="#ParkingStatisticsMen" text="Statistics">
+                           <items>
+                              <MenuItem fx:id="menuPdf1" mnemonicParsing="false" onAction="#menuPdf1" text="Parking 1" />
+                              <MenuItem fx:id="menuPdf2" mnemonicParsing="false" onAction="#menuPdf2" text="Parking 2" />
+                              <MenuItem fx:id="menuPdf3" mnemonicParsing="false" onAction="#menuPdf3" text="Parking 3" />
+                           </items>
+                        </MenuButton>
+                        <MenuButton fx:id="PDFRequest" layoutX="595.0" layoutY="151.0" mnemonicParsing="false" onAction="#PDFRequest" text="Parking Name">
+                           <items>
+                              <MenuItem fx:id="menuStat1" mnemonicParsing="false" onAction="#menuStat1" text="Parking 1" />
+                              <MenuItem fx:id="menuStat2" mnemonicParsing="false" onAction="#menuStat2" text="Parking 2" />
+                              <MenuItem fx:id="menuStat3" mnemonicParsing="false" onAction="#menuStat3" text="Parking 3" />
+                           </items>
+                        </MenuButton>
+                        <Text fill="#1b8ec0" layoutX="282.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Regional Manager" wrappingWidth="280.93670654296875">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="559.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request PDF: " />
+                        <Text layoutX="559.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request:" />
+                        <AnchorPane layoutX="168.0" layoutY="540.0" prefHeight="200.0" prefWidth="463.0" />
+                        <TableView fx:id="RequestsTable" layoutX="27.0" layoutY="107.0" prefHeight="200.0" prefWidth="437.0">
+                           <columns>
+                              <TableColumn fx:id="NumberColMainWin" prefWidth="75.0" text="Number" />
+                              <TableColumn fx:id="ManagerNameCol" prefWidth="96.39994812011719" text="Manager Name" />
+                              <TableColumn fx:id="RequestCol" prefWidth="264.40001220703124" text="Request" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Parking 1">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane layoutY="-8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="661.0" prefWidth="794.0">
+                           <children>
+                              <Text fill="#21dc75" layoutX="260.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
+                                 <font>
+                                    <Font size="32.0" />
+                                 </font>
+                              </Text>
+                              <TableView fx:id="PricesTable" layoutX="18.0" layoutY="409.0" prefHeight="200.0" prefWidth="274.0">
+                                 <columns>
+                                    <TableColumn fx:id="pricetype" prefWidth="172.0" text="Price Type" />
+                                    <TableColumn fx:id="price" prefWidth="101.20001220703125" text="Price" />
+                                 </columns>
+                              </TableView>
+                              <Button fx:id="showPricesBTN1" layoutX="321.0" layoutY="621.0" mnemonicParsing="false" onAction="#showPrices1" text="ShowPrices" />
+                              <Button fx:id="ShowStatBtn1" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn1" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
+                              <Text layoutX="539.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875" />
+                              <TextField fx:id="OcasionalTF" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="PreOrderTF" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="FullSubsTF" layoutX="79.0" layoutY="238.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="PartTimeTF" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
+                              <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
+                              <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
+                              <Text fx:id="PartTimeTF" layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
+                              <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
+                              <TextField fx:id="MultiTF" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
+                              <Button fx:id="submitBTN1" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit1" text="Submit" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Parking 2">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="794.0">
+                           <children>
+                              <Text fill="#21dc75" layoutX="260.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
+                                 <font>
+                                    <Font size="32.0" />
+                                 </font>
+                              </Text>
+                              <TableView fx:id="PricesTable1" layoutX="18.0" layoutY="409.0" prefHeight="200.0" prefWidth="274.0">
+                                 <columns>
+                                    <TableColumn fx:id="pricetype1" prefWidth="172.0" text="Price Type" />
+                                    <TableColumn fx:id="price1" prefWidth="101.20001220703125" text="Price" />
+                                 </columns>
+                              </TableView>
+                              <Button fx:id="showPricesBTN2" layoutX="321.0" layoutY="609.0" mnemonicParsing="false" onAction="#showPrices2" text="ShowPrices" />
+                              <Button fx:id="ShowStatBtn2" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn2" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
+                              <Text layoutX="539.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875" />
+                              <TextField fx:id="OcasionalTF1" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="PreOrderTF1" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="FullSubsTF1" layoutX="79.0" layoutY="238.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="PartTimeTF" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
+                              <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
+                              <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
+                              <Text fx:id="PartTimeTF1" layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
+                              <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
+                              <TextField fx:id="MultiTF1" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
+                              <Button fx:id="submitBtn2" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit2" text="Submit" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Parking 3">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="794.0">
+                           <children>
+                              <Text fill="#21dc75" layoutX="260.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
+                                 <font>
+                                    <Font size="32.0" />
+                                 </font>
+                              </Text>
+                              <TableView fx:id="PricesTable2" layoutX="18.0" layoutY="409.0" prefHeight="200.0" prefWidth="274.0">
+                                 <columns>
+                                    <TableColumn fx:id="pricetype2" prefWidth="172.0" text="Price Type" />
+                                    <TableColumn fx:id="price2" prefWidth="101.20001220703125" text="Price" />
+                                 </columns>
+                              </TableView>
+                              <Button fx:id="showPricesBTN3" layoutX="315.0" layoutY="609.0" mnemonicParsing="false" onAction="#showPrices3" text="ShowPrices" />
+                              <Button fx:id="ShowStatBtn3" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn3" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
+                              <Text layoutX="539.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875" />
+                              <TextField fx:id="OcasionalTF2" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="PreOrderTF2" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="FullSubsTF2" layoutX="79.0" layoutY="238.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="PartTimeTF" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
+                              <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
+                              <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
+                              <Text fx:id="PartTimeTF2" layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
+                              <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
+                              <TextField fx:id="MultiTF2" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
+                              <Button fx:id="submitBtn3" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit3" text="Submit" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
    </children>
 </AnchorPane>

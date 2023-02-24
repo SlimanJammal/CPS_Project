@@ -5,12 +5,16 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.Vector;
 
 public class OneTimeParkingOrder {
 
@@ -35,6 +39,10 @@ public class OneTimeParkingOrder {
     @FXML // fx:id="IdNumberTF"
     private TextField IdNumberTF; // Value injected by FXMLLoader
 
+    @FXML
+    private Button backBtn;
+
+
     private int msgId = 0;
     @FXML
     void CarNumberTF(ActionEvent event) {
@@ -43,22 +51,64 @@ public class OneTimeParkingOrder {
 
     @FXML
     void CheckoutBtn(ActionEvent event) {
-//        Message qq = new Message(msgId++, "checkout");
-//
-//        qq.addToOneTimeParkingOrderInfo(CarNumberTF.getText());
-//        qq.addToOneTimeParkingOrderInfo(DesiredParkingTF.getText());
-//        qq.addToOneTimeParkingOrderInfo(EmailTF.getText());
-//        qq.addToOneTimeParkingOrderInfo(EtaTF.getText());
-//        qq.addToOneTimeParkingOrderInfo(EtdTF.getText());
-//        qq.addToOneTimeParkingOrderInfo(IdNumberTF.getText());
-//        try{
-//
-//            SimpleClient.getClient().sendToServer(qq);
-//
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
+        Message msg = new Message("OneTimeParkingOrder_Submit");
+
+        Vector<String> fields = new Vector<String>();
+
+        //data is contained in a vector inside Object1
+        // the data is stored in the following order
+        // 0- car number             3- Eta
+        // 1- DesiredParking         4- Etd
+        // 2- Email                  5- Id number
+
+        fields.add(CarNumberTF.getText());
+        fields.add(DesiredParkingTF.getText());
+        fields.add(EmailTF.getText());
+        fields.add(EtaTF.getText());
+        fields.add(EtdTF.getText());
+        fields.add(IdNumberTF.getText());
+        msg.setObject1(fields);
+
+        //send to server
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    @Subscribe
+    void SubmissionAnswer(OneTimeParkingOrderEvent event){
+        //todo  warning pop up if everything is okay/not with info
+        // if everything is good clear fields
+        if(event.getMessage().getObject1().toString().equals("success")) {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING,
+                        String.format("Message: %s\n",
+                                "Success")
+                );
+                alert.show();
+            });
+
+            CarNumberTF.clear();
+            DesiredParkingTF.clear();
+            EmailTF.clear();
+            EtaTF.clear();
+            EtdTF.clear();
+            IdNumberTF.clear();
+
+        } else if(event.getMessage().getObject1().toString().equals("fail")){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING,
+                        String.format("Message: %s\n",
+                                "Submission Failed - Wrong Input, Try Again")
+                );
+                alert.show();
+            });
+        }
+
     }
 
     @FXML
@@ -84,6 +134,16 @@ public class OneTimeParkingOrder {
     @FXML
     void IdNumberTF(ActionEvent event) {
 
+    }
+
+    @FXML
+    void backBtn(ActionEvent event) {
+        String newSceneName = (String) DataSingleton.getInstance().getData();
+        try {
+            App.setRoot(newSceneName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -4,21 +4,25 @@ import com.sun.istack.NotNull;
 //import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.util.Date;
 
 @Entity
 @Table
-public class OccCustomer {
+public class OccCustomer extends Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String OccCustomerId;
     @NotNull
     private String CarNumber;
     @NotNull
-    long StartTime ;
+//    long StartTime ;
+    Time StartTime;
 
     @NotNull
      String CustomerId;
-    long FinishTime ;
+//    long FinishTime ;
+    Time FinishTime;
     @NotNull
     String Email;
 
@@ -38,11 +42,11 @@ public class OccCustomer {
         return OccCustomerId;
     }
 
-    public long getFinishTime() {
+    public Date getFinishTime() {
         return FinishTime;
     }
 
-    public long getStartTime() {
+    public Date getStartTime() {
         return StartTime;
     }
 
@@ -70,11 +74,11 @@ public class OccCustomer {
         CarNumber = carNumber;
     }
 
-    public void setFinishTime(long finishTime) {
+    public void setFinishTime(Time finishTime) {
         FinishTime = finishTime;
     }
 
-    public void setStartTime(long startTime) {
+    public void setStartTime(Time startTime) {
         StartTime = startTime;
     }
 

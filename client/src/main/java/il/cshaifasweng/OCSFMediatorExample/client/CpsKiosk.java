@@ -4,11 +4,16 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
 
 public class CpsKiosk {
 
@@ -49,13 +54,18 @@ public class CpsKiosk {
     private Button createNewSubsBtn; // Value injected by FXMLLoader
 
     @FXML
-    void CustomerBtn(ActionEvent event) {
-
+    void CustomerBtn(ActionEvent event) throws IOException {
+      App.setRoot("ocasionalParking");
     }
 
     @FXML
-    void EnterParkingBTN(ActionEvent event) {
+    void EnterParkingBTN(ActionEvent event) throws IOException {
+        Message msg= new Message("EnterParking4");
+        msg.setLicenesPlate(LICENSE_LOGIN_TF.getText());
+        msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
+        SimpleClient.getClient().sendToServer(msg);
 
+        // todo send alert
     }
 
     @FXML
@@ -67,25 +77,76 @@ public class CpsKiosk {
     void LICENSE_LOGIN_TF(ActionEvent event) {
 
     }
+    @FXML
+    void WorkerBtn(ActionEvent event) throws IOException {
+        Message msg= new Message("loginEmployee");
+        msg.setID(ID_LOGIN_TF.getId());
+        msg.setPassword(PW_LOGIN_TF.getText());
+        SimpleClient.getClient().sendToServer(msg);
+    }
+    @Subscribe
+    public void allowWorker(loginWorkerEvent allowing) throws IOException {
+        /*
+         * updating a singleton to contain the dateName = manager so we can know who sent the request
+         * */
+
+        DataSingleton data = DataSingleton.getInstance();
+        data.setDataName("Worker");
+        data.setData("");//todo here we need to store an identifier of some sort to know what Worker
+
+        App.setRoot("EmployeeWindow");
+    }
+
 
     @FXML
-    void ManagerBtn(ActionEvent event) {
-
+    void ManagerBtn(ActionEvent event) throws IOException {
+        Message msg= new Message("loginManager");
+        msg.setID(ID_LOGIN_TF.getId());
+        msg.setPassword(PW_LOGIN_TF.getText());
+        SimpleClient.getClient().sendToServer(msg);
     }
+    @Subscribe
+    public void allowManager(loginManagerEvent allowing) throws IOException {
+        /*
+         * updating a singleton to contain the dateName = manager so we can know who sent the request
+         * */
+
+        DataSingleton data = DataSingleton.getInstance();
+        data.setDataName("Manager");
+        data.setData("");//todo here we need to store an identifier of some sort to know what manager
+
+       App.setRoot("ParkingManger"); // todo put in braces manager scene
+    }
+
+
+
+
+
 
     @FXML
     void PW_LOGIN_TF(ActionEvent event) {
 
     }
 
-    @FXML
-    void RenewSubsBtn(ActionEvent event) {
 
+    @FXML
+    void RenewSubsBtn(ActionEvent event) throws IOException {
+        Message msg= new Message("RenewSub");
+        msg.setLicenesPlate(LICENSE_LOGIN_TF.getText());
+        msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
+        SimpleClient.getClient().sendToServer(msg);
     }
+    @Subscribe
+    void setRenewSubsSuccess(SubRenewEvent event)
+    {
+        Alert alert = new Alert(Alert.AlertType.WARNING,
+                String.format("Message: Sub renewed"));
+        alert.show();
+}
 
     @FXML
-    void ReserveParkingBtn(ActionEvent event) {
-
+    void ReserveParkingBtn(ActionEvent event) throws IOException {
+        App.setRoot("RequestStatus");//todo check reservation window
     }
 
     @FXML
@@ -94,13 +155,13 @@ public class CpsKiosk {
     }
 
     @FXML
-    void checkReservBtn(ActionEvent event) {
-
+    void checkReservBtn(ActionEvent event) throws IOException {
+        App.setRoot("RequestStatus");//todo check reservation window
     }
 
     @FXML
-    void createNewSubsBtn(ActionEvent event) {
-
+    void createNewSubsBtn(ActionEvent event) throws IOException {
+     App.setRoot("RegisterNewSubscription");
     }
 
 }

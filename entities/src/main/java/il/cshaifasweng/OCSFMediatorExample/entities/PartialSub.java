@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table
-public class PartialSub {
+public class PartialSub extends Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     String PartialSubId;

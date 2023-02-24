@@ -18,9 +18,28 @@ public class SimpleClient extends AbstractClient {
 		Message ms=(Message) msg;
 		if (ms.getMessage().equals("hello")) {
 			EventBus.getDefault().post(new WarningEvent((Message) msg));
-		} else if (ms.getMessage().equals("login manager")) {
+		} else if (ms.getMessage().equals("AllowManager")) {
 			EventBus.getDefault().post(new loginManagerEvent((Message) msg));
+		} else if (ms.getMessage().equals("AllowEmployee")) {
+			EventBus.getDefault().post(new loginWorkerEvent((Message) msg));
+		}else if (ms.getMessage().equals("SubRenewed")) {
+			EventBus.getDefault().post(new SubRenewEvent((Message) msg));
+		} else if (ms.getMessage().equals("pricesReturned")) {
+			EventBus.getDefault().post(new showPricesEvent((Message) msg));
+		}else if (ms.getMessage().equals("statsReturned")) {
+			EventBus.getDefault().post(new showStatsEvent((Message) msg));
 
+		}else if(ms.getMessage().equals("OneTimeParkingOrder")){
+			EventBus.getDefault().post(new OneTimeParkingOrderEvent((Message) msg));
+		}
+		else if (ms.getMessage().equals("Complaint")) {
+			EventBus.getDefault().post(new ComplaintEvent((Message) msg));
+
+		}
+		else if (ms.getMessage().equals("OcasionalParking")){
+			EventBus.getDefault().post(new OcasionalEvent((Message) msg));
+		} else if(ms.getMessage().endsWith("regional")){
+			EventBus.getDefault().post(new RegionalManagerEvent((Message) msg));
 		}
 
 	}

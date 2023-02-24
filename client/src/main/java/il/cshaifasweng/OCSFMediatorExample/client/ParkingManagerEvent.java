@@ -2,7 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
-public class ParkingManagerSecondaryEvent {
+public class ParkingManagerEvent {
     private Message message;
 
     private String utilRes1;
@@ -102,7 +102,7 @@ public class ParkingManagerSecondaryEvent {
         return message;
     }
 
-    public ParkingManagerSecondaryEvent(Message message) {
+    public ParkingManagerEvent(Message message) {
         this.message = message;
     }
 

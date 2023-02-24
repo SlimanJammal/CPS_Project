@@ -1,11 +1,15 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-
+@Entity
+@Table
 public class PricesClass implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int price_id;
     private int price;
     private String priceType;
