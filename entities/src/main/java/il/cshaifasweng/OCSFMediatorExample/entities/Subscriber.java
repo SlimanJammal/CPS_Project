@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table (name = "Customer")
 public class Subscriber extends Customer{
 
     private String subscriptionType;

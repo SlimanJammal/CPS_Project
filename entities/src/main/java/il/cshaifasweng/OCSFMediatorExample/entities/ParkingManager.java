@@ -1,11 +1,12 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Vector;
 
 @Entity
-@Table
-public class ParkingManager extends User {
+@Table(name="User")
+public class ParkingManager extends User implements Serializable {
 
     @OneToOne
     private ParkingLot parkingLot;

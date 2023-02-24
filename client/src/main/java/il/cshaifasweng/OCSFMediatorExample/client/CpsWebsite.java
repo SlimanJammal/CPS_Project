@@ -5,6 +5,8 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -74,15 +76,33 @@ public class CpsWebsite {
     }
     @Subscribe
     public void allowManager(loginManagerEvent allowing) throws IOException {
-        /*
-         * updating a singleton to contain the dateName = manager so we can know who sent the request
-         * */
+        int permission =(int) allowing.getMsg().getObject3();
 
-        DataSingleton data = DataSingleton.getInstance();
-        data.setDataName("Manager");
-        data.setData("");//todo here we need to store an identifier of some sort to know what manager
+        if(allowing.getMsg().getObject1().toString().equals("success") && permission ==  1) {
 
-         App.setRoot("ParkingManager.fxml"); // todo put in braces manager scene
+            DataSingleton data = DataSingleton.getInstance();
+            data.setDataName("ParkingManager");
+            ParkingManager parkingManager = (ParkingManager) allowing.getMsg().getObject1();
+            data.setData(parkingManager);
+            App.setRoot("ParkingManger");
+
+        } else  if(allowing.getMsg().getObject1().toString().equals("success") && permission ==  0){
+
+            DataSingleton data = DataSingleton.getInstance();
+            data.setDataName("RegionalManager");
+            RegionalManager regionalManager = (RegionalManager) allowing.getMsg().getObject1();
+            data.setData(regionalManager);
+            App.setRoot("RegionalManager");
+
+        }else {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "UserName or PassWord Wrong"
+                );
+                alert.show();
+            });
+
+        }
     }
 
     @FXML
@@ -94,15 +114,22 @@ public class CpsWebsite {
     }
     @Subscribe
     public void allowWorker(loginWorkerEvent allowing) throws IOException {
-        /*
-         * updating a singleton to contain the dateName = manager so we can know who sent the request
-         * */
+        if(allowing.getMsg().getObject1().toString().equals("success")) {
+            DataSingleton data = DataSingleton.getInstance();
+            data.setDataName("ParkingWorker");
+            ParkingWorker parkingWorker = (ParkingWorker) allowing.getMsg().getObject1();
+            data.setData(parkingWorker);
 
-        DataSingleton data = DataSingleton.getInstance();
-        data.setDataName("Worker");
-        data.setData("");//todo here we need to store an identifier of some sort to know what Worker
+            App.setRoot("EmployeeWindow");
+        } else {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "UserName or PassWord Wrong"
+                );
+                alert.show();
+            });
 
-        App.setRoot("EmployeeWindow");
+        }
     }
 
 
@@ -114,7 +141,7 @@ public class CpsWebsite {
     @FXML
     void RenewSubsBtn(ActionEvent event) throws IOException {
         Message msg= new Message("RenewSub");
-        msg.setLicenesPlate(LICENSE_LOGIN_TF.getText());
+        msg.setLicensePlate(LICENSE_LOGIN_TF.getText());
         msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }

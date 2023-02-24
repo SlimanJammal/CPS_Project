@@ -5,7 +5,7 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name="Complaint")
 public class Complaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

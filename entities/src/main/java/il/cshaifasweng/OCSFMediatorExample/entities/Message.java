@@ -87,12 +87,12 @@ public class Message implements Serializable {
 		this.ID = ID;
 	}
 
-	public String getLicenesPlate() {
-		return LicenesPlate;
+	public String getLicensePlate() {
+		return LicensePlate;
 	}
 
-	public void setLicenesPlate(String licenesPlate) {
-		LicenesPlate = licenesPlate;
+	public void setLicensePlate(String licensePlate) {
+		LicensePlate = licensePlate;
 	}
 
 	public String getSubNum() {
@@ -111,7 +111,7 @@ public class Message implements Serializable {
 	private Object Object7;
 	private  String Password;
 	private  String ID;
-	private  String LicenesPlate;
+	private  String LicensePlate;
 	private String  SubNum;
 
 	public String getMessage() {

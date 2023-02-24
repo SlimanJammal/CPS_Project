@@ -4,17 +4,19 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
 import java.io.Serializable;
 
-public class loginWorkerEvent implements Serializable {
-    Message msg;
-    public loginWorkerEvent(Message msg) {
-        this.msg=msg;
+public class EmployeeWindowEvent implements Serializable {
+    private Message message;
+
+    public EmployeeWindowEvent(Message message) {
+        this.message = message;
     }
 
     public Message getMsg() {
-        return msg;
+        return message;
     }
 
     public void setMsg(Message msg) {
-        this.msg = msg;
+        this.message = msg;
     }
+
 }

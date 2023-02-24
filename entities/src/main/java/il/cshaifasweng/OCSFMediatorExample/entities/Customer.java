@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.util.Vector;
 
 @Entity
-@Table
+@Table(name = "Customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
