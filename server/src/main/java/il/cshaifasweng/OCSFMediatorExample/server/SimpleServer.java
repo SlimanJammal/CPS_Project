@@ -221,13 +221,55 @@ public class SimpleServer extends AbstractServer {
 			}
 			client.sendToClient(MSG);
 		}
-
 		else if(ms.getMessage().equals("RenewSub")) {
-			// todo check in database if exists
-			Message MSG=new Message("SubRenewed");
-			client.sendToClient(MSG);
-		}
+			Boolean flag = false;
+			String Subnumber = (String) ms.getSubNum();
+			String LicencePlateNum = (String) ms.getLicensePlate();
 
+
+			// todo when we find the subscriber to renew what do we do ??
+			List<PartialSub> partialListDB = getAll(PartialSub.class);
+			List<FullSub> fullListDB = getAll(FullSub.class);
+			List<MultiSub> multiListDB = getAll(MultiSub.class);
+			for (PartialSub partialSub : partialListDB) {
+				String ID = partialSub.getPartialSubId();
+				String Licence = partialSub.getCarNumber();
+				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
+					// add action here
+					flag = true;
+					break;
+				}
+			}
+			for (FullSub fullsub : fullListDB) {
+				String ID = fullsub.getCustomerId();
+				String Licence = fullsub.getCarNumber();
+				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
+					// add action here
+					flag = true;
+					break;
+				}
+			}
+			for (MultiSub multisub : multiListDB) {
+				String ID = multisub.getPartialSubId();
+				String Licence = multisub.getCarNumber();
+				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
+					// add action here
+					flag = true;
+					break;
+				}
+			}
+
+			// if the client is found inform him that sub is renewed
+			if (flag) {
+				Message MSG = new Message("SubRenewed");
+				MSG.setObject1("success");
+				client.sendToClient(MSG);
+			} else {
+				Message MSG = new Message("SubRenewed");
+				MSG.setObject1("fail");
+				client.sendToClient(MSG);
+			}
+		}
 		else if(ms.getMessage().equals("ParkingManager_alterPrices")) {
 			// adds a price change request to the regional manager's requests list
 			//data stored in separate objects
@@ -336,7 +378,7 @@ public class SimpleServer extends AbstractServer {
 			// each complaint contains two fields
 			// 1- customer ID
 			// 2- the complaint text
-			// bruv u gud ?
+			// bruv u gud ? -> no im not gud im god
 
 			Complaints tempComplaint = (Complaints) ms.getObject1();
 			Complaint new_complaint = new Complaint();
@@ -361,9 +403,8 @@ public class SimpleServer extends AbstractServer {
 				client.sendToClient(ms);
 			}
 			// do other things
-		}
-
-		else if(ms.getMessage().equals("OcasionalParking")) {
+		}else if(ms.getMessage().equals("OcasionalParking"))
+		{
 
 			client.sendToClient(ms);
 			// Id number is saved as a string in object1
@@ -380,19 +421,45 @@ public class SimpleServer extends AbstractServer {
 			Time tempTime = new Time(Integer.parseInt(parsed[0]),Integer.parseInt(parsed[1]),Integer.parseInt(parsed[2]));
 			customer.setStartTime(tempTime);
 
+			try {
+				session = getSessionFactory().openSession();
+				session.beginTransaction();
+				// add new occasional customer to the db .
+				session.save(customer);
 
-			//todo return msg woth "OcasionalParking" in name object1 a string success/fail
-			Message msg2 = routingOrders(customer,"OccCustomer");
+				session.flush();
+				session.getTransaction().commit();
 
-			client.sendToClient(msg2);
+				Message msg2 = routingOrders(customer,"OccCustomer");
+				msg2.setObject1("success");
+//				Message msg2 = new Message("prices update request sent");
+				client.sendToClient(msg2);
+			} catch (Exception exception) {
+				if (session != null) {
+					session.getTransaction().rollback();
+				}
+				Message msg2 = new Message("OccCustomer");
+				msg2.setObject1("fail");
+				client.sendToClient(msg2);
+				System.err.println("An error occurred, changes have been rolled back.");
+				exception.printStackTrace();
+			} finally {
+				session.close();
+			}
 
-		}
+			// return msg with "OcasionalParking" in name object1 a string success/fail
 
-		else if (ms.getMessage().equals("OneTimeParkingOrder_Submit")){
+
+
+		} else if (ms.getMessage().equals("OneTimeParkingOrder_Submit")){
+
+			//**************************** pre order parking **************************//
+
+
 			//todo check if in DB
-			// return OneTimeParkingOrder_Success
+			//return OneTimeParkingOrder_Success
 			// or OneTimeParkingOrder_Fail
-			//data is contained in a vector inside Object1
+			// data is contained in a vector inside Object1
 			// the data is stored in the following order
 			// 0- car number             3- Eta
 			// 1- DesiredParking         4- Etd
@@ -429,9 +496,7 @@ public class SimpleServer extends AbstractServer {
 				msg2.setObject1("fail");
 			}
 
-		}
-
-		else if(ms.getMessage().endsWith("regional")){
+		} else if(ms.getMessage().endsWith("regional")){
 			Message msg2 = new Message("return_regional");
 			switch (ms.getMessage()) {
 				case "accept_price_alter_regional" -> msg2 = price_alter(ms, "accept");
@@ -667,18 +732,26 @@ public class SimpleServer extends AbstractServer {
 		return null;
 	}
 
-	}
+
 
 	private Message routingOrders(Object ParkingEntryOrder, String type) {
 		//todo
-		// this function takes an order such as preorder or occasional customer etc.., and the type in "type"
+		//this function takes an order such as preorder or occasional customer etc.., and the type in "type"
 		// so we can convert it to the given type and add it. it returns a Message and it's fields are set according to
 		// the caller.
 		// it should every order to function that saves it/or let's the customer enter the parking
 
+		if (type.equals("PreOrder")){
+			PreOrder newOrder = (PreOrder) ParkingEntryOrder;
+
+		}else{
+			// here type is "OccCustomer"
+		}
+
 		return null;
 
 	}
+
 
 	private void DeleteParkingOrder(Message msg, ConnectionToClient client){
 		//todo
@@ -868,25 +941,26 @@ public class SimpleServer extends AbstractServer {
 		return null;
 	}
 
-	private Message pdfRegional(Message ms) {
-		try {
-			// Create a new Document
-			Document document = new Document();
-			// Create a new PdfWriter
-			PdfWriter.getInstance(document, new FileOutputStream("Parking.pdf"));
-			// Open the Document
-			document.open();
-			// Add content to the Document
-			for(int i=0;i<3;i++) {
-				document.add(new Paragraph("Hello, world!"));
+	private Message pdfRegional(Message ms){
+			try {
+				// Create a new Document
+				Document document = new Document();
+				// Create a new PdfWriter
+				PdfWriter.getInstance(document, new FileOutputStream("Parking.pdf"));
+				// Open the Document
+				document.open();
+				// Add content to the Document
+				for (int i = 0; i < 3; i++) {
+					document.add(new Paragraph("Hello, world!"));
+				}
+				// Close the Document
+				document.close();
+			} catch (FileNotFoundException | DocumentException e) {
+				e.printStackTrace();
 			}
-			// Close the Document
-			document.close();
-		} catch (FileNotFoundException | DocumentException e) {
-			e.printStackTrace();
-		}
 
-		return null;
+			return null;
+		}
 	}
 
 	private Message price_alter(Message ms, String res) {
