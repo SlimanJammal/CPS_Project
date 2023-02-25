@@ -13,7 +13,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
@@ -30,9 +29,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -190,7 +187,10 @@ public class SimpleServer extends AbstractServer {
 					MSG.setObject1("success");
 					MSG.setObject2(msg1.getObject1()); // return User
 					MSG.setObject3(permission_check);
-				} else if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 1 ){
+
+
+				}
+				else if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 1 ){
 					//regular manager
 					MSG.setObject1("success");
 					MSG.setObject2(msg1.getObject1()); // return User
@@ -366,10 +366,40 @@ public class SimpleServer extends AbstractServer {
 
 		else if(ms.getMessage().equals("ParkingManager_showStats")) {
 
-			// todo get all stats from database and then put them in objects 1 to 3 to present them to manager
-			Message MSG=new Message("statsReturned");
-			client.sendToClient(MSG);
-			// do other things
+			session.getSessionFactory().openSession();
+
+			String hql = "FROM DeletedOrders ";
+			String Latehql = "FROM Late ";
+
+			Query query = session.createQuery(hql);
+			Query Latequery = session.createQuery(Latehql);
+
+			List<DeletedOrders> DeletedOrdersList = query.getResultList();
+			List<Late> LateList = query.getResultList();
+
+			int Deletedmean = 0;
+			for (DeletedOrders order : DeletedOrdersList) {
+				String date = (String) order.getDeletetime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+				String today = (String) (LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				if (date.equals(today)) {
+					Deletedmean++;
+				}
+			}
+
+			int Latemean = 0;
+			for (Late order : LateList) {
+				String date = (String) order.getDeletetime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+				String today = (String) (LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				if (date.equals(today)) {
+					Latemean++;
+				}
+				// todo get all stats from database and then put them in objects 1 to 3 to present them to manager
+				Message MSG = new Message("statsReturned");
+				MSG.setObject1(Deletedmean);
+				MSG.setObject2(Latemean);
+				client.sendToClient(MSG);
+
+			}
 		}
 
 		else if(ms.getMessage().equals("Complaint")) {
@@ -661,6 +691,161 @@ public class SimpleServer extends AbstractServer {
 .MMMMM.MMMMMM.MMMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH....OOOOOOOOOOOOO....DDDDDDDDDDDDDD....SSSSSSSSSSSS....
 .MMMMM..MMMMM..MMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
 ..........................................................................................................................*/
+
+	private void EnterParking(Message msg)
+	{
+		// I assume name of the park is stored in object 4
+		//we have cairables called licenes plate and id in message already
+		//assume in object 3 the exit date/time;
+        String parkName=(String) msg.getObject4();
+		ParkingLot pk=new ParkingLot();
+	    session.getSessionFactory().openSession();
+		String hql="From ParkingLot ";
+		Query query = session.createQuery(hql);
+		List<ParkingLot> ParkingsList = query.getResultList();
+		for(ParkingLot temp:ParkingsList)
+		{
+			if(temp.getName().equals(parkName))
+			{
+				pk=temp;
+			}
+		}
+	    ParkingSpot spot= new ParkingSpot();
+
+		if(!pk.isFull())
+		{
+			for(int i = 0; i< pk.getSlots_num(); i++)
+			{
+				if(pk.Spots.get(i).getCurrentState().equals("empty"))
+				{
+					pk.setOccupied_slots_num(pk.getOccupied_slots_num()+1);
+					pk.Spots.get(i).setCurrentState("occupied");
+					pk.Spots.get(i).setLicesnes_Plate(msg.getLicensePlate());
+					pk.Spots.get(i).setCus_ID(msg.getID());
+					pk.Spots.get(i).setExitDate((LocalDateTime) msg.getObject3());
+				}
+			}
+		}
+		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
+		{
+			@Override
+			public int compare(ParkingSpot p1, ParkingSpot p2) {
+				return p1.getExitDate().compareTo(p2.getExitDate());
+			}
+		});
+		  int i=pk.getOccupied_slots_num();
+		for (int depth=0;depth<3;depth++)
+		{
+			for(int height=0;height<3;height++)
+			{
+			for (int width=0;width<pk.getWidth();width++,i--)
+			 {
+				  pk.Spots.get(i).setdepth(depth);
+				  pk.Spots.get(i).setwidth(width);
+				  pk.Spots.get(i).setheight(height);
+				  if(i==0)
+				  {
+					  break;
+				  }
+			 }
+		  }
+		}
+		try {
+			         		session.saveOrUpdate(pk);
+
+		}
+		catch (Exception e)
+		{
+			session.getTransaction().rollback();
+		}
+		finally {
+			       	 session.close();
+		}
+
+
+
+
+
+
+
+	}
+
+	public void ExitParking(Message msg) {
+
+		// I assume name of the park is stored in object 4
+		//we have cairables called licenes plate and id in message already
+		//assume in object 3 the exit date/time;
+		String parkName=(String) msg.getObject4();
+		ParkingLot pk=new ParkingLot();
+		session.getSessionFactory().openSession();
+		String hql="From ParkingLot ";
+		Query query = session.createQuery(hql);
+		List<ParkingLot> ParkingsList = query.getResultList();
+		for(ParkingLot temp:ParkingsList)
+		{
+			if(temp.getName().equals(parkName))
+			{
+				pk=temp;
+			}
+		}
+		ParkingSpot spot= new ParkingSpot();
+
+
+			for(int i = 0; i< pk.getSlots_num(); i++) {
+				if (pk.Spots.get(i).getCus_ID().equals(msg.getID())
+				&& pk.Spots.get(i).getLicesnes_Plate().equals(msg.getLicensePlate())) {
+
+					pk.setOccupied_slots_num(pk.getOccupied_slots_num() -1);
+					pk.Spots.get(i).setCurrentState("empty");
+					pk.Spots.get(i).setLicesnes_Plate("");
+					pk.Spots.get(i).setCus_ID("");
+					pk.Spots.get(i).setExitDate(LocalDateTime.MIN);
+				}
+			}
+
+
+		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
+		{
+			@Override
+			public int compare(ParkingSpot p1, ParkingSpot p2) {
+				return p1.getExitDate().compareTo(p2.getExitDate());
+			}
+		});
+
+
+		int i=pk.getOccupied_slots_num();
+		for (int depth=0;depth<3;depth++)
+		{
+			for(int height=0;height<3;height++)
+			{
+				for (int width=0;width<pk.getWidth();width++,i--)
+				{
+					pk.Spots.get(i).setdepth(depth);
+					pk.Spots.get(i).setwidth(width);
+					pk.Spots.get(i).setheight(height);
+					if(i==0)
+					{
+						break;
+					}
+				}
+			}
+		}
+		try {
+			session.saveOrUpdate(pk);
+
+		}
+		catch (Exception e)
+		{
+			session.getTransaction().rollback();
+		}
+		finally {
+			session.close();
+		}
+
+
+	}
+
+
 
 	private Message ParkingSpotStateUpdate(String parkingSpotID, ParkingLot parkingLot, String state) {
 		int x = Integer.parseInt(parkingSpotID.split("-")[0]);
@@ -1242,6 +1427,7 @@ public class SimpleServer extends AbstractServer {
 			ex.printStackTrace();
 		}
 	}
+
 
 
 }
