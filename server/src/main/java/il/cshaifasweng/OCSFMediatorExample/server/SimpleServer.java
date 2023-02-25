@@ -699,7 +699,7 @@ public class SimpleServer extends AbstractServer {
 		return msg2;
 	}
 
-	private Message SendToParking(String CustomerID, String CarNumber , String ParkingID){
+	private Message SendToParking(String CustomerID, String CarNumber , String ParkingID)
 	{
 		try {
 			session = getSessionFactory().openSession();
@@ -961,7 +961,7 @@ public class SimpleServer extends AbstractServer {
 
 			return null;
 		}
-	}
+
 
 	private Message price_alter(Message ms, String res) {
 		//changes price with a given update price request
