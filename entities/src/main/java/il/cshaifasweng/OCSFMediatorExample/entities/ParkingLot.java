@@ -20,6 +20,7 @@ public class ParkingLot implements Serializable{
     private String name;
     private int numberOfFullSubs;
     private int numberOfPreOrders;
+    private String Status;
 
 
 
@@ -223,4 +224,13 @@ public class ParkingLot implements Serializable{
     public ParkingManager getParkingManager() {
         return parkingManager;
     }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
 }
