@@ -21,6 +21,9 @@ public class PartialSub extends Subscription {
     @NotNull
     String CustomerId;
 
+    @NotNull
+    String EntranceHour,DepartureHour;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MultiSubId")
     MultiSub multisub;
@@ -79,5 +82,21 @@ public class PartialSub extends Subscription {
 
     public void setEntered(boolean entered) {
         Entered = entered;
+    }
+
+    public String getEntranceHour() {
+        return EntranceHour;
+    }
+
+    public void setEntranceHour(String entranceHour) {
+        EntranceHour = entranceHour;
+    }
+
+    public String getDepartureHour() {
+        return DepartureHour;
+    }
+
+    public void setDepartureHour(String entranceHour) {
+        DepartureHour = DepartureHour;
     }
 }
