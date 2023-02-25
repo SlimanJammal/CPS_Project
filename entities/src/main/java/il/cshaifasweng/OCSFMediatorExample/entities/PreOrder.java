@@ -3,15 +3,16 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import com.sun.istack.NotNull;
 //import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table
 public class PreOrder {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    String Id;
+    @NotNull
     String PreOrderId;
     @NotNull
     String CarNumber;
@@ -35,7 +36,9 @@ public class PreOrder {
         this.Email=mail;
     }
 
-
+    public String getId() {
+        return Id;
+    }
 
     public String getCarNumber() {
         return CarNumber;

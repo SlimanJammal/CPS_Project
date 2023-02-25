@@ -33,6 +33,10 @@ public class User implements Serializable {
         this.isConnected = false;
     }
 
+    public void setId(int id) {
+        Id = id;
+    }
+
     public String getUserName() {
         return userName;
     }

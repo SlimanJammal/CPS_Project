@@ -23,6 +23,14 @@ public class ParkingManager extends User implements Serializable {
     public ParkingManager() {
 
     }
+public String getPassword()
+{
+    return this.password;
+}
+public int getid()
+{
+    return this.Id;
+}
 
 
     public Vector<PricesUpdateRequest> getPricesUpdateRequests() {

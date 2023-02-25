@@ -22,6 +22,10 @@ public class ParkingWorker extends User implements Serializable {
     public ParkingWorker() {
 
     }
+    public String getPassword()
+    {
+        return this.password;
+    }
 
     public ParkingLot getParkingLot() {
         return parkingLot;
