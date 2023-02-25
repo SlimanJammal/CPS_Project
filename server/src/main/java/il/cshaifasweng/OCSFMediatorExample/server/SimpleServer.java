@@ -510,7 +510,7 @@ public class SimpleServer extends AbstractServer {
 		int y = Integer.parseInt(parkingSpotID.split("-")[1]);
 		int z = Integer.parseInt(parkingSpotID.split("-")[2]);
 
-
+		Message msg2 = new Message(""); // TODO
 		try {
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
@@ -520,27 +520,29 @@ public class SimpleServer extends AbstractServer {
 
 			query1.from(ParkingSpot.class);
 			List<ParkingSpot> parkingSpots = session.createQuery(query1).getResultList();
-			ParkingSpot ParkingSpot = new ParkingSpot(x,y,z,state,parkingLot);
+			ParkingSpot ParkingSpot = new ParkingSpot(x, y, z, state, parkingLot);
 
-				session.save(ParkingSpot);
+			session.saveOrUpdate(ParkingSpot);
 
-				session.flush();
-				session.getTransaction().commit();
+			session.flush();
+			session.getTransaction().commit();
+		} catch (Exception exception) {
+			if (session != null) {
+				session.getTransaction().rollback();
 			}
-			catch (Exception exception) {
-				if (session != null) {
-					session.getTransaction().rollback();
-				}
-				Message msg2 = new Message("failed_transaction");
+			 msg2 = new Message("failed_transaction");
 
-				System.err.println("An error occurred, changes have been rolled back.");
-				exception.printStackTrace();
-			} finally {
-				assert session != null;
-				session.close();
-			}
+			System.err.println("An error occurred, changes have been rolled back.");
+			exception.printStackTrace();
+		} finally {
+			assert session != null;
+			session.close();
+		}
 
-	private Message SendToParking(String CustomerID, String CarNumber , String ParkingID)
+		return msg2;
+	}
+
+	private Message SendToParking(String CustomerID, String CarNumber , String ParkingID){
 	{
 		try {
 			session = getSessionFactory().openSession();
@@ -573,7 +575,6 @@ public class SimpleServer extends AbstractServer {
 		return null;
 	}
 
-		return null;
 	}
 
 	private Message routingOrders(Object ParkingEntryOrder, String type) {
