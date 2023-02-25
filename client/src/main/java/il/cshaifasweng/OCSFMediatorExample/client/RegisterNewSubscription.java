@@ -207,9 +207,10 @@ public class RegisterNewSubscription {
     }
 
     @FXML
-    void OnPreviousWindow(ActionEvent event)
-    {
+    void OnPreviousWindow(ActionEvent event) throws IOException {
         //Go To Previous Window!
+        //Data Singleton.... NEED TO ADD
+        App.setRoot("mainWindow");
     }
 
     public boolean IsNumber(String Input)
