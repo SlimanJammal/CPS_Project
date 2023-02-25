@@ -12,4 +12,9 @@ public class MultiSub {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "PartialSubId")
     private List<PartialSub> cars;
+
+    public List<PartialSub> getCars() {
+        return this.cars;
+    }
 }
+

@@ -21,6 +21,10 @@ public class ParkingWorker extends User{
     public ParkingWorker() {
 
     }
+    public String getPassword()
+    {
+        return this.password;
+    }
 
     public ParkingLot getParkingLot() {
         return parkingLot;

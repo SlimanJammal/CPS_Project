@@ -1,5 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
@@ -8,19 +13,22 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.query.Query;
+import org.hibernate.service.ServiceRegistry;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Time;
-import java.time.Instant;
-import java.time.LocalDate;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -28,6 +36,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleServer extends AbstractServer {
+
+
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+
+
+
+
+
+
+
 	public static Session session;
 
 	public SimpleServer(int port) {
@@ -77,6 +102,8 @@ public class SimpleServer extends AbstractServer {
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException { //
+
+
 		String msgString = msg.toString();
 		Message ms= (Message)msg;
 		if (msgString.startsWith("#warning")) {
@@ -86,32 +113,179 @@ public class SimpleServer extends AbstractServer {
 				System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
 
 
+		} else if (ms.getMessage().equals("cancelOrder")) {
+            Message cancelingmsg=(Message) msg;
+			session.getSessionFactory().openSession();
+			String cancelinghql = "FROM PreOrder ";
+			Query query = session.createQuery(cancelinghql);
+			List<PreOrder> results = query.getResultList();
+			PreOrder refund=new PreOrder();
+
+
+			for(PreOrder record : results)
+			{
+				if(     record.getCarNumber().equals(cancelingmsg.getObject1())
+						&& record.getEmail().equals(cancelingmsg.getObject3())
+				        && record.getEntrance().equals(cancelingmsg.getObject4())
+						&& record.getExit().equals(cancelingmsg.getObject5())
+						&& record.getPreOrderId().equals(cancelingmsg.getObject6())
+					)
+				{
+					try {
+						refund=record;
+						DeletedOrders entityToAdd = new DeletedOrders();
+						entityToAdd.setDeletetime( LocalDateTime.now()); //format= dd/mm/yyyy
+						entityToAdd.setOrder(record);
+						session.save(entityToAdd);
+						session.beginTransaction().commit();
+						PreOrder entityToDelete = session.get(PreOrder.class, record.getId());
+						session.delete(entityToDelete);
+						session.beginTransaction().commit();
+						session.flush();
+					}
+					catch (Exception exp)
+					{
+						session.getTransaction().rollback();
+					}
+					finally {
+						session.close();
+					}
+
+				}
+			}
+
+		// here I want to calculate the refund:
+			Date cancellationTime=new Date();
+			Date expectedEntrance = refund.getEntrance();
+
+			Duration duration = Duration.between((Temporal) cancellationTime, (Temporal) expectedEntrance);
+			long hours = duration.toHours();
+			if(hours<0)
+			{
+				// no refund time already passed
+			}
+			else if (hours>=0 && hours<=1) {
+				System.out.println("refund 10%");
+				
+			}
+			else if (hours>=1 && hours<3) {
+				System.out.println("refund 50%");
+
+			}
+			else if (hours>=3) {
+				System.out.println("refund 90%");
+
+			}
+
+
 		} else if (ms.getMessage().equals("loginManager")) {
-			//todo check in database if exists
-			Message MSG=new Message("AllowManager");
+
+			int ManagerId= Integer.parseInt(ms.getID());
+			String ManagerPassword=ms.getPassword();
+			session.getSessionFactory().openSession();
+			String hql = "FROM ParkingManager";
+			Query query = session.createQuery(hql);
+
+			List<ParkingManager> results = query.getResultList();
+			for(ParkingManager record : results)
+			{
+               if(record.getPassword().equals(ManagerPassword)&&record.getid()==ManagerId) {
+				Message MSG = new Message("AllowManager");
 				client.sendToClient(MSG);
+			   }
+			}
+			try {
+				session.flush();
+				session.getTransaction().commit();
+			}
+			catch (Exception exp)
+			{
+				session.getTransaction().rollback();
+			}
+			finally {
+				session.close();
+			}
+
+
+		}
+		else if(ms.getMessage().equals("Statistics"))
+		{
+
+			session.getSessionFactory().openSession();
+
+			String hql = "FROM DeletedOrders ";
+			String Latehql = "FROM Late ";
+
+			Query query = session.createQuery(hql);
+			Query Latequery = session.createQuery(Latehql);
+
+			List<DeletedOrders> DeletedOrdersList = query.getResultList();
+			List<Late> LateList = query.getResultList();
+
+			int Deletedmean=0;
+			for(DeletedOrders order : DeletedOrdersList)
+			{ String date=(String)order.getDeletetime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+				String today =(String)(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				if(date.equals(today))
+				{
+					Deletedmean++;
+				}
+			}
+
+			int Latemean=0;
+			for(Late order : LateList)
+			{ String date=(String)order.getDeletetime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+				String today =(String)(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				if(date.equals(today))
+				{
+					Latemean++;
+				}
+			}
+
+			//todo here i have mean (asked azaiza and he said that's what they did )
+			// todo there is another fucnction called show stats i have no idea wth
+
+
+
+
 		}
 		else if(ms.getMessage().equals("loginEmployee"))
 		{
-			// todo check in database if exists
-			Message MSG=new Message("AllowEmployee");
-			client.sendToClient(MSG);
+			int WorkerId= Integer.parseInt(ms.getID());
+			String WorkerPassword=ms.getPassword();
+			session.getSessionFactory().openSession();
+			String hql = "FROM ParkingWorker ";
+			Query query = session.createQuery(hql);
+
+			List<ParkingWorker> results = query.getResultList();
+			for(ParkingWorker record : results)
+			{
+				if(record.getPassword().equals(WorkerPassword) /*&&record.getid()==WorkerId*/) {
+					Message MSG=new Message("AllowEmployee");
+					client.sendToClient(MSG);
+				}
+			}
+			try {
+				session.flush();
+				session.getTransaction().commit();
+			}
+			catch (Exception exp)
+			{
+				session.getTransaction().rollback();
+			}
+			finally {
+				session.close();
+			}
+
+
 		}
 		else if(ms.getMessage().equals("RenewSub"))
 		{
-			// todo check in database if exists
-			Message MSG=new Message("SubRenewed");
-			client.sendToClient(MSG);
+
 		}
 		else if(ms.getMessage().equals("ParkingManager_alterPrices"))
 		{
-			// adds a price change request to the regional manager's requests list
-			//data stored in seperate objects
-			// ocasional price -> object1
-			// preOrder price -> object2
-			// partTime price -> object3
-			// FullSubs price -> object4
-			// Multi price -> object5
+
 			PricesClass occasionalPrice = new PricesClass((int)ms.getObject1(),"occasionalPrice");
 			PricesClass preOrderPrice = new PricesClass((int)ms.getObject2(),"preOrderPrice");
 			PricesClass PartTimePrice = new PricesClass((int)ms.getObject3(),"PartTimePrice");
@@ -160,7 +334,6 @@ public class SimpleServer extends AbstractServer {
 		{
 			Message MSG=new Message("pricesReturned");
 			try{
-
 				session = getSessionFactory().openSession();
 				session.beginTransaction();
 				CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -471,12 +644,6 @@ public class SimpleServer extends AbstractServer {
 	}
 
 
-	private void DeleteParkingOrder(Message msg, ConnectionToClient client){
-		//todo
-	}
-
-
-
 
 
 
@@ -620,8 +787,23 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	private Message pdfRegional(Message ms) {
+		try {
+			// Create a new Document
+			Document document = new Document();
+			// Create a new PdfWriter
+			PdfWriter.getInstance(document, new FileOutputStream("Parking.pdf"));
+			// Open the Document
+			document.open();
+			// Add content to the Document
+			for(int i=0;i<3;i++) {
+				document.add(new Paragraph("Hello, world!"));
+			}
+			// Close the Document
+			document.close();
+		} catch (FileNotFoundException | DocumentException e) {
+			e.printStackTrace();
+		}
 
-		//todo
 		return null;
 	}
 

@@ -16,7 +16,11 @@
 	<name>server</name>
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
-	<dependencies>
+	<dependencies><dependency>
+		<groupId>com.itextpdf</groupId>
+		<artifactId>itextpdf</artifactId>
+		<version>5.5.7</version>
+	</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
