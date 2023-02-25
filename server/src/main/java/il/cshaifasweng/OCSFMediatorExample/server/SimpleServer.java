@@ -131,9 +131,54 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("RenewSub"))
 		{
-			// todo check in database if exists
-			Message MSG=new Message("SubRenewed");
-			client.sendToClient(MSG);
+			Boolean flag = false;
+			String Subnumber = (String) ms.getSubNum();
+			String LicencePlateNum = (String) ms.getLicensePlate();
+
+
+			// todo when we find the subscriber to renew what do we do ??
+			List<PartialSub> partialListDB = getAll(PartialSub.class);
+			List<FullSub> fullListDB = getAll(FullSub.class);
+			List<MultiSub> multiListDB = getAll(MultiSub.class);
+			for (PartialSub partialSub : partialListDB) {
+				String ID = partialSub.getPartialSubId();
+				String Licence = partialSub.getCarNumber();
+				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
+					// add action here
+					flag = true;
+					break;
+				}
+			}
+			for (FullSub fullsub : fullListDB) {
+				String ID = fullsub.getCustomerId();
+				String Licence = fullsub.getCarNumber();
+				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
+					// add action here
+					flag = true;
+					break;
+				}
+			}
+			for (MultiSub multisub : multiListDB) {
+				String ID = multisub.getPartialSubId();
+				String Licence = multisub.getCarNumber();
+				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
+					// add action here
+					flag = true;
+					break;
+				}
+			}
+
+			// if the client is found inform him that sub is renewed
+			if(flag){
+				Message MSG=new Message("SubRenewed");
+				client.sendToClient(MSG);
+			}
+			else {
+				Message MSG=new Message("Client not found");
+				client.sendToClient(MSG);
+			}
+
+
 		}
 		else if(ms.getMessage().equals("ParkingManager_alterPrices"))
 		{
@@ -243,7 +288,7 @@ public class SimpleServer extends AbstractServer {
 			// each complaint contains two fields
 			// 1- customer ID
 			// 2- the complaint text
-			// bruv u gud ?
+			// bruv u gud ? -> no im not gud im god
 
 			Complaints tempComplaint = (Complaints) ms.getObject1();
 			Complaint new_complaint = new Complaint();

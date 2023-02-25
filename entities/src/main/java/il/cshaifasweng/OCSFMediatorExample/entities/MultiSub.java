@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Subscription" )
-public class MultiSub extends Subscription {
+public class MultiSub extends PartialSub {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     String MultiSubId;
