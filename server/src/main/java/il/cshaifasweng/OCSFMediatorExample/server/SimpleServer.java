@@ -171,10 +171,12 @@ public class SimpleServer extends AbstractServer {
 			// if the client is found inform him that sub is renewed
 			if(flag){
 				Message MSG=new Message("SubRenewed");
+				MSG.setObject1("success");
 				client.sendToClient(MSG);
 			}
 			else {
-				Message MSG=new Message("Client not found");
+				Message MSG=new Message("SubRenewed");
+				MSG.setObject1("fail");
 				client.sendToClient(MSG);
 			}
 
@@ -220,7 +222,7 @@ public class SimpleServer extends AbstractServer {
 
 			Message msg2 = new Message("prices update request sent");
 			client.sendToClient(msg2);
-				} catch (Exception exception) {
+			} catch (Exception exception) {
 					if (session != null) {
 					session.getTransaction().rollback();
 			}
@@ -331,17 +333,45 @@ public class SimpleServer extends AbstractServer {
 			Time tempTime = new Time(Integer.parseInt(parsed[0]),Integer.parseInt(parsed[1]),Integer.parseInt(parsed[2]));
 			customer.setStartTime(tempTime);
 
+			try {
+				session = getSessionFactory().openSession();
+				session.beginTransaction();
+				// add new occasional customer to the db .
+				session.save(customer);
 
-			//todo return msg woth "OcasionalParking" in name object1 a string success/fail
-			Message msg2 = routingOrders(customer,"OccCustomer");
+				session.flush();
+				session.getTransaction().commit();
 
-			client.sendToClient(msg2);
+				Message msg2 = routingOrders(customer,"OccCustomer");
+				msg2.setObject1("success");
+//				Message msg2 = new Message("prices update request sent");
+				client.sendToClient(msg2);
+			} catch (Exception exception) {
+				if (session != null) {
+					session.getTransaction().rollback();
+				}
+				Message msg2 = new Message("OccCustomer");
+				msg2.setObject1("fail");
+				client.sendToClient(msg2);
+				System.err.println("An error occurred, changes have been rolled back.");
+				exception.printStackTrace();
+			} finally {
+				session.close();
+			}
+
+			// return msg with "OcasionalParking" in name object1 a string success/fail
+
+
 
 		} else if (ms.getMessage().equals("OneTimeParkingOrder_Submit")){
+
+			//**************************** pre order parking **************************//
+
+
 			//todo check if in DB
-			// return OneTimeParkingOrder_Success
+			//return OneTimeParkingOrder_Success
 			// or OneTimeParkingOrder_Fail
-			//data is contained in a vector inside Object1
+			// data is contained in a vector inside Object1
 			// the data is stored in the following order
 			// 0- car number             3- Eta
 			// 1- DesiredParking         4- Etd
@@ -549,10 +579,17 @@ public class SimpleServer extends AbstractServer {
 
 	private Message routingOrders(Object ParkingEntryOrder, String type) {
 		//todo
-		// this function takes an order such as preorder or occasional customer etc.., and the type in "type"
+		//this function takes an order such as preorder or occasional customer etc.., and the type in "type"
 		// so we can convert it to the given type and add it. it returns a Message and it's fields are set according to
 		// the caller.
 		// it should every order to function that saves it/or let's the customer enter the parking
+
+		if (type.equals("PreOrder")){
+			PreOrder newOrder = (PreOrder) ParkingEntryOrder;
+
+		}else{
+			// here type is "OccCustomer"
+		}
 
 		return null;
 
