@@ -30,27 +30,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
-//import java.util.;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleServer extends AbstractServer {
-
-
-	//todo for mohammed all pdf and statistics
-	//todo for mohammed all pdf and statistics
-	//todo for mohammed all pdf and statistics
-	//todo for mohammed all pdf and statistics
-	//todo for mohammed all pdf and statistics
-	//todo for mohammed all pdf and statistics
-	//todo for mohammed all pdf and statistics
-	//todo for mohammed all pdf and statistics
-
-
-
-
-
 
 
 	public static Session session;
@@ -111,7 +95,20 @@ public class SimpleServer extends AbstractServer {
 				System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
 
 
-		} else if (ms.getMessage().equals("cancelOrder")) {
+		} else if (ms.getMessage().equals("EnterParking4")) {
+
+			Message Entrance=new Message("park Entry");
+			Entrance.setObject4("Bat-Galim");
+			Entrance.setLicensePlate(ms.getLicensePlate());
+			Entrance.setID(ms.getID());
+			Entrance.setObject3(LocalDateTime.now());
+			System.out.println("before func");
+			EnterParking(Entrance);
+			System.out.println("after func");
+
+
+		}
+		if (ms.getMessage().equals("cancelOrder")) {
             Message cancelingmsg=(Message) msg;
 			session.getSessionFactory().openSession();
 			String cancelinghql = "FROM PreOrder ";
@@ -942,14 +939,22 @@ public class SimpleServer extends AbstractServer {
 	private void EnterParking(Message msg)
 	{
 		// I assume name of the park is stored in object 4
-		//we have cairables called licenes plate and id in message already
-		//assume in object 3 the exit date/time;
+		//we have variables called licenes plate and id in message already
+		//assume in object 3 the exit date/time
+		//;
+		System.out.println("first");
         String parkName=(String) msg.getObject4();
+		System.out.println("After message");
 		ParkingLot pk=new ParkingLot();
-	    session.getSessionFactory().openSession();
+		System.out.println("After Parking lot");
 		String hql="From ParkingLot ";
+		System.out.println("After query");
+     	session.getSessionFactory().openSession();
+		System.out.println("After open session");
 		Query query = session.createQuery(hql);
+		System.out.println("After query");
 		List<ParkingLot> ParkingsList = query.getResultList();
+		System.out.println("second");
 		for(ParkingLot temp:ParkingsList)
 		{
 			if(temp.getName().equals(parkName))
@@ -958,7 +963,7 @@ public class SimpleServer extends AbstractServer {
 			}
 		}
 	    ParkingSpot spot= new ParkingSpot();
-
+		System.out.println("third");
 		if(!pk.isFull())
 		{
 			for(int i = 0; i< pk.getSlots_num(); i++)
@@ -973,6 +978,7 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 		}
+		System.out.println("forth");
 		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
 		{
 			@Override
@@ -1008,7 +1014,7 @@ public class SimpleServer extends AbstractServer {
 		finally {
 			       	 session.close();
 		}
-
+		System.out.println("last");
 
 
 
