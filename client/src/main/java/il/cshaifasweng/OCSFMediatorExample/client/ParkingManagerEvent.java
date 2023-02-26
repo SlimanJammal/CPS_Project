@@ -2,7 +2,9 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
-public class ParkingManagerEvent {
+import java.io.Serializable;
+
+public class ParkingManagerEvent implements Serializable {
     private Message message;
 
     private String utilRes1;

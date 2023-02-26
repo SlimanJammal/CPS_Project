@@ -2,7 +2,9 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
-public class MessageEvent {
+import java.io.Serializable;
+
+public class MessageEvent implements Serializable {
     private Message message;
 
     public Message getMessage() {
