@@ -17,10 +17,22 @@ public class ParkingLot implements Serializable{
     static int count = 0;
     private int width;
     private int slots_num;
-    private String name;
-    private int numberOfFullSubs;
-    private int numberOfPreOrders;
 
+    public int getOccupied_slots_num() {
+        return occupied_slots_num;
+    }
+
+    public void setOccupied_slots_num(int occupied_slots_num) {
+        this.occupied_slots_num = occupied_slots_num;
+    }
+
+    private int occupied_slots_num;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private String name;
 
 
     @OneToOne
@@ -75,7 +87,7 @@ public class ParkingLot implements Serializable{
 //                for(int k=0;k<3;k++)
 //                {
 //
-//                    ParkingSpot S = new ParkingSpot(i,j,k,"0",this.parking_id);
+//                    ParkingSpot S = new ParkingSpot(i,j,k,"empty",this.parking_id);
 //                    Spots.add(S);
 //                }
 //            }
@@ -137,21 +149,6 @@ public class ParkingLot implements Serializable{
 
 
 
-    public int getNumberOfSubs() {
-        return numberOfFullSubs;
-    }
-
-    public void setNumberOfSubs(int numberOfSubs) {
-        this.numberOfFullSubs = numberOfSubs;
-    }
-
-    public int getNumberOfPreOrders() {
-        return numberOfPreOrders;
-    }
-
-    public void setNumberOfPreOrders(int numberOfPreOrders) {
-        this.numberOfPreOrders = numberOfPreOrders;
-    }
 
     public void setParking_id(int parking_id) {
         this.parking_id = parking_id;

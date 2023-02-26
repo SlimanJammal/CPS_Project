@@ -4,6 +4,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ParkingSpot")
@@ -13,7 +14,37 @@ public class ParkingSpot {
     @GeneratedValue(strategy = GenerationType.AUTO)
     int spotId ;
 
-    int x,y,z;
+    @NotNull
+    int height,width,depth;
+
+    public LocalDateTime getExitDate() {
+        return ExitDate;
+    }
+
+    public void setExitDate(LocalDateTime exitDate) {
+        ExitDate = exitDate;
+    }
+
+    LocalDateTime ExitDate;
+    public String getCus_ID() {
+        return Cus_ID;
+    }
+
+    public void setCus_ID(String cus_ID) {
+        Cus_ID = cus_ID;
+    }
+
+    String Cus_ID;
+
+    public String getLicesnes_Plate() {
+        return Licesnes_Plate;
+    }
+
+    public void setLicesnes_Plate(String licesnes_Plate) {
+        Licesnes_Plate = licesnes_Plate;
+    }
+
+    String Licesnes_Plate;
 
     String CurrentState;
 
@@ -25,9 +56,9 @@ public class ParkingSpot {
 
     public ParkingSpot(int a, int b, int c, String state, int thispark)
     {
-        x = a;
-        y = b;
-        z = c;
+        height = a;
+        width = b;
+        depth = c;
         CurrentState = state;
         parking_lot_id  = thispark;
 
@@ -42,28 +73,28 @@ public class ParkingSpot {
         return spotId;
     }
 
-    public int getX() {
-        return x;
+    public int getheight() {
+        return height;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setheight(int x) {
+        this.height = x;
     }
 
-    public int getY() {
-        return y;
+    public int getwidth() {
+        return width;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setwidth(int y) {
+        this.width = y;
     }
 
-    public int getZ() {
-        return z;
+    public int getdepth() {
+        return depth;
     }
 
-    public void setZ(int z) {
-        this.z = z;
+    public void setdepth(int z) {
+        this.depth = z;
     }
 
     public String getCurrentState() {

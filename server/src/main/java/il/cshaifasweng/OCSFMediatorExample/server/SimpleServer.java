@@ -29,9 +29,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -704,6 +702,161 @@ public class SimpleServer extends AbstractServer {
 .MMMMM.MMMMMM.MMMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH....OOOOOOOOOOOOO....DDDDDDDDDDDDDD....SSSSSSSSSSSS....
 .MMMMM..MMMMM..MMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
 ..........................................................................................................................*/
+
+	private void EnterParking(Message msg)
+	{
+		// I assume name of the park is stored in object 4
+		//we have cairables called licenes plate and id in message already
+		//assume in object 3 the exit date/time;
+        String parkName=(String) msg.getObject4();
+		ParkingLot pk=new ParkingLot();
+	    session.getSessionFactory().openSession();
+		String hql="From ParkingLot ";
+		Query query = session.createQuery(hql);
+		List<ParkingLot> ParkingsList = query.getResultList();
+		for(ParkingLot temp:ParkingsList)
+		{
+			if(temp.getName().equals(parkName))
+			{
+				pk=temp;
+			}
+		}
+	    ParkingSpot spot= new ParkingSpot();
+
+		if(!pk.isFull())
+		{
+			for(int i = 0; i< pk.getSlots_num(); i++)
+			{
+				if(pk.Spots.get(i).getCurrentState().equals("empty"))
+				{
+					pk.setOccupied_slots_num(pk.getOccupied_slots_num()+1);
+					pk.Spots.get(i).setCurrentState("occupied");
+					pk.Spots.get(i).setLicesnes_Plate(msg.getLicensePlate());
+					pk.Spots.get(i).setCus_ID(msg.getID());
+					pk.Spots.get(i).setExitDate((LocalDateTime) msg.getObject3());
+				}
+			}
+		}
+		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
+		{
+			@Override
+			public int compare(ParkingSpot p1, ParkingSpot p2) {
+				return p1.getExitDate().compareTo(p2.getExitDate());
+			}
+		});
+		  int i=pk.getOccupied_slots_num();
+		for (int depth=0;depth<3;depth++)
+		{
+			for(int height=0;height<3;height++)
+			{
+			for (int width=0;width<pk.getWidth();width++,i--)
+			 {
+				  pk.Spots.get(i).setdepth(depth);
+				  pk.Spots.get(i).setwidth(width);
+				  pk.Spots.get(i).setheight(height);
+				  if(i==0)
+				  {
+					  break;
+				  }
+			 }
+		  }
+		}
+		try {
+			         		session.saveOrUpdate(pk);
+
+		}
+		catch (Exception e)
+		{
+			session.getTransaction().rollback();
+		}
+		finally {
+			       	 session.close();
+		}
+
+
+
+
+
+
+
+	}
+
+	public void ExitParking(Message msg) {
+
+		// I assume name of the park is stored in object 4
+		//we have cairables called licenes plate and id in message already
+		//assume in object 3 the exit date/time;
+		String parkName=(String) msg.getObject4();
+		ParkingLot pk=new ParkingLot();
+		session.getSessionFactory().openSession();
+		String hql="From ParkingLot ";
+		Query query = session.createQuery(hql);
+		List<ParkingLot> ParkingsList = query.getResultList();
+		for(ParkingLot temp:ParkingsList)
+		{
+			if(temp.getName().equals(parkName))
+			{
+				pk=temp;
+			}
+		}
+		ParkingSpot spot= new ParkingSpot();
+
+
+			for(int i = 0; i< pk.getSlots_num(); i++) {
+				if (pk.Spots.get(i).getCus_ID().equals(msg.getID())
+				&& pk.Spots.get(i).getLicesnes_Plate().equals(msg.getLicensePlate())) {
+
+					pk.setOccupied_slots_num(pk.getOccupied_slots_num() -1);
+					pk.Spots.get(i).setCurrentState("empty");
+					pk.Spots.get(i).setLicesnes_Plate("");
+					pk.Spots.get(i).setCus_ID("");
+					pk.Spots.get(i).setExitDate(LocalDateTime.MIN);
+				}
+			}
+
+
+		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
+		{
+			@Override
+			public int compare(ParkingSpot p1, ParkingSpot p2) {
+				return p1.getExitDate().compareTo(p2.getExitDate());
+			}
+		});
+
+
+		int i=pk.getOccupied_slots_num();
+		for (int depth=0;depth<3;depth++)
+		{
+			for(int height=0;height<3;height++)
+			{
+				for (int width=0;width<pk.getWidth();width++,i--)
+				{
+					pk.Spots.get(i).setdepth(depth);
+					pk.Spots.get(i).setwidth(width);
+					pk.Spots.get(i).setheight(height);
+					if(i==0)
+					{
+						break;
+					}
+				}
+			}
+		}
+		try {
+			session.saveOrUpdate(pk);
+
+		}
+		catch (Exception e)
+		{
+			session.getTransaction().rollback();
+		}
+		finally {
+			session.close();
+		}
+
+
+	}
+
+
 
 	private Message ParkingSpotStateUpdate(String parkingSpotID, ParkingLot parkingLot, String state) {
 		int x = Integer.parseInt(parkingSpotID.split("-")[0]);
