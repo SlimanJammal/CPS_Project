@@ -8,6 +8,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,9 +28,8 @@ public class RequestStatus {
     @FXML // fx:id="Previous Window"
     private Button PreviousButton; // Value injected by FXMLLoader
 
-
     @FXML
-    private Button backbtn;
+    private TableView DataTable;
 
     @FXML
     void CarNumberTF(ActionEvent event) {
@@ -105,19 +105,10 @@ public class RequestStatus {
 
     @FXML
     void OnPreviousButton(ActionEvent event) throws IOException {
-        App.setRoot("mainWindow.fxml");
+        App.setRoot(DataSingleton.getInstance().getCaller());
 
     }
 
-    @FXML
-    void backbtn(ActionEvent event) {
-        try {
-            App.setRoot(DataSingleton.getInstance().getCaller());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
     //_________________________________________________________________________________________________________________
     //_________________________________________________________________________________________________________________
     //___________________________________________ Assistnat Functions _________________________________________________

@@ -1191,7 +1191,8 @@ public class SimpleServer extends AbstractServer {
 	private Message SendToParking() {
 		//Done
 		Message Result = new Message("");
-		try {
+		try
+		{
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
 
@@ -1207,7 +1208,7 @@ public class SimpleServer extends AbstractServer {
 					ParkingLot = ParkingLots.get(i);
 					Result.setMessage("Found A New Parking Lot");
 					Result.setObject1(ParkingLot.getParking_id());
-					Result.setObject1(ParkingLot.getName());
+					Result.setObject2(ParkingLot.getName());
 					break;
 				}
 			}
@@ -1233,7 +1234,6 @@ public class SimpleServer extends AbstractServer {
 
 
 	}
-
 
 	private Message routingOrders(Object ParkingEntryOrder, String type) {
 		//todo
@@ -1318,10 +1318,7 @@ public class SimpleServer extends AbstractServer {
 
 	}
 
-
-
 	private Message ParkingLotCommand(String ParkingID, String SystemCommand) {
-		//todo
 		try {
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
@@ -1334,11 +1331,12 @@ public class SimpleServer extends AbstractServer {
 			int DeltaSpots = 0;
 			for(int i = 0 ; i < ParkingLots.size(); i++)
 			{
-				/*if(ParkingLots.get(i).getSpots() - ParkingLots.get(i).getEmptySpots() > DeltaSpots)
+				if(ParkingLots.get(i).getParking_id() == Integer.parseInt(ParkingID))
 				{
-					DeltaSpots = ParkingLots.get(i).getSpots() - ParkingLots.get(i).getEmptySpots();
 					Result = ParkingLots.get(i);
-				}*/
+					Result.setStatus(SystemCommand);
+					break;
+				}
 			}
 
 			//ParkingLot.setStatus(SystemCommand);	//NEED TO DO/TALK
@@ -1439,8 +1437,6 @@ public class SimpleServer extends AbstractServer {
 
 		return msg2;
 	}
-
-
 
 	private Message showPricesRegional(Message ms) {
 		Message MSG = new Message("show_prices_regional");
@@ -1551,7 +1547,6 @@ public class SimpleServer extends AbstractServer {
 
 			return null;
 		}
-
 
 	private Message price_alter(Message ms, String res) {
 		//changes price with a given update price request
