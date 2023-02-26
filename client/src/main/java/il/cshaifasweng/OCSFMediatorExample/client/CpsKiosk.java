@@ -84,23 +84,25 @@ public class CpsKiosk {
     }
     @FXML
     void WorkerBtn(ActionEvent event) throws IOException {
-        Message msg= new Message("loginEmployee_KIOSK");
-        msg.setID(ID_LOGIN_TF.getId());
+        Message msg= new Message("loginEmployee");
+        msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
-    public void allowWorker(loginManagerKioskEvent allowing) throws IOException {
+    public void allowWorker(loginWorkerEvent allowing) throws IOException {
 
-
+        System.out.println("Allow Worker");
+        System.out.println(allowing.getMsg().getObject1());
 
         if(allowing.getMsg().getObject1().toString().equals("success")) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
             il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
-            data.setData(parkingWorker);
+            data.setData(parkingWorker.getUserID());
 
             data.setCaller("cpsKiosk");
+            System.out.println("aere wsl set root ");
             App.setRoot("EmployeeWindow");
         } else {
             Platform.runLater(() -> {
@@ -117,12 +119,13 @@ public class CpsKiosk {
     @FXML
     void ManagerBtn(ActionEvent event) throws IOException {
         Message msg= new Message("loginManager_KIOSK");
-        msg.setID(ID_LOGIN_TF.getId());
+        msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
     public void allowManager(loginManagerKioskEvent allowing) throws IOException {
+        System.out.println("Allow whech");
 
         int permission =(int) allowing.getMsg().getObject3();
 
@@ -131,16 +134,16 @@ public class CpsKiosk {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingManager");
             il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager parkingManager = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager) allowing.getMsg().getObject2();
-            data.setData(parkingManager);
+            data.setData(parkingManager.getid());
             data.setCaller("cpsKiosk");
-            App.setRoot("ParkingManger");
+            App.setRoot("ParkingManager");
 
             } else  if(allowing.getMsg().getObject1().toString().equals("success") && permission ==  0){
 
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("RegionalManager");
             il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager regionalManager = (il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager) allowing.getMsg().getObject2();
-            data.setData(regionalManager);
+            data.setData(regionalManager.getUserID());
             data.setCaller("cpsKiosk");
             App.setRoot("RegionalManager");
 
@@ -153,6 +156,30 @@ public class CpsKiosk {
             });
 
         }
+//
+//        if(allowing.getMsg().getMessage().equals("AllowEmployee")) {
+//            System.out.println("Allow Worker");
+//            System.out.println(allowing.getMsg().getObject1());
+//
+//            if (allowing.getMsg().getObject1().equals("success")) {
+//                DataSingleton data = DataSingleton.getInstance();
+//                data.setDataName("ParkingWorker");
+//                il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
+//                data.setData(parkingWorker.getUserID());
+//
+//                data.setCaller("cpsKiosk");
+//                System.out.println("aere wsl set root ");
+//                App.setRoot("EmployeeWindow");
+//            } else {
+//                Platform.runLater(() -> {
+//                    Alert alert = new Alert(Alert.AlertType.INFORMATION,
+//                            "UserName or PassWord Wrong"
+//                    );
+//                    alert.show();
+//                });
+//
+//            }
+//        }
     }
 
 

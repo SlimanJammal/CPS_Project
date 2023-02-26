@@ -11,11 +11,11 @@ public class EmployeeWindowEvent implements Serializable {
         this.message = message;
     }
 
-    public Message getMsg() {
+    public Message getMessage() {
         return message;
     }
 
-    public void setMsg(Message msg) {
+    public void getMessage(Message msg) {
         this.message = msg;
     }
 

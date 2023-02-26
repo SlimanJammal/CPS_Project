@@ -53,6 +53,9 @@ public class ParkingManager {
     @FXML // fx:id="pricetype"
     private TableColumn<PricesClass,String> pricetype; // Value injected by FXMLLoader
 
+    @FXML
+    private TextArea statsScreen;
+
     @FXML // fx:id="showPricesBTN"
     private Button showPricesBTN; // Value injected by FXMLLoader
 
@@ -88,15 +91,16 @@ public class ParkingManager {
     }
 
     @Subscribe
-    void showSTats(showStatsEvent event)
+   public void showSTats(showStatsEvent event)
     {
-        Alert alert = new Alert(Alert.AlertType.WARNING,
-                String.format(": \n"+event.msg.getObject1(),
-                        ": \n"+event.msg.getObject2(),
-                        ": \n"+event.msg.getObject3()
-                        )
-        );
-        alert.show();
+        Message ms = event.getMsg();
+
+        Integer first = (Integer) ms.getObject1();
+        Integer second = (Integer) ms.getObject2();
+//        Integer third = (Integer) ms.getObject3();
+
+        String data = "DeleteMean: " + first + " \n" + "LateMean: "+ second;
+        statsScreen.setText(data);
 //
     }
 
@@ -109,6 +113,7 @@ public class ParkingManager {
         // partTime price -> object3
         // FullSubs price -> object4
         // Multi price -> object5
+        System.out.println("ParkingManager_alterPrices");
         msg.setObject1(OcasionalTF.getText());
         msg.setObject2(PreOrderTF.getText());
         msg.setObject3(PartTimeTF.getText());
@@ -116,23 +121,31 @@ public class ParkingManager {
         msg.setObject5(MultiTF.getText());
 
         //MANAGER NAME/PARKING NUMBER
-        msg.setObject6(DataSingleton.getInstance().getDataName());
+        msg.setObject6(DataSingleton.getInstance().getData());
 
         SimpleClient.getClient().sendToServer(msg);
     }
 
     @FXML
-    void showPrices(ActionEvent event) throws IOException {
+    void showPrices(ActionEvent event)   {
 
         Message msg=new Message("ParkingManager_showPrices");
 
         //PARKING MANGER MANAGER LOAD
-        msg.setObject1(DataSingleton.getInstance());
-        SimpleClient.getClient().sendToServer(msg);
+        System.out.println("in show prices");
+        Integer data = (Integer) DataSingleton.getInstance().getData();
+        msg.setObject1(data);
+        System.out.println("22in show prices");
+
+        try {
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe
-    void showingPrices(showPricesEvent event){
+  public void showingPrices(showPricesEvent event){
         Message returned = event.msg;
         if (returned.getMessage().equals("pricesReturned")){
             //the prices are returned here as a List of PricesClass
@@ -142,6 +155,21 @@ public class ParkingManager {
             price.setCellValueFactory(new PropertyValueFactory<PricesClass,Integer>("price"));
             pricetype.setCellValueFactory(new PropertyValueFactory<PricesClass,String>("priceType"));
             PricesTable.setItems(list);
+        }
+
+        if(returned.getMessage().equals("prices update request sent")){
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION,
+//                   "REQUEST SENT"
+//                    );
+//
+//            alert.show();
+           OcasionalTF.setText("request sent");
+            PreOrderTF.setText("request sent");
+            PartTimeTF.setText("request sent");
+            FullSubsTF.setText("request sent");
+            MultiTF.setText("request sent");
+
+
         }
     }
 

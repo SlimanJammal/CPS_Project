@@ -2,7 +2,9 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
-public class OcasionalEvent {
+import java.io.Serializable;
+
+public class OcasionalEvent implements Serializable {
     private Message message;
 
     public Message getMessage() {

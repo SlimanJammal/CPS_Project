@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
+//import java.util.;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -209,6 +210,16 @@ public class SimpleServer extends AbstractServer {
 				}
 
 				client.sendToClient(MSG);
+		}else if (ms.getMessage().equals("EmployeeLogout")){
+			ParkingWorker worker = (ParkingWorker) ms.getObject1();
+			Message returnMsg = tryLogOut(worker);
+			//tryLogOut_LoggedOut
+			if(returnMsg.getMessage().equals("tryLogOut_LoggedOut")){
+				Message retMsg = new Message("EmployeeLogout_success");
+				retMsg.setObject1(ms.getObject2());
+				client.sendToClient(retMsg);
+			}
+
 		}
 		else if(ms.getMessage().equals("ParkingManager_showStats"))
 		{
@@ -223,7 +234,7 @@ public class SimpleServer extends AbstractServer {
 			Query Latequery = session.createQuery(Latehql);
 
 			List<DeletedOrders> DeletedOrdersList = query.getResultList();
-			List<Late> LateList = query.getResultList();
+			List<Late> LateList = Latequery.getResultList();
 
 			int Deletedmean=0;
 			for(DeletedOrders order : DeletedOrdersList)
@@ -257,6 +268,7 @@ public class SimpleServer extends AbstractServer {
 		else if(ms.getMessage().equals("loginEmployee"))
 		{
 
+
 			Message MSG=new Message("AllowEmployee");
 			String[] data = {ms.getID(),ms.getPassword()} ;
 
@@ -271,6 +283,8 @@ public class SimpleServer extends AbstractServer {
 			}else {
 				MSG.setObject1("fail");
 			}
+
+			System.out.println("before sending to client ");
 			client.sendToClient(MSG);
 		}
 		else if(ms.getMessage().equals("RenewSub")) {
@@ -389,35 +403,51 @@ public class SimpleServer extends AbstractServer {
 			// partTime price -> object3
 			// FullSubs price -> object4
 			// Multi price -> object5
-			PricesClass occasionalPrice = new PricesClass((int)ms.getObject1(),"occasionalPrice");
-			PricesClass preOrderPrice = new PricesClass((int)ms.getObject2(),"preOrderPrice");
-			PricesClass PartTimePrice = new PricesClass((int)ms.getObject3(),"PartTimePrice");
-			PricesClass fullSubPrice = new PricesClass((int)ms.getObject4(),"fullSubPrice");
-			PricesClass MultiCarPrice = new PricesClass((int)ms.getObject5(),"MultiCarPrice");
+			System.out.println("ParkingManager_alterPrices server start1");
 
 			Vector<Integer> prices_request_vector = new Vector<Integer>();
+			System.out.println("ParkingManager_alterPrices server start2");
+			String one = (String)ms.getObject1();
+			prices_request_vector.add(Integer.parseInt(one));
+			String two = (String)ms.getObject2();
+			prices_request_vector.add(Integer.parseInt(two));
+			String three= (String)ms.getObject3();
+			prices_request_vector.add(Integer.parseInt(three));
+			String four = (String)ms.getObject4();
+			prices_request_vector.add(Integer.parseInt(four));
+			String five = (String)ms.getObject5();
+			prices_request_vector.add(Integer.parseInt(five));
 
-			prices_request_vector.add((int)ms.getObject1());
-			prices_request_vector.add((int)ms.getObject2());
-			prices_request_vector.add((int)ms.getObject3());
-			prices_request_vector.add((int)ms.getObject4());
-			prices_request_vector.add((int)ms.getObject5());
-
+			System.out.println("ParkingManager_alterPrices server start33");
 			//get manger's name of current window to alter accordingly
-			ParkingManager Manager =  (ParkingManager) ms.getObject6();
+			Integer Managerid =  (Integer) ms.getObject6();
 
 			//make new request to add to the DB
-			PricesUpdateRequest new_request = new PricesUpdateRequest(Manager,prices_request_vector,"plz_change");
+
 			try {
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
+			ParkingManager	Manager= new ParkingManager();
+				CriteriaBuilder builder = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingManager> query = builder.createQuery(ParkingManager.class);
+				query.from(ParkingManager.class);
+				List<ParkingManager> data = session.createQuery(query).getResultList();
+				System.out.println("ParkingManager_alterPrices server start3");
+				for(ParkingManager a : data){
+					if(a.getid() == Managerid){
+						Manager = a;
+					}
+				}
+
+			PricesUpdateRequest new_request = new PricesUpdateRequest(Manager,prices_request_vector,"plz_change");
 			// add new request for the list so the regional manager can see it.
+				System.out.println("ParkingManager_alterPrices server start4");
 			session.save(new_request);
 
 			session.flush();
 			session.getTransaction().commit();
 
-
+				System.out.println("ParkingManager_alterPrices server start5");
 			Message msg2 = new Message("prices update request sent");
 			client.sendToClient(msg2);
 				} catch (Exception exception) {
@@ -429,6 +459,7 @@ public class SimpleServer extends AbstractServer {
 				System.err.println("An error occurred, changes have been rolled back.");
 				exception.printStackTrace();
 				} finally {
+				System.out.println("ParkingManager_alterPrices server finish");
 				session.close();
 			}
 
@@ -436,20 +467,28 @@ public class SimpleServer extends AbstractServer {
 
 		else if(ms.getMessage().equals("ParkingManager_showPrices")) {
 			Message MSG=new Message("pricesReturned");
+			System.out.println("in show prices server");
 			try{
-
-				session = getSessionFactory().openSession();
+				SessionFactory sessionFactory = getSessionFactory();
+				session = sessionFactory.openSession();
 				session.beginTransaction();
+
 				CriteriaBuilder builder = session.getCriteriaBuilder();
 				CriteriaQuery<ParkingLot> query = builder.createQuery(ParkingLot.class);
 				query.from(ParkingLot.class);
 				List<ParkingLot> data = session.createQuery(query).getResultList();
-				ParkingManager parkingManager = (ParkingManager)ms.getObject1();
-				int id_ = parkingManager.getParkingLot().getParking_id();
-				List<PricesClass> pricesList = null;
+				System.out.println(data.get(0).getName());
+
+				Integer parkingManagerID = (Integer) ms.getObject1();
+
+
+
+				List<PricesClass> pricesList = new ArrayList<>();
 
 				for (ParkingLot datum : data) {
-					if (datum.getParking_id() == id_) {
+					System.out.println("PARKING X ID ="+datum.getParking_id());
+					if (datum.getParking_id() == parkingManagerID) {
+						System.out.println("in show prices parking found");
 						pricesList.add(datum.getOccasionalPrice());
 						pricesList.add(datum.getPreOrderPrice());
 						pricesList.add(datum.getPartTimePrice());
@@ -469,6 +508,7 @@ public class SimpleServer extends AbstractServer {
 				System.err.println("An error occurred, changes have been rolled back.");
 				exception.printStackTrace();
 			} finally {
+				System.out.println("show prices time to get back to client");
 				client.sendToClient(MSG);
 				session.close();
 		}
@@ -1614,13 +1654,17 @@ public class SimpleServer extends AbstractServer {
 			session = sessionFactory.openSession();
 			session.beginTransaction();
 			CriteriaBuilder builder = session.getCriteriaBuilder();
+			// extracts list of users fromDB
 			CriteriaQuery<User> query111 = builder.createQuery(User.class);
 			query111.from(User.class);
-			List<User> QQ = session.createQuery(query111).getResultList();
+			List<User> userList = session.createQuery(query111).getResultList();
 
-
-			System.out.println("first username in db"+QQ.get(1).getUserName());
-			System.out.println("password check res = "+QQ.get(1).checkPassword(data[1]));
+			for (User user: userList){
+				System.out.println("->"+user.getUserName());
+			}
+			//just some printing for test purpose
+			System.out.println("first username in db"+userList.get(1).getUserName());
+			System.out.println("password check res = "+userList.get(1).checkPassword(data[1]));
 			session.close();
 		}
 		String userName = data[0];
@@ -1733,7 +1777,7 @@ public class SimpleServer extends AbstractServer {
 		//assigned parking lot is added later
 		try {
 			for(int i =0 ; i < index; i++) {
-				User ParkingWorker = new ParkingWorker("WORKER"+Integer.toString(index),"pass"+Integer.toString(index),"worker"+Integer.toString(index),"fam"+Integer.toString(index),2,null);
+				User ParkingWorker = new ParkingWorker("WORKER"+Integer.toString(i),"pass"+Integer.toString(i),"worker"+Integer.toString(i),"fam"+Integer.toString(i),2,null);
 				SessionFactory sessionFactory = getSessionFactory();
 				session = sessionFactory.openSession();
 				session.beginTransaction();

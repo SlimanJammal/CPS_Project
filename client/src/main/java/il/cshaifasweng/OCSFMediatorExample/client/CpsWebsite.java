@@ -93,10 +93,11 @@ public class CpsWebsite {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingManager");
             il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager parkingManager = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager) allowing.getMsg().getObject2();
-            data.setData(parkingManager);
-
+            data.setData(parkingManager.getid());
+//            il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager parkingManager2 = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager) DataSingleton.getInstance().getData();
+//            System.out.println(parkingManager2.getid());
             data.setCaller("cpsWebsite");
-            System.out.println("succes login should change window");
+            System.out.println("succes login should change window22");
 
             App.setRoot("ParkingManager");
 
@@ -105,7 +106,7 @@ public class CpsWebsite {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("RegionalManager");
             il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager regionalManager = (il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager) allowing.getMsg().getObject2();
-            data.setData(regionalManager);
+            data.setData(regionalManager.getUserID());
 
             data.setCaller("cpsWebsite");
             App.setRoot("RegionalManager");
@@ -134,7 +135,7 @@ public class CpsWebsite {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
             il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
-            data.setData(parkingWorker);
+            data.setData(parkingWorker.getUserID());
 
             data.setCaller("cpsWebsite");
             App.setRoot("EmployeeWindow");
