@@ -769,23 +769,24 @@ public class SimpleServer extends AbstractServer {
 				for (MultiSub multiSub : multiSubs){
 					if(multiSub.getCustomerId().equals(CustomerID)){
 						newCustomer = false;
-						List<PartialSub> cars = multiSub.getCars();
-						for (PartialSub car : cars){
-							if(car.getCarNumber().equals(CarNumber)){
-								newCar=false;
-							}
-						}
-						if(newCar){
-							multiSub.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
-							tempmultiSub = multiSub;
-						}
+//						List<PartialSub> cars = multiSub.getCars();
+//						for (PartialSub car : cars){
+//							if(car.getCarNumber().equals(CarNumber)){
+//								newCar=false;
+//							}
+
+//						if(newCar){
+//							multiSub.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
+//							tempmultiSub = multiSub;
+//						}
 					}
 				}
 				try{
-					if(!newCustomer & newCar){
-						session.update(tempmultiSub);
-						MSG.setMessage("customer exists added new car");
-					}else if(newCustomer){
+//					if(!newCustomer & newCar){
+//						session.update(tempmultiSub);
+//						MSG.setMessage("customer exists added new car");
+//					}else
+						if(newCustomer){
 						session.save(input);
 						MSG.setMessage("customer added successfully");
 					}else{
