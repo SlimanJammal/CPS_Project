@@ -14,6 +14,8 @@ public class PartialSub extends Subscription {
     String CarNumber;
 //    @NotNull
     Date StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
+//    @NotNull
+    Date EndDate;
     boolean Entered;
 //    @NotNull
     String SubNum;
@@ -35,6 +37,8 @@ public class PartialSub extends Subscription {
         this.CustomerId=id;
         this.CarNumber=carnum;
 
+        this.StartDate = new Date();
+        updateEndDate();//this initializes end date according to start date;
     }
 
     public String getCarNumber() {
@@ -51,6 +55,27 @@ public class PartialSub extends Subscription {
 
     public String getCustomerId() {
         return CustomerId;
+    }
+
+    public void updateEndDate(){
+        int startDay = StartDate.getDay();
+        int startMonth = StartDate.getMonth();
+        int startYear = StartDate.getYear();
+
+        if (startDay+28 > 31){
+            startDay = startDay+28 % 30;
+            startMonth++;
+        }else{
+            startDay+=28;
+        }
+        if(startMonth>12){
+            startMonth=1;
+            startYear++;
+        }
+
+        EndDate.setYear(startYear);
+        EndDate.setMonth(startMonth);
+        EndDate.setDate(startDay);
     }
 
     public boolean isEntered() {

@@ -5,6 +5,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import il.cshaifasweng.OCSFMediatorExample.client.DataSingleton;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
@@ -274,6 +275,11 @@ public class SimpleServer extends AbstractServer {
 			client.sendToClient(MSG);
 		}
 		else if(ms.getMessage().equals("RenewSub")) {
+
+			session = getSessionFactory().openSession();
+			session.beginTransaction();
+
+
 			Boolean flag = false;
 			String Subnumber = (String) ms.getSubNum();
 			String LicencePlateNum = (String) ms.getLicensePlate();
@@ -287,7 +293,24 @@ public class SimpleServer extends AbstractServer {
 				String ID = Integer.toString(partialSub.getId_());
 				String Licence = partialSub.getCarNumber();
 				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
-					// add action here
+					try {
+
+						partialSub.updateEndDate();
+						session.update(partialSub);
+						session.flush();
+						session.getTransaction().commit();
+						Message msg2 = new Message("SubRenewed");
+						client.sendToClient(msg2);
+					} catch (Exception exception) {
+						if (session != null) {
+							session.getTransaction().rollback();
+						}
+						Message msg2 = new Message("SubRenewed");
+						client.sendToClient(msg2);
+						exception.printStackTrace();
+					} finally {
+						session.close();
+					}
 					flag = true;
 					break;
 				}
@@ -296,7 +319,25 @@ public class SimpleServer extends AbstractServer {
 				String ID = fullsub.getCustomerId();
 				String Licence = fullsub.getCarNumber();
 				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
-					// add action here
+					try {
+
+						fullsub.updateEndDate();
+						session.update(fullsub);
+						session.flush();
+						session.getTransaction().commit();
+						Message msg2 = new Message("SubRenewed");
+						msg2.setObject1("success");
+						client.sendToClient(msg2);
+					} catch (Exception exception) {
+						if (session != null) {
+							session.getTransaction().rollback();
+						}
+						Message msg2 = new Message("SubRenewed");
+						client.sendToClient(msg2);
+						exception.printStackTrace();
+					} finally {
+						session.close();
+					}
 					flag = true;
 					break;
 				}
@@ -305,22 +346,41 @@ public class SimpleServer extends AbstractServer {
 				String ID = Integer.toString(multisub.getId_());
 				String Licence = multisub.getCarNumber();
 				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
-					// add action here
+					try {
+
+						multisub.updateEndDate();
+						session.update(multisub);
+						session.flush();
+						session.getTransaction().commit();
+						Message msg2 = new Message("SubRenewed");
+						msg2.setObject1("success");
+						client.sendToClient(msg2);
+					} catch (Exception exception) {
+						if (session != null) {
+							session.getTransaction().rollback();
+						}
+						Message msg2 = new Message("SubRenewed");
+						msg2.setObject1("success");
+						client.sendToClient(msg2);
+						exception.printStackTrace();
+					} finally {
+						session.close();
+					}
 					flag = true;
 					break;
 				}
 			}
 
 			// if the client is found inform him that sub is renewed
-			if (flag) {
-				Message MSG = new Message("SubRenewed");
-				MSG.setObject1("success");
-				client.sendToClient(MSG);
-			} else {
-				Message MSG = new Message("SubRenewed");
-				MSG.setObject1("fail");
-				client.sendToClient(MSG);
-			}
+//			if (flag) {
+//				Message MSG = new Message("SubRenewed");
+//				MSG.setObject1("success");
+//				client.sendToClient(MSG);
+//			} else {
+//				Message MSG = new Message("SubRenewed");
+//				MSG.setObject1("fail");
+//				client.sendToClient(MSG);
+//			}
 		}
 		else if(ms.getMessage().equals("ParkingManager_alterPrices")) {
 			// adds a price change request to the regional manager's requests list
@@ -508,7 +568,6 @@ public class SimpleServer extends AbstractServer {
 			//**************************** pre order parking **************************//
 
 
-			//todo check if in DB
 			//return OneTimeParkingOrder_Success
 			// or OneTimeParkingOrder_Fail
 			// data is contained in a vector inside Object1
@@ -520,7 +579,6 @@ public class SimpleServer extends AbstractServer {
 
 			// checking fields input if okay add the client, else return failed
 			// checked everything except time/date
-			//todo check if there is empty space in parking
 			if (fieldsChecker_OneTimeParkingOrder(fields)) {
 				PreOrder tempParking = new PreOrder(fields.get(5), fields.get(0), fields.get(1), fields.get(2));
 				String tempEta = fields.get(3);
@@ -659,25 +717,126 @@ public class SimpleServer extends AbstractServer {
 			//Departure Hour Components
 			//No Need For Now
 
+			session = getSessionFactory().openSession();
+			session.beginTransaction();
+			Message MSG=new Message("RegisterNewSub");
+
 			if(SubscriberType.equals("Single Monthly Subscription"))
 			{
+				Boolean newCustumer = true;
 				PartialSub input = new PartialSub(CustomerID,CarNumber);
 				Date Temp = new Date(Year,Month,Day);
 				input.setStartDate(Temp);
 				input.setEntranceHour(EntranceHour);
 				input.setDepartureHour(DepartureHour);
+				List<PartialSub> partialSubs = getAll(PartialSub.class);
+				for (PartialSub partialSub:partialSubs){
+					if(partialSub.getCustomerId().equals(CustomerID)){
+						newCustumer = false;
+					}
+				}
+				try{
+					if(newCustumer){
+						session.save(input);
+						MSG.setMessage("success");
+					}else{
+						MSG.setMessage("Customer already exists");
+					}
+
+				} catch (Exception exception) {
+					if (session != null) {
+						session.getTransaction().rollback();
+					}
+
+					MSG.setMessage("fail");
+					exception.printStackTrace();
+				} finally {
+
+					client.sendToClient(MSG);
+					session.close();
+				}
 			}
 			else if(SubscriberType.equals("Multi Monthly Subscription"))
 			{
 				MultiSub input = new MultiSub();
 				Date Temp = new Date(Year,Month,Day);
 				input.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
+// todo here we can have a problem if we are trying to multiple cars and one of them exists
+				Boolean newCustomer = true;
+				Boolean newCar = true;
+				List<MultiSub> multiSubs = getAll(MultiSub.class);
+				MultiSub tempmultiSub = null;
+				for (MultiSub multiSub : multiSubs){
+					if(multiSub.getCustomerId().equals(CustomerID)){
+						newCustomer = false;
+						List<PartialSub> cars = multiSub.getCars();
+						for (PartialSub car : cars){
+							if(car.getCarNumber().equals(CarNumber)){
+								newCar=false;
+							}
+						}
+						if(newCar){
+							multiSub.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
+							tempmultiSub = multiSub;
+						}
+					}
+				}
+				try{
+					if(!newCustomer & newCar){
+						session.update(tempmultiSub);
+						MSG.setMessage("customer exists added new car");
+					}else if(newCustomer){
+						session.save(input);
+						MSG.setMessage("customer added successfully");
+					}else{
+						MSG.setMessage("fail");
+					}
+
+				} catch (Exception exception) {
+					if (session != null) {
+						session.getTransaction().rollback();
+					}
+
+					MSG.setMessage("fail");
+					exception.printStackTrace();
+				} finally {
+					client.sendToClient(MSG);
+					session.close();
+				}
 			}
 			else if(SubscriberType.equals("Fully Subscription"))
 			{
 				FullSub input = new FullSub(CustomerID,CarNumber);
 				Date Temp = new Date(Year,Month,Day);
 				input.setStartDate(Temp);
+
+				Boolean newCustomer = true;
+				List<FullSub> fullSubs = getAll(FullSub.class);
+				for(FullSub fullSub : fullSubs){
+					if(fullSub.getCustomerId().equals(CustomerID)){
+						newCustomer = false;
+					}
+				}
+
+				try{
+					if(newCustomer) {
+						session.save(input);
+						MSG.setMessage("success");
+					}else{
+						MSG.setMessage("fail customer exists");
+					}
+				} catch (Exception exception) {
+					if (session != null) {
+						session.getTransaction().rollback();
+					}
+
+					MSG.setMessage("fail");
+					exception.printStackTrace();
+				} finally {
+					client.sendToClient(MSG);
+					session.close();
+				}
+
 			}
 
 		}
@@ -874,7 +1033,7 @@ public class SimpleServer extends AbstractServer {
 		int y = Integer.parseInt(parkingSpotID.split("-")[1]);
 		int z = Integer.parseInt(parkingSpotID.split("-")[2]);
 
-		Message msg2 = new Message(""); // TODO
+		Message msg2 = new Message("");
 		try {
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
@@ -947,12 +1106,77 @@ public class SimpleServer extends AbstractServer {
 		// so we can convert it to the given type and add it. it returns a Message and it's fields are set according to
 		// the caller.
 		// it should every order to function that saves it/or let's the customer enter the parking
+		session = getSessionFactory().openSession();
+		session.beginTransaction();
+
 
 		if (type.equals("PreOrder")){
 			PreOrder newOrder = (PreOrder) ParkingEntryOrder;
+			String parking = newOrder.getParking_requested();
+			List<ParkingLot> parkingList = getAll(ParkingLot.class);
+			for(ParkingLot parkingLot : parkingList){
+				if(parkingLot.getName().equals(parking)){
+					if(parkingLot.existsFreeSlots()){
+						parkingLot.addPreOrder(newOrder);
+						parkingLot.incPreOrderNum();
+						try {
+
+							session.update(parkingLot);
+							session.flush();
+							session.getTransaction().commit();
+							Message msg2 = new Message("OneTimeParkingOrder");
+							msg2.setObject1("success");
+						}
+						catch (Exception exception) {
+							if (session != null) {
+								session.getTransaction().rollback();
+							}
+							Message msg2 = new Message("OneTimeParkingOrder");
+							msg2.setObject1("fail");
+							exception.printStackTrace();
+						} finally {
+							assert session != null;
+							session.close();
+						}
+					}
+				}
+			}
 
 		}else{
 			// here type is "OccCustomer"
+
+			OccCustomer newCustomer = (OccCustomer) ParkingEntryOrder;
+			DataSingleton data = DataSingleton.getInstance();
+			String parking = (String) data.getData();
+			List<ParkingLot> parkingList = getAll(ParkingLot.class);
+			for(ParkingLot parkingLot : parkingList){
+				if(parkingLot.getName().equals(parking)){
+					if(parkingLot.existsFreeSlots()){
+						parkingLot.addOccasionalCustomers(newCustomer);
+						try {
+
+							session.update(parkingLot);
+							session.flush();
+							session.getTransaction().commit();
+							Message msg2 = new Message("OccCustomer");
+							msg2.setObject1("success");
+						}
+						catch (Exception exception) {
+							if (session != null) {
+								session.getTransaction().rollback();
+							}
+							Message msg2 = new Message("OccCustomer");
+							msg2.setObject1("fail");
+							exception.printStackTrace();
+						} finally {
+							assert session != null;
+							session.close();
+						}
+					}
+				}
+			}
+
+
 		}
 
 		return null;
