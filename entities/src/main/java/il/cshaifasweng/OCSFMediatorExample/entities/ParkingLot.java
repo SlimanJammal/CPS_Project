@@ -18,6 +18,7 @@ public class ParkingLot implements Serializable{
     private int width;
     private int slots_num;
     private String name;
+    private int numberOfFreeSlots;
     private int numberOfFullSubs;
     private int numberOfPreOrders;
 
@@ -41,6 +42,37 @@ public class ParkingLot implements Serializable{
     @OneToOne
     private ParkingManager parkingManager;
 
+    public List<PreOrder> getPreordersList() {
+        return preordersList;
+    }
+
+    public void addPreOrder(PreOrder order){
+        preordersList.add(order);
+    }
+
+    @OneToMany
+    private List<PreOrder> preordersList;
+
+    public List<OccCustomer> getOccasionalCustomers() {
+        return OccasionalCustomers;
+    }
+
+    public void addOccasionalCustomers(OccCustomer customer){
+        OccasionalCustomers.add(customer);
+        for(int i = 0; i< dimensions*9; i++)
+        {
+
+                    if(Spots.get(i).CurrentState.equals("available")){
+                        Spots.get(i).setCurrentState("taken");
+                        numberOfFreeSlots--;
+                    }
+
+        }
+    }
+
+    @OneToMany
+    private List<OccCustomer> OccasionalCustomers;
+
     @NotNull
     int dimensions;
     @NotNull
@@ -51,8 +83,16 @@ public class ParkingLot implements Serializable{
     private List<ParkingSpot> Spots;
 
 
+    public void incPreOrderNum(){
+        numberOfPreOrders++;
+    }
 
-
+    public Boolean existsFreeSlots(){
+        if(numberOfFreeSlots-numberOfPreOrders == width*9) {
+            return false;
+        }
+        else return true;
+    }
 
     public ParkingLot(String name_,int width_, int dims, boolean isFull)
     {
@@ -60,6 +100,8 @@ public class ParkingLot implements Serializable{
         //kept both to avoid errors
         parking_id = id;
         width=width_;
+        this.numberOfFreeSlots=slots_num;
+        this.numberOfPreOrders=0;
         this.name = name_;
         this.dimensions =dims;
         this.full=isFull;
@@ -69,7 +111,7 @@ public class ParkingLot implements Serializable{
             {
                 for(int k=0;k<3;k++)
                 {
-                    Spots.add(new ParkingSpot(i,j,k,"0",this));
+                    Spots.add(new ParkingSpot(i,j,k,"available",this));
                 }
             }
         }
