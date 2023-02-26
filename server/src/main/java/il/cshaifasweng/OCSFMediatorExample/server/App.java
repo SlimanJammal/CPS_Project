@@ -14,14 +14,14 @@ public class App
     {
         server = new SimpleServer(3000);
 
-        SimpleServer.addParkingManagers();
-        SimpleServer.addParkingWorkers();
-        SimpleServer.addRegionalManager();
-        SimpleServer.Add_Parking_Lots();
+//        SimpleServer.addParkingManagers();
+//        SimpleServer.addParkingWorkers();
+//        SimpleServer.addRegionalManager();
+//        SimpleServer.Add_Parking_Lots();
 
         server.listen();
         System.out.println("SERVER IS UP...");
         //todo uncomment this after implementing (3ekronet bsht4el bs bswesh ashe)
-        Scheduler_CPS.startJobScheduling();
+//        Scheduler_CPS.startJobScheduling();
     }
 }

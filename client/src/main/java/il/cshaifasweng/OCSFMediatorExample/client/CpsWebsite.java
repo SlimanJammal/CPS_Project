@@ -167,7 +167,7 @@ public class CpsWebsite {
     void ReserveParkingBtn(ActionEvent event) throws IOException {
         DataSingleton data = DataSingleton.getInstance();
         data.setCaller("cpsWebsite");
-        App.setRoot(".fxml");//todo check reservation window
+        App.setRoot("OneTimeParkingOrder");//todo check reservation window
     }
 
     @FXML

@@ -159,9 +159,9 @@ public class OneTimeParkingOrder {
 
     @FXML
     void backBtn(ActionEvent event) {
-        String newSceneName = (String) DataSingleton.getInstance().getData();
+
         try {
-            App.setRoot(newSceneName);
+            App.setRoot(DataSingleton.getInstance().getCaller());
         } catch (IOException e) {
             e.printStackTrace();
         }
