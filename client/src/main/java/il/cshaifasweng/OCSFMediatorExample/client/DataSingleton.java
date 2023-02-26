@@ -12,8 +12,9 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 * */
 
 
+import java.io.Serializable;
 
-public class DataSingleton {
+public class DataSingleton implements Serializable {
 
     private static final DataSingleton instance = new DataSingleton();
 
