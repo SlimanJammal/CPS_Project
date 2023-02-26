@@ -107,7 +107,7 @@ public class CpsWebsite {
             data.setDataName("RegionalManager");
             il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager regionalManager = (il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager) allowing.getMsg().getObject2();
             data.setData(regionalManager.getUserID());
-
+            data.setRegionalListOfRequests(allowing.getMsg().getObject4());
             data.setCaller("cpsWebsite");
             App.setRoot("RegionalManager");
 

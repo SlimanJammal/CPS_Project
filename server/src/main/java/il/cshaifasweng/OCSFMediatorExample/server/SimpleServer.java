@@ -111,7 +111,25 @@ public class SimpleServer extends AbstractServer {
 				System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
 
 
-		} else if (ms.getMessage().equals("cancelOrder")) {
+		} else if(ms.getMessage().equals("RegionalManager_ShowPriceRequests")){
+			//todo m7md 3ed, requests table for regional
+			session = getSessionFactory().openSession();
+			session.beginTransaction();
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<PricesUpdateRequest> query = builder.createQuery(PricesUpdateRequest.class);
+			query.from(PricesUpdateRequest.class);
+			List<PricesUpdateRequest> data21 = session.createQuery(query).getResultList();
+			Message MSG = new Message("RegionalManager_PricesUpdateRequests");
+			//the needed list is here
+			MSG.setObject1(data21);
+			session.close();
+
+
+			client.sendToClient(MSG);
+
+
+		}
+		else if (ms.getMessage().equals("cancelOrder")) {
             Message cancelingmsg=(Message) msg;
 			session.getSessionFactory().openSession();
 			String cancelinghql = "FROM PreOrder ";
@@ -204,6 +222,18 @@ public class SimpleServer extends AbstractServer {
 					MSG.setObject1("success");
 					MSG.setObject2(msg1.getObject1()); // return User
 					MSG.setObject3(permission_check);
+
+					session = getSessionFactory().openSession();
+					session.beginTransaction();
+
+					CriteriaBuilder builder = session.getCriteriaBuilder();
+					CriteriaQuery<PricesUpdateRequest> query = builder.createQuery(PricesUpdateRequest.class);
+					query.from(PricesUpdateRequest.class);
+					List<PricesUpdateRequest> data21 = session.createQuery(query).getResultList();
+					MSG.setObject4(data21);
+
+					session.close();
+
 				}else {
 
 					MSG.setObject1("fail");

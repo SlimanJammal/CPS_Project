@@ -6,6 +6,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.PricesClass;
+import il.cshaifasweng.OCSFMediatorExample.entities.PricesUpdateRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -543,7 +545,34 @@ public class RegionalManager {
     }
     @FXML
     void initialize() {
+            //todo fix the lists (lists of request in regional manager screen)
+             //todo or just make it on a button
+//        List<PricesUpdateRequest> requestsList = (List<PricesUpdateRequest>) DataSingleton.getInstance().getRegionalListOfRequests();
+//
+//        if(requestsList.size() !=0) {
+//            List<PriceRequest> priceReqList2 = new ArrayList<>();
+//
+//            for (PricesUpdateRequest pricesUpdateRequest : requestsList) {
+//                PriceRequest new_req = new PriceRequest(pricesUpdateRequest.getPricesUpdateReqId(), pricesUpdateRequest.getParkingManager().getFirstName(), pricesUpdateRequest.getRequest());
+//                priceReqList2.add(new_req);
+//            }
+//
+//
+//            ObservableList<PriceRequest> list = FXCollections.observableArrayList(priceReqList2);
+//            RequestCol.setCellValueFactory(new PropertyValueFactory<PriceRequest, String>("RequestCol"));
+//            ;
+//
+//            NumberColMainWin.setCellValueFactory(new PropertyValueFactory<PriceRequest, Integer>(" NumberColMainWin"));
+//
+//            ManagerNameCol.setCellValueFactory(new PropertyValueFactory<PriceRequest, String>("ManagerNameCol"));
+//
+////        price.setCellValueFactory(new PropertyValueFactory<PricesClass,Integer>("price"));
+////        pricetype.setCellValueFactory(new PropertyValueFactory<PricesClass,String>("priceType"));
+//            RequestsTable.setItems(list);
+//        }
+
         //todo print requests list for the regional manger on startup
+
         EventBus.getDefault().register(this);
 
     }
