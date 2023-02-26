@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name="User")
+@Table(name="Userlike")
 public class ParkingWorker extends User implements Serializable {
 
     @ManyToOne

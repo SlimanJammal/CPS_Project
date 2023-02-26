@@ -10,8 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "Customer")
 public class OccCustomer extends Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private String OccCustomerId;
     @NotNull
     private String CarNumber;
@@ -27,13 +26,14 @@ public class OccCustomer extends Customer {
     String Email;
 
     public OccCustomer()
-    {}
+    {OccCustomerId = getCustomerId();}
 
     public OccCustomer(String id,String carnum,String mail)
     {
         this.CustomerId=id;
         this.CarNumber=carnum;
         this.Email=mail;
+        OccCustomerId = getCustomerId();
     }
 
 

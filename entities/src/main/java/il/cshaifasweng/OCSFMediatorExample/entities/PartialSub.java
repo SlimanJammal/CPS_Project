@@ -6,11 +6,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Subscription")
+@Table(name = "PartialSubs")
 public class PartialSub extends Subscription {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String PartialSubId;
+
+
     @NotNull
     String CarNumber;
     @NotNull
@@ -32,17 +31,19 @@ public class PartialSub extends Subscription {
     {}
     public PartialSub(String id,String carnum)
     {
+
         this.CustomerId=id;
         this.CarNumber=carnum;
+
     }
 
     public String getCarNumber() {
         return CarNumber;
     }
 
-    public String getPartialSubId() {
-        return PartialSubId;
-    }
+//    public String getPartialSubId() {
+//        return PartialSubId;
+//    }
 
     public String getSubNum() {
         return SubNum;
@@ -76,9 +77,9 @@ public class PartialSub extends Subscription {
         CarNumber = carNumber;
     }
 
-    public void setPartialSubId(String partialSubId) {
-        PartialSubId = partialSubId;
-    }
+//    public void setPartialSubId(String partialSubId) {
+//        PartialSubId = partialSubId;
+//    }
 
     public void setEntered(boolean entered) {
         Entered = entered;

@@ -5,14 +5,14 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "ParkingLot")
+@Table(name = "ParkingLots")
 public class ParkingLot implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     private int parking_id;
     static int count = 0;
     private int width;
@@ -41,13 +41,17 @@ public class ParkingLot implements Serializable{
     @OneToOne
     private ParkingManager parkingManager;
 
+    @OneToOne
+    private ParkingWorker parkingWorker;
+
+
     @NotNull
     int dimensions;
     @NotNull
 
     boolean full;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "park")
+    @OneToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY, mappedBy = "spotId")
     private List<ParkingSpot> Spots;
 
 
@@ -58,21 +62,24 @@ public class ParkingLot implements Serializable{
     {
         slots_num = width_ *9;
         //kept both to avoid errors
-        parking_id = id;
         width=width_;
         this.name = name_;
         this.dimensions =dims;
         this.full=isFull;
-        for(int i = 0; i< dimensions; i++)
-        {
-            for(int j=0;j<3;j++)
-            {
-                for(int k=0;k<3;k++)
-                {
-                    Spots.add(new ParkingSpot(i,j,k,"0",this));
-                }
-            }
-        }
+
+        Spots = new ArrayList<ParkingSpot>() ;
+//        for(int i = 0; i< dimensions; i++)
+//        {
+//            for(int j=0;j<3;j++)
+//            {
+//                for(int k=0;k<3;k++)
+//                {
+//
+//                    ParkingSpot S = new ParkingSpot(i,j,k,"0",this.parking_id);
+//                    Spots.add(S);
+//                }
+//            }
+//        }
 
         //per hour
         occasionalPrice = new PricesClass(8,"ocasionalPrice");
@@ -85,6 +92,11 @@ public class ParkingLot implements Serializable{
         //this times number of cars registered
         MultiCarPrice = new PricesClass(54* preOrderPrice.getPrice(),"MultiCarPrice");
     }
+
+
+
+
+
 
     public ParkingLot() {
     }
@@ -123,9 +135,7 @@ public class ParkingLot implements Serializable{
         Spots = spots;
     }
 
-    public int getId() {
-        return id;
-    }
+
 
     public int getNumberOfSubs() {
         return numberOfFullSubs;
@@ -222,5 +232,13 @@ public class ParkingLot implements Serializable{
 
     public ParkingManager getParkingManager() {
         return parkingManager;
+    }
+
+    public ParkingWorker getParkingWorker() {
+        return parkingWorker;
+    }
+
+    public void setParkingWorker(ParkingWorker parkingWorker) {
+        this.parkingWorker = parkingWorker;
     }
 }

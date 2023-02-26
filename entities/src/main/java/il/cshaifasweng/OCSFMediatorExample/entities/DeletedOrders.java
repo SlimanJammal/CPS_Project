@@ -10,6 +10,7 @@ import java.util.Date;
 
 @Entity
 public class DeletedOrders {
+    private static final long serialVersionUID = -8224097662914849956L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int DeletedId ;

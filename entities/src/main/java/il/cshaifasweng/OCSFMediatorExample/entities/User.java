@@ -6,11 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="Users")
+@Table(name="Userss")
 public class User implements Serializable {
+    private static final long serialVersionUID = -8224097662914849956L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int Id;
+    int Id_;
     String userName;
     String password;
     String firstName;
@@ -33,8 +34,12 @@ public class User implements Serializable {
         this.isConnected = false;
     }
 
-    public void setId(int id) {
-        Id = id;
+    public int getId_() {
+        return Id_;
+    }
+
+    public void setId_(int id_) {
+        Id_ = id_;
     }
 
     public String getUserName() {

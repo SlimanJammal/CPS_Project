@@ -6,10 +6,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Subscription")
+@Table(name = "FullSub")
 public class FullSub extends Subscription{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     String FullSubId;
     @NotNull
     String CarNumber;
@@ -21,12 +20,15 @@ public class FullSub extends Subscription{
     Date StartParking; //format includes days we will use it as a counter for if it reaches 14
     @NotNull
     String SubNum;
-    public FullSub(){}
+    public FullSub(){
+        FullSubId = Integer.toString(getId_());
+    }
 
     public FullSub(String id,String carnum)
     {
         this.CustomerId=id;
         this.CarNumber=carnum;
+        FullSubId = Integer.toString(getId_());
     }
 
     public Date getStartDate() {

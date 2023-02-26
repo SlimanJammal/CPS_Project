@@ -13,23 +13,23 @@ public class ParkingSpot {
     @GeneratedValue(strategy = GenerationType.AUTO)
     int spotId ;
 
-    @NotNull
     int x,y,z;
 
     String CurrentState;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ParkId")
-    private ParkingLot parkingLot;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id")
+//    private ParkingLot parkingLot;
 
+    int parking_lot_id ;
 
-    public ParkingSpot(int a, int b, int c, String state, ParkingLot thispark)
+    public ParkingSpot(int a, int b, int c, String state, int thispark)
     {
         x = a;
         y = b;
         z = c;
         CurrentState = state;
-        parkingLot = thispark;
+        parking_lot_id  = thispark;
 
     }
 
@@ -74,11 +74,11 @@ public class ParkingSpot {
         CurrentState = currentState;
     }
 
-    public ParkingLot getParkingLot() {
-        return parkingLot;
+    public int getParkingLot() {
+        return parking_lot_id ;
     }
 
-    public void setParkingLot(ParkingLot parkingLot) {
-        this.parkingLot = parkingLot;
+    public void setParkingLot(int parkingLot) {
+        this.parking_lot_id  = parkingLot;
     }
 }

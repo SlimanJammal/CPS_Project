@@ -5,20 +5,21 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Complaint")
+@Table(name="Complaints")
 public class Complaint {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String ComplaintId;
+    int ComplaintId_;
     @NotNull
-    boolean Entered;
+    boolean Entered_;
 
 
-    String  customerId;
+    int customerId_;
     String  complaintText;
 
-    public Complaint(String customerId, String complaintText) {
-        this.customerId = customerId;
+    public Complaint(int customerId_, String complaintText) {
+        this.customerId_ = customerId_;
         this.complaintText = complaintText;
     }
 
@@ -26,12 +27,12 @@ public class Complaint {
 
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public int getCustomerId_() {
+        return customerId_;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomerId_(int customerId) {
+        this.customerId_ = customerId;
     }
 
     public String getComplaintText() {

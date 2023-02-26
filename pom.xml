@@ -21,6 +21,7 @@
 	</properties>
 	<dependencyManagement>
 		<dependencies>
+
 			<dependency>
 				<groupId>il.cshaifasweng.OCSFMediatorExample</groupId>
 				<artifactId>entities</artifactId>

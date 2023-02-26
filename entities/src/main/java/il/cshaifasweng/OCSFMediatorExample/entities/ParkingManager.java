@@ -2,19 +2,20 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Vector;
 
 @Entity
-@Table(name="User")
+@Table(name="Userlikes")
 public class ParkingManager extends User implements Serializable {
 
     @OneToOne
     private ParkingLot parkingLot;
 
-    @OneToMany
-    Vector<PricesUpdateRequest> pricesUpdateRequests;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id_")
+    List<PricesUpdateRequest> pricesUpdateRequests;
 
-    public ParkingManager(String userName, String password, String firstName, String lastName, int permission, ParkingLot parkingLot, Vector<PricesUpdateRequest> pricesUpdateRequests) {
+    public ParkingManager(String userName, String password, String firstName, String lastName, int permission, ParkingLot parkingLot, List<PricesUpdateRequest> pricesUpdateRequests) {
         super(userName, password, firstName, lastName, permission);
         this.parkingLot = parkingLot;
         this.pricesUpdateRequests = pricesUpdateRequests;
@@ -29,11 +30,11 @@ public String getPassword()
 }
 public int getid()
 {
-    return this.Id;
+    return this.Id_;
 }
 
 
-    public Vector<PricesUpdateRequest> getPricesUpdateRequests() {
+    public List<PricesUpdateRequest> getPricesUpdateRequests() {
         return pricesUpdateRequests;
     }
 

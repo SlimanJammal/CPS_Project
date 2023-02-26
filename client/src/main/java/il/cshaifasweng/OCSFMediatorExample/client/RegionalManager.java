@@ -280,6 +280,7 @@ public class RegionalManager {
     @FXML
     void menuPdf1(ActionEvent event) {
         Message msg = new Message("pdf_Parking1_regional");
+
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
