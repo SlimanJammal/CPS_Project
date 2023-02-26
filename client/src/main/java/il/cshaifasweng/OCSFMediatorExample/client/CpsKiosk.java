@@ -5,8 +5,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
-import il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker;
-import il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -190,9 +188,9 @@ public class CpsKiosk {
         App.setRoot("RequestStatus");//todo check reservation window
     }
 
+
     @FXML
     void SUBSNUM_LOGIN_TF(ActionEvent event) {
-
     }
 
     @FXML
@@ -201,6 +199,7 @@ public class CpsKiosk {
         data.setCaller("cpsKiosk");
         App.setRoot("RequestStatus");//todo check reservation window
     }
+
 
     @FXML
     void createNewSubsBtn(ActionEvent event) throws IOException {

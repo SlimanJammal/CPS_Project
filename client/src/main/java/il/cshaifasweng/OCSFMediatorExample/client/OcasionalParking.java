@@ -43,7 +43,7 @@ public class OcasionalParking {
     @FXML
     void SubmitBTN(ActionEvent event) {
         try {
-//            System.out.println("kelhom 4nole wma gedro");
+            System.out.println("kelhom 4nole wma gedro");
             Message message = new Message("OcasionalParking");
             message.setObject1(IdNumberTF.getText());
             message.setObject2(licensePlateTF.getText());
@@ -63,12 +63,12 @@ public class OcasionalParking {
 
             //send message to the server containing the new prices
             SimpleClient.getClient().sendToServer(message);
-
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+
 
     @FXML
     void emailTF(ActionEvent event) {
