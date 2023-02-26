@@ -175,14 +175,24 @@ public class SimpleServer extends AbstractServer {
 			}
 
 
-		} else if (ms.getMessage().equals("loginManager")) {
+		} else if (ms.getMessage().startsWith("loginManager")) {
+				Message MSG=new Message("AllowManager_KIOSK");
+				if(ms.getMessage().endsWith("KIOSK")) {
+					MSG = new Message("AllowManager_KIOSK");
+				} else {
+					MSG = new Message("AllowManager_WEBSITE");
+			}
 
-				Message MSG=new Message("AllowManager");
 				String[] data = {ms.getID(),ms.getPassword()} ;
-
+				//todo remove this is debugging amsdkasml
+				logout_by_string_debug_heleper(data);
+				//
+				System.out.println("logingMANGER IS IN SERVER");
 				Message msg1 = tryLogIn(data);
 				User user1 = (User) msg1.getObject1();
 				int permission_check = user1.getPermission();
+				System.out.println(msg1.getMessage());
+				System.out.println(permission_check);
 				if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 0 ){
 					//regional
 					MSG.setObject1("success");
@@ -1301,6 +1311,46 @@ public class SimpleServer extends AbstractServer {
 		return true;
 	}
 
+	private static void logout_by_string_debug_heleper(String[] data){
+		String userName = data[0];
+		String password = data[1];
+		System.out.println("data0="+data[0]);
+		System.out.println("data1="+data[1]);
+
+		Message msg = new Message("LoginTry");
+		SessionFactory sessionFactory = getSessionFactory();
+		session = sessionFactory.openSession();
+		String sqlQ = "FROM User U WHERE U.userName = :user_name";
+		Query query = session.createQuery(sqlQ);
+		query.setParameter("user_name", userName);
+		List<User> list = query.list();
+		if (!list.isEmpty()) {
+			User user = list.get(0);
+			if (user.checkPassword(password)) {
+				if (!user.getConnected()) msg.setMessage("tryLogin_UsernotConnected");
+				else {
+					user.setConnected(false);
+					System.out.println(user.getFirstName() + " " + user.getLastName());
+					try {
+						session.beginTransaction();
+						session.update(user);
+						session.getTransaction().commit();
+						msg.setObject1(user);
+						msg.setMessage("tryLogin_UserFound");
+						System.out.println("tryLogin_UserFound");
+					} catch (HibernateException e) {
+						if (session != null)
+							session.getTransaction().rollback();
+						e.printStackTrace();
+						msg.setMessage("tryLogin_User_UnknownLogInError");
+						System.out.println(msg.getMessage());
+					}
+				}
+			} else msg.setMessage("tryLogin_UserNotFound");
+
+		} else msg.setMessage("tryLogin_UserNotFound");
+
+	}
 
 	private static Message tryLogIn(String[] data) {
 		/** checks login pw and username in db with two strings given
@@ -1308,11 +1358,26 @@ public class SimpleServer extends AbstractServer {
 		* and in the name of the message the result
 		* you can check what's the users type according to his permission lvl in field permission in User
 		* 0 is regional manager, 1 is a branch manager, 2 parking worker.
-		 * if user logged in his status set to active in field connected*/
+		 * if user logged in his status set to active in field connected*/{
+		 	System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<User> query111 = builder.createQuery(User.class);
+			query111.from(User.class);
+			List<User> QQ = session.createQuery(query111).getResultList();
 
 
+			System.out.println("first username in db"+QQ.get(1).getUserName());
+			System.out.println("password check res = "+QQ.get(1).checkPassword(data[1]));
+			session.close();
+		}
 		String userName = data[0];
 		String password = data[1];
+		System.out.println("data0="+data[0]);
+		System.out.println("data1="+data[1]);
+
 		Message msg = new Message("LoginTry");
 		SessionFactory sessionFactory = getSessionFactory();
 		session = sessionFactory.openSession();
@@ -1339,13 +1404,14 @@ public class SimpleServer extends AbstractServer {
 							session.getTransaction().rollback();
 						e.printStackTrace();
 						msg.setMessage("tryLogin_User_UnknownLogInError");
+						System.out.println(msg.getMessage());
 					}
 				}
 			} else msg.setMessage("tryLogin_UserNotFound");
 
 		} else msg.setMessage("tryLogin_UserNotFound");
 
-
+		System.out.println(msg.getMessage());
 		return msg;
 	}
 

@@ -22,15 +22,16 @@ public class App extends Application {
     private static Scene scene;
     private static Object Messenger;
     private SimpleClient client;
-
+    private static Stage STAGE;
     @Override
     public void start(Stage stage) throws IOException {
     	EventBus.getDefault().register(this);
     	client = SimpleClient.getClient();
     	client.openConnection();
         scene = new Scene(loadFXML("mainWindow"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+        STAGE = stage;
+        STAGE.setScene(scene);
+        STAGE.show();
     }
 
     static void setRoot(String fxml) throws IOException {

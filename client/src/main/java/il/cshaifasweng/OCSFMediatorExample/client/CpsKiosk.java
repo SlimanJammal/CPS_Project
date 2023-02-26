@@ -6,6 +6,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker;
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
@@ -84,20 +86,20 @@ public class CpsKiosk {
     }
     @FXML
     void WorkerBtn(ActionEvent event) throws IOException {
-        Message msg= new Message("loginEmployee");
+        Message msg= new Message("loginEmployee_KIOSK");
         msg.setID(ID_LOGIN_TF.getId());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
-    public void allowWorker(loginWorkerEvent allowing) throws IOException {
+    public void allowWorker(loginManagerKioskEvent allowing) throws IOException {
 
 
 
         if(allowing.getMsg().getObject1().toString().equals("success")) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
-            ParkingWorker parkingWorker = (ParkingWorker) allowing.getMsg().getObject1();
+            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
             data.setData(parkingWorker);
 
             data.setCaller("cpsKiosk");
@@ -116,13 +118,13 @@ public class CpsKiosk {
 
     @FXML
     void ManagerBtn(ActionEvent event) throws IOException {
-        Message msg= new Message("loginManager");
+        Message msg= new Message("loginManager_KIOSK");
         msg.setID(ID_LOGIN_TF.getId());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
-    public void allowManager(loginManagerEvent allowing) throws IOException {
+    public void allowManager(loginManagerKioskEvent allowing) throws IOException {
 
         int permission =(int) allowing.getMsg().getObject3();
 
@@ -130,7 +132,7 @@ public class CpsKiosk {
 
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingManager");
-            ParkingManager parkingManager = (ParkingManager) allowing.getMsg().getObject1();
+            il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager parkingManager = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager) allowing.getMsg().getObject2();
             data.setData(parkingManager);
             data.setCaller("cpsKiosk");
             App.setRoot("ParkingManger");
@@ -139,7 +141,7 @@ public class CpsKiosk {
 
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("RegionalManager");
-            RegionalManager regionalManager = (RegionalManager) allowing.getMsg().getObject1();
+            il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager regionalManager = (il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager) allowing.getMsg().getObject2();
             data.setData(regionalManager);
             data.setCaller("cpsKiosk");
             App.setRoot("RegionalManager");
@@ -214,6 +216,11 @@ public class CpsKiosk {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    void initialize() {
+        EventBus.getDefault().register(this);
+
     }
 
 }

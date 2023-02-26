@@ -4,9 +4,9 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
 import java.io.Serializable;
 
-public class loginManagerEvent implements Serializable {
+public class loginManagerKioskEvent implements Serializable {
     Message msg;
-    public loginManagerEvent(Message msg) {
+    public loginManagerKioskEvent(Message msg) {
         this.msg=msg;
     }
 
