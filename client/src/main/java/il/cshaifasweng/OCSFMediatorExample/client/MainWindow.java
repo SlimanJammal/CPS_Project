@@ -23,7 +23,7 @@ public class MainWindow {
     void KioskBtn(ActionEvent event) throws IOException {
         try{
             DataSingleton.getInstance().setCaller("MainWindow");
-            App.setRoot("ParkingManager");
+            App.setRoot("cpsKiosk");
         }
         catch (IOException e) {
             // TODO Auto-generated catch block
