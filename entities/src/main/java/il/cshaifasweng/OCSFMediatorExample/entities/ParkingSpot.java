@@ -18,6 +18,8 @@ public class ParkingSpot {
     int width =-1;
     int depth= -1;
 
+
+
     public LocalDateTime getExitDate() {
         return ExitDate;
     }
@@ -122,5 +124,11 @@ public class ParkingSpot {
 
     public void setParkingLot(int parkingLot) {
         this.parking_lot_id  = parkingLot;
+    }
+
+    public String getLocation()
+    {
+        String Location = this.depth + "-" + this.height + "-" + this.width;
+        return Location;
     }
 }
