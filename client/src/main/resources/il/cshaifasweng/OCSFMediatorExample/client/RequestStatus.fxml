@@ -6,7 +6,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane prefHeight="191.0" prefWidth="226.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestStatus">
    <children>
       <AnchorPane prefHeight="198.0" prefWidth="252.0">
@@ -20,7 +19,8 @@
                <children>
                   <TextField fx:id="CustomerIdTF" layoutY="65.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="223.0" promptText="Customer ID" />
                   <TextField fx:id="CarNumberTF" layoutY="100.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="223.0" promptText="Car License Num" />
-                  <Button fx:id="SendRequestBtn" layoutX="51.0" layoutY="148.0" mnemonicParsing="false" onAction="#SendRequestBtn" prefHeight="26.0" prefWidth="122.0" text="Send Request" />
+                  <Button fx:id="SendRequestBtn" layoutX="112.0" layoutY="149.0" mnemonicParsing="false" onAction="#SendRequestBtn" prefHeight="26.0" prefWidth="122.0" text="Send Request" />
+                  <Button fx:id="backbtn" layoutX="14.0" layoutY="149.0" mnemonicParsing="false" onAction="#backbtn" text="back" />
                </children>
             </AnchorPane>
          </children>

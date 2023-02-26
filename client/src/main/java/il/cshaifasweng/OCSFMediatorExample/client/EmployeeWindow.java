@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -369,25 +370,39 @@ public class EmployeeWindow {
     //___________________________________________ Previous Window Click _______________________________________________
     @FXML
     void OnPreviousWindowButton1(ActionEvent event) {
-        //Go To Previous Window
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void OnPreviousWindowButton2(ActionEvent event) {
-        //Go To Previous Window
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @FXML
     void OnPreviousWindowButton3(ActionEvent event) {
-        //Go To Previous Window
-
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void OnPreviousWindowButton4(ActionEvent event) {
-        //Go To Previous Window
-
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     //_________________________________________________________________________________________________________________
     //_________________________________________________________________________________________________________________
@@ -401,5 +416,11 @@ public class EmployeeWindow {
                 return false;
         }
         return true;
+    }
+
+    @FXML
+    void initialize() {
+        EventBus.getDefault().register(this);
+
     }
 }

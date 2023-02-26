@@ -2,17 +2,20 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 
 import javax.persistence.*;
-import java.util.Vector;
+import java.util.List;
 
 @Entity
-@Table(name = "Customer")
-public class Customer {
+@Table(name = "Customers")
+public abstract class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int Customersid;
 
-    @OneToMany
-    Vector<Complaint> complaintsVector;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ComplaintId_")
+    List<Complaint> complaintsVector;
 
-
+    public int getId_() {
+        return Customersid;
+    }
 }

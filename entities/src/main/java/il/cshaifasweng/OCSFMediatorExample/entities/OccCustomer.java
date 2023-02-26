@@ -10,30 +10,30 @@ import java.util.Date;
 @Entity
 @Table(name = "Customer")
 public class OccCustomer extends Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private String OccCustomerId;
-    @NotNull
+//    @NotNull
     private String CarNumber;
-    @NotNull
+//    @NotNull
 //    long StartTime ;
     Time StartTime;
 
-    @NotNull
+//    @NotNull
      String CustomerId;
 //    long FinishTime ;
     Time FinishTime;
-    @NotNull
+//    @NotNull
     String Email;
 
     public OccCustomer()
-    {}
+    {OccCustomerId = getCustomerId();}
 
     public OccCustomer(String id,String carnum,String mail)
     {
         this.CustomerId=id;
         this.CarNumber=carnum;
         this.Email=mail;
+        OccCustomerId = getCustomerId();
     }
 
 

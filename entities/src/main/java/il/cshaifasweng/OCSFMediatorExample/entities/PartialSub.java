@@ -6,22 +6,23 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Subscription")
+@Table(name = "PartialSubs")
 public class PartialSub extends Subscription {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String PartialSubId;
-    @NotNull
+
+
+//    @NotNull
     String CarNumber;
-    @NotNull
+//    @NotNull
     Date StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
+//    @NotNull
+    Date EndDate;
     boolean Entered;
-    @NotNull
+//    @NotNull
     String SubNum;
-    @NotNull
+//    @NotNull
     String CustomerId;
 
-    @NotNull
+//    @NotNull
     String EntranceHour,DepartureHour;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,17 +33,21 @@ public class PartialSub extends Subscription {
     {}
     public PartialSub(String id,String carnum)
     {
+
         this.CustomerId=id;
         this.CarNumber=carnum;
+
+        this.StartDate = new Date();
+        updateEndDate();//this initializes end date according to start date;
     }
 
     public String getCarNumber() {
         return CarNumber;
     }
 
-    public String getPartialSubId() {
-        return PartialSubId;
-    }
+//    public String getPartialSubId() {
+//        return PartialSubId;
+//    }
 
     public String getSubNum() {
         return SubNum;
@@ -50,6 +55,27 @@ public class PartialSub extends Subscription {
 
     public String getCustomerId() {
         return CustomerId;
+    }
+
+    public void updateEndDate(){
+        int startDay = StartDate.getDay();
+        int startMonth = StartDate.getMonth();
+        int startYear = StartDate.getYear();
+
+        if (startDay+28 > 31){
+            startDay = startDay+28 % 30;
+            startMonth++;
+        }else{
+            startDay+=28;
+        }
+        if(startMonth>12){
+            startMonth=1;
+            startYear++;
+        }
+
+        EndDate.setYear(startYear);
+        EndDate.setMonth(startMonth);
+        EndDate.setDate(startDay);
     }
 
     public boolean isEntered() {
@@ -76,9 +102,9 @@ public class PartialSub extends Subscription {
         CarNumber = carNumber;
     }
 
-    public void setPartialSubId(String partialSubId) {
-        PartialSubId = partialSubId;
-    }
+//    public void setPartialSubId(String partialSubId) {
+//        PartialSubId = partialSubId;
+//    }
 
     public void setEntered(boolean entered) {
         Entered = entered;

@@ -1,17 +1,14 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table (name = "Customer")
+@Table (name = "Subscribers")
 public class Subscriber extends Customer{
 
     private String subscriptionType;
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     Subscription subscription;
 }

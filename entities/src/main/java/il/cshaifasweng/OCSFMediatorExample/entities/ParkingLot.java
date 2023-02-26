@@ -5,75 +5,136 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "ParkingLot")
+@Table(name = "ParkingLots")
 public class ParkingLot implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     private int parking_id;
     static int count = 0;
     private int width;
     private int slots_num;
+
+    public int getOccupied_slots_num() {
+        return occupied_slots_num;
+    }
+
+    public void setOccupied_slots_num(int occupied_slots_num) {
+        this.occupied_slots_num = occupied_slots_num;
+    }
+
+    private int occupied_slots_num;
+
+
+
     private String name;
+    private int numberOfFreeSlots;
     private int numberOfFullSubs;
     private int numberOfPreOrders;
-    private String Status;
 
 
-
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass occasionalPrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass preOrderPrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass partTimePrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass fullSubPrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass MultiCarPrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ParkingManager parkingManager;
 
-    @NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    private ParkingWorker parkingWorker;
+
+
+//    @NotNull
+    public List<PreOrder> getPreordersList() {
+        return preordersList;
+    }
+
+    public void addPreOrder(PreOrder order){
+        preordersList.add(order);
+    }
+
+    @OneToMany
+    private List<PreOrder> preordersList;
+
+    public List<OccCustomer> getOccasionalCustomers() {
+        return OccasionalCustomers;
+    }
+
+    public void addOccasionalCustomers(OccCustomer customer){
+        OccasionalCustomers.add(customer);
+        for(int i = 0; i< dimensions*9; i++)
+        {
+
+                    if(Spots.get(i).CurrentState.equals("available")){
+                        Spots.get(i).setCurrentState("taken");
+                        numberOfFreeSlots--;
+                    }
+
+        }
+    }
+
+    @OneToMany
+    private List<OccCustomer> OccasionalCustomers;
+
+//    @NotNull
     int dimensions;
-    @NotNull
+//    @NotNull
 
     boolean full;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "park")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parkingLot")
     private List<ParkingSpot> Spots;
 
 
+    public void incPreOrderNum(){
+        numberOfPreOrders++;
+    }
 
-
+    public Boolean existsFreeSlots(){
+        if(numberOfFreeSlots-numberOfPreOrders == width*9) {
+            return false;
+        }
+        else return true;
+    }
 
     public ParkingLot(String name_,int width_, int dims, boolean isFull)
     {
         slots_num = width_ *9;
         //kept both to avoid errors
-        parking_id = id;
         width=width_;
+        this.numberOfFreeSlots=slots_num;
+        this.numberOfPreOrders=0;
         this.name = name_;
         this.dimensions =dims;
         this.full=isFull;
-        for(int i = 0; i< dimensions; i++)
-        {
-            for(int j=0;j<3;j++)
-            {
-                for(int k=0;k<3;k++)
-                {
-                    Spots.add(new ParkingSpot(i,j,k,"0",this));
-                }
-            }
-        }
+
+        Spots = new ArrayList<ParkingSpot>() ;
+//        for(int i = 0; i< dimensions; i++)
+//        {
+//            for(int j=0;j<3;j++)
+//            {
+//                for(int k=0;k<3;k++)
+//                {
+//
+//                    ParkingSpot S = new ParkingSpot(i,j,k,"empty",this.parking_id);
+//                    Spots.add(S);
+//                }
+//            }
+//        }
 
         //per hour
         occasionalPrice = new PricesClass(8,"ocasionalPrice");
@@ -86,6 +147,11 @@ public class ParkingLot implements Serializable{
         //this times number of cars registered
         MultiCarPrice = new PricesClass(54* preOrderPrice.getPrice(),"MultiCarPrice");
     }
+
+
+
+
+
 
     public ParkingLot() {
     }
@@ -124,25 +190,8 @@ public class ParkingLot implements Serializable{
         Spots = spots;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public int getNumberOfSubs() {
-        return numberOfFullSubs;
-    }
 
-    public void setNumberOfSubs(int numberOfSubs) {
-        this.numberOfFullSubs = numberOfSubs;
-    }
-
-    public int getNumberOfPreOrders() {
-        return numberOfPreOrders;
-    }
-
-    public void setNumberOfPreOrders(int numberOfPreOrders) {
-        this.numberOfPreOrders = numberOfPreOrders;
-    }
 
     public void setParking_id(int parking_id) {
         this.parking_id = parking_id;
@@ -225,12 +274,15 @@ public class ParkingLot implements Serializable{
         return parkingManager;
     }
 
-    public String getStatus() {
-        return Status;
+    public ParkingWorker getParkingWorker() {
+        return parkingWorker;
     }
 
-    public void setStatus(String status) {
-        Status = status;
+    public void setParkingWorker(ParkingWorker parkingWorker) {
+        this.parkingWorker = parkingWorker;
     }
 
+    public void addSpot(ParkingSpot s) {
+        Spots.add(s);
+    }
 }

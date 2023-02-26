@@ -6,27 +6,33 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Subscription")
+@Table(name = "FullSub")
 public class FullSub extends Subscription{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     String FullSubId;
-    @NotNull
+//    @NotNull
     String CarNumber;
-    @NotNull
+//    @NotNull
     String CustomerId;
 
     Date StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
-    @NotNull
+//    @NotNull
+    Date EndDate;
+//    @NotNull
     Date StartParking; //format includes days we will use it as a counter for if it reaches 14
-    @NotNull
+//    @NotNull
     String SubNum;
-    public FullSub(){}
+    public FullSub(){
+        FullSubId = Integer.toString(getId_());
+    }
 
     public FullSub(String id,String carnum)
     {
         this.CustomerId=id;
         this.CarNumber=carnum;
+        FullSubId = Integer.toString(getId_());
+        this.StartDate= new Date();
+        updateEndDate();
     }
 
     public Date getStartDate() {
@@ -75,6 +81,27 @@ public class FullSub extends Subscription{
 
     public void setSubNum(String subNum) {
         SubNum = subNum;
+    }
+
+    public void updateEndDate(){
+        int startDay = StartDate.getDay();
+        int startMonth = StartDate.getMonth();
+        int startYear = StartDate.getYear();
+
+        if (startDay+28 > 31){
+            startDay = startDay+28 % 30;
+            startMonth++;
+        }else{
+            startDay+=28;
+        }
+        if(startMonth>12){
+            startMonth=1;
+            startYear++;
+        }
+
+        EndDate.setYear(startYear);
+        EndDate.setMonth(startMonth);
+        EndDate.setDate(startDay);
     }
 
 }

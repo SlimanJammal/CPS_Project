@@ -13,12 +13,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.List;
 
 public class ParkingManager {
+    @FXML
+    private Button backbtn;
 
     @FXML // fx:id="FullSubsTF"
     private TextField FullSubsTF; // Value injected by FXMLLoader
@@ -140,6 +143,22 @@ public class ParkingManager {
             pricetype.setCellValueFactory(new PropertyValueFactory<PricesClass,String>("priceType"));
             PricesTable.setItems(list);
         }
+    }
+
+
+    @FXML
+    void backbtn(ActionEvent event) {
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void initialize() {
+        EventBus.getDefault().register(this);
+
     }
 
 }

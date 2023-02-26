@@ -7,12 +7,15 @@ import java.io.Serializable;
 @Entity
 @Table(name = "PricesClass")
 public class PricesClass implements Serializable {
-
+    private static final long serialVersionUID = -8224097662914849956L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int price_id;
     private int price;
     private String priceType;
+
+
+
     public PricesClass(int price_,String str)
     {
         this.priceType=str;

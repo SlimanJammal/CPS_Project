@@ -7,6 +7,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -21,6 +22,7 @@ public class MainWindow {
     @FXML
     void KioskBtn(ActionEvent event) throws IOException {
         try{
+            DataSingleton.getInstance().setCaller("MainWindow");
             App.setRoot("cpsKiosk");
         }
         catch (IOException e) {
@@ -33,6 +35,7 @@ public class MainWindow {
     @FXML
     void WebsiteBtn(ActionEvent event) throws IOException {
         try{
+            DataSingleton.getInstance().setCaller("MainWindow");
             App.setRoot("cpsWebsite");
         }
         catch (IOException e) {
@@ -41,5 +44,10 @@ public class MainWindow {
         }
 
     }
+//    @FXML
+//    void initialize() {
+//        EventBus.getDefault().register(this);
+//
+//    }
 
 }

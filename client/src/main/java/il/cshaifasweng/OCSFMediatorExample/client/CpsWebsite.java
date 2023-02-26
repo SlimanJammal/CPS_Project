@@ -13,11 +13,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 
 public class CpsWebsite {
+
+    @FXML
+    private Button backbtn;
 
     @FXML // fx:id="CustomerBtn"
     private Button CustomerBtn; // Value injected by FXMLLoader
@@ -54,6 +58,8 @@ public class CpsWebsite {
 
     @FXML
     void CustomerBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsWebsite");
         App.setRoot("ocasionalParking");
     }
 
@@ -69,29 +75,39 @@ public class CpsWebsite {
 
     @FXML
     void ManagerBtn(ActionEvent event) throws IOException {
-        Message msg= new Message("loginManager");
-        msg.setID(ID_LOGIN_TF.getId());
+        Message msg= new Message("loginManager_WEBSITE");
+        msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
+
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
-    public void allowManager(loginManagerEvent allowing) throws IOException {
+    public void allowManager(loginManagerWebsitekEvent allowing) throws IOException {
         int permission =(int) allowing.getMsg().getObject3();
+        System.out.println("subscribe allow manager website"+permission);
+        System.out.println("permission="+permission);
 
         if(allowing.getMsg().getObject1().toString().equals("success") && permission ==  1) {
 
+            System.out.println("succes login should change window");
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingManager");
-            ParkingManager parkingManager = (ParkingManager) allowing.getMsg().getObject1();
+            il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager parkingManager = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager) allowing.getMsg().getObject2();
             data.setData(parkingManager);
-            App.setRoot("ParkingManger");
+
+            data.setCaller("cpsWebsite");
+            System.out.println("succes login should change window");
+
+            App.setRoot("ParkingManager");
 
         } else  if(allowing.getMsg().getObject1().toString().equals("success") && permission ==  0){
 
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("RegionalManager");
-            RegionalManager regionalManager = (RegionalManager) allowing.getMsg().getObject1();
+            il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager regionalManager = (il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager) allowing.getMsg().getObject2();
             data.setData(regionalManager);
+
+            data.setCaller("cpsWebsite");
             App.setRoot("RegionalManager");
 
         }else {
@@ -107,8 +123,8 @@ public class CpsWebsite {
 
     @FXML
     void WorkerBtn(ActionEvent event) throws IOException {
-        Message msg= new Message("loginEmployee");
-        msg.setID(ID_LOGIN_TF.getId());
+        Message msg= new Message("loginEmployee_WEBSITE");
+        msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
@@ -117,9 +133,10 @@ public class CpsWebsite {
         if(allowing.getMsg().getObject1().toString().equals("success")) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
-            ParkingWorker parkingWorker = (ParkingWorker) allowing.getMsg().getObject1();
+            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
             data.setData(parkingWorker);
 
+            data.setCaller("cpsWebsite");
             App.setRoot("EmployeeWindow");
         } else {
             Platform.runLater(() -> {
@@ -155,7 +172,9 @@ public class CpsWebsite {
 
     @FXML
     void ReserveParkingBtn(ActionEvent event) throws IOException {
-        App.setRoot(".fxml");//todo check reservation window
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsWebsite");
+        App.setRoot("OneTimeParkingOrder");//todo check reservation window
     }
 
     @FXML
@@ -165,12 +184,31 @@ public class CpsWebsite {
 
     @FXML
     void checkReservBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsWebsite");
         App.setRoot("RequestStatus");//todo check reservation window
     }
 
     @FXML
     void createNewSubsBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsWebsite");
         App.setRoot("RegisterNewSubscription");
+    }
+
+    @FXML
+    void backbtn(ActionEvent event) {
+        try {
+            App.setRoot("MainWindow");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void initialize() {
+        EventBus.getDefault().register(this);
+
     }
 
 }

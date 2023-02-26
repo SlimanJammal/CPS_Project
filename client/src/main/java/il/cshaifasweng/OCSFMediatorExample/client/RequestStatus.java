@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -25,6 +26,10 @@ public class RequestStatus {
 
     @FXML // fx:id="Previous Window"
     private Button PreviousButton; // Value injected by FXMLLoader
+
+
+    @FXML
+    private Button backbtn;
 
     @FXML
     void CarNumberTF(ActionEvent event) {
@@ -103,6 +108,16 @@ public class RequestStatus {
         App.setRoot("mainWindow.fxml");
 
     }
+
+    @FXML
+    void backbtn(ActionEvent event) {
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     //_________________________________________________________________________________________________________________
     //_________________________________________________________________________________________________________________
     //___________________________________________ Assistnat Functions _________________________________________________
@@ -115,5 +130,14 @@ public class RequestStatus {
                 return false;
         }
         return true;
+    }
+
+
+
+
+    @FXML
+    void initialize() {
+        EventBus.getDefault().register(this);
+
     }
 }

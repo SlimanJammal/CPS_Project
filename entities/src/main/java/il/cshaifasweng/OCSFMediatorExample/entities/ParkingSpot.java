@@ -1,9 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 //import com.sun.istack.NotNull;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ParkingSpot")
@@ -11,25 +11,62 @@ public class ParkingSpot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int spotId ;
+    int spotId_;
 
-    @NotNull
-    int x,y,z;
+
+    int height =-1;
+    int width =-1;
+    int depth= -1;
+
+    public LocalDateTime getExitDate() {
+        return ExitDate;
+    }
+
+    public void setExitDate(LocalDateTime exitDate) {
+        ExitDate = exitDate;
+    }
+
+    LocalDateTime ExitDate;
+    public String getCus_ID() {
+        return Cus_ID;
+    }
+
+    public void setCus_ID(String cus_ID) {
+        Cus_ID = cus_ID;
+    }
+
+    String Cus_ID;
+
+    public String getLicesnes_Plate() {
+        return Licesnes_Plate;
+    }
+
+    public void setLicesnes_Plate(String licesnes_Plate) {
+        Licesnes_Plate = licesnes_Plate;
+    }
+
+    String Licesnes_Plate;
 
     String CurrentState;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ParkId")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id")
+//    private ParkingLot parkingLot;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "parking_id")
     private ParkingLot parkingLot;
 
+    int parking_lot_id ;
 
-    public ParkingSpot(int a, int b, int c, String state, ParkingLot thispark)
+    public ParkingSpot(int a, int b, int c, String state, int thispark,ParkingLot parkingLot_)
     {
-        x = a;
-        y = b;
-        z = c;
+        height = a;
+        width = b;
+        depth = c;
         CurrentState = state;
-        parkingLot = thispark;
+        parking_lot_id  = thispark;
+        parkingLot = parkingLot_;
 
     }
 
@@ -38,32 +75,37 @@ public class ParkingSpot {
 
     }
 
-    public int getSpotId() {
-        return spotId;
+    public int getSpotId_() {
+        return spotId_;
     }
 
-    public int getX() {
-        return x;
+    public int getheight() {
+        return height;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setHeight(int height) {
+        this.height = height;
     }
 
-    public int getY() {
-        return y;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 
-    public int getZ() {
-        return z;
+    public int getwidth() {
+        return width;
     }
 
-    public void setZ(int z) {
-        this.z = z;
+
+    public int getdepth() {
+        return depth;
+    }
+
+    public void setdepth(int z) {
+        this.depth = z;
     }
 
     public String getCurrentState() {
@@ -74,11 +116,11 @@ public class ParkingSpot {
         CurrentState = currentState;
     }
 
-    public ParkingLot getParkingLot() {
-        return parkingLot;
+    public int getParkingLot() {
+        return parking_lot_id ;
     }
 
-    public void setParkingLot(ParkingLot parkingLot) {
-        this.parkingLot = parkingLot;
+    public void setParkingLot(int parkingLot) {
+        this.parking_lot_id  = parkingLot;
     }
 }

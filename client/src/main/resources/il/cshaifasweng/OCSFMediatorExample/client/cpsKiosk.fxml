@@ -58,6 +58,7 @@
          </font>
       </Text>
       <Text layoutX="8.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PASSWORD:" />
+      <Button fx:id="backbtn" layoutX="74.0" layoutY="452.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="25.0" prefWidth="68.0" text="back" />
    </children>
    <effect>
       <InnerShadow>

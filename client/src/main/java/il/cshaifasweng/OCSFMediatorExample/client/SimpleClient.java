@@ -18,8 +18,13 @@ public class SimpleClient extends AbstractClient {
 		Message ms=(Message) msg;
 		if (ms.getMessage().equals("hello")) {
 			EventBus.getDefault().post(new WarningEvent((Message) msg));
-		} else if (ms.getMessage().equals("AllowManager")) {
-			EventBus.getDefault().post(new loginManagerEvent((Message) msg));
+		} else if (ms.getMessage().startsWith("AllowManager")) {
+			if(ms.getMessage().endsWith("KIOSK")) {
+				EventBus.getDefault().post(new loginManagerKioskEvent((Message) msg));
+			} else {
+				EventBus.getDefault().post(new loginManagerWebsitekEvent((Message) msg));
+			}
+
 		} else if (ms.getMessage().equals("AllowEmployee")) {
 			EventBus.getDefault().post(new loginWorkerEvent((Message) msg));
 		}else if (ms.getMessage().equals("SubRenewed")) {

@@ -1,5 +1,11 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import il.cshaifasweng.OCSFMediatorExample.client.DataSingleton;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
@@ -15,24 +21,46 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Time;
-import java.time.Instant;
-import java.time.LocalDate;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
+//import java.util.;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleServer extends AbstractServer {
+
+
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+	//todo for mohammed all pdf and statistics
+
+
+
+
+
+
+
 	public static Session session;
 
 	public SimpleServer(int port) {
 		super(port);
 	}
+
+
+
 
 	private static SessionFactory getSessionFactory() throws HibernateException {
 		Configuration configuration = new Configuration();
@@ -69,11 +97,13 @@ public class SimpleServer extends AbstractServer {
 		return allQuery.getResultList();
 	}
 
+
+
+
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException { //
 		String msgString = msg.toString();
 		Message ms= (Message)msg;
-
 		if (msgString.startsWith("#warning")) {
 			Message message = new Message("Warning from server!");
 
@@ -81,16 +111,89 @@ public class SimpleServer extends AbstractServer {
 				System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
 
 
-		}
+		} else if (ms.getMessage().equals("cancelOrder")) {
+            Message cancelingmsg=(Message) msg;
+			session.getSessionFactory().openSession();
+			String cancelinghql = "FROM PreOrder ";
+			Query query = session.createQuery(cancelinghql);
+			List<PreOrder> results = query.getResultList();
+			PreOrder refund=new PreOrder();
 
-		else if (ms.getMessage().equals("loginManager")) {
 
-				Message MSG=new Message("AllowManager");
+			for(PreOrder record : results)
+			{
+				if(     record.getCarNumber().equals(cancelingmsg.getObject1())
+						&& record.getEmail_().equals(cancelingmsg.getObject3())
+				        && record.getEntrance().equals(cancelingmsg.getObject4())
+						&& record.getExit_().equals(cancelingmsg.getObject5())
+						&& record.getPreOrderId().equals(cancelingmsg.getObject6())
+					)
+				{
+					try {
+						refund=record;
+						DeletedOrders entityToAdd = new DeletedOrders();
+						entityToAdd.setDeletetime( LocalDateTime.now()); //format= dd/mm/yyyy
+						entityToAdd.setOrder(record);
+						session.save(entityToAdd);
+						session.beginTransaction().commit();
+						PreOrder entityToDelete = session.get(PreOrder.class, record.getId_());
+						session.delete(entityToDelete);
+						session.beginTransaction().commit();
+						session.flush();
+					}
+					catch (Exception exp)
+					{
+						session.getTransaction().rollback();
+					}
+					finally {
+						session.close();
+					}
+
+				}
+			}
+
+		// here I want to calculate the refund:
+			Date cancellationTime=new Date();
+			Date expectedEntrance = refund.getEntrance();
+
+			Duration duration = Duration.between((Temporal) cancellationTime, (Temporal) expectedEntrance);
+			long hours = duration.toHours();
+			if(hours<0)
+			{
+				// no refund time already passed
+			}
+			else if (hours>=0 && hours<=1) {
+				System.out.println("refund 10%");
+
+			}
+			else if (hours>=1 && hours<3) {
+				System.out.println("refund 50%");
+
+			}
+			else if (hours>=3) {
+				System.out.println("refund 90%");
+
+			}
+
+
+		} else if (ms.getMessage().startsWith("loginManager")) {
+				Message MSG=new Message("AllowManager_KIOSK");
+				if(ms.getMessage().endsWith("KIOSK")) {
+					MSG = new Message("AllowManager_KIOSK");
+				} else {
+					MSG = new Message("AllowManager_WEBSITE");
+			}
+
 				String[] data = {ms.getID(),ms.getPassword()} ;
-
+				//todo remove this is debugging amsdkasml
+				logout_by_string_debug_heleper(data);
+				//
+				System.out.println("logingMANGER IS IN SERVER");
 				Message msg1 = tryLogIn(data);
 				User user1 = (User) msg1.getObject1();
 				int permission_check = user1.getPermission();
+				System.out.println(msg1.getMessage());
+				System.out.println(permission_check);
 				if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 0 ){
 					//regional
 					MSG.setObject1("success");
@@ -108,8 +211,52 @@ public class SimpleServer extends AbstractServer {
 
 				client.sendToClient(MSG);
 		}
+		else if(ms.getMessage().equals("ParkingManager_showStats"))
+		{
 
-		else if(ms.getMessage().equals("loginEmployee")) {
+			session.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			String hql = "FROM DeletedOrders ";
+			String Latehql = "FROM Late ";
+
+			Query query = session.createQuery(hql);
+			Query Latequery = session.createQuery(Latehql);
+
+			List<DeletedOrders> DeletedOrdersList = query.getResultList();
+			List<Late> LateList = query.getResultList();
+
+			int Deletedmean=0;
+			for(DeletedOrders order : DeletedOrdersList)
+			{ String date=(String)order.getDeletetime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+				String today =(String)(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				if(date.equals(today))
+				{
+					Deletedmean++;
+				}
+			}
+
+			int Latemean=0;
+			for(Late order : LateList)
+			{ String date=(String)order.getDeletetime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+				String today =(String)(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				if(date.equals(today))
+				{
+					Latemean++;
+				}
+			}
+
+
+			Message MSG=new Message("statsReturned");
+			MSG.setObject1(Deletedmean);
+			MSG.setObject2(Latemean);
+
+			session.close();
+
+
+		}
+		else if(ms.getMessage().equals("loginEmployee"))
+		{
 
 			Message MSG=new Message("AllowEmployee");
 			String[] data = {ms.getID(),ms.getPassword()} ;
@@ -127,13 +274,114 @@ public class SimpleServer extends AbstractServer {
 			}
 			client.sendToClient(MSG);
 		}
-
 		else if(ms.getMessage().equals("RenewSub")) {
-			// todo check in database if exists
-			Message MSG=new Message("SubRenewed");
-			client.sendToClient(MSG);
-		}
 
+			session = getSessionFactory().openSession();
+			session.beginTransaction();
+
+
+			Boolean flag = false;
+			String Subnumber = (String) ms.getSubNum();
+			String LicencePlateNum = (String) ms.getLicensePlate();
+
+
+			// todo when we find the subscriber to renew what do we do ??
+			List<PartialSub> partialListDB = getAll(PartialSub.class);
+			List<FullSub> fullListDB = getAll(FullSub.class);
+			List<MultiSub> multiListDB = getAll(MultiSub.class);
+			for (PartialSub partialSub : partialListDB) {
+				String ID = Integer.toString(partialSub.getId_());
+				String Licence = partialSub.getCarNumber();
+				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
+					try {
+
+						partialSub.updateEndDate();
+						session.update(partialSub);
+						session.flush();
+						session.getTransaction().commit();
+						Message msg2 = new Message("SubRenewed");
+						client.sendToClient(msg2);
+					} catch (Exception exception) {
+						if (session != null) {
+							session.getTransaction().rollback();
+						}
+						Message msg2 = new Message("SubRenewed");
+						client.sendToClient(msg2);
+						exception.printStackTrace();
+					} finally {
+						session.close();
+					}
+					flag = true;
+					break;
+				}
+			}
+			for (FullSub fullsub : fullListDB) {
+				String ID = fullsub.getCustomerId();
+				String Licence = fullsub.getCarNumber();
+				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
+					try {
+
+						fullsub.updateEndDate();
+						session.update(fullsub);
+						session.flush();
+						session.getTransaction().commit();
+						Message msg2 = new Message("SubRenewed");
+						msg2.setObject1("success");
+						client.sendToClient(msg2);
+					} catch (Exception exception) {
+						if (session != null) {
+							session.getTransaction().rollback();
+						}
+						Message msg2 = new Message("SubRenewed");
+						client.sendToClient(msg2);
+						exception.printStackTrace();
+					} finally {
+						session.close();
+					}
+					flag = true;
+					break;
+				}
+			}
+			for (MultiSub multisub : multiListDB) {
+				String ID = Integer.toString(multisub.getId_());
+				String Licence = multisub.getCarNumber();
+				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
+					try {
+
+						multisub.updateEndDate();
+						session.update(multisub);
+						session.flush();
+						session.getTransaction().commit();
+						Message msg2 = new Message("SubRenewed");
+						msg2.setObject1("success");
+						client.sendToClient(msg2);
+					} catch (Exception exception) {
+						if (session != null) {
+							session.getTransaction().rollback();
+						}
+						Message msg2 = new Message("SubRenewed");
+						msg2.setObject1("success");
+						client.sendToClient(msg2);
+						exception.printStackTrace();
+					} finally {
+						session.close();
+					}
+					flag = true;
+					break;
+				}
+			}
+
+			// if the client is found inform him that sub is renewed
+//			if (flag) {
+//				Message MSG = new Message("SubRenewed");
+//				MSG.setObject1("success");
+//				client.sendToClient(MSG);
+//			} else {
+//				Message MSG = new Message("SubRenewed");
+//				MSG.setObject1("fail");
+//				client.sendToClient(MSG);
+//			}
+		}
 		else if(ms.getMessage().equals("ParkingManager_alterPrices")) {
 			// adds a price change request to the regional manager's requests list
 			//data stored in separate objects
@@ -148,13 +396,13 @@ public class SimpleServer extends AbstractServer {
 			PricesClass fullSubPrice = new PricesClass((int)ms.getObject4(),"fullSubPrice");
 			PricesClass MultiCarPrice = new PricesClass((int)ms.getObject5(),"MultiCarPrice");
 
-			Vector<PricesClass> prices_request_vector = new Vector<PricesClass>();
+			Vector<Integer> prices_request_vector = new Vector<Integer>();
 
-			prices_request_vector.add(occasionalPrice);
-			prices_request_vector.add(preOrderPrice);
-			prices_request_vector.add(PartTimePrice);
-			prices_request_vector.add(fullSubPrice);
-			prices_request_vector.add(MultiCarPrice);
+			prices_request_vector.add((int)ms.getObject1());
+			prices_request_vector.add((int)ms.getObject2());
+			prices_request_vector.add((int)ms.getObject3());
+			prices_request_vector.add((int)ms.getObject4());
+			prices_request_vector.add((int)ms.getObject5());
 
 			//get manger's name of current window to alter accordingly
 			ParkingManager Manager =  (ParkingManager) ms.getObject6();
@@ -228,13 +476,13 @@ public class SimpleServer extends AbstractServer {
 
 		}
 
-		else if(ms.getMessage().equals("ParkingManager_showStats")) {
-
-			// todo get all stats from database and then put them in objects 1 to 3 to present them to manager
-			Message MSG=new Message("statsReturned");
-			client.sendToClient(MSG);
-			// do other things
-		}
+//		else if(ms.getMessage().equals("ParkingManager_showStats")) {
+//
+//			// todo get all stats from database and then put them in objects 1 to 3 to present them to manager
+//			Message MSG=new Message("statsReturned");
+//			client.sendToClient(MSG);
+//			// do other things
+//		}
 
 		else if(ms.getMessage().equals("Complaint")) {
 			// the complaint which is a class defined in entities
@@ -242,12 +490,12 @@ public class SimpleServer extends AbstractServer {
 			// each complaint contains two fields
 			// 1- customer ID
 			// 2- the complaint text
-			// bruv u gud ?
+			// bruv u gud ? -> no im not gud im god
 
-			Complaints tempComplaint = (Complaints) ms.getObject1();
+			Comp tempComplaint = (Comp) ms.getObject1();
 			Complaint new_complaint = new Complaint();
 			new_complaint.setComplaintText(tempComplaint.getComplaintText());
-			new_complaint.setCustomerId(tempComplaint.getCustomerId());
+			new_complaint.setCustomerId_(Integer.parseInt(tempComplaint.getCustomerId()));
 
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
@@ -267,9 +515,8 @@ public class SimpleServer extends AbstractServer {
 				client.sendToClient(ms);
 			}
 			// do other things
-		}
-
-		else if(ms.getMessage().equals("OcasionalParking")) {
+		}else if(ms.getMessage().equals("OcasionalParking"))
+		{
 
 			client.sendToClient(ms);
 			// Id number is saved as a string in object1
@@ -286,19 +533,44 @@ public class SimpleServer extends AbstractServer {
 			Time tempTime = new Time(Integer.parseInt(parsed[0]),Integer.parseInt(parsed[1]),Integer.parseInt(parsed[2]));
 			customer.setStartTime(tempTime);
 
+			try {
+				session = getSessionFactory().openSession();
+				session.beginTransaction();
+				// add new occasional customer to the db .
+				session.save(customer);
 
-			//todo return msg woth "OcasionalParking" in name object1 a string success/fail
-			Message msg2 = routingOrders(customer,"OccCustomer");
+				session.flush();
+				session.getTransaction().commit();
 
-			client.sendToClient(msg2);
+				Message msg2 = routingOrders(customer,"OccCustomer");
+				msg2.setObject1("success");
+//				Message msg2 = new Message("prices update request sent");
+				client.sendToClient(msg2);
+			} catch (Exception exception) {
+				if (session != null) {
+					session.getTransaction().rollback();
+				}
+				Message msg2 = new Message("OccCustomer");
+				msg2.setObject1("fail");
+				client.sendToClient(msg2);
+				System.err.println("An error occurred, changes have been rolled back.");
+				exception.printStackTrace();
+			} finally {
+				session.close();
+			}
 
-		}
+			// return msg with "OcasionalParking" in name object1 a string success/fail
 
-		else if (ms.getMessage().equals("OneTimeParkingOrder_Submit")){
-			//todo check if in DB
-			// return OneTimeParkingOrder_Success
+
+
+		} else if (ms.getMessage().equals("OneTimeParkingOrder_Submit")){
+
+			//**************************** pre order parking **************************//
+
+
+			//return OneTimeParkingOrder_Success
 			// or OneTimeParkingOrder_Fail
-			//data is contained in a vector inside Object1
+			// data is contained in a vector inside Object1
 			// the data is stored in the following order
 			// 0- car number             3- Eta
 			// 1- DesiredParking         4- Etd
@@ -307,7 +579,6 @@ public class SimpleServer extends AbstractServer {
 
 			// checking fields input if okay add the client, else return failed
 			// checked everything except time/date
-			//todo check if there is empty space in parking
 			if (fieldsChecker_OneTimeParkingOrder(fields)) {
 				PreOrder tempParking = new PreOrder(fields.get(5), fields.get(0), fields.get(1), fields.get(2));
 				String tempEta = fields.get(3);
@@ -317,7 +588,7 @@ public class SimpleServer extends AbstractServer {
 				Date Eta = new Date(Integer.parseInt(parsedEta[0]), Integer.parseInt(parsedEta[1]), Integer.parseInt(parsedEta[2]), Integer.parseInt(parsedEta[3]), 0);
 				Date Etd = new Date(Integer.parseInt(parsedEtd[0]), Integer.parseInt(parsedEtd[1]), Integer.parseInt(parsedEtd[2]), Integer.parseInt(parsedEtd[3]), 0);
 				tempParking.setEntrance(Eta);
-				tempParking.setExit(Etd);
+				tempParking.setExit_(Etd);
 
 
 
@@ -335,9 +606,7 @@ public class SimpleServer extends AbstractServer {
 				msg2.setObject1("fail");
 			}
 
-		}
-
-		else if(ms.getMessage().endsWith("regional")){
+		} else if(ms.getMessage().endsWith("regional")){
 			Message msg2 = new Message("return_regional");
 			switch (ms.getMessage()) {
 				case "accept_price_alter_regional" -> msg2 = price_alter(ms, "accept");
@@ -351,8 +620,8 @@ public class SimpleServer extends AbstractServer {
 
 
 		}
-
-		else if(ms.getMessage().equals("Deactivate Parking Spot")) {
+		else if(ms.getMessage().equals("Deactivate Parking Spot"))
+		{
 
 			//Deactivate Parking Spot
 			//Object #1 - Parking Spot ID
@@ -365,8 +634,8 @@ public class SimpleServer extends AbstractServer {
 			client.sendToClient(msg12);
 
 		}
-
-		else if(ms.getMessage().equals("Activate Parking Spot")) {
+		else if(ms.getMessage().equals("Activate Parking Spot"))
+		{
 
 			//Activate Parking Slot
 			//Object #1 - Parking Slot ID
@@ -379,8 +648,8 @@ public class SimpleServer extends AbstractServer {
 			client.sendToClient(msg12);
 
 		}
-
-		else if(ms.getMessage().equals("System Request")) {
+		else if(ms.getMessage().equals("System Request"))
+		{
 			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Parking ID
@@ -388,13 +657,11 @@ public class SimpleServer extends AbstractServer {
 			String ParkingID = ms.getObject1().toString();
 			String SystemCommand = ms.getObject2().toString();
 
-			Message msg69 = ParkingLotCommand(ParkingID,SystemCommand); //Parking Lot Command has been set
-
-			client.sendToClient(msg69);
+			Message msg69 = ParkingLotCommand(ParkingID,SystemCommand);
 
 		}
-
-		else if(ms.getMessage().equals("Send To Other Parking")) {
+		else if(ms.getMessage().equals("Send To Other Parking"))
+		{
 			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - CarNumber
@@ -404,13 +671,11 @@ public class SimpleServer extends AbstractServer {
 			String CustomerID = ms.getObject2().toString();
 			String ParkingID = ms.getObject3().toString();
 
-			Message msg69 = SendToParking(CustomerID,CarNumber,ParkingID); //"Found A New Parking Lot"
-
-			client.sendToClient(msg69);
+			Message msg69 = SendToParking(CustomerID,CarNumber,ParkingID);
 
 		}
-
-		else if(ms.getMessage().equals("Occasion Request")) {
+		else if(ms.getMessage().equals("Occasion Request"))
+		{
 			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Parking Slot ID
@@ -420,8 +685,10 @@ public class SimpleServer extends AbstractServer {
 			String CarNumber = ms.getObject2().toString();
 			String OccasionID = ms.getObject3().toString();
 		}
-
-		else if(ms.getMessage().equals("Register New Subscriber")) {
+		//===================================================================================
+		// RegisterNewSubscription Window
+		else if(ms.getMessage().equals("Register New Subscriber"))
+		{
 			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Subscriber Type
@@ -450,36 +717,142 @@ public class SimpleServer extends AbstractServer {
 			//Departure Hour Components
 			//No Need For Now
 
+			session = getSessionFactory().openSession();
+			session.beginTransaction();
+			Message MSG=new Message("RegisterNewSub");
+
 			if(SubscriberType.equals("Single Monthly Subscription"))
 			{
+				Boolean newCustumer = true;
 				PartialSub input = new PartialSub(CustomerID,CarNumber);
 				Date Temp = new Date(Year,Month,Day);
 				input.setStartDate(Temp);
 				input.setEntranceHour(EntranceHour);
 				input.setDepartureHour(DepartureHour);
+				List<PartialSub> partialSubs = getAll(PartialSub.class);
+				for (PartialSub partialSub:partialSubs){
+					if(partialSub.getCustomerId().equals(CustomerID)){
+						newCustumer = false;
+					}
+				}
+				try{
+					if(newCustumer){
+						session.save(input);
+						MSG.setMessage("success");
+					}else{
+						MSG.setMessage("Customer already exists");
+					}
+
+				} catch (Exception exception) {
+					if (session != null) {
+						session.getTransaction().rollback();
+					}
+
+					MSG.setMessage("fail");
+					exception.printStackTrace();
+				} finally {
+
+					client.sendToClient(MSG);
+					session.close();
+				}
 			}
 			else if(SubscriberType.equals("Multi Monthly Subscription"))
 			{
 				MultiSub input = new MultiSub();
 				Date Temp = new Date(Year,Month,Day);
 				input.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
+// todo here we can have a problem if we are trying to multiple cars and one of them exists
+				Boolean newCustomer = true;
+				Boolean newCar = true;
+				List<MultiSub> multiSubs = getAll(MultiSub.class);
+				MultiSub tempmultiSub = null;
+				for (MultiSub multiSub : multiSubs){
+					if(multiSub.getCustomerId().equals(CustomerID)){
+						newCustomer = false;
+//						List<PartialSub> cars = multiSub.getCars();
+//						for (PartialSub car : cars){
+//							if(car.getCarNumber().equals(CarNumber)){
+//								newCar=false;
+//							}
+
+//						if(newCar){
+//							multiSub.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
+//							tempmultiSub = multiSub;
+//						}
+					}
+				}
+				try{
+//					if(!newCustomer & newCar){
+//						session.update(tempmultiSub);
+//						MSG.setMessage("customer exists added new car");
+//					}else
+						if(newCustomer){
+						session.save(input);
+						MSG.setMessage("customer added successfully");
+					}else{
+						MSG.setMessage("fail");
+					}
+
+				} catch (Exception exception) {
+					if (session != null) {
+						session.getTransaction().rollback();
+					}
+
+					MSG.setMessage("fail");
+					exception.printStackTrace();
+				} finally {
+					client.sendToClient(MSG);
+					session.close();
+				}
 			}
 			else if(SubscriberType.equals("Fully Subscription"))
 			{
 				FullSub input = new FullSub(CustomerID,CarNumber);
 				Date Temp = new Date(Year,Month,Day);
 				input.setStartDate(Temp);
+
+				Boolean newCustomer = true;
+				List<FullSub> fullSubs = getAll(FullSub.class);
+				for(FullSub fullSub : fullSubs){
+					if(fullSub.getCustomerId().equals(CustomerID)){
+						newCustomer = false;
+					}
+				}
+
+				try{
+					if(newCustomer) {
+						session.save(input);
+						MSG.setMessage("success");
+					}else{
+						MSG.setMessage("fail customer exists");
+					}
+				} catch (Exception exception) {
+					if (session != null) {
+						session.getTransaction().rollback();
+					}
+
+					MSG.setMessage("fail");
+					exception.printStackTrace();
+				} finally {
+					client.sendToClient(MSG);
+					session.close();
+				}
+
 			}
 
 		}
-
-		else if(ms.getMessage().equals("Check Client Spot Status")) {
+		//===================================================================================
+		// Check Status Window
+		else if(ms.getMessage().equals("Check Client Spot Status"))
+		{
 			//todo all
 			String CustomerId = ms.getObject1().toString();
 			String CarNumber = ms.getObject2().toString();
 		}
 
 	}
+
+
 
 	/**.....................................................................................................................
 .MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
@@ -501,42 +874,180 @@ public class SimpleServer extends AbstractServer {
 .MMMMM..MMMMM..MMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
 ..........................................................................................................................*/
 
-	private Message ParkingSpotStateUpdate(String parkingSpotID, ParkingLot parkingLot, String state) {
-		int x = Integer.parseInt(parkingSpotID.split("-")[0]); //depth
-		int y = Integer.parseInt(parkingSpotID.split("-")[1]); //height
-		int z = Integer.parseInt(parkingSpotID.split("-")[2]); //width
+	private void EnterParking(Message msg)
+	{
+		// I assume name of the park is stored in object 4
+		//we have cairables called licenes plate and id in message already
+		//assume in object 3 the exit date/time;
+        String parkName=(String) msg.getObject4();
+		ParkingLot pk=new ParkingLot();
+	    session.getSessionFactory().openSession();
+		String hql="From ParkingLot ";
+		Query query = session.createQuery(hql);
+		List<ParkingLot> ParkingsList = query.getResultList();
+		for(ParkingLot temp:ParkingsList)
+		{
+			if(temp.getName().equals(parkName))
+			{
+				pk=temp;
+			}
+		}
+	    ParkingSpot spot= new ParkingSpot();
 
-		Message msg2 = new Message(""); // TODO
+		if(!pk.isFull())
+		{
+			for(int i = 0; i< pk.getSlots_num(); i++)
+			{
+				if(pk.getSpots().get(i).getCurrentState().equals("empty"))
+				{
+					pk.setOccupied_slots_num(pk.getOccupied_slots_num()+1);
+					pk.getSpots().get(i).setCurrentState("occupied");
+					pk.getSpots().get(i).setLicesnes_Plate(msg.getLicensePlate());
+					pk.getSpots().get(i).setCus_ID(msg.getID());
+					pk.getSpots().get(i).setExitDate((LocalDateTime) msg.getObject3());
+				}
+			}
+		}
+		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
+		{
+			@Override
+			public int compare(ParkingSpot p1, ParkingSpot p2) {
+				return p1.getExitDate().compareTo(p2.getExitDate());
+			}
+		});
+		  int i=pk.getOccupied_slots_num();
+		for (int depth=0;depth<3;depth++)
+		{
+			for(int height=0;height<3;height++)
+			{
+			for (int width=0;width<pk.getWidth();width++,i--)
+			 {
+				  pk.getSpots().get(i).setdepth(depth);
+				  pk.getSpots().get(i).setWidth(width);
+				  pk.getSpots().get(i).setHeight(height);
+				  if(i==0)
+				  {
+					  break;
+				  }
+			 }
+		  }
+		}
+		try {
+			         		session.saveOrUpdate(pk);
+
+		}
+		catch (Exception e)
+		{
+			session.getTransaction().rollback();
+		}
+		finally {
+			       	 session.close();
+		}
+
+
+
+
+
+
+
+	}
+
+	public void ExitParking(Message msg) {
+
+		// I assume name of the park is stored in object 4
+		//we have cairables called licenes plate and id in message already
+		//assume in object 3 the exit date/time;
+		String parkName=(String) msg.getObject4();
+		ParkingLot pk=new ParkingLot();
+		session.getSessionFactory().openSession();
+		String hql="From ParkingLot ";
+		Query query = session.createQuery(hql);
+		List<ParkingLot> ParkingsList = query.getResultList();
+		for(ParkingLot temp:ParkingsList)
+		{
+			if(temp.getName().equals(parkName))
+			{
+				pk=temp;
+			}
+		}
+		ParkingSpot spot= new ParkingSpot();
+
+
+			for(int i = 0; i< pk.getSlots_num(); i++) {
+				if (pk.getSpots().get(i).getCus_ID().equals(msg.getID())
+				&& pk.getSpots().get(i).getLicesnes_Plate().equals(msg.getLicensePlate())) {
+
+					pk.setOccupied_slots_num(pk.getOccupied_slots_num() -1);
+					pk.getSpots().get(i).setCurrentState("empty");
+					pk.getSpots().get(i).setLicesnes_Plate("");
+					pk.getSpots().get(i).setCus_ID("");
+					pk.getSpots().get(i).setExitDate(LocalDateTime.MIN);
+				}
+			}
+
+
+		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
+		{
+			@Override
+			public int compare(ParkingSpot p1, ParkingSpot p2) {
+				return p1.getExitDate().compareTo(p2.getExitDate());
+			}
+		});
+
+
+		int i=pk.getOccupied_slots_num();
+		for (int depth=0;depth<3;depth++)
+		{
+			for(int height=0;height<3;height++)
+			{
+				for (int width=0;width<pk.getWidth();width++,i--)
+				{
+					pk.getSpots().get(i).setdepth(depth);
+					pk.getSpots().get(i).setWidth(width);
+					pk.getSpots().get(i).setHeight(height);
+					if(i==0)
+					{
+						break;
+					}
+				}
+			}
+		}
+		try {
+			session.saveOrUpdate(pk);
+
+		}
+		catch (Exception e)
+		{
+			session.getTransaction().rollback();
+		}
+		finally {
+			session.close();
+		}
+
+
+	}
+
+
+
+	private Message ParkingSpotStateUpdate(String parkingSpotID, ParkingLot parkingLot, String state) {
+		int x = Integer.parseInt(parkingSpotID.split("-")[0]);
+		int y = Integer.parseInt(parkingSpotID.split("-")[1]);
+		int z = Integer.parseInt(parkingSpotID.split("-")[2]);
+
+		Message msg2 = new Message("");
 		try {
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
 
 			CriteriaBuilder builder1 = session.getCriteriaBuilder();
-			CriteriaQuery<ParkingLot> query1 = builder1.createQuery(ParkingLot.class);
+			CriteriaQuery<ParkingSpot> query1 = builder1.createQuery(ParkingSpot.class);
 
-			query1.from(ParkingLot.class);
-			List<ParkingLot> ParkingLots = session.createQuery(query1).getResultList();
-			ParkingSpot ParkingSpot = new ParkingSpot(x, y, z, state, parkingLot);
-			for(ParkingLot var : ParkingLots)
-			{
-				if(var.getParking_id() == parkingLot.getParking_id())
-				{
-					//offset calculation : spots(depth - const,height - const , width)
-					//location = depth * height * width + 3 * width + width
-					parkingLot.getSpots().set(x * y * z + y * z + z,ParkingSpot);
-					msg2.setObject1(parkingLot.getParking_id());
-					msg2.setObject1(x);
-					msg2.setObject1(y);
-					msg2.setObject1(z);
+			query1.from(ParkingSpot.class);
+			List<ParkingSpot> parkingSpots = session.createQuery(query1).getResultList();
+			ParkingSpot ParkingSpot = new ParkingSpot(x, y, z, state, parkingLot.getParking_id(),parkingLot);
 
-				}
-			}
-
-			msg2.setMessage("Parking Spot has been " + state + "ed successfully!");
-
-			//NEED TO TALK
 			session.saveOrUpdate(ParkingSpot);
-			//session.saveOrUpdate(parkingLot);
+
 			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception exception) {
@@ -555,70 +1066,128 @@ public class SimpleServer extends AbstractServer {
 		return msg2;
 	}
 
-	private Message SendToParking(String CustomerID, String CarNumber , String ParkingID) {
-		//Done
-		Message Result = new Message("");
-			try {
-				session = getSessionFactory().openSession();
-				session.beginTransaction();
+	private Message SendToParking(String CustomerID, String CarNumber , String ParkingID)
+	{
+		try {
+			session = getSessionFactory().openSession();
+			session.beginTransaction();
 
-				CriteriaBuilder builder1 = session.getCriteriaBuilder();
-				CriteriaQuery<ParkingLot> query1 = builder1.createQuery(ParkingLot.class);
-				query1.from(ParkingLot.class);
-				List<ParkingLot> ParkingLots = session.createQuery(query1).getResultList();
-				ParkingLot ParkingLot = new ParkingLot();
-				for(int i = 0 ; i < ParkingLots.size(); i++)
-				{
-					if(!ParkingLots.get(i).isFull())
-					{
-						ParkingLot = ParkingLots.get(i);
-						Result.setMessage("Found A New Parking Lot");
-						Result.setObject1(ParkingLot.getParking_id());
-						Result.setObject1(ParkingLot.getName());
-					}
-				}
-				session.save(ParkingLot);
+			CriteriaBuilder builder1 = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingLot> query1 = builder1.createQuery(ParkingLot.class);
+			query1.from(ParkingLot.class);
+			List<ParkingLot> ParkingLots = session.createQuery(query1).getResultList();
+			ParkingLot ParkingLot = new ParkingLot();
+			ParkingLot.setParking_id(Integer.parseInt(ParkingID));
+			//ParkingLot.setStatus(SystemCommand);	//NEED TO DO/TALK
+			session.save(ParkingLot);
 
-				session.flush();
-				session.getTransaction().commit();
+			session.flush();
+			session.getTransaction().commit();
+		}
+		catch (Exception exception) {
+			if (session != null) {
+				session.getTransaction().rollback();
 			}
-			catch (Exception exception) {
-				if (session != null) {
-					session.getTransaction().rollback();
-				}
-				Message msg2 = new Message("failed_transaction");
+			Message msg2 = new Message("failed_transaction");
 
-				System.err.println("An error occurred, changes have been rolled back.");
-				exception.printStackTrace();
-			}
-			finally {
-				assert session != null;
-				session.close();
-			}
-			return Result;
-
-
+			System.err.println("An error occurred, changes have been rolled back.");
+			exception.printStackTrace();
+		} finally {
+			assert session != null;
+			session.close();
+		}
+		return null;
 	}
+
+
 
 	private Message routingOrders(Object ParkingEntryOrder, String type) {
 		//todo
-		// this function takes an order such as preorder or occasional customer etc.., and the type in "type"
+		//this function takes an order such as preorder or occasional customer etc.., and the type in "type"
 		// so we can convert it to the given type and add it. it returns a Message and it's fields are set according to
 		// the caller.
 		// it should every order to function that saves it/or let's the customer enter the parking
+		session = getSessionFactory().openSession();
+		session.beginTransaction();
+
+
+		if (type.equals("PreOrder")){
+			PreOrder newOrder = (PreOrder) ParkingEntryOrder;
+			String parking = newOrder.getParking_requested();
+			List<ParkingLot> parkingList = getAll(ParkingLot.class);
+			for(ParkingLot parkingLot : parkingList){
+				if(parkingLot.getName().equals(parking)){
+					if(parkingLot.existsFreeSlots()){
+						parkingLot.addPreOrder(newOrder);
+						parkingLot.incPreOrderNum();
+						try {
+
+							session.update(parkingLot);
+							session.flush();
+							session.getTransaction().commit();
+							Message msg2 = new Message("OneTimeParkingOrder");
+							msg2.setObject1("success");
+						}
+						catch (Exception exception) {
+							if (session != null) {
+								session.getTransaction().rollback();
+							}
+							Message msg2 = new Message("OneTimeParkingOrder");
+							msg2.setObject1("fail");
+							exception.printStackTrace();
+						} finally {
+							assert session != null;
+							session.close();
+						}
+					}
+				}
+			}
+
+		}else{
+			// here type is "OccCustomer"
+
+			OccCustomer newCustomer = (OccCustomer) ParkingEntryOrder;
+			DataSingleton data = DataSingleton.getInstance();
+			String parking = (String) data.getData();
+			List<ParkingLot> parkingList = getAll(ParkingLot.class);
+			for(ParkingLot parkingLot : parkingList){
+				if(parkingLot.getName().equals(parking)){
+					if(parkingLot.existsFreeSlots()){
+						parkingLot.addOccasionalCustomers(newCustomer);
+						try {
+
+							session.update(parkingLot);
+							session.flush();
+							session.getTransaction().commit();
+							Message msg2 = new Message("OccCustomer");
+							msg2.setObject1("success");
+						}
+						catch (Exception exception) {
+							if (session != null) {
+								session.getTransaction().rollback();
+							}
+							Message msg2 = new Message("OccCustomer");
+							msg2.setObject1("fail");
+							exception.printStackTrace();
+						} finally {
+							assert session != null;
+							session.close();
+						}
+					}
+				}
+			}
+
+
+		}
 
 		return null;
 
 	}
 
-	private void DeleteParkingOrder(Message msg, ConnectionToClient client){
-		//todo
 
-	}
 
 	private Message ParkingLotCommand(String ParkingID, String SystemCommand) {
-		//Done
-		Message msg69 = new Message("");
+		//todo
 		try {
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
@@ -628,17 +1197,18 @@ public class SimpleServer extends AbstractServer {
 			query1.from(ParkingLot.class);
 			List<ParkingLot> ParkingLots = session.createQuery(query1).getResultList();
 			ParkingLot Result = new ParkingLot();
+			int DeltaSpots = 0;
 			for(int i = 0 ; i < ParkingLots.size(); i++)
 			{
-				if(ParkingLots.get(i).getParking_id() == Integer.parseInt(ParkingID))
+				/*if(ParkingLots.get(i).getSpots() - ParkingLots.get(i).getEmptySpots() > DeltaSpots)
 				{
+					DeltaSpots = ParkingLots.get(i).getSpots() - ParkingLots.get(i).getEmptySpots();
 					Result = ParkingLots.get(i);
-					msg69.setMessage("Parking Lot Command has been set");
-					ParkingLots.get(i).setStatus(SystemCommand);
-				}
+				}*/
 			}
 
-			session.saveOrUpdate(Result);
+			//ParkingLot.setStatus(SystemCommand);	//NEED TO DO/TALK
+			session.save(Result);
 
 			session.flush();
 			session.getTransaction().commit();
@@ -657,12 +1227,12 @@ public class SimpleServer extends AbstractServer {
 			session.close();
 		}
 
-		return msg69;
+		return null;
 	}
 
 	private Message alterPricesRegionalReq(Message ms) {
-		//data stored in seperate objects
-		// ocasional price -> object1
+		//data stored in separate objects
+		// occasional price -> object1
 		// preOrder price -> object2
 		// partTime price -> object3
 		// FullSubs price -> object4
@@ -673,13 +1243,13 @@ public class SimpleServer extends AbstractServer {
 		PricesClass fullSubPrice = new PricesClass((int)ms.getObject4(),"fullSubPrice");
 		PricesClass MultiCarPrice = new PricesClass((int)ms.getObject5(),"MultiCarPrice");
 
-		Vector<PricesClass> prices_request_vector = new Vector<PricesClass>();
+		Vector<Integer> prices_request_vector = new Vector<Integer>();
 
-		prices_request_vector.add(occasionalPrice);
-		prices_request_vector.add(preOrderPrice);
-		prices_request_vector.add(PartTimePrice);
-		prices_request_vector.add(fullSubPrice);
-		prices_request_vector.add(MultiCarPrice);
+		prices_request_vector.add((int)ms.getObject1());
+		prices_request_vector.add((int)ms.getObject2());
+		prices_request_vector.add((int)ms.getObject3());
+		prices_request_vector.add((int)ms.getObject4());
+		prices_request_vector.add((int)ms.getObject5());
 
 		//get manger's name of current window to alter accordingly
 
@@ -735,6 +1305,8 @@ public class SimpleServer extends AbstractServer {
 
 		return msg2;
 	}
+
+
 
 	private Message showPricesRegional(Message ms) {
 		Message MSG = new Message("show_prices_regional");
@@ -793,15 +1365,59 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	private Message showStatRegional(Message ms) {
-		//todo
+
+		//todo delete not needed
+
 		return null;
 	}
 
-	private Message pdfRegional(Message ms) {
+	private Message pdfRegional(Message ms){
+			//index chooses parking lot to show status of.
 
-		//todo
-		return null;
-	}
+			int index = 0;
+			 if(ms.getMessage().equals("pdf_Parking2_regional")){
+				index = 1;
+			}else if(ms.getMessage().equals("pdf_Parking3_regional")) {
+				index =2;
+			}
+
+			try {
+				// Create a new Document
+				Document document = new Document();
+				// Create a new PdfWriter
+				PdfWriter.getInstance(document, new FileOutputStream("Parking.pdf"));
+				// Open the Document
+				document.open();
+				// Add content to the Document
+				session = getSessionFactory().openSession();
+				session.beginTransaction();
+
+				CriteriaBuilder builder = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingLot> query = builder.createQuery(ParkingLot.class);
+				query.from(ParkingLot.class);
+				List<ParkingLot> parkingLots = session.createQuery(query).getResultList();
+
+				List<ParkingSpot> parkingSpots = parkingLots.get(index).getSpots();
+				StringBuilder parking_spots_state = new StringBuilder();
+				for(int i=0;i< parkingSpots.size();i++){
+					parking_spots_state.append(parkingSpots.get(i).getCurrentState());
+					parking_spots_state.append("  ");
+					if(i%9 ==0){
+						parking_spots_state.append("\n");
+					}
+
+					}
+
+				document.add(new Paragraph(String.valueOf(parking_spots_state)));
+				// Close the Document
+				document.close();
+			} catch (FileNotFoundException | DocumentException e) {
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
 
 	private Message price_alter(Message ms, String res) {
 		//changes price with a given update price request
@@ -822,7 +1438,7 @@ public class SimpleServer extends AbstractServer {
 			int request_num = (Integer) ms.getObject1();
 			PricesUpdateRequest temp = new PricesUpdateRequest();
 			for(PricesUpdateRequest ptr : requestList){
-				if(ptr.getId() == request_num){
+				if(ptr.getPricesUpdateReqId() == request_num){
 					temp=ptr;
 				}
 			}
@@ -836,11 +1452,16 @@ public class SimpleServer extends AbstractServer {
 
 			for(ParkingLot parkingLot : parkingLots){
 				if(parkingLot.getParking_id() == temp.getParkingManager().getParkingLot().getParking_id()){
-					parkingLot.setOccasionalPrice(temp.getPricesClassVector().get(0));
-					parkingLot.setPreOrderPrice(temp.getPricesClassVector().get(1));
-					parkingLot.setPartTimePrice(temp.getPricesClassVector().get(2));
-					parkingLot.setFullSubPrice(temp.getPricesClassVector().get(3));
-					parkingLot.setMultiCarPrice(temp.getPricesClassVector().get(4));
+					PricesClass occasionalPrice = new PricesClass(temp.getPricesClassVector().get(0),"occasionalPrice");
+					PricesClass preOrderPrice = new PricesClass(temp.getPricesClassVector().get(1),"preOrderPrice");
+					PricesClass PartTimePrice = new PricesClass(temp.getPricesClassVector().get(2),"PartTimePrice");
+					PricesClass fullSubPrice = new PricesClass(temp.getPricesClassVector().get(3),"fullSubPrice");
+					PricesClass MultiCarPrice = new PricesClass(temp.getPricesClassVector().get(4),"MultiCarPrice");
+					parkingLot.setOccasionalPrice(occasionalPrice);
+					parkingLot.setPreOrderPrice(preOrderPrice);
+					parkingLot.setPartTimePrice(PartTimePrice);
+					parkingLot.setFullSubPrice(fullSubPrice);
+					parkingLot.setMultiCarPrice(MultiCarPrice);
 				}
 			}
 			session.update(parkingLots);
@@ -915,17 +1536,73 @@ public class SimpleServer extends AbstractServer {
 		return true;
 	}
 
+	private static void logout_by_string_debug_heleper(String[] data){
+		String userName = data[0];
+		String password = data[1];
+		System.out.println("data0="+data[0]);
+		System.out.println("data1="+data[1]);
+
+		Message msg = new Message("LoginTry");
+		SessionFactory sessionFactory = getSessionFactory();
+		session = sessionFactory.openSession();
+		String sqlQ = "FROM User U WHERE U.userName = :user_name";
+		Query query = session.createQuery(sqlQ);
+		query.setParameter("user_name", userName);
+		List<User> list = query.list();
+		if (!list.isEmpty()) {
+			User user = list.get(0);
+			if (user.checkPassword(password)) {
+				if (!user.getConnected()) msg.setMessage("tryLogin_UsernotConnected");
+				else {
+					user.setConnected(false);
+					System.out.println(user.getFirstName() + " " + user.getLastName());
+					try {
+						session.beginTransaction();
+						session.update(user);
+						session.getTransaction().commit();
+						msg.setObject1(user);
+						msg.setMessage("tryLogin_UserFound");
+						System.out.println("tryLogin_UserFound");
+					} catch (HibernateException e) {
+						if (session != null)
+							session.getTransaction().rollback();
+						e.printStackTrace();
+						msg.setMessage("tryLogin_User_UnknownLogInError");
+						System.out.println(msg.getMessage());
+					}
+				}
+			} else msg.setMessage("tryLogin_UserNotFound");
+
+		} else msg.setMessage("tryLogin_UserNotFound");
+
+	}
+
 	private static Message tryLogIn(String[] data) {
 		/** checks login pw and username in db with two strings given
 		*returns the user in object1 in message
 		* and in the name of the message the result
 		* you can check what's the users type according to his permission lvl in field permission in User
 		* 0 is regional manager, 1 is a branch manager, 2 parking worker.
-		 * if user logged in his status set to active in field connected*/
+		 * if user logged in his status set to active in field connected*/{
+		 	System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<User> query111 = builder.createQuery(User.class);
+			query111.from(User.class);
+			List<User> QQ = session.createQuery(query111).getResultList();
 
 
+			System.out.println("first username in db"+QQ.get(1).getUserName());
+			System.out.println("password check res = "+QQ.get(1).checkPassword(data[1]));
+			session.close();
+		}
 		String userName = data[0];
 		String password = data[1];
+		System.out.println("data0="+data[0]);
+		System.out.println("data1="+data[1]);
+
 		Message msg = new Message("LoginTry");
 		SessionFactory sessionFactory = getSessionFactory();
 		session = sessionFactory.openSession();
@@ -952,15 +1629,17 @@ public class SimpleServer extends AbstractServer {
 							session.getTransaction().rollback();
 						e.printStackTrace();
 						msg.setMessage("tryLogin_User_UnknownLogInError");
+						System.out.println(msg.getMessage());
 					}
 				}
 			} else msg.setMessage("tryLogin_UserNotFound");
 
 		} else msg.setMessage("tryLogin_UserNotFound");
 
-
+		System.out.println(msg.getMessage());
 		return msg;
 	}
+
 
 	private static Message tryLogOut(User user) {
 
@@ -981,6 +1660,8 @@ public class SimpleServer extends AbstractServer {
 		return msg;
 
 	}
+
+
 
 	public static void addRegionalManager() {
 		try {
@@ -1019,6 +1700,8 @@ public class SimpleServer extends AbstractServer {
 		}
 	}
 
+
+
 	public static void addParkingWorkers( ) {
 		// 3 parking workers 1 for each parking
 		int index = 3;
@@ -1037,43 +1720,114 @@ public class SimpleServer extends AbstractServer {
 		}
 	}
 
+
 	public static void Add_Parking_Lots() {
 		try {
 			/** adds three parking lots to db **/
-			//todo needed time zone addition
-			//todo add each parking lot to a manager and a worker and vise versa
 			System.out.println("Parking Lot1");
 			//Getting the default zone id
 			ZoneId defaultZoneId = ZoneId.systemDefault();
 
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
 
-			ParkingLot parkingLot1 = new ParkingLot("German_Colony",4,4,false);
+			ParkingLot parkingLot1 = new ParkingLot("German_Colony",3,4,false);
+//			List<ParkingManager> parkingManagers = getAll()
+
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingManager> query = builder.createQuery(ParkingManager.class);
+			query.from(ParkingManager.class);
+			List<ParkingManager> parkingManagers = session.createQuery(query).getResultList();
+
+
+			CriteriaBuilder builder1 = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingWorker> query1 = builder1.createQuery(ParkingWorker.class);
+			query1.from(ParkingWorker.class);
+			List<ParkingWorker> parkingWorkers = session.createQuery(query1).getResultList();
+
+
+			parkingLot1.setParkingManager(parkingManagers.get(0));
+			parkingLot1.setParkingWorker(parkingWorkers.get(0));
+			parkingWorkers.get(0).setParkingLot(parkingLot1);
+			session.saveOrUpdate(parkingWorkers.get(0));
+
+
+
+//			parking spots initialize
+			        for(int i = 0; i< parkingLot1.getDimensions(); i++)
+        			{
+           				 for(int j=0;j<3;j++)
+            				{
+             				   for(int k=0;k<3;k++)
+               					 {
+
+                   				 ParkingSpot S = new ParkingSpot(i,j,k,"empty",parkingLot1.getParking_id(),parkingLot1);
+                   				 session.save(S);
+                   				 parkingLot1.addSpot(S);
+               					 }
+            				}
+       				 }
+
 			session.save(parkingLot1);
-			session.flush();
-//			Date d = new Date(2021 - 1900, 7, 11);
-//			instant = d.toInstant();
-//			LocalDate localD1 = instant.atZone(defaultZoneId).toLocalDate();
-
 			//___________________________________________________________________________________________
 			System.out.println("Parking Lot2");
-			ParkingLot parkingLot2 = new ParkingLot("Hanmal",4,5,false);
-			session.save(parkingLot1);
-			session.flush();
-//			Date d = new Date(2021 - 1900, 7, 11);
-//			instant = d.toInstant();
-//			LocalDate localD1 = instant.atZone(defaultZoneId).toLocalDate();
-			//________________________________________________________________________________________________________________
-			System.out.println("Parking Lot2");
+			ParkingLot parkingLot2 = new ParkingLot("Hanmal",3,5,false);
+			parkingLot1.setParkingManager(parkingManagers.get(1));
+			parkingLot1.setParkingWorker(parkingWorkers.get(1));
+			parkingWorkers.get(1).setParkingLot(parkingLot1);
+			session.saveOrUpdate(parkingWorkers.get(1));
+			//parking spots initialize
+			for(int i = 0; i< parkingLot2.getDimensions(); i++)
+			{
+				for(int j=0;j<3;j++)
+				{
+					for(int k=0;k<3;k++)
+					{
 
-			ParkingLot parkingLot3 = new ParkingLot("Bat-Galim",4,5,false);
-			session.save(parkingLot1);
+						ParkingSpot S = new ParkingSpot(i,j,k,"empty",parkingLot2.getParking_id(),parkingLot2);
+						session.save(S);
+						parkingLot2.addSpot(S);
+					}
+				}
+			}
+			session.saveOrUpdate(parkingLot2);
+
+
+			//________________________________________________________________________________________________________________
+			System.out.println("Parking Lot3");
+
+			ParkingLot parkingLot3 = new ParkingLot("Bat-Galim",3,5,false);
+
+			parkingLot1.setParkingManager(parkingManagers.get(2));
+			parkingLot1.setParkingWorker(parkingWorkers.get(2));
+			parkingWorkers.get(2).setParkingLot(parkingLot1);
+			session.saveOrUpdate(parkingWorkers.get(2));
+
+			//parking spots initialize
+			for(int i = 0; i< parkingLot3.getDimensions(); i++)
+			{
+				for(int j=0;j<3;j++)
+				{
+					for(int k=0;k<3;k++)
+					{
+
+						ParkingSpot S = new ParkingSpot(i,j,k,"empty",parkingLot3.getParking_id(),parkingLot3);
+						session.save(S);
+						parkingLot3.addSpot(S);
+					}
+				}
+			}
+			session.saveOrUpdate(parkingLot3);
+
 			session.flush();
-//			Date d = new Date(2021 - 1900, 7, 11);
-//			instant = d.toInstant();
-//			LocalDate localD1 = instant.atZone(defaultZoneId).toLocalDate();
+			session.getTransaction().commit();
+			session.close();
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
+
 
 }
