@@ -33,8 +33,14 @@ public class RegisterNewSubscription {
     @FXML // fx:id="StartingDateTF"
     private DatePicker StartingDateTF;
 
-    @FXML // fx:id="SubscriptionTypeMenue"
-    private MenuButton SubscriptionTypeMenue; // Value injected by FXMLLoader
+    @FXML
+    private RadioButton Radio1;
+
+    @FXML
+    private RadioButton Radio2;
+
+    @FXML
+    private RadioButton Radio3;
 
     @FXML
     private Button PreviousWindow;
@@ -44,7 +50,7 @@ public class RegisterNewSubscription {
 
     @FXML
     void CarNumberTF(ActionEvent event) {
-        String Car_ID = CarNumberTF.getText();
+        /*String Car_ID = CarNumberTF.getText();
         //int ID = Integer.parseInt(Customer_ID);
         boolean IsNumber = true;
         for(char a : Car_ID.toCharArray())
@@ -61,12 +67,12 @@ public class RegisterNewSubscription {
         {
             LabelOutput.setText("Invalid Car ID! Only digits allowed.");
             LabelOutput.setVisible(true);
-        }
+        }*/
     }
 
     @FXML
     void CustomerIdTF(ActionEvent event) {
-        String Customer_ID = CustomerIdTF.getText();
+        /*String Customer_ID = CustomerIdTF.getText();
         //int ID = Integer.parseInt(Customer_ID);
         boolean IsNumber = true;
         for(char a : Customer_ID.toCharArray())
@@ -83,7 +89,7 @@ public class RegisterNewSubscription {
         {
             LabelOutput.setText("Invalid Customer ID! Only digits allowed.");
             LabelOutput.setVisible(true);
-        }
+        }*/
     }
 
     @FXML
@@ -95,7 +101,20 @@ public class RegisterNewSubscription {
         String RegularParking = RegularParkingTF.getText();
         String EntranceParkingTime = EntranceHourTF.getText();
         String DepartureParkingTime = DepatureHourTF.getText();
-        String ParkingType = SubscriptionTypeMenue.getTypeSelector().toString();
+        String ParkingType = "";
+
+        if(Radio1.isSelected())
+        {
+            ParkingType = "Single Monthly Subscription";
+        }
+        else if(Radio2.isSelected())
+        {
+            ParkingType = "Multi Monthly Subscription";
+        }
+        else if(Radio3.isSelected())
+        {
+            ParkingType = "Fully Subscription";
+        }
 
         //Send Data TO SERVER!!!
         Message msg = new Message("Register New Subscriber");
@@ -115,11 +134,13 @@ public class RegisterNewSubscription {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        RegisterBtn.setVisible(false);
     }
 
     @FXML
     void OnEntranceHourTF(ActionEvent event) {
-        String input = EntranceHourTF.getText();
+        /*String input = EntranceHourTF.getText();
         switch (input.length()) {
             case 2:
                 EntranceHourTF.setText(input + ":");
@@ -138,12 +159,12 @@ public class RegisterNewSubscription {
             default:
                 break;
 
-        }
+        }*/
     }
 
     @FXML
     void OnDepatureHourTF(ActionEvent event) {
-        //FORMAT INPUT HH:MM
+        /*//FORMAT INPUT HH:MM
         String input = DepatureHourTF.getText();
         switch (input.length()) {
             case 2:
@@ -163,12 +184,12 @@ public class RegisterNewSubscription {
             default:
                 break;
 
-        }
+        }*/
     }
 
     @FXML
     void RegularParkingTF(ActionEvent event) {
-        String RegularParking_ID = RegularParkingTF.getText();
+       /* String RegularParking_ID = RegularParkingTF.getText();
         //int ID = Integer.parseInt(Customer_ID);
         boolean IsNumber = true;
         for(char a : RegularParking_ID.toCharArray())
@@ -186,7 +207,7 @@ public class RegisterNewSubscription {
             LabelOutput.setText("Invalid Customer ID! Only digits allowed.");
             LabelOutput.setVisible(true);
         }
-        //check If It is available by asking the server to check the parking slot
+        //check If It is available by asking the server to check the parking slot*/
     }
 
     @FXML
@@ -194,29 +215,23 @@ public class RegisterNewSubscription {
     }
 
     @FXML
-    void SubscriptionTypeMenue(ActionEvent event) {
-        //VBox root = new VBox();
-
-        MenuItem menuItem1 = new MenuItem("Single Monthly Subscription");
-        MenuItem menuItem2 = new MenuItem("Multi Monthly Subscription");
-        MenuItem menuItem3 = new MenuItem("Fully Subscription");
-
-        SubscriptionTypeMenue = new MenuButton("Subscription Type: ", null,menuItem1,menuItem2,menuItem3);
-        //to prevent glitching - using Multi in Single/Fully
-        CarNumberTF.setText("");
-    }
-
-    @FXML
     void OnPreviousWindow(ActionEvent event)
     {
-
         try {
+            PreviousWindow.setVisible(false);
             App.setRoot(DataSingleton.getInstance().getCaller());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //Go To Previous Window!
+    }
+
+    @FXML
+    void OnRadioButton(ActionEvent event)
+    {
+        CarNumberTF.setText("");
     }
 
     public boolean IsNumber(String Input)
