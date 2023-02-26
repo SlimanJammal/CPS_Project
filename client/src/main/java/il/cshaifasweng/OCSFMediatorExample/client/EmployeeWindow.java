@@ -6,10 +6,12 @@ import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
 import il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 
@@ -369,7 +371,12 @@ public class EmployeeWindow {
     //_________________________________________________________________________________________________________________
     //___________________________________________ Previous Window Click _______________________________________________
     @FXML
-    void OnPreviousWindowButton1(ActionEvent event) {
+    void OnPreviousWindowButton1(ActionEvent event) throws IOException {
+        Message EmployeeMsg = new Message("EmployeeLogout");
+        EmployeeMsg.setObject1(DataSingleton.getInstance().getData());
+        EmployeeMsg.setObject2(DataSingleton.getInstance().getCaller());
+        SimpleClient.getClient().sendToServer(EmployeeMsg);
+
         try {
             App.setRoot(DataSingleton.getInstance().getCaller());
         } catch (IOException e) {
@@ -377,33 +384,33 @@ public class EmployeeWindow {
         }
     }
 
-    @FXML
-    void OnPreviousWindowButton2(ActionEvent event) {
-        try {
-            App.setRoot(DataSingleton.getInstance().getCaller());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @FXML
-    void OnPreviousWindowButton3(ActionEvent event) {
-        try {
-            App.setRoot(DataSingleton.getInstance().getCaller());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void OnPreviousWindowButton4(ActionEvent event) {
-        try {
-            App.setRoot(DataSingleton.getInstance().getCaller());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @FXML
+//    void OnPreviousWindowButton2(ActionEvent event) {
+//        try {
+//            App.setRoot(DataSingleton.getInstance().getCaller());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
+//    @FXML
+//    void OnPreviousWindowButton3(ActionEvent event) {
+//        try {
+//            App.setRoot(DataSingleton.getInstance().getCaller());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @FXML
+//    void OnPreviousWindowButton4(ActionEvent event) {
+//        try {
+//            App.setRoot(DataSingleton.getInstance().getCaller());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
     //_________________________________________________________________________________________________________________
     //_________________________________________________________________________________________________________________
     //___________________________________________ Assistnat Functions _________________________________________________
@@ -418,6 +425,19 @@ public class EmployeeWindow {
         return true;
     }
 
+    @Subscribe
+    public void complaintHandleFromServer(EmployeeWindowEvent event){
+
+        Message msg = event.getMessage();
+        if (msg.getMessage().equals("tryLogOut_LoggedOut")){
+            try {
+                App.setRoot((String)msg.getObject1());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
     @FXML
     void initialize() {
         EventBus.getDefault().register(this);

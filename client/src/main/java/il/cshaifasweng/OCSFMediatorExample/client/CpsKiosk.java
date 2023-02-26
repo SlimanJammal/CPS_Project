@@ -86,23 +86,25 @@ public class CpsKiosk {
     }
     @FXML
     void WorkerBtn(ActionEvent event) throws IOException {
-        Message msg= new Message("loginEmployee_KIOSK");
-        msg.setID(ID_LOGIN_TF.getId());
+        Message msg= new Message("loginEmployee");
+        msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
     public void allowWorker(loginManagerKioskEvent allowing) throws IOException {
 
+        System.out.println("aere wsl set root ");
+        System.out.println(allowing.getMsg().getObject1());
 
-
-        if(allowing.getMsg().getObject1().toString().equals("success")) {
+        if(allowing.getMsg().getObject1().equals("success")) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
             il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
             data.setData(parkingWorker);
 
             data.setCaller("cpsKiosk");
+            System.out.println("aere wsl set root ");
             App.setRoot("EmployeeWindow");
         } else {
             Platform.runLater(() -> {
@@ -119,7 +121,7 @@ public class CpsKiosk {
     @FXML
     void ManagerBtn(ActionEvent event) throws IOException {
         Message msg= new Message("loginManager_KIOSK");
-        msg.setID(ID_LOGIN_TF.getId());
+        msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }

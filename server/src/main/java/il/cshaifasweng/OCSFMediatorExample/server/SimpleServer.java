@@ -210,6 +210,16 @@ public class SimpleServer extends AbstractServer {
 				}
 
 				client.sendToClient(MSG);
+		}else if (ms.getMessage().equals("EmployeeLogout")){
+			ParkingWorker worker = (ParkingWorker) ms.getObject1();
+			Message returnMsg = tryLogOut(worker);
+			//tryLogOut_LoggedOut
+			if(returnMsg.getMessage().equals("tryLogOut_LoggedOut")){
+				Message retMsg = new Message("EmployeeLogout_success");
+				retMsg.setObject1(ms.getObject2());
+				client.sendToClient(retMsg);
+			}
+
 		}
 		else if(ms.getMessage().equals("ParkingManager_showStats"))
 		{
@@ -258,20 +268,24 @@ public class SimpleServer extends AbstractServer {
 		else if(ms.getMessage().equals("loginEmployee"))
 		{
 
+
 			Message MSG=new Message("AllowEmployee");
 			String[] data = {ms.getID(),ms.getPassword()} ;
 
 			Message msg1 = tryLogIn(data);
 			User user1 = (User) msg1.getObject1();
 			int permission_check = user1.getPermission();
+			System.out.println("aere rg3 mn al server ");
 			if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 2 ){
 				//parking worker
+				System.out.println("aere rg3 mn al server ");
 				MSG.setObject1("success");
 				MSG.setObject2(msg1.getObject1()); // return User
 				MSG.setObject3(permission_check);
 			}else {
 				MSG.setObject1("fail");
 			}
+
 			client.sendToClient(MSG);
 		}
 		else if(ms.getMessage().equals("RenewSub")) {
@@ -1589,13 +1603,17 @@ public class SimpleServer extends AbstractServer {
 			session = sessionFactory.openSession();
 			session.beginTransaction();
 			CriteriaBuilder builder = session.getCriteriaBuilder();
+			// extracts list of users fromDB
 			CriteriaQuery<User> query111 = builder.createQuery(User.class);
 			query111.from(User.class);
-			List<User> QQ = session.createQuery(query111).getResultList();
+			List<User> userList = session.createQuery(query111).getResultList();
 
-
-			System.out.println("first username in db"+QQ.get(1).getUserName());
-			System.out.println("password check res = "+QQ.get(1).checkPassword(data[1]));
+			for (User user: userList){
+				System.out.println("->"+user.getUserName());
+			}
+			//just some printing for test purpose
+			System.out.println("first username in db"+userList.get(1).getUserName());
+			System.out.println("password check res = "+userList.get(1).checkPassword(data[1]));
 			session.close();
 		}
 		String userName = data[0];
@@ -1708,7 +1726,7 @@ public class SimpleServer extends AbstractServer {
 		//assigned parking lot is added later
 		try {
 			for(int i =0 ; i < index; i++) {
-				User ParkingWorker = new ParkingWorker("WORKER"+Integer.toString(index),"pass"+Integer.toString(index),"worker"+Integer.toString(index),"fam"+Integer.toString(index),2,null);
+				User ParkingWorker = new ParkingWorker("WORKER"+Integer.toString(i),"pass"+Integer.toString(i),"worker"+Integer.toString(i),"fam"+Integer.toString(i),2,null);
 				SessionFactory sessionFactory = getSessionFactory();
 				session = sessionFactory.openSession();
 				session.beginTransaction();
