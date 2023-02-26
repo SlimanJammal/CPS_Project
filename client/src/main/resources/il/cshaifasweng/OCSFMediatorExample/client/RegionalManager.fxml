@@ -52,6 +52,7 @@
                               <TableColumn fx:id="RequestCol" prefWidth="264.40001220703124" text="Request" />
                            </columns>
                         </TableView>
+                        <Button fx:id="backbtn" layoutX="688.0" layoutY="590.0" mnemonicParsing="false" onAction="#backbtn" text="back" />
                      </children>
                   </AnchorPane>
             </content>
@@ -79,10 +80,10 @@
                               <TextField fx:id="OcasionalTF" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="PreOrderTF" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="FullSubsTF" layoutX="79.0" layoutY="238.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" />
-                              <TextField fx:id="PartTimeTF" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="PartTimeTF1" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
                               <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
                               <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-                              <Text fx:id="PartTimeTF" layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
@@ -116,10 +117,10 @@
                               <TextField fx:id="OcasionalTF1" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="PreOrderTF1" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="FullSubsTF1" layoutX="79.0" layoutY="238.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" />
-                              <TextField fx:id="PartTimeTF" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="PartTimeTF2" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF2" prefHeight="25.0" prefWidth="76.0" />
                               <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
                               <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-                              <Text fx:id="PartTimeTF1" layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF1" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
@@ -153,10 +154,10 @@
                               <TextField fx:id="OcasionalTF2" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="PreOrderTF2" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="FullSubsTF2" layoutX="79.0" layoutY="238.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" />
-                              <TextField fx:id="PartTimeTF" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
+                              <TextField fx:id="PartTimeTF3" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF3" prefHeight="25.0" prefWidth="76.0" />
                               <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
                               <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-                              <Text fx:id="PartTimeTF2" layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF2" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />

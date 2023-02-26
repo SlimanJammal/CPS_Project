@@ -37,6 +37,9 @@ public class CpsKiosk {
     @FXML // fx:id="PW_LOGIN_TF"
     private PasswordField PW_LOGIN_TF; // Value injected by FXMLLoader
 
+    @FXML
+    private Button backbtn;
+
     @FXML // fx:id="RenewSubsBtn"
     private Button RenewSubsBtn; // Value injected by FXMLLoader
 
@@ -202,6 +205,15 @@ public class CpsKiosk {
         DataSingleton data = DataSingleton.getInstance();
         data.setCaller("cpsKiosk");
      App.setRoot("RegisterNewSubscription");
+    }
+
+    @FXML
+    void backbtn(ActionEvent event) {
+        try {
+            App.setRoot("MainWindow");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

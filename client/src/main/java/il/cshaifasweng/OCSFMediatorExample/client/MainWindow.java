@@ -21,6 +21,7 @@ public class MainWindow {
     @FXML
     void KioskBtn(ActionEvent event) throws IOException {
         try{
+            DataSingleton.getInstance().setCaller("MainWindow");
             App.setRoot("cpsKiosk");
         }
         catch (IOException e) {
@@ -33,6 +34,7 @@ public class MainWindow {
     @FXML
     void WebsiteBtn(ActionEvent event) throws IOException {
         try{
+            DataSingleton.getInstance().setCaller("MainWindow");
             App.setRoot("cpsWebsite");
         }
         catch (IOException e) {

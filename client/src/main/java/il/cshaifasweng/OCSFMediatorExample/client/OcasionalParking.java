@@ -23,6 +23,9 @@ public class OcasionalParking {
     @FXML // fx:id="SubmitBTN"
     private Button SubmitBTN; // Value injected by FXMLLoader
 
+    @FXML
+    private Button backbtn;
+
     @FXML // fx:id="emailTF"
     private TextField emailTF; // Value injected by FXMLLoader
 
@@ -80,6 +83,14 @@ public class OcasionalParking {
     @FXML
     void licensePlateTF(ActionEvent event) {
 
+    }
+    @FXML
+    void backbtn(ActionEvent event) {
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe

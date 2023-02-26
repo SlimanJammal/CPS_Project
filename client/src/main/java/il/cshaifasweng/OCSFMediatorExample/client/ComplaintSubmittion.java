@@ -59,7 +59,8 @@ public class ComplaintSubmittion {
     @FXML
     void BackBtn(ActionEvent event){
         try{
-            App.setRoot("cpsKiosk");
+
+            App.setRoot(DataSingleton.getInstance().getCaller());
         }
         catch (IOException e) {
             // TODO Auto-generated catch block

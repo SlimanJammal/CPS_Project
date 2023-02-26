@@ -42,6 +42,15 @@ public class RegionalManager {
     @FXML // fx:id="MultiTF"
     private TextField MultiTF; // Value injected by FXMLLoader
 
+    @FXML
+    private TextField PartTimeTF1;
+
+    @FXML
+    private TextField PartTimeTF2;
+
+    @FXML
+    private TextField PartTimeTF3;
+
     @FXML // fx:id="MultiTF1"
     private TextField MultiTF1; // Value injected by FXMLLoader
 
@@ -66,11 +75,7 @@ public class RegionalManager {
     @FXML // fx:id="PartTimeTF"
     private TextField PartTimeTF; // Value injected by FXMLLoader
 
-    @FXML // fx:id="PartTimeTF1"
-    private Text PartTimeTF1; // Value injected by FXMLLoader
 
-    @FXML // fx:id="PartTimeTF2"
-    private Text PartTimeTF2; // Value injected by FXMLLoader
 
     @FXML // fx:id="PreOrderTF"
     private TextField PreOrderTF; // Value injected by FXMLLoader
@@ -167,6 +172,8 @@ public class RegionalManager {
 
     @FXML
     private Button submitBtn3;
+    @FXML
+    private Button backbtn;
 
 
     @FXML
@@ -214,6 +221,16 @@ public class RegionalManager {
     void FullSubsTF(ActionEvent event) {
 
     }
+    @FXML
+    void backbtn(ActionEvent event) {
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @FXML
     void MultiTF(ActionEvent event) {
@@ -465,7 +482,7 @@ public class RegionalManager {
         // Multi price -> object5
         msg.setObject1(OcasionalTF.getText());
         msg.setObject2(PreOrderTF.getText());
-        msg.setObject3(PartTimeTF.getText());
+        msg.setObject3(PartTimeTF1.getText());
         msg.setObject4(FullSubsTF.getText());
         msg.setObject5(MultiTF.getText());
 
@@ -489,7 +506,7 @@ public class RegionalManager {
         // Multi price -> object5
         msg.setObject1(OcasionalTF1.getText());
         msg.setObject2(PreOrderTF1.getText());
-        msg.setObject3(PartTimeTF1.getText());
+        msg.setObject3(PartTimeTF2.getText());
         msg.setObject4(FullSubsTF1.getText());
         msg.setObject5(MultiTF1.getText());
 
@@ -513,7 +530,7 @@ public class RegionalManager {
         // Multi price -> object5
         msg.setObject1(OcasionalTF2.getText());
         msg.setObject2(PreOrderTF2.getText());
-        msg.setObject3(PartTimeTF2.getText());
+        msg.setObject3(PartTimeTF3.getText());
         msg.setObject4(FullSubsTF2.getText());
         msg.setObject5(MultiTF2.getText());
 
@@ -531,4 +548,9 @@ public class RegionalManager {
 
     }
 
+    public void PartTimeTF3(ActionEvent event) {
+    }
+
+    public void PartTimeTF2(ActionEvent event) {
+    }
 }

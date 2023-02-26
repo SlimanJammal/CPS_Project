@@ -19,6 +19,9 @@ import java.io.IOException;
 
 public class CpsWebsite {
 
+    @FXML
+    private Button backbtn;
+
     @FXML // fx:id="CustomerBtn"
     private Button CustomerBtn; // Value injected by FXMLLoader
 
@@ -54,6 +57,8 @@ public class CpsWebsite {
 
     @FXML
     void CustomerBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsWebsite");
         App.setRoot("ocasionalParking");
     }
 
@@ -84,6 +89,8 @@ public class CpsWebsite {
             data.setDataName("ParkingManager");
             ParkingManager parkingManager = (ParkingManager) allowing.getMsg().getObject1();
             data.setData(parkingManager);
+
+            data.setCaller("cpsWebsite");
             App.setRoot("ParkingManger");
 
         } else  if(allowing.getMsg().getObject1().toString().equals("success") && permission ==  0){
@@ -92,6 +99,8 @@ public class CpsWebsite {
             data.setDataName("RegionalManager");
             RegionalManager regionalManager = (RegionalManager) allowing.getMsg().getObject1();
             data.setData(regionalManager);
+
+            data.setCaller("cpsWebsite");
             App.setRoot("RegionalManager");
 
         }else {
@@ -120,6 +129,7 @@ public class CpsWebsite {
             ParkingWorker parkingWorker = (ParkingWorker) allowing.getMsg().getObject1();
             data.setData(parkingWorker);
 
+            data.setCaller("cpsWebsite");
             App.setRoot("EmployeeWindow");
         } else {
             Platform.runLater(() -> {
@@ -155,6 +165,8 @@ public class CpsWebsite {
 
     @FXML
     void ReserveParkingBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsWebsite");
         App.setRoot(".fxml");//todo check reservation window
     }
 
@@ -165,12 +177,25 @@ public class CpsWebsite {
 
     @FXML
     void checkReservBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsWebsite");
         App.setRoot("RequestStatus");//todo check reservation window
     }
 
     @FXML
     void createNewSubsBtn(ActionEvent event) throws IOException {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsWebsite");
         App.setRoot("RegisterNewSubscription");
+    }
+
+    @FXML
+    void backbtn(ActionEvent event) {
+        try {
+            App.setRoot("MainWindow");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class ParkingManager {
+    @FXML
+    private Button backbtn;
 
     @FXML // fx:id="FullSubsTF"
     private TextField FullSubsTF; // Value injected by FXMLLoader
@@ -139,6 +141,16 @@ public class ParkingManager {
             price.setCellValueFactory(new PropertyValueFactory<PricesClass,Integer>("price"));
             pricetype.setCellValueFactory(new PropertyValueFactory<PricesClass,String>("priceType"));
             PricesTable.setItems(list);
+        }
+    }
+
+
+    @FXML
+    void backbtn(ActionEvent event) {
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

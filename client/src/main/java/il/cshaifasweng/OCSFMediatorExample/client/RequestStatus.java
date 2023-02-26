@@ -26,6 +26,10 @@ public class RequestStatus {
     @FXML // fx:id="Previous Window"
     private Button PreviousButton; // Value injected by FXMLLoader
 
+
+    @FXML
+    private Button backbtn;
+
     @FXML
     void CarNumberTF(ActionEvent event) {
         String Input = CarNumberTF.getText().toString();
@@ -101,6 +105,16 @@ public class RequestStatus {
     @FXML
     void OnPreviousButton(ActionEvent event) throws IOException {
         App.setRoot("mainWindow.fxml");
+
+    }
+
+    @FXML
+    void backbtn(ActionEvent event) {
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
     //_________________________________________________________________________________________________________________

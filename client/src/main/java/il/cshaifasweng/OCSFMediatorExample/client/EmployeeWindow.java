@@ -369,25 +369,39 @@ public class EmployeeWindow {
     //___________________________________________ Previous Window Click _______________________________________________
     @FXML
     void OnPreviousWindowButton1(ActionEvent event) {
-        //Go To Previous Window
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void OnPreviousWindowButton2(ActionEvent event) {
-        //Go To Previous Window
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @FXML
     void OnPreviousWindowButton3(ActionEvent event) {
-        //Go To Previous Window
-
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void OnPreviousWindowButton4(ActionEvent event) {
-        //Go To Previous Window
-
+        try {
+            App.setRoot(DataSingleton.getInstance().getCaller());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     //_________________________________________________________________________________________________________________
     //_________________________________________________________________________________________________________________
