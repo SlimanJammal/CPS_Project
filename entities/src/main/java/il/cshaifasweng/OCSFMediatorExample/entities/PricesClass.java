@@ -13,6 +13,9 @@ public class PricesClass implements Serializable {
     private int price_id;
     private int price;
     private String priceType;
+
+
+
     public PricesClass(int price_,String str)
     {
         this.priceType=str;

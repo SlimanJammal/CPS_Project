@@ -10,15 +10,15 @@ import java.util.Date;
 public class FullSub extends Subscription{
 
     String FullSubId;
-    @NotNull
+//    @NotNull
     String CarNumber;
-    @NotNull
+//    @NotNull
     String CustomerId;
 
     Date StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
-    @NotNull
+//    @NotNull
     Date StartParking; //format includes days we will use it as a counter for if it reaches 14
-    @NotNull
+//    @NotNull
     String SubNum;
     public FullSub(){
         FullSubId = Integer.toString(getId_());

@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
+//import java.util.;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -325,13 +326,13 @@ public class SimpleServer extends AbstractServer {
 			PricesClass fullSubPrice = new PricesClass((int)ms.getObject4(),"fullSubPrice");
 			PricesClass MultiCarPrice = new PricesClass((int)ms.getObject5(),"MultiCarPrice");
 
-			Vector<PricesClass> prices_request_vector = new Vector<PricesClass>();
+			Vector<Integer> prices_request_vector = new Vector<Integer>();
 
-			prices_request_vector.add(occasionalPrice);
-			prices_request_vector.add(preOrderPrice);
-			prices_request_vector.add(PartTimePrice);
-			prices_request_vector.add(fullSubPrice);
-			prices_request_vector.add(MultiCarPrice);
+			prices_request_vector.add((int)ms.getObject1());
+			prices_request_vector.add((int)ms.getObject2());
+			prices_request_vector.add((int)ms.getObject3());
+			prices_request_vector.add((int)ms.getObject4());
+			prices_request_vector.add((int)ms.getObject5());
 
 			//get manger's name of current window to alter accordingly
 			ParkingManager Manager =  (ParkingManager) ms.getObject6();
@@ -727,13 +728,13 @@ public class SimpleServer extends AbstractServer {
 		{
 			for(int i = 0; i< pk.getSlots_num(); i++)
 			{
-				if(pk.Spots.get(i).getCurrentState().equals("empty"))
+				if(pk.getSpots().get(i).getCurrentState().equals("empty"))
 				{
 					pk.setOccupied_slots_num(pk.getOccupied_slots_num()+1);
-					pk.Spots.get(i).setCurrentState("occupied");
-					pk.Spots.get(i).setLicesnes_Plate(msg.getLicensePlate());
-					pk.Spots.get(i).setCus_ID(msg.getID());
-					pk.Spots.get(i).setExitDate((LocalDateTime) msg.getObject3());
+					pk.getSpots().get(i).setCurrentState("occupied");
+					pk.getSpots().get(i).setLicesnes_Plate(msg.getLicensePlate());
+					pk.getSpots().get(i).setCus_ID(msg.getID());
+					pk.getSpots().get(i).setExitDate((LocalDateTime) msg.getObject3());
 				}
 			}
 		}
@@ -751,9 +752,9 @@ public class SimpleServer extends AbstractServer {
 			{
 			for (int width=0;width<pk.getWidth();width++,i--)
 			 {
-				  pk.Spots.get(i).setdepth(depth);
-				  pk.Spots.get(i).setwidth(width);
-				  pk.Spots.get(i).setheight(height);
+				  pk.getSpots().get(i).setdepth(depth);
+				  pk.getSpots().get(i).setWidth(width);
+				  pk.getSpots().get(i).setHeight(height);
 				  if(i==0)
 				  {
 					  break;
@@ -803,14 +804,14 @@ public class SimpleServer extends AbstractServer {
 
 
 			for(int i = 0; i< pk.getSlots_num(); i++) {
-				if (pk.Spots.get(i).getCus_ID().equals(msg.getID())
-				&& pk.Spots.get(i).getLicesnes_Plate().equals(msg.getLicensePlate())) {
+				if (pk.getSpots().get(i).getCus_ID().equals(msg.getID())
+				&& pk.getSpots().get(i).getLicesnes_Plate().equals(msg.getLicensePlate())) {
 
 					pk.setOccupied_slots_num(pk.getOccupied_slots_num() -1);
-					pk.Spots.get(i).setCurrentState("empty");
-					pk.Spots.get(i).setLicesnes_Plate("");
-					pk.Spots.get(i).setCus_ID("");
-					pk.Spots.get(i).setExitDate(LocalDateTime.MIN);
+					pk.getSpots().get(i).setCurrentState("empty");
+					pk.getSpots().get(i).setLicesnes_Plate("");
+					pk.getSpots().get(i).setCus_ID("");
+					pk.getSpots().get(i).setExitDate(LocalDateTime.MIN);
 				}
 			}
 
@@ -831,9 +832,9 @@ public class SimpleServer extends AbstractServer {
 			{
 				for (int width=0;width<pk.getWidth();width++,i--)
 				{
-					pk.Spots.get(i).setdepth(depth);
-					pk.Spots.get(i).setwidth(width);
-					pk.Spots.get(i).setheight(height);
+					pk.getSpots().get(i).setdepth(depth);
+					pk.getSpots().get(i).setWidth(width);
+					pk.getSpots().get(i).setHeight(height);
 					if(i==0)
 					{
 						break;
@@ -873,7 +874,7 @@ public class SimpleServer extends AbstractServer {
 
 			query1.from(ParkingSpot.class);
 			List<ParkingSpot> parkingSpots = session.createQuery(query1).getResultList();
-			ParkingSpot ParkingSpot = new ParkingSpot(x, y, z, state, parkingLot.getParking_id());
+			ParkingSpot ParkingSpot = new ParkingSpot(x, y, z, state, parkingLot.getParking_id(),parkingLot);
 
 			session.saveOrUpdate(ParkingSpot);
 
@@ -1007,13 +1008,13 @@ public class SimpleServer extends AbstractServer {
 		PricesClass fullSubPrice = new PricesClass((int)ms.getObject4(),"fullSubPrice");
 		PricesClass MultiCarPrice = new PricesClass((int)ms.getObject5(),"MultiCarPrice");
 
-		Vector<PricesClass> prices_request_vector = new Vector<PricesClass>();
+		Vector<Integer> prices_request_vector = new Vector<Integer>();
 
-		prices_request_vector.add(occasionalPrice);
-		prices_request_vector.add(preOrderPrice);
-		prices_request_vector.add(PartTimePrice);
-		prices_request_vector.add(fullSubPrice);
-		prices_request_vector.add(MultiCarPrice);
+		prices_request_vector.add((int)ms.getObject1());
+		prices_request_vector.add((int)ms.getObject2());
+		prices_request_vector.add((int)ms.getObject3());
+		prices_request_vector.add((int)ms.getObject4());
+		prices_request_vector.add((int)ms.getObject5());
 
 		//get manger's name of current window to alter accordingly
 
@@ -1202,7 +1203,7 @@ public class SimpleServer extends AbstractServer {
 			int request_num = (Integer) ms.getObject1();
 			PricesUpdateRequest temp = new PricesUpdateRequest();
 			for(PricesUpdateRequest ptr : requestList){
-				if(ptr.getId_() == request_num){
+				if(ptr.getPricesUpdateReqId() == request_num){
 					temp=ptr;
 				}
 			}
@@ -1216,11 +1217,16 @@ public class SimpleServer extends AbstractServer {
 
 			for(ParkingLot parkingLot : parkingLots){
 				if(parkingLot.getParking_id() == temp.getParkingManager().getParkingLot().getParking_id()){
-					parkingLot.setOccasionalPrice(temp.getPricesClassVector().get(0));
-					parkingLot.setPreOrderPrice(temp.getPricesClassVector().get(1));
-					parkingLot.setPartTimePrice(temp.getPricesClassVector().get(2));
-					parkingLot.setFullSubPrice(temp.getPricesClassVector().get(3));
-					parkingLot.setMultiCarPrice(temp.getPricesClassVector().get(4));
+					PricesClass occasionalPrice = new PricesClass(temp.getPricesClassVector().get(0),"occasionalPrice");
+					PricesClass preOrderPrice = new PricesClass(temp.getPricesClassVector().get(1),"preOrderPrice");
+					PricesClass PartTimePrice = new PricesClass(temp.getPricesClassVector().get(2),"PartTimePrice");
+					PricesClass fullSubPrice = new PricesClass(temp.getPricesClassVector().get(3),"fullSubPrice");
+					PricesClass MultiCarPrice = new PricesClass(temp.getPricesClassVector().get(4),"MultiCarPrice");
+					parkingLot.setOccasionalPrice(occasionalPrice);
+					parkingLot.setPreOrderPrice(preOrderPrice);
+					parkingLot.setPartTimePrice(PartTimePrice);
+					parkingLot.setFullSubPrice(fullSubPrice);
+					parkingLot.setMultiCarPrice(MultiCarPrice);
 				}
 			}
 			session.update(parkingLots);
@@ -1455,10 +1461,24 @@ public class SimpleServer extends AbstractServer {
 			parkingWorkers.get(0).setParkingLot(parkingLot1);
 			session.saveOrUpdate(parkingWorkers.get(0));
 
+
+
+//			parking spots initialize
+			        for(int i = 0; i< parkingLot1.getDimensions(); i++)
+        			{
+           				 for(int j=0;j<3;j++)
+            				{
+             				   for(int k=0;k<3;k++)
+               					 {
+
+                   				 ParkingSpot S = new ParkingSpot(i,j,k,"empty",parkingLot1.getParking_id(),parkingLot1);
+                   				 session.save(S);
+                   				 parkingLot1.addSpot(S);
+               					 }
+            				}
+       				 }
+
 			session.save(parkingLot1);
-
-
-
 			//___________________________________________________________________________________________
 			System.out.println("Parking Lot2");
 			ParkingLot parkingLot2 = new ParkingLot("Hanmal",3,5,false);
@@ -1466,11 +1486,25 @@ public class SimpleServer extends AbstractServer {
 			parkingLot1.setParkingWorker(parkingWorkers.get(1));
 			parkingWorkers.get(1).setParkingLot(parkingLot1);
 			session.saveOrUpdate(parkingWorkers.get(1));
+			//parking spots initialize
+			for(int i = 0; i< parkingLot2.getDimensions(); i++)
+			{
+				for(int j=0;j<3;j++)
+				{
+					for(int k=0;k<3;k++)
+					{
+
+						ParkingSpot S = new ParkingSpot(i,j,k,"empty",parkingLot2.getParking_id(),parkingLot2);
+						session.save(S);
+						parkingLot2.addSpot(S);
+					}
+				}
+			}
 			session.saveOrUpdate(parkingLot2);
 
 
 			//________________________________________________________________________________________________________________
-			System.out.println("Parking Lot2");
+			System.out.println("Parking Lot3");
 
 			ParkingLot parkingLot3 = new ParkingLot("Bat-Galim",3,5,false);
 
@@ -1478,9 +1512,25 @@ public class SimpleServer extends AbstractServer {
 			parkingLot1.setParkingWorker(parkingWorkers.get(2));
 			parkingWorkers.get(2).setParkingLot(parkingLot1);
 			session.saveOrUpdate(parkingWorkers.get(2));
+
+			//parking spots initialize
+			for(int i = 0; i< parkingLot3.getDimensions(); i++)
+			{
+				for(int j=0;j<3;j++)
+				{
+					for(int k=0;k<3;k++)
+					{
+
+						ParkingSpot S = new ParkingSpot(i,j,k,"empty",parkingLot3.getParking_id(),parkingLot3);
+						session.save(S);
+						parkingLot3.addSpot(S);
+					}
+				}
+			}
 			session.saveOrUpdate(parkingLot3);
-			session.getTransaction().commit();
+
 			session.flush();
+			session.getTransaction().commit();
 			session.close();
 
 		} catch (Exception ex) {

@@ -9,6 +9,6 @@ public class Subscriber extends Customer{
 
     private String subscriptionType;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     Subscription subscription;
 }

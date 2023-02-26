@@ -1,7 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 //import com.sun.istack.NotNull;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,10 +11,12 @@ public class ParkingSpot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int spotId ;
+    int spotId_;
 
-    @NotNull
-    int height,width,depth;
+
+    int height =-1;
+    int width =-1;
+    int depth= -1;
 
     public LocalDateTime getExitDate() {
         return ExitDate;
@@ -52,15 +53,20 @@ public class ParkingSpot {
 //    @JoinColumn(name = "id")
 //    private ParkingLot parkingLot;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "parking_id")
+    private ParkingLot parkingLot;
+
     int parking_lot_id ;
 
-    public ParkingSpot(int a, int b, int c, String state, int thispark)
+    public ParkingSpot(int a, int b, int c, String state, int thispark,ParkingLot parkingLot_)
     {
         height = a;
         width = b;
         depth = c;
         CurrentState = state;
         parking_lot_id  = thispark;
+        parkingLot = parkingLot_;
 
     }
 
@@ -69,25 +75,30 @@ public class ParkingSpot {
 
     }
 
-    public int getSpotId() {
-        return spotId;
+    public int getSpotId_() {
+        return spotId_;
     }
 
     public int getheight() {
         return height;
     }
 
-    public void setheight(int x) {
-        this.height = x;
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 
     public int getwidth() {
         return width;
     }
 
-    public void setwidth(int y) {
-        this.width = y;
-    }
 
     public int getdepth() {
         return depth;

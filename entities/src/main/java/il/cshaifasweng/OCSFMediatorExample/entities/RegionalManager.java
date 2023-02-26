@@ -14,7 +14,7 @@ public class RegionalManager extends User implements Serializable {
     @OneToMany
     List<ParkingLot> parkingLots;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id_")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pricesUpdateReqId")
     List<PricesUpdateRequest> pricesUpdateRequests;
 
     public RegionalManager(String userName, String password, String firstName, String lastName, int permission, int id, List<ParkingLot> parkingLots, Vector<PricesUpdateRequest> pricesUpdateRequests) {

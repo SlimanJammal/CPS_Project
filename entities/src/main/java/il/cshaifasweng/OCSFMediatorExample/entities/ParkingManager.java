@@ -9,10 +9,10 @@ import java.util.Vector;
 @Table(name="Userlikes")
 public class ParkingManager extends User implements Serializable {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ParkingLot parkingLot;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id_")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parkingManager")
     List<PricesUpdateRequest> pricesUpdateRequests;
 
     public ParkingManager(String userName, String password, String firstName, String lastName, int permission, ParkingLot parkingLot, List<PricesUpdateRequest> pricesUpdateRequests) {
@@ -30,7 +30,7 @@ public String getPassword()
 }
 public int getid()
 {
-    return this.Id_;
+    return this.UserID;
 }
 
 

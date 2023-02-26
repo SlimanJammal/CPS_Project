@@ -28,42 +28,40 @@ public class ParkingLot implements Serializable{
 
     private int occupied_slots_num;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     private String name;
 
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass occasionalPrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass preOrderPrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass partTimePrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass fullSubPrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PricesClass MultiCarPrice;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ParkingManager parkingManager;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ParkingWorker parkingWorker;
 
 
-    @NotNull
+//    @NotNull
     int dimensions;
-    @NotNull
+//    @NotNull
 
     boolean full;
 
-    @OneToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY, mappedBy = "spotId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parkingLot")
     private List<ParkingSpot> Spots;
 
 
@@ -237,5 +235,9 @@ public class ParkingLot implements Serializable{
 
     public void setParkingWorker(ParkingWorker parkingWorker) {
         this.parkingWorker = parkingWorker;
+    }
+
+    public void addSpot(ParkingSpot s) {
+        Spots.add(s);
     }
 }

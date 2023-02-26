@@ -12,17 +12,17 @@ import java.util.Date;
 public class OccCustomer extends Customer {
 
     private String OccCustomerId;
-    @NotNull
+//    @NotNull
     private String CarNumber;
-    @NotNull
+//    @NotNull
 //    long StartTime ;
     Time StartTime;
 
-    @NotNull
+//    @NotNull
      String CustomerId;
 //    long FinishTime ;
     Time FinishTime;
-    @NotNull
+//    @NotNull
     String Email;
 
     public OccCustomer()

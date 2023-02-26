@@ -10,17 +10,17 @@ import java.util.Date;
 public class PartialSub extends Subscription {
 
 
-    @NotNull
+//    @NotNull
     String CarNumber;
-    @NotNull
+//    @NotNull
     Date StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
     boolean Entered;
-    @NotNull
+//    @NotNull
     String SubNum;
-    @NotNull
+//    @NotNull
     String CustomerId;
 
-    @NotNull
+//    @NotNull
     String EntranceHour,DepartureHour;
 
     @ManyToOne(fetch = FetchType.LAZY)

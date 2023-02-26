@@ -11,18 +11,19 @@ public class PricesUpdateRequest {
     private static final long serialVersionUID = -8224097662914849956L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_;
+    private int pricesUpdateReqId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "UserID")
     ParkingManager parkingManager;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "price_id")
-    List<PricesClass> pricesClassVector;
+    @ElementCollection
+    List<Integer> pricesClassVector;
 
     String request;
 
 
-    public PricesUpdateRequest(ParkingManager parkingManager, List<PricesClass> pricesClassVector, String request) {
+    public PricesUpdateRequest(ParkingManager parkingManager, Vector<Integer> pricesClassVector, String request) {
         this.parkingManager = parkingManager;
         this.pricesClassVector = pricesClassVector;
         this.request = request;
@@ -32,8 +33,8 @@ public class PricesUpdateRequest {
 
     }
 
-    public int getId_() {
-        return id_;
+    public int getPricesUpdateReqId() {
+        return pricesUpdateReqId;
     }
 
     public ParkingManager getParkingManager() {
@@ -44,11 +45,11 @@ public class PricesUpdateRequest {
         this.parkingManager = parkingManager;
     }
 
-    public List<PricesClass> getPricesClassVector() {
+    public List<Integer> getPricesClassVector() {
         return pricesClassVector;
     }
 
-    public void setPricesClassVector(Vector<PricesClass> pricesClassVector) {
+    public void setPricesClassVector(Vector<Integer> pricesClassVector) {
         this.pricesClassVector = pricesClassVector;
     }
 

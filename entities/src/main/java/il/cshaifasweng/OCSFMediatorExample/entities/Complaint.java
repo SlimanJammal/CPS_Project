@@ -11,7 +11,7 @@ public class Complaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int ComplaintId_;
-    @NotNull
+//    @NotNull
     boolean Entered_;
 
 

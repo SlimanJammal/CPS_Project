@@ -11,7 +11,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = -8224097662914849956L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int Id_;
+    int UserID;
     String userName;
     String password;
     String firstName;
@@ -34,12 +34,12 @@ public class User implements Serializable {
         this.isConnected = false;
     }
 
-    public int getId_() {
-        return Id_;
+    public int getUserID() {
+        return UserID;
     }
 
-    public void setId_(int id_) {
-        Id_ = id_;
+    public void setUserID(int userID) {
+        UserID = userID;
     }
 
     public String getUserName() {
