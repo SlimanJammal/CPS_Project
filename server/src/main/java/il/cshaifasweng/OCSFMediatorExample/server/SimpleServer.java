@@ -286,6 +286,7 @@ public class SimpleServer extends AbstractServer {
 				MSG.setObject1("fail");
 			}
 
+			System.out.println("before sending to client ");
 			client.sendToClient(MSG);
 		}
 		else if(ms.getMessage().equals("RenewSub")) {
@@ -747,10 +748,11 @@ public class SimpleServer extends AbstractServer {
 			String DepartureHour = ms.getObject6().toString();
 			String RegularParkingLot = ms.getObject7().toString();
 
+			String[] split = StartingDate.split("/");
 			//Staring Date Components
-			int Year = Integer.parseInt(StartingDate.substring(0,3));
-			int Month = Integer.parseInt(StartingDate.substring(5,6));
-			int Day = Integer.parseInt(StartingDate.substring(8,9));
+			int Year = Integer.valueOf(split[0]);
+			int Month = Integer.valueOf(split[1]);
+			int Day = Integer.valueOf(split[2]);
 
 			//Entrance Hour Components
 			//No Need For Now

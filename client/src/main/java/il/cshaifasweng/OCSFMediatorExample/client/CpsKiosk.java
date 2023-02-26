@@ -92,12 +92,12 @@ public class CpsKiosk {
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
-    public void allowWorker(loginManagerKioskEvent allowing) throws IOException {
+    public void allowWorker(loginWorkerEvent allowing) throws IOException {
 
-        System.out.println("aere wsl set root ");
+        System.out.println("Allow Worker");
         System.out.println(allowing.getMsg().getObject1());
 
-        if(allowing.getMsg().getObject1().equals("success")) {
+        if(allowing.getMsg().getObject1().toString().equals("success")) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
             il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
@@ -127,6 +127,7 @@ public class CpsKiosk {
     }
     @Subscribe
     public void allowManager(loginManagerKioskEvent allowing) throws IOException {
+        System.out.println("Allow whech");
 
         int permission =(int) allowing.getMsg().getObject3();
 
@@ -157,6 +158,30 @@ public class CpsKiosk {
             });
 
         }
+//
+//        if(allowing.getMsg().getMessage().equals("AllowEmployee")) {
+//            System.out.println("Allow Worker");
+//            System.out.println(allowing.getMsg().getObject1());
+//
+//            if (allowing.getMsg().getObject1().equals("success")) {
+//                DataSingleton data = DataSingleton.getInstance();
+//                data.setDataName("ParkingWorker");
+//                il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
+//                data.setData(parkingWorker.getUserID());
+//
+//                data.setCaller("cpsKiosk");
+//                System.out.println("aere wsl set root ");
+//                App.setRoot("EmployeeWindow");
+//            } else {
+//                Platform.runLater(() -> {
+//                    Alert alert = new Alert(Alert.AlertType.INFORMATION,
+//                            "UserName or PassWord Wrong"
+//                    );
+//                    alert.show();
+//                });
+//
+//            }
+//        }
     }
 
 
