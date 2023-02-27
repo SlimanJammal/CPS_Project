@@ -295,13 +295,16 @@ public class SimpleServer extends AbstractServer {
 
 
 		}
-		else if(ms.getMessage().equals("loginEmployee"))
+		else if(ms.getMessage().startsWith("loginEmployee"))
 		{
+			Message MSG=new Message("AllowEmployeeKiosk");
+			if(ms.getMessage().endsWith("_CPS")){
+				MSG = new Message("AllowEmployeeCPS");
+		}
 
-
-			Message MSG=new Message("AllowEmployee");
 			String[] data = {ms.getID(),ms.getPassword()} ;
-
+			// todo remove later when logout is fixed
+			logout_by_string_debug_heleper(data);
 			Message msg1 = tryLogIn(data);
 			User user1 = (User) msg1.getObject1();
 			int permission_check = user1.getPermission();

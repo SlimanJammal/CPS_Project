@@ -105,12 +105,8 @@ public class CpsKiosk {
             System.out.println("aere wsl set root ");
             App.setRoot("EmployeeWindow");
         } else {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                        "UserName or PassWord Wrong"
-                );
-                alert.show();
-            });
+            ID_LOGIN_TF.setText("access denied");
+            PW_LOGIN_TF.clear();
 
         }
     }

@@ -25,8 +25,12 @@ public class SimpleClient extends AbstractClient {
 				EventBus.getDefault().post(new loginManagerWebsitekEvent((Message) msg));
 			}
 
-		} else if (ms.getMessage().equals("AllowEmployee")) {
-			EventBus.getDefault().post(new loginWorkerEvent((Message) msg));
+		} else if (ms.getMessage().startsWith("AllowEmployee")) {
+			if(ms.getMessage().endsWith("CPS")){
+				EventBus.getDefault().post(new loginWorkerWebsiteEvent((Message) msg));
+			}else {
+				EventBus.getDefault().post(new loginWorkerEvent((Message) msg));
+			}
 		}else if (ms.getMessage().equals("SubRenewed")) {
 			EventBus.getDefault().post(new SubRenewEvent((Message) msg));
 		} else if (ms.getMessage().equals("pricesReturned") ||ms.getMessage().equals("prices update request sent") ) {
