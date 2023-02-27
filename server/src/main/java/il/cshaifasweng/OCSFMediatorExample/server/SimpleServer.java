@@ -112,20 +112,52 @@ public class SimpleServer extends AbstractServer {
 
 
 		} else if(ms.getMessage().equals("RegionalManager_ShowPriceRequests")){
-			//todo m7md 3ed, requests table for regional
-			session = getSessionFactory().openSession();
-			session.beginTransaction();
-			CriteriaBuilder builder = session.getCriteriaBuilder();
-			CriteriaQuery<PricesUpdateRequest> query = builder.createQuery(PricesUpdateRequest.class);
-			query.from(PricesUpdateRequest.class);
-			List<PricesUpdateRequest> data21 = session.createQuery(query).getResultList();
-			Message MSG = new Message("RegionalManager_PricesUpdateRequests");
-			//the needed list is here
-			MSG.setObject1(data21);
-			session.close();
+			List<PricesUpdateRequest> data21 = new ArrayList<>();
+			try {
+				SessionFactory sessionFactory = getSessionFactory();
+				if(session !=null)
+				session.close();
+				session = sessionFactory.openSession();
+				session.beginTransaction();
+				CriteriaBuilder builder = session.getCriteriaBuilder();
+				CriteriaQuery<PricesUpdateRequest> query = builder.createQuery(PricesUpdateRequest.class);
+				query.from(PricesUpdateRequest.class);
+				 data21 = session.createQuery(query).getResultList();
+				Message MSG = new Message("requests_list_update_regional");
+				//the needed list is here
+				MSG.setObject1(data21);
+				session.beginTransaction().commit();
+				session.flush();
+			}catch (Exception exp)
+			{
+				exp.printStackTrace();
+				System.out.println("transaction failed 1");
+				if(session!= null)
+				session.getTransaction().rollback();
+				else
+					System.out.println("transaction failed 1 and session is null");
+
+			}
+			finally {
+
+				assert session != null;
+				session.close();
+				System.out.println("show request in server");
+
+				for (PricesUpdateRequest pricesUpdateRequest : data21) {
+
+					System.out.println(pricesUpdateRequest.getRequest());
+
+				}
+				Message msag = new Message("req_regional");
+				msag.setObject1(data21);
+				System.out.println("show r22equest in server");
+				client.sendToClient(msag);
+				System.out.println("show r222equest in server");
+			}
 
 
-			client.sendToClient(MSG);
+
 
 
 		}
@@ -153,7 +185,7 @@ public class SimpleServer extends AbstractServer {
 						entityToAdd.setDeletetime( LocalDateTime.now()); //format= dd/mm/yyyy
 						entityToAdd.setOrder(record);
 						session.save(entityToAdd);
-						session.beginTransaction().commit();
+
 						PreOrder entityToDelete = session.get(PreOrder.class, record.getId_());
 						session.delete(entityToDelete);
 						session.beginTransaction().commit();
@@ -231,7 +263,7 @@ public class SimpleServer extends AbstractServer {
 					query.from(PricesUpdateRequest.class);
 					List<PricesUpdateRequest> data21 = session.createQuery(query).getResultList();
 					MSG.setObject4(data21);
-
+					session.beginTransaction().commit();
 					session.close();
 
 				}else {
@@ -290,7 +322,7 @@ public class SimpleServer extends AbstractServer {
 			Message MSG=new Message("statsReturned");
 			MSG.setObject1(Deletedmean);
 			MSG.setObject2(Latemean);
-
+			session.beginTransaction().commit();
 			session.close();
 
 
@@ -484,6 +516,7 @@ public class SimpleServer extends AbstractServer {
 			Message msg2 = new Message("prices update request sent");
 			client.sendToClient(msg2);
 				} catch (Exception exception) {
+
 					if (session != null) {
 					session.getTransaction().rollback();
 			}
@@ -493,6 +526,7 @@ public class SimpleServer extends AbstractServer {
 				exception.printStackTrace();
 				} finally {
 				System.out.println("ParkingManager_alterPrices server finish");
+				session.beginTransaction().commit();
 				session.close();
 			}
 
@@ -1517,7 +1551,8 @@ public class SimpleServer extends AbstractServer {
 			} catch (FileNotFoundException | DocumentException e) {
 				e.printStackTrace();
 			}
-
+			session.beginTransaction().commit();
+			session.close();
 			return null;
 		}
 
@@ -1555,11 +1590,11 @@ public class SimpleServer extends AbstractServer {
 
 			for(ParkingLot parkingLot : parkingLots){
 				if(parkingLot.getParking_id() == temp.getParkingManager().getParkingLot().getParking_id()){
-					PricesClass occasionalPrice = new PricesClass(temp.getPricesClassVector().get(0),"occasionalPrice");
-					PricesClass preOrderPrice = new PricesClass(temp.getPricesClassVector().get(1),"preOrderPrice");
-					PricesClass PartTimePrice = new PricesClass(temp.getPricesClassVector().get(2),"PartTimePrice");
-					PricesClass fullSubPrice = new PricesClass(temp.getPricesClassVector().get(3),"fullSubPrice");
-					PricesClass MultiCarPrice = new PricesClass(temp.getPricesClassVector().get(4),"MultiCarPrice");
+					PricesClass occasionalPrice = new PricesClass(temp.getOccasionalPrice(),"occasionalPrice");
+					PricesClass preOrderPrice = new PricesClass(temp.getPreOrderPrice(),"preOrderPrice");
+					PricesClass PartTimePrice = new PricesClass(temp.getPartTimePrice(),"PartTimePrice");
+					PricesClass fullSubPrice = new PricesClass(temp.getFullSubPrice(),"fullSubPrice");
+					PricesClass MultiCarPrice = new PricesClass(temp.getMultiCarPrice(),"MultiCarPrice");
 					parkingLot.setOccasionalPrice(occasionalPrice);
 					parkingLot.setPreOrderPrice(preOrderPrice);
 					parkingLot.setPartTimePrice(PartTimePrice);
@@ -1580,7 +1615,8 @@ public class SimpleServer extends AbstractServer {
 			exception.printStackTrace();
 			} finally {
 
-			session.close();
+				assert session != null;
+				session.close();
 		}
 
 		}else{
@@ -1677,7 +1713,7 @@ public class SimpleServer extends AbstractServer {
 			} else msg.setMessage("tryLogin_UserNotFound");
 
 		} else msg.setMessage("tryLogin_UserNotFound");
-
+			session.close();
 	}
 
 	private static Message tryLogIn(String[] data) {
@@ -1742,7 +1778,7 @@ public class SimpleServer extends AbstractServer {
 			} else msg.setMessage("tryLogin_UserNotFound");
 
 		} else msg.setMessage("tryLogin_UserNotFound");
-
+			session.close();
 		System.out.println(msg.getMessage());
 		return msg;
 	}

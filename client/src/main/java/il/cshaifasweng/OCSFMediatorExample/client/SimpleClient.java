@@ -15,6 +15,7 @@ public class SimpleClient extends AbstractClient {
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
+		System.out.println("EventBus entered");
 		Message ms=(Message) msg;
 		if (ms.getMessage().equals("hello")) {
 			EventBus.getDefault().post(new WarningEvent((Message) msg));
@@ -48,6 +49,7 @@ public class SimpleClient extends AbstractClient {
 		else if (ms.getMessage().equals("OcasionalParking")){
 			EventBus.getDefault().post(new OcasionalEvent((Message) msg));
 		} else if(ms.getMessage().endsWith("regional")){
+			System.out.println("event bus regional's subscribe");
 			EventBus.getDefault().post(new RegionalManagerEvent((Message) msg));
 		}
 

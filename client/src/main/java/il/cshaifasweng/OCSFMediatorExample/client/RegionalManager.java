@@ -53,6 +53,9 @@ public class RegionalManager {
     @FXML
     private TextField PartTimeTF3;
 
+    @FXML
+    private Button refreshRequestsBTN;
+
     @FXML // fx:id="MultiTF1"
     private TextField MultiTF1; // Value injected by FXMLLoader
 
@@ -232,6 +235,19 @@ public class RegionalManager {
         }
     }
 
+    @FXML
+    void refreshRequestsBTN(ActionEvent event) {
+
+        Message msg = new Message("RegionalManager_ShowPriceRequests");
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
 
     @FXML
@@ -365,9 +381,10 @@ public class RegionalManager {
     }
 
     @Subscribe
-    public void HandleMessageFromServer(RegionalManagerEvent event){
+    public void regionalhandlerr(RegionalManagerEvent event){
         // message field decides what case we re in
         //the first stat is for main window and show stat regional is for secondary windows
+        System.out.println("back to regional's subscribe");
         if(event.getMessage().getMessage().equals("stat_regional") || event.getMessage().getMessage().equals("show_stat_regional")){
             Alert alert = new Alert(Alert.AlertType.WARNING,
                     String.format(": \n"+event.getMessage().getObject1(),
@@ -377,7 +394,7 @@ public class RegionalManager {
             );
             alert.show();
             //todo alert about stats
-        } else if(event.getMessage().getMessage().equals("requests_list_update_regional")){
+        } else if(event.getMessage().getMessage().equals("req_regional")){
 
             List<PriceRequest> pricesList = (List<PriceRequest>)event.getMessage().getObject1();
             ObservableList<PriceRequest> list = FXCollections.observableArrayList();
@@ -545,33 +562,6 @@ public class RegionalManager {
     }
     @FXML
     void initialize() {
-            //todo fix the lists (lists of request in regional manager screen)
-             //todo or just make it on a button
-//        List<PricesUpdateRequest> requestsList = (List<PricesUpdateRequest>) DataSingleton.getInstance().getRegionalListOfRequests();
-//
-//        if(requestsList.size() !=0) {
-//            List<PriceRequest> priceReqList2 = new ArrayList<>();
-//
-//            for (PricesUpdateRequest pricesUpdateRequest : requestsList) {
-//                PriceRequest new_req = new PriceRequest(pricesUpdateRequest.getPricesUpdateReqId(), pricesUpdateRequest.getParkingManager().getFirstName(), pricesUpdateRequest.getRequest());
-//                priceReqList2.add(new_req);
-//            }
-//
-//
-//            ObservableList<PriceRequest> list = FXCollections.observableArrayList(priceReqList2);
-//            RequestCol.setCellValueFactory(new PropertyValueFactory<PriceRequest, String>("RequestCol"));
-//            ;
-//
-//            NumberColMainWin.setCellValueFactory(new PropertyValueFactory<PriceRequest, Integer>(" NumberColMainWin"));
-//
-//            ManagerNameCol.setCellValueFactory(new PropertyValueFactory<PriceRequest, String>("ManagerNameCol"));
-//
-////        price.setCellValueFactory(new PropertyValueFactory<PricesClass,Integer>("price"));
-////        pricetype.setCellValueFactory(new PropertyValueFactory<PricesClass,String>("priceType"));
-//            RequestsTable.setItems(list);
-//        }
-
-        //todo print requests list for the regional manger on startup
 
         EventBus.getDefault().register(this);
 

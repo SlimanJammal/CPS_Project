@@ -53,6 +53,7 @@
                            </columns>
                         </TableView>
                         <Button fx:id="backbtn" layoutX="688.0" layoutY="590.0" mnemonicParsing="false" onAction="#backbtn" text="back" />
+                        <Button fx:id="refreshRequestsBTN" layoutX="438.0" layoutY="323.0" mnemonicParsing="false" onAction="#refreshRequestsBTN" text="Refresh Requests" />
                      </children>
                   </AnchorPane>
             </content>
