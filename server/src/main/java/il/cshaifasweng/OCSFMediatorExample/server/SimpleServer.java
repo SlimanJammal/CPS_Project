@@ -726,6 +726,11 @@ public class SimpleServer extends AbstractServer {
 			String ParkingSlotID = ms.getObject1().toString();
 			String CarNumber = ms.getObject2().toString();
 			String OccasionID = ms.getObject3().toString();
+		}else if(ms.getMessage().equals("EnterParking4")){
+			String subNumber = ms.getSubNum();
+			String CarNumber = ms.getLicensePlate();
+
+
 		}
 
 		// RegisterNewSubscription Window

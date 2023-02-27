@@ -98,7 +98,7 @@ public class CpsKiosk {
         if(allowing.getMsg().getObject1().toString().equals("success")) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
-            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
+            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject2();
             data.setData(parkingWorker.getUserID());
 
             data.setCaller("cpsKiosk");
