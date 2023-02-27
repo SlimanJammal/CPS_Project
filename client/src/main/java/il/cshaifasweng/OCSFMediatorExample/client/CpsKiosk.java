@@ -5,8 +5,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
-import il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker;
-import il.cshaifasweng.OCSFMediatorExample.entities.ParkingManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -86,23 +84,25 @@ public class CpsKiosk {
     }
     @FXML
     void WorkerBtn(ActionEvent event) throws IOException {
-        Message msg= new Message("loginEmployee_KIOSK");
-        msg.setID(ID_LOGIN_TF.getId());
+        Message msg= new Message("loginEmployee");
+        msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
-    public void allowWorker(loginManagerKioskEvent allowing) throws IOException {
+    public void allowWorker(loginWorkerEvent allowing) throws IOException {
 
-
+        System.out.println("Allow Worker");
+        System.out.println(allowing.getMsg().getObject1());
 
         if(allowing.getMsg().getObject1().toString().equals("success")) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
-            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
+            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject2();
             data.setData(parkingWorker.getUserID());
 
             data.setCaller("cpsKiosk");
+            System.out.println("aere wsl set root ");
             App.setRoot("EmployeeWindow");
         } else {
             Platform.runLater(() -> {
@@ -119,12 +119,13 @@ public class CpsKiosk {
     @FXML
     void ManagerBtn(ActionEvent event) throws IOException {
         Message msg= new Message("loginManager_KIOSK");
-        msg.setID(ID_LOGIN_TF.getId());
+        msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
     public void allowManager(loginManagerKioskEvent allowing) throws IOException {
+        System.out.println("Allow whech");
 
         int permission =(int) allowing.getMsg().getObject3();
 
@@ -156,6 +157,30 @@ public class CpsKiosk {
             });
 
         }
+//
+//        if(allowing.getMsg().getMessage().equals("AllowEmployee")) {
+//            System.out.println("Allow Worker");
+//            System.out.println(allowing.getMsg().getObject1());
+//
+//            if (allowing.getMsg().getObject1().equals("success")) {
+//                DataSingleton data = DataSingleton.getInstance();
+//                data.setDataName("ParkingWorker");
+//                il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
+//                data.setData(parkingWorker.getUserID());
+//
+//                data.setCaller("cpsKiosk");
+//                System.out.println("aere wsl set root ");
+//                App.setRoot("EmployeeWindow");
+//            } else {
+//                Platform.runLater(() -> {
+//                    Alert alert = new Alert(Alert.AlertType.INFORMATION,
+//                            "UserName or PassWord Wrong"
+//                    );
+//                    alert.show();
+//                });
+//
+//            }
+//        }
     }
 
 
@@ -191,9 +216,9 @@ public class CpsKiosk {
         App.setRoot("RequestStatus");//todo check reservation window
     }
 
+
     @FXML
     void SUBSNUM_LOGIN_TF(ActionEvent event) {
-
     }
 
     @FXML
@@ -202,6 +227,7 @@ public class CpsKiosk {
         data.setCaller("cpsKiosk");
         App.setRoot("RequestStatus");//todo check reservation window
     }
+
 
     @FXML
     void createNewSubsBtn(ActionEvent event) throws IOException {

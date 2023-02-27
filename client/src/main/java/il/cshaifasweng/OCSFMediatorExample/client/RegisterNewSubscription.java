@@ -41,6 +41,8 @@ public class RegisterNewSubscription {
 
     @FXML
     private Label LabelOutput;
+    @FXML
+    private TextField ParkingType;
 
     @FXML
     void CarNumberTF(ActionEvent event) {
@@ -95,17 +97,17 @@ public class RegisterNewSubscription {
         String RegularParking = RegularParkingTF.getText();
         String EntranceParkingTime = EntranceHourTF.getText();
         String DepartureParkingTime = DepatureHourTF.getText();
-        String ParkingType = SubscriptionTypeMenue.getTypeSelector().toString();
-
+//        String ParkingType = SubscriptionTypeMenue.getTypeSelector().toString();
+        String parkingType=ParkingType.getText();
         //Send Data TO SERVER!!!
         Message msg = new Message("Register New Subscriber");
-        msg.setObject1(ParkingType);
+        msg.setObject1(parkingType);
         msg.setObject2(CustomerID);
-        msg.setObject3(StartingDate);
-        msg.setObject4(RegularParking);
+        msg.setObject4(StartingDate);
+        msg.setObject3(RegularParking);
         msg.setObject5(EntranceParkingTime);
         msg.setObject6(DepartureParkingTime);
-        msg.setObject7(ParkingType);
+        msg.setObject7(parkingType);
 
         try
         {
@@ -193,18 +195,18 @@ public class RegisterNewSubscription {
     void OnStartingDate(ActionEvent event) {
     }
 
-    @FXML
-    void SubscriptionTypeMenue(ActionEvent event) {
-        //VBox root = new VBox();
-
-        MenuItem menuItem1 = new MenuItem("Single Monthly Subscription");
-        MenuItem menuItem2 = new MenuItem("Multi Monthly Subscription");
-        MenuItem menuItem3 = new MenuItem("Fully Subscription");
-
-        SubscriptionTypeMenue = new MenuButton("Subscription Type: ", null,menuItem1,menuItem2,menuItem3);
-        //to prevent glitching - using Multi in Single/Fully
-        CarNumberTF.setText("");
-    }
+//    @FXML
+//    void SubscriptionTypeMenue(ActionEvent event) {
+//        //VBox root = new VBox();
+//
+//        MenuItem menuItem1 = new MenuItem("Single Monthly Subscription");
+//        MenuItem menuItem2 = new MenuItem("Multi Monthly Subscription");
+//        MenuItem menuItem3 = new MenuItem("Fully Subscription");
+//
+//        SubscriptionTypeMenue = new MenuButton("Subscription Type: ", null,menuItem1,menuItem2,menuItem3);
+//        //to prevent glitching - using Multi in Single/Fully
+//        CarNumberTF.setText("");
+//    }
 
     @FXML
     void OnPreviousWindow(ActionEvent event)

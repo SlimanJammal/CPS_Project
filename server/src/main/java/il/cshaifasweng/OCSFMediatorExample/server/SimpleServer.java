@@ -14,8 +14,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.query.Query;
+import org.hibernate.service.ServiceRegistry;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -240,6 +240,16 @@ public class SimpleServer extends AbstractServer {
 				}
 
 				client.sendToClient(MSG);
+		}else if (ms.getMessage().equals("EmployeeLogout")){
+			ParkingWorker worker = (ParkingWorker) ms.getObject1();
+			Message returnMsg = tryLogOut(worker);
+			//tryLogOut_LoggedOut
+			if(returnMsg.getMessage().equals("tryLogOut_LoggedOut")){
+				Message retMsg = new Message("EmployeeLogout_success");
+				retMsg.setObject1(ms.getObject2());
+				client.sendToClient(retMsg);
+			}
+
 		}
 		else if(ms.getMessage().equals("ParkingManager_showStats"))
 		{
@@ -288,6 +298,7 @@ public class SimpleServer extends AbstractServer {
 		else if(ms.getMessage().equals("loginEmployee"))
 		{
 
+
 			Message MSG=new Message("AllowEmployee");
 			String[] data = {ms.getID(),ms.getPassword()} ;
 
@@ -302,6 +313,8 @@ public class SimpleServer extends AbstractServer {
 			}else {
 				MSG.setObject1("fail");
 			}
+
+			System.out.println("before sending to client ");
 			client.sendToClient(MSG);
 		}
 		else if(ms.getMessage().equals("RenewSub")) {
@@ -573,18 +586,22 @@ public class SimpleServer extends AbstractServer {
 			// do other things
 		}else if(ms.getMessage().equals("OcasionalParking"))
 		{
-
+            System.out.println("working occ");
 			client.sendToClient(ms);
 			// Id number is saved as a string in object1
 			// license plate number is saved as a string in object2
 			// email is saved as a string in object3
 			// leaving time is saved as a string in object4
 			OccCustomer customer = new OccCustomer((String) ms.getObject1(),(String)ms.getObject2(),(String)ms.getObject3());
+			customer.setCustomerId((String) ms.getObject1());
+
 			String temp = (String)ms.getObject4();
 			String[] parsed = temp.split(":");
-			System.out.println(parsed[0]);
-			System.out.println(parsed[1]);
-			System.out.println(parsed[2]);
+//			System.out.println(parsed[0]);
+//			System.out.println(parsed[1]);
+//			System.out.println(parsed[2]);
+            String id=customer.getCustomerId();
+			System.out.println(id);
 
 			Time tempTime = new Time(Integer.parseInt(parsed[0]),Integer.parseInt(parsed[1]),Integer.parseInt(parsed[2]));
 			customer.setStartTime(tempTime);
@@ -594,7 +611,6 @@ public class SimpleServer extends AbstractServer {
 				session.beginTransaction();
 				// add new occasional customer to the db .
 				session.save(customer);
-
 				session.flush();
 				session.getTransaction().commit();
 
@@ -740,11 +756,17 @@ public class SimpleServer extends AbstractServer {
 			String ParkingSlotID = ms.getObject1().toString();
 			String CarNumber = ms.getObject2().toString();
 			String OccasionID = ms.getObject3().toString();
+		}else if(ms.getMessage().equals("EnterParking4")){
+			String subNumber = ms.getSubNum();
+			String CarNumber = ms.getLicensePlate();
+
+
 		}
-		//===================================================================================
+
 		// RegisterNewSubscription Window
 		else if(ms.getMessage().equals("Register New Subscriber"))
 		{
+			System.out.println("servers side");
 			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Subscriber Type
@@ -762,11 +784,28 @@ public class SimpleServer extends AbstractServer {
 			String EntranceHour = ms.getObject5().toString();
 			String DepartureHour = ms.getObject6().toString();
 			String RegularParkingLot = ms.getObject7().toString();
+			System.out.println("servers side after loading values");
 
 			//Staring Date Components
-			int Year = Integer.parseInt(StartingDate.substring(0,3));
-			int Month = Integer.parseInt(StartingDate.substring(5,6));
-			int Day = Integer.parseInt(StartingDate.substring(8,9));
+
+//			String[] split = StartingDate.split("/");
+//			//Staring Date Components
+//			int Year = 0;
+//			System.out.println("year");
+//			int Month = 0;
+//			System.out.println("month");
+//			int Day = 0;
+
+
+			String[] split = StartingDate.split("/");
+			System.out.println("splitting");
+			//Staring Date Components
+			int Year = 2023;
+			int Month = 2;
+			int Day = 26;
+
+
+			System.out.println("servers side after getting date");
 
 			//Entrance Hour Components
 			//No Need For Now
@@ -777,8 +816,10 @@ public class SimpleServer extends AbstractServer {
 			session.beginTransaction();
 			Message MSG=new Message("RegisterNewSub");
 
+			System.out.println("servers side before checking type of sub");
+
 			if(SubscriberType.equals("Single Monthly Subscription"))
-			{
+			{    System.out.println("single monthly");
 				Boolean newCustumer = true;
 				PartialSub input = new PartialSub(CustomerID,CarNumber);
 				Date Temp = new Date(Year,Month,Day);
@@ -811,9 +852,11 @@ public class SimpleServer extends AbstractServer {
 					client.sendToClient(MSG);
 					session.close();
 				}
+				System.out.println("sub added");
 			}
 			else if(SubscriberType.equals("Multi Monthly Subscription"))
-			{
+
+			{   System.out.println("multi monthly");
 				MultiSub input = new MultiSub();
 				Date Temp = new Date(Year,Month,Day);
 				input.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
@@ -863,6 +906,7 @@ public class SimpleServer extends AbstractServer {
 			}
 			else if(SubscriberType.equals("Fully Subscription"))
 			{
+				System.out.println("full sub");
 				FullSub input = new FullSub(CustomerID,CarNumber);
 				Date Temp = new Date(Year,Month,Day);
 				input.setStartDate(Temp);
@@ -1645,13 +1689,17 @@ public class SimpleServer extends AbstractServer {
 			session = sessionFactory.openSession();
 			session.beginTransaction();
 			CriteriaBuilder builder = session.getCriteriaBuilder();
+			// extracts list of users fromDB
 			CriteriaQuery<User> query111 = builder.createQuery(User.class);
 			query111.from(User.class);
-			List<User> QQ = session.createQuery(query111).getResultList();
+			List<User> userList = session.createQuery(query111).getResultList();
 
-
-			System.out.println("first username in db"+QQ.get(1).getUserName());
-			System.out.println("password check res = "+QQ.get(1).checkPassword(data[1]));
+			for (User user: userList){
+				System.out.println("->"+user.getUserName());
+			}
+			//just some printing for test purpose
+			System.out.println("first username in db"+userList.get(1).getUserName());
+			System.out.println("password check res = "+userList.get(1).checkPassword(data[1]));
 			session.close();
 		}
 		String userName = data[0];
@@ -1764,7 +1812,7 @@ public class SimpleServer extends AbstractServer {
 		//assigned parking lot is added later
 		try {
 			for(int i =0 ; i < index; i++) {
-				User ParkingWorker = new ParkingWorker("WORKER"+Integer.toString(index),"pass"+Integer.toString(index),"worker"+Integer.toString(index),"fam"+Integer.toString(index),2,null);
+				User ParkingWorker = new ParkingWorker("WORKER"+Integer.toString(i),"pass"+Integer.toString(i),"worker"+Integer.toString(i),"fam"+Integer.toString(i),2,null);
 				SessionFactory sessionFactory = getSessionFactory();
 				session = sessionFactory.openSession();
 				session.beginTransaction();
