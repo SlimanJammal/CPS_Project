@@ -4,12 +4,13 @@ import com.sun.istack.NotNull;
 //import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 
 @Entity
 @Table(name = "Customer")
-public class OccCustomer extends Customer {
+public class OccCustomer extends Customer implements Serializable {
 
     private String OccCustomerId;
 //    @NotNull

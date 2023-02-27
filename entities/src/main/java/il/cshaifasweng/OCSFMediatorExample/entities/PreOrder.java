@@ -3,11 +3,12 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 //import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "PreOrderss")
-public class PreOrder {
+public class PreOrder  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

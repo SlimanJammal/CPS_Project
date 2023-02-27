@@ -1,12 +1,13 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "MULTISUBS" )
-public class MultiSub extends PartialSub {
+public class MultiSub extends PartialSub  implements Serializable {
 
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "Subscriptionssssubsid_")

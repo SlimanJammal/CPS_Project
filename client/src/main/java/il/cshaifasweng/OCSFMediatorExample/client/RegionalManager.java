@@ -395,9 +395,18 @@ public class RegionalManager {
             alert.show();
             //todo alert about stats
         } else if(event.getMessage().getMessage().equals("req_regional")){
+            System.out.println("back to regional's request");
 
-            List<PriceRequest> pricesList = (List<PriceRequest>)event.getMessage().getObject1();
-            ObservableList<PriceRequest> list = FXCollections.observableArrayList();
+            List<PricesUpdateRequest> pricesList = (List<PricesUpdateRequest>)event.getMessage().getObject1();
+
+            List<PriceRequest> list2 = new ArrayList<>();
+
+            for(PricesUpdateRequest A : pricesList){
+                PriceRequest new_req = new PriceRequest(A.getPricesUpdateReqId(),A.getParkingManager().getFirstName() ,A.getRequest());
+                list2.add(new_req);
+            }
+
+            ObservableList<PriceRequest> list = FXCollections.observableArrayList(list2);
             NumberColMainWin.setCellValueFactory(new PropertyValueFactory<PriceRequest,Integer>("number"));
             ManagerNameCol.setCellValueFactory(new PropertyValueFactory<PriceRequest,String>("managerName"));
             RequestCol.setCellValueFactory(new PropertyValueFactory<PriceRequest,String>("Request"));

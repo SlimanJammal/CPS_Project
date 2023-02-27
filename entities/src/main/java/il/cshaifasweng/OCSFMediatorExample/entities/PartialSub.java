@@ -3,11 +3,12 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "PartialSubs")
-public class PartialSub extends Subscription {
+public class PartialSub extends Subscription  implements Serializable {
 
 
 //    @NotNull

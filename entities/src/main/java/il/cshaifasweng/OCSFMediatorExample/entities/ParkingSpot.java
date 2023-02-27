@@ -3,11 +3,12 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 //import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ParkingSpot")
-public class ParkingSpot {
+public class ParkingSpot  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

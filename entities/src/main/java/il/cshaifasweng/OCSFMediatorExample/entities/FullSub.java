@@ -3,11 +3,12 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "FullSub")
-public class FullSub extends Subscription{
+public class FullSub extends Subscription implements Serializable {
 
     String FullSubId;
 //    @NotNull

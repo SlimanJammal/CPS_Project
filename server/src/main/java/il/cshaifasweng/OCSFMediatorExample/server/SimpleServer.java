@@ -122,9 +122,9 @@ public class SimpleServer extends AbstractServer {
 				CriteriaQuery<PricesUpdateRequest> query = builder.createQuery(PricesUpdateRequest.class);
 				query.from(PricesUpdateRequest.class);
 				 data21 = session.createQuery(query).getResultList();
-				Message MSG = new Message("requests_list_update_regional");
+//				Message MSG = new Message("requests_list_update_regional");
 				//the needed list is here
-				MSG.setObject1(data21);
+//				MSG.setObject1(data21);
 
 
 				session.flush();
@@ -143,6 +143,9 @@ public class SimpleServer extends AbstractServer {
 
 				assert session != null;
 				session.close();
+
+				if(session == null)
+					System.out.println("session close failed - session in null!");
 				System.out.println("show request in server");
 
 				for (PricesUpdateRequest pricesUpdateRequest : data21) {
@@ -151,9 +154,16 @@ public class SimpleServer extends AbstractServer {
 
 				}
 				Message msag = new Message("req_regional");
-				msag.setObject1(data21);
+
 				System.out.println("show r22equest in server");
-				client.sendToClient(msag);
+				try {
+					msag.setObject1(data21);
+					client.sendToClient(msag);
+				} catch (Exception ex){
+					System.out.println("sending to client failed");
+					ex.printStackTrace();
+				}
+
 				System.out.println("show r222equest in server");
 			}
 
