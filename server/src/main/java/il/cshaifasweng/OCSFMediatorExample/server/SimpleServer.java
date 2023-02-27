@@ -12,6 +12,7 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
@@ -115,8 +116,6 @@ public class SimpleServer extends AbstractServer {
 			List<PricesUpdateRequest> data21 = new ArrayList<>();
 			try {
 				SessionFactory sessionFactory = getSessionFactory();
-				if(session !=null)
-				session.close();
 				session = sessionFactory.openSession();
 				session.beginTransaction();
 				CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -126,8 +125,10 @@ public class SimpleServer extends AbstractServer {
 				Message MSG = new Message("requests_list_update_regional");
 				//the needed list is here
 				MSG.setObject1(data21);
-				session.beginTransaction().commit();
+
+
 				session.flush();
+				session.getTransaction().commit();
 			}catch (Exception exp)
 			{
 				exp.printStackTrace();
@@ -188,7 +189,7 @@ public class SimpleServer extends AbstractServer {
 
 						PreOrder entityToDelete = session.get(PreOrder.class, record.getId_());
 						session.delete(entityToDelete);
-						session.beginTransaction().commit();
+						session.getTransaction().commit();
 						session.flush();
 					}
 					catch (Exception exp)
@@ -263,7 +264,7 @@ public class SimpleServer extends AbstractServer {
 					query.from(PricesUpdateRequest.class);
 					List<PricesUpdateRequest> data21 = session.createQuery(query).getResultList();
 					MSG.setObject4(data21);
-					session.beginTransaction().commit();
+					session.getTransaction().commit();
 					session.close();
 
 				}else {
@@ -322,7 +323,7 @@ public class SimpleServer extends AbstractServer {
 			Message MSG=new Message("statsReturned");
 			MSG.setObject1(Deletedmean);
 			MSG.setObject2(Latemean);
-			session.beginTransaction().commit();
+			session.getTransaction().commit();
 			session.close();
 
 
@@ -526,7 +527,7 @@ public class SimpleServer extends AbstractServer {
 				exception.printStackTrace();
 				} finally {
 				System.out.println("ParkingManager_alterPrices server finish");
-				session.beginTransaction().commit();
+				session.getTransaction().commit();
 				session.close();
 			}
 
@@ -1019,6 +1020,7 @@ public class SimpleServer extends AbstractServer {
         String parkName=(String) msg.getObject4();
 		ParkingLot pk=new ParkingLot();
 	    session.getSessionFactory().openSession();
+	    session.beginTransaction();
 		String hql="From ParkingLot ";
 		Query query = session.createQuery(hql);
 		List<ParkingLot> ParkingsList = query.getResultList();
@@ -1070,7 +1072,9 @@ public class SimpleServer extends AbstractServer {
 		  }
 		}
 		try {
+
 			         		session.saveOrUpdate(pk);
+			         		session.getTransaction().commit();
 
 		}
 		catch (Exception e)
@@ -1551,7 +1555,7 @@ public class SimpleServer extends AbstractServer {
 			} catch (FileNotFoundException | DocumentException e) {
 				e.printStackTrace();
 			}
-			session.beginTransaction().commit();
+			session.getTransaction().commit();
 			session.close();
 			return null;
 		}
