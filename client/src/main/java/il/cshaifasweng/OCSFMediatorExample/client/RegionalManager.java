@@ -521,6 +521,12 @@ public class RegionalManager {
         msg.setObject4(FullSubsTF.getText());
         msg.setObject5(MultiTF.getText());
 
+       OcasionalTF.setText("sent");
+       PreOrderTF.setText("sent");
+       PartTimeTF1.setText("sent");
+       FullSubsTF.setText("sent");
+       MultiTF.setText("sent");
+
 
 
         try {
@@ -545,6 +551,12 @@ public class RegionalManager {
         msg.setObject4(FullSubsTF1.getText());
         msg.setObject5(MultiTF1.getText());
 
+        OcasionalTF1.setText("sent");
+        PreOrderTF1.setText("sent");
+        PartTimeTF2.setText("sent");
+        FullSubsTF1.setText("sent");
+        MultiTF1.setText("sent");
+
 
 
         try {
@@ -568,6 +580,12 @@ public class RegionalManager {
         msg.setObject3(PartTimeTF3.getText());
         msg.setObject4(FullSubsTF2.getText());
         msg.setObject5(MultiTF2.getText());
+
+        OcasionalTF2.setText("sent");
+        PreOrderTF2.setText("sent");
+        PartTimeTF3.setText("sent");
+        FullSubsTF2.setText("sent");
+        MultiTF2.setText("sent");
 
 
         try {
