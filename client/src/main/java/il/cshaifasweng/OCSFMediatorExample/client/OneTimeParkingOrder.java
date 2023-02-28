@@ -90,7 +90,7 @@ public class OneTimeParkingOrder {
         fields.add(EtdTF.getText());
         fields.add(IdNumberTF.getText());
         msg.setObject1(fields);
-
+        System.out.println("submit pre order pressed");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);

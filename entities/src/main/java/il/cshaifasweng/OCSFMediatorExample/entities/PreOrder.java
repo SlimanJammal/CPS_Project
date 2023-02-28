@@ -4,6 +4,8 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -20,9 +22,13 @@ public class PreOrder  implements Serializable {
 //    @NotNull  //although it can be altered to if null choose any open parking space?
     String Parking_requested; //most likely to have three values r,c,d
 //    @NotNull
-    Date entrance;  //date includes year:month:day:hour
-//    @NotNull
-    Date exit_;      //date includes year:month:day:hour
+    LocalDate entranceDate;  //date includes year:month:day
+    LocalTime entranceTime; //hour , minute
+
+    LocalDate exitDate;  //date includes year:month:day
+    LocalTime exitTime; //hour , minute
+
+
 //    @NotNull
     String Email_;
 
@@ -53,13 +59,11 @@ public class PreOrder  implements Serializable {
         return PreOrderId;
     }
 
-    public Date getEntrance() {
-        return entrance;
+    public LocalDate getEntranceDate() {
+        return entranceDate;
     }
 
-    public Date getExit_() {
-        return exit_;
-    }
+
 
     public String getParking_requested() {
         return Parking_requested;
@@ -77,12 +81,32 @@ public class PreOrder  implements Serializable {
         PreOrderId = preOrderId;
     }
 
-    public void setEntrance(Date entrance) {
-        this.entrance = entrance;
+    public void setEntranceDate(LocalDate entrance) {
+        this.entranceDate = entrance;
     }
 
-    public void setExit_(Date exit) {
-        this.exit_ = exit;
+    public LocalTime getEntranceTime() {
+        return entranceTime;
+    }
+
+    public void setEntranceTime(LocalTime entranceTime) {
+        this.entranceTime = entranceTime;
+    }
+
+    public LocalDate getExitDate() {
+        return exitDate;
+    }
+
+    public void setExitDate(LocalDate exitDate) {
+        this.exitDate = exitDate;
+    }
+
+    public LocalTime getExitTime() {
+        return exitTime;
+    }
+
+    public void setExitTime(LocalTime exitTime) {
+        this.exitTime = exitTime;
     }
 
     public void setParking_requested(String parking_requested) {

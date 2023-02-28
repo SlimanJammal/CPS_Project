@@ -25,9 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
 //import java.util.;
@@ -180,13 +178,13 @@ public class SimpleServer extends AbstractServer {
 			List<PreOrder> results = query.getResultList();
 			PreOrder refund=new PreOrder();
 
-
+			//todo change checking order and add refund stuff
 			for(PreOrder record : results)
 			{
 				if(     record.getCarNumber().equals(cancelingmsg.getObject1())
 						&& record.getEmail_().equals(cancelingmsg.getObject3())
-				        && record.getEntrance().equals(cancelingmsg.getObject4())
-						&& record.getExit_().equals(cancelingmsg.getObject5())
+				        && record.getEntranceDate().equals(cancelingmsg.getObject4())
+//						&& record.getExit_().equals(cancelingmsg.getObject5())
 						&& record.getPreOrderId().equals(cancelingmsg.getObject6())
 					)
 				{
@@ -215,7 +213,8 @@ public class SimpleServer extends AbstractServer {
 
 		// here I want to calculate the refund:
 			Date cancellationTime=new Date();
-			Date expectedEntrance = refund.getEntrance();
+			//TODO CHANGE PARSING AND VARIABLES TYPES
+			LocalDate expectedEntrance = refund.getEntranceDate();
 
 			Duration duration = Duration.between((Temporal) cancellationTime, (Temporal) expectedEntrance);
 			long hours = duration.toHours();
@@ -697,26 +696,49 @@ public class SimpleServer extends AbstractServer {
 			// 1- DesiredParking         4- Etd
 			// 2- Email                  5- Id nnumber
 			Vector<String> fields = (Vector<String>)ms.getObject1();
-
+			System.out.println("one time parking order in server");
 			// checking fields input if okay add the client, else return failed
 			// checked everything except time/date
 			if (fieldsChecker_OneTimeParkingOrder(fields)) {
-				PreOrder tempParking = new PreOrder(fields.get(5), fields.get(0), fields.get(1), fields.get(2));
+				PreOrder tempPreOrder = new PreOrder(fields.get(5), fields.get(0), fields.get(1), fields.get(2));
 				String tempEta = fields.get(3);
 				String tempEtd = fields.get(4);
-				String[] parsedEta = tempEta.split(":");
-				String[] parsedEtd = tempEtd.split(":");
-				Date Eta = new Date(Integer.parseInt(parsedEta[0]), Integer.parseInt(parsedEta[1]), Integer.parseInt(parsedEta[2]), Integer.parseInt(parsedEta[3]), 0);
-				Date Etd = new Date(Integer.parseInt(parsedEtd[0]), Integer.parseInt(parsedEtd[1]), Integer.parseInt(parsedEtd[2]), Integer.parseInt(parsedEtd[3]), 0);
-				tempParking.setEntrance(Eta);
-				tempParking.setExit_(Etd);
+
+				//input example 22:15-2022:11:24
+				// hour in - 0 , minutes in - 1
+				String[] estimated_arrival_time = fields.get(3).split("-")[1].split(":");
+				//0 - year,1 - month,2 -day
+				String[] estimated_arrival_date = fields.get(3).split("-")[2].split(":");
+
+				// hour in - 0 , minutes in - 1
+				String[] estimated_leave_time = fields.get(4).split("-")[1].split(":");
+				//0 - year,1 - month,2 -day
+				String[] estimated_leave_date = fields.get(4).split("-")[2].split(":");
+
+
+//				 Initialize to a specific date using year, month, and day values
+				LocalDate arrival_date = LocalDate.of(Integer.parseInt(estimated_arrival_date[0]), Integer.parseInt(estimated_arrival_date[1]), Integer.parseInt(estimated_arrival_date[2]));
+				//hour , minute
+				LocalTime arrival_time = LocalTime.of(Integer.parseInt(estimated_arrival_time[0]),Integer.parseInt(estimated_arrival_time[1]));
+
+				//				 Initialize to a specific date using year, month, and day values
+				LocalDate leave_date = LocalDate.of(Integer.parseInt(estimated_leave_date[0]), Integer.parseInt(estimated_leave_date[1]), Integer.parseInt(estimated_leave_date[2]));
+				//hour , minute
+				LocalTime leave_time = LocalTime.of(Integer.parseInt(estimated_leave_time[0]),Integer.parseInt(estimated_leave_time[1]));
+
+//				LocalDate Eta = new LocalDateStringConverter(Integer.parseInt(parsedEta[0]), Integer.parseInt(parsedEta[1]), Integer.parseInt(parsedEta[2]), Integer.parseInt(parsedEta[3]), 0);
+//				Date Etd = new Date(Integer.parseInt(parsedEtd[0]), Integer.parseInt(parsedEtd[1]), Integer.parseInt(parsedEtd[2]), Integer.parseInt(parsedEtd[3]), 0);
+				tempPreOrder.setEntranceDate(arrival_date);
+				tempPreOrder.setEntranceTime(arrival_time);
+				tempPreOrder.setExitDate(leave_date);
+				tempPreOrder.setExitTime(leave_time);
 
 
 
 
 				//todo in parkingEnter return message store "OneTimeParkingOrder" in the title,
 				// and the first object fail/success as a string, rest of the info choose when implementing
-				Message msg2 = routingOrders(tempParking,"PreOrder");
+				Message msg2 = routingOrders(tempPreOrder,"PreOrder");
 
 				client.sendToClient(msg2);
 
@@ -1027,77 +1049,74 @@ public class SimpleServer extends AbstractServer {
 
 	private void EnterParking(Message msg)
 	{
-		// I assume name of the park is stored in object 4
-		//we have cairables called licenes plate and id in message already
-		//assume in object 3 the exit date/time;
-        String parkName=(String) msg.getObject4();
-		ParkingLot pk=new ParkingLot();
-	    session.getSessionFactory().openSession();
-	    session.beginTransaction();
-		String hql="From ParkingLot ";
-		Query query = session.createQuery(hql);
-		List<ParkingLot> ParkingsList = query.getResultList();
-		for(ParkingLot temp:ParkingsList)
-		{
-			if(temp.getName().equals(parkName))
-			{
-				pk=temp;
-			}
-		}
-	    ParkingSpot spot= new ParkingSpot();
 
-		if(!pk.isFull())
-		{
-			for(int i = 0; i< pk.getSlots_num(); i++)
-			{
-				if(pk.getSpots().get(i).getCurrentState().equals("empty"))
-				{
-					pk.setOccupied_slots_num(pk.getOccupied_slots_num()+1);
-					pk.getSpots().get(i).setCurrentState("occupied");
-					pk.getSpots().get(i).setLicesnes_Plate(msg.getLicensePlate());
-					pk.getSpots().get(i).setCus_ID(msg.getID());
-					pk.getSpots().get(i).setExitDate((LocalDateTime) msg.getObject3());
+		try {
+			// I assume name of the park is stored in object 4
+			//we have cairables called licenes plate and id in message already
+			//assume in object 3 the exit date/time;
+			String parkName = (String) msg.getObject4();
+			ParkingLot pk = new ParkingLot();
+			session.getSessionFactory().openSession();
+			session.beginTransaction();
+			String hql = "From ParkingLot ";
+			Query query = session.createQuery(hql);
+			List<ParkingLot> ParkingsList = query.getResultList();
+			for (ParkingLot temp : ParkingsList) {
+				if (temp.getName().equals(parkName)) {
+					pk = temp;
 				}
 			}
-		}
-		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
-		{
-			@Override
-			public int compare(ParkingSpot p1, ParkingSpot p2) {
-				return p1.getExitDate().compareTo(p2.getExitDate());
+			ParkingSpot spot = new ParkingSpot();
+
+			if (!pk.isFull()) {
+				for (int i = 0; i < pk.getSlots_num(); i++) {
+					if (pk.getSpots().get(i).getCurrentState().equals("empty")) {
+						pk.setOccupied_slots_num(pk.getOccupied_slots_num() + 1);
+						pk.getSpots().get(i).setCurrentState("occupied");
+						pk.getSpots().get(i).setLicesnes_Plate(msg.getLicensePlate());
+						pk.getSpots().get(i).setCus_ID(msg.getID());
+						pk.getSpots().get(i).setExitDate((LocalDateTime) msg.getObject3());
+					}
+				}
 			}
-		});
-		  int i=pk.getOccupied_slots_num();
-		for (int depth=0;depth<3;depth++)
-		{
-			for(int height=0;height<3;height++)
-			{
-			for (int width=0;width<pk.getWidth();width++,i--)
-			 {
-				  pk.getSpots().get(i).setdepth(depth);
-				  pk.getSpots().get(i).setWidth(width);
-				  pk.getSpots().get(i).setHeight(height);
-				  if(i==0)
-				  {
-					  break;
-				  }
-			 }
-		  }
-		}
-		try {
+			Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>() {
+				@Override
+				public int compare(ParkingSpot p1, ParkingSpot p2) {
+					return p1.getExitDate().compareTo(p2.getExitDate());
+				}
+			});
+			int i = pk.getOccupied_slots_num();
+			for (int depth = 0; depth < 3; depth++) {
+				for (int height = 0; height < 3; height++) {
+					for (int width = 0; width < pk.getWidth(); width++, i--) {
+						pk.getSpots().get(i).setdepth(depth);
+						pk.getSpots().get(i).setWidth(width);
+						pk.getSpots().get(i).setHeight(height);
+						if (i == 0) {
+							break;
+						}
+					}
+				}
+			}
 
-			         		session.saveOrUpdate(pk);
-			         		session.getTransaction().commit();
 
-		}
-		catch (Exception e)
-		{
+				session.saveOrUpdate(pk);
+				session.flush();
+				session.getTransaction().commit();
+
+
+
+
+		}catch (Exception e){
+
+			if(session != null)
 			session.getTransaction().rollback();
-		}
-		finally {
-			       	 session.close();
-		}
 
+			e.printStackTrace();
+
+		}finally {
+			session.close();
+		}
 
 
 
@@ -1105,6 +1124,8 @@ public class SimpleServer extends AbstractServer {
 
 
 	}
+
+
 
 	public void ExitParking(Message msg) {
 
@@ -1383,37 +1404,42 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	private Message routingOrders(Object ParkingEntryOrder, String type) {
-		//todo
+
 		//this function takes an order such as preorder or occasional customer etc.., and the type in "type"
 		// so we can convert it to the given type and add it. it returns a Message and it's fields are set according to
 		// the caller.
 		// it should every order to function that saves it/or let's the customer enter the parking
 		session = getSessionFactory().openSession();
 		session.beginTransaction();
-
-
+		System.out.println("in routing order");
+		Message msg2 = new Message("");
 		if (type.equals("PreOrder")){
 			PreOrder newOrder = (PreOrder) ParkingEntryOrder;
 			String parking = newOrder.getParking_requested();
 			List<ParkingLot> parkingList = getAll(ParkingLot.class);
 			for(ParkingLot parkingLot : parkingList){
 				if(parkingLot.getName().equals(parking)){
+					//todo a function that calculates number of orders with a given period of date and time
+					//and then send the result to existsFreeSlots
 					if(parkingLot.existsFreeSlots()){
 						parkingLot.addPreOrder(newOrder);
-						parkingLot.incPreOrderNum();
+						parkingLot.incPreOrderNum(); // todo remove after adding ^^
 						try {
 
 							session.update(parkingLot);
 							session.flush();
 							session.getTransaction().commit();
-							Message msg2 = new Message("OneTimeParkingOrder");
+							 msg2 = new Message("OneTimeParkingOrder");
 							msg2.setObject1("success");
 						}
 						catch (Exception exception) {
 							if (session != null) {
 								session.getTransaction().rollback();
+
+								exception.printStackTrace();
+								System.out.println("in routing order pre order session failed");
 							}
-							Message msg2 = new Message("OneTimeParkingOrder");
+							msg2 = new Message("OneTimeParkingOrder");
 							msg2.setObject1("fail");
 							exception.printStackTrace();
 						} finally {
@@ -1440,14 +1466,14 @@ public class SimpleServer extends AbstractServer {
 							session.update(parkingLot);
 							session.flush();
 							session.getTransaction().commit();
-							Message msg2 = new Message("OccCustomer");
+							msg2 = new Message("OccCustomer");
 							msg2.setObject1("success");
 						}
 						catch (Exception exception) {
 							if (session != null) {
 								session.getTransaction().rollback();
 							}
-							Message msg2 = new Message("OccCustomer");
+							 msg2 = new Message("OccCustomer");
 							msg2.setObject1("fail");
 							exception.printStackTrace();
 						} finally {
@@ -1461,7 +1487,9 @@ public class SimpleServer extends AbstractServer {
 
 		}
 
-		return null;
+		System.out.println("routing orders time to return");
+		System.out.println("message is : "+ msg2.getMessage());
+		return msg2;
 
 	}
 
