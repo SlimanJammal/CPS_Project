@@ -94,7 +94,7 @@ public class OcasionalParking {
     }
 
     @Subscribe
-    public void HandleMessagesFromServer(OcasionalEvent event){
+    public void HandleMessagesFromServer_(OcasionalEvent event){
         Message msg = event.getMessage();
 
 //        System.out.println(msg.getMessage());

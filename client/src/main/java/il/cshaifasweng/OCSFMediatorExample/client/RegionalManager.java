@@ -452,10 +452,10 @@ public class RegionalManager {
 
         } else if(event.getMessage().getMessage().equals("pdf_regional")){
             //todo do stuuffff
-            Alert alert = new Alert(Alert.AlertType.WARNING,
-                    "PDF SENT"
-            );
-            alert.show();
+//            Alert alert = new Alert(Alert.AlertType.WARNING,
+//                    "PDF SENT"
+//            );
+//            alert.show();
 
         }
 

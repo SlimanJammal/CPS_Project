@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 
@@ -106,6 +107,11 @@ public class RequestStatus {
     @FXML
     void OnPreviousButton(ActionEvent event) throws IOException {
         App.setRoot(DataSingleton.getInstance().getCaller());
+
+    }
+
+    @Subscribe
+    public void serverMcatch(RequestStatus event){
 
     }
 

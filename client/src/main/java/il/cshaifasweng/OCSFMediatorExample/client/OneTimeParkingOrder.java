@@ -102,7 +102,7 @@ public class OneTimeParkingOrder {
 
 
     @Subscribe
-    void SubmissionAnswer(OneTimeParkingOrderEvent event){
+   public void SubmissionAnswer(OneTimeParkingOrderEvent event){
         //todo  warning pop up if everything is okay/not with info
         // if everything is good clear fields
         if(event.getMessage().getObject1().toString().equals("success")) {

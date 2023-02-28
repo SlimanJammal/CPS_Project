@@ -28,7 +28,7 @@ public class App extends Application {
     	EventBus.getDefault().register(this);
     	client = SimpleClient.getClient();
     	client.openConnection();
-        scene = new Scene(loadFXML("mainWindow"),600,600);
+        scene = new Scene(loadFXML("mainWindow"),800,800);
         STAGE = stage;
         STAGE.setScene(scene);
         STAGE.show();
