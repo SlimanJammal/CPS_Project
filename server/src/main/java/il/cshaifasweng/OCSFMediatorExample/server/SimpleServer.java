@@ -730,6 +730,7 @@ public class SimpleServer extends AbstractServer {
 		} else if(ms.getMessage().endsWith("regional")){
 			Message msg2 = new Message("return_regional");
 			System.out.println("IN SERVER REGIONAL MANAGER");
+			System.out.println(ms.getMessage());
 			switch (ms.getMessage()) {
 				case "accept_price_alter_regional" -> msg2 = price_alter(ms, "accept");
 				case "decline_price_alter_regional" -> msg2 = price_alter(ms, "decline");
@@ -1534,7 +1535,7 @@ public class SimpleServer extends AbstractServer {
 
 	private Message pdfRegional(Message ms){
 			//index chooses parking lot to show status of.
-
+			System.out.println("pdf regional entered");
 			int index = 0;
 			 if(ms.getMessage().equals("pdf_Parking2_regional")){
 				index = 1;
@@ -1546,7 +1547,7 @@ public class SimpleServer extends AbstractServer {
 				// Create a new Document
 				Document document = new Document();
 				// Create a new PdfWriter
-				PdfWriter.getInstance(document, new FileOutputStream("Parking.pdf"));
+				PdfWriter.getInstance(document, new FileOutputStream("Parking_"+index+".pdf"));
 				// Open the Document
 				document.open();
 				StringBuilder parking_spots_state = new StringBuilder();
@@ -1563,11 +1564,12 @@ public class SimpleServer extends AbstractServer {
 					List<ParkingSpot> parkingSpots = parkingLots.get(index).getSpots();
 
 					for (int i = 0; i < parkingSpots.size(); i++) {
+						parking_spots_state.append(i);
+						parking_spots_state.append("  ");
 						parking_spots_state.append(parkingSpots.get(i).getCurrentState());
 						parking_spots_state.append("  ");
-						if (i % 9 == 0) {
-							parking_spots_state.append("\n");
-						}
+						parking_spots_state.append("\n");
+
 
 					}
 				}catch (Exception ee) {
@@ -1581,7 +1583,7 @@ public class SimpleServer extends AbstractServer {
 			} catch (FileNotFoundException | DocumentException e) {
 				e.printStackTrace();
 			}
-
+			System.out.println("pdf regional entered");
 			return null;
 		}
 
