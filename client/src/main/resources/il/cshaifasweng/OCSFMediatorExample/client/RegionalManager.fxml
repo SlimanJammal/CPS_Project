@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -84,11 +85,12 @@
                               <TextField fx:id="PartTimeTF1" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
                               <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
                               <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-                              <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="9.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="60.32891845703131" />
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBTN1" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit1" text="Submit" />
+                              <TextArea fx:id="SCREEN1" layoutX="513.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -121,11 +123,12 @@
                               <TextField fx:id="PartTimeTF2" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF2" prefHeight="25.0" prefWidth="76.0" />
                               <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
                               <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-                              <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="11.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="57.32891845703131" />
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF1" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBtn2" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit2" text="Submit" />
+                              <TextArea fx:id="SCREEN2" layoutX="513.0" layoutY="177.0" prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -158,11 +161,12 @@
                               <TextField fx:id="PartTimeTF3" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF3" prefHeight="25.0" prefWidth="76.0" />
                               <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
                               <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-                              <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="11.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="58.32891845703131" />
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF2" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBtn3" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit3" text="Submit" />
+                              <TextArea fx:id="SCREEN3" layoutX="513.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </AnchorPane>
                      </children>

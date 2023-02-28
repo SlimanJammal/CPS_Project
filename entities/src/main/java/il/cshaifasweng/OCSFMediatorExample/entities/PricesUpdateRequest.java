@@ -14,9 +14,8 @@ public class PricesUpdateRequest implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pricesUpdateReqId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "UserID")
-    ParkingManager parkingManager;
+
+    private Integer parkingManagerID;
 
 
     private Integer occasionalPrice;
@@ -36,8 +35,8 @@ public class PricesUpdateRequest implements Serializable {
     String request;
 
 
-    public PricesUpdateRequest(ParkingManager parkingManager, Vector<Integer> pricesClassVector, String request) {
-        this.parkingManager = parkingManager;
+    public PricesUpdateRequest(Integer parkingManager, Vector<Integer> pricesClassVector, String request) {
+        this.parkingManagerID = parkingManager;
         occasionalPrice = pricesClassVector.get(0);
         preOrderPrice = pricesClassVector.get(1);
         partTimePrice = pricesClassVector.get(2);
@@ -55,12 +54,12 @@ public class PricesUpdateRequest implements Serializable {
         return pricesUpdateReqId;
     }
 
-    public ParkingManager getParkingManager() {
-        return parkingManager;
+    public Integer getParkingManagerID() {
+        return parkingManagerID;
     }
 
-    public void setParkingManager(ParkingManager parkingManager) {
-        this.parkingManager = parkingManager;
+    public void setParkingManager(Integer parkingManager) {
+        this.parkingManagerID = parkingManager;
     }
 
 //    public List<Integer> getPricesClassVector() {
@@ -73,6 +72,10 @@ public class PricesUpdateRequest implements Serializable {
 
     public String getRequest() {
         return request;
+    }
+
+    public void setPricesUpdateReqId(int pricesUpdateReqId) {
+        this.pricesUpdateReqId = pricesUpdateReqId;
     }
 
     public void setRequest(String request) {

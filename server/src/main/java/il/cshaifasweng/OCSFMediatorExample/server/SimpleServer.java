@@ -12,7 +12,6 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
@@ -25,7 +24,7 @@ import javax.persistence.criteria.Root;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Time;
+import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -33,6 +32,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
 //import java.util.;
 import java.util.*;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -512,10 +512,11 @@ public class SimpleServer extends AbstractServer {
 				for(ParkingManager a : data){
 					if(a.getid() == Managerid){
 						Manager = a;
+
 					}
 				}
 
-			PricesUpdateRequest new_request = new PricesUpdateRequest(Manager,prices_request_vector,"plz_change");
+			PricesUpdateRequest new_request = new PricesUpdateRequest(Managerid,prices_request_vector,"prices: ");
 			// add new request for the list so the regional manager can see it.
 				System.out.println("ParkingManager_alterPrices server start4");
 			session.save(new_request);
@@ -728,6 +729,7 @@ public class SimpleServer extends AbstractServer {
 
 		} else if(ms.getMessage().endsWith("regional")){
 			Message msg2 = new Message("return_regional");
+			System.out.println("IN SERVER REGIONAL MANAGER");
 			switch (ms.getMessage()) {
 				case "accept_price_alter_regional" -> msg2 = price_alter(ms, "accept");
 				case "decline_price_alter_regional" -> msg2 = price_alter(ms, "decline");
@@ -738,6 +740,12 @@ public class SimpleServer extends AbstractServer {
 				default -> System.out.println("Simple server regional manager error");
 			}
 
+			try{
+				client.sendToClient(msg2);
+			}catch(Exception ex){
+				System.out.println("failed to send to server in regional return");
+				ex.printStackTrace();
+			}
 
 		}
 		else if(ms.getMessage().equals("Deactivate Parking Spot"))
@@ -1388,19 +1396,20 @@ public class SimpleServer extends AbstractServer {
 		// partTime price -> object3
 		// FullSubs price -> object4
 		// Multi price -> object5
-		PricesClass occasionalPrice = new PricesClass((int)ms.getObject1(),"occasionalPrice");
-		PricesClass preOrderPrice = new PricesClass((int)ms.getObject2(),"preOrderPrice");
-		PricesClass PartTimePrice = new PricesClass((int)ms.getObject3(),"PartTimePrice");
-		PricesClass fullSubPrice = new PricesClass((int)ms.getObject4(),"fullSubPrice");
-		PricesClass MultiCarPrice = new PricesClass((int)ms.getObject5(),"MultiCarPrice");
+		System.out.println("in alter prices regional req");
 
 		Vector<Integer> prices_request_vector = new Vector<Integer>();
 
-		prices_request_vector.add((int)ms.getObject1());
-		prices_request_vector.add((int)ms.getObject2());
-		prices_request_vector.add((int)ms.getObject3());
-		prices_request_vector.add((int)ms.getObject4());
-		prices_request_vector.add((int)ms.getObject5());
+		String one = (String)ms.getObject1();
+		prices_request_vector.add(Integer.parseInt(one));
+		String two = (String)ms.getObject2();
+		prices_request_vector.add(Integer.parseInt(two));
+		String three= (String)ms.getObject3();
+		prices_request_vector.add(Integer.parseInt(three));
+		String four = (String)ms.getObject4();
+		prices_request_vector.add(Integer.parseInt(four));
+		String five = (String)ms.getObject5();
+		prices_request_vector.add(Integer.parseInt(five));
 
 		//get manger's name of current window to alter accordingly
 
@@ -1430,24 +1439,25 @@ public class SimpleServer extends AbstractServer {
 			} else {
 				System.out.println("MO3AAAAAAAAAAAAAAAAAAAAAAD_BLA HBL");
 			}
-
-			PricesUpdateRequest new_request = new PricesUpdateRequest(Manager,prices_request_vector,"plz_change");
+			System.out.println("in alter prices regional req1121321311");
+			PricesUpdateRequest new_request = new PricesUpdateRequest(Manager.getid(),prices_request_vector,"plz_change");
 			// add new request for the list so the regional manager can see it.
 			session.save(new_request);
-
+			System.out.println("in alter prices regional req1111");
 			session.flush();
 			session.getTransaction().commit();
 
-
+			System.out.println("in alter prices regional req222");
 			msg2 = new Message("prices update request sent regional");
 
 		} catch (Exception exception) {
+			exception.printStackTrace();
 			if (session != null) {
 				session.getTransaction().rollback();
 			}
 			 msg2 = new Message("failed_transaction");
 
-			System.err.println("An error occurred, changes have been rolled back.");
+			System.out.println("An error occurred, changes have been rolled back.");
 			exception.printStackTrace();
 		} finally {
 			assert session != null;
@@ -1484,7 +1494,7 @@ public class SimpleServer extends AbstractServer {
 			List<ParkingLot> data = session.createQuery(query).getResultList();
 			ParkingManager parkingManager = data.get(index).getParkingManager();
 			int id_ = parkingManager.getParkingLot().getParking_id();
-			List<PricesClass> pricesList = null;
+			List<PricesClass> pricesList = new ArrayList<>();
 
 			for (ParkingLot datum : data) {
 				if (datum.getParking_id() == id_) {
@@ -1497,7 +1507,7 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 
-			MSG.setObject1(pricesList);
+			MSG.setObject2(pricesList);
 			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception exception) {
@@ -1539,45 +1549,52 @@ public class SimpleServer extends AbstractServer {
 				PdfWriter.getInstance(document, new FileOutputStream("Parking.pdf"));
 				// Open the Document
 				document.open();
-				// Add content to the Document
-				session = getSessionFactory().openSession();
-				session.beginTransaction();
-
-				CriteriaBuilder builder = session.getCriteriaBuilder();
-				CriteriaQuery<ParkingLot> query = builder.createQuery(ParkingLot.class);
-				query.from(ParkingLot.class);
-				List<ParkingLot> parkingLots = session.createQuery(query).getResultList();
-
-				List<ParkingSpot> parkingSpots = parkingLots.get(index).getSpots();
 				StringBuilder parking_spots_state = new StringBuilder();
-				for(int i=0;i< parkingSpots.size();i++){
-					parking_spots_state.append(parkingSpots.get(i).getCurrentState());
-					parking_spots_state.append("  ");
-					if(i%9 ==0){
-						parking_spots_state.append("\n");
-					}
+				// Add content to the Document
+				try {
+					session = getSessionFactory().openSession();
+					session.beginTransaction();
+
+					CriteriaBuilder builder = session.getCriteriaBuilder();
+					CriteriaQuery<ParkingLot> query = builder.createQuery(ParkingLot.class);
+					query.from(ParkingLot.class);
+					List<ParkingLot> parkingLots = session.createQuery(query).getResultList();
+
+					List<ParkingSpot> parkingSpots = parkingLots.get(index).getSpots();
+
+					for (int i = 0; i < parkingSpots.size(); i++) {
+						parking_spots_state.append(parkingSpots.get(i).getCurrentState());
+						parking_spots_state.append("  ");
+						if (i % 9 == 0) {
+							parking_spots_state.append("\n");
+						}
 
 					}
-
+				}catch (Exception ee) {
+					ee.printStackTrace();
+					session.getTransaction().commit();
+					session.close();
+				}
 				document.add(new Paragraph(String.valueOf(parking_spots_state)));
 				// Close the Document
 				document.close();
 			} catch (FileNotFoundException | DocumentException e) {
 				e.printStackTrace();
 			}
-			session.getTransaction().commit();
-			session.close();
+
 			return null;
 		}
 
 
 	private Message price_alter(Message ms, String res) {
 		//changes price with a given update price request
-		Message msg1 = new Message("requests_list_update_regional");
-		Message ms2 = new Message("price_decline_regional");
+		System.out.println("IN SERVER REGIONAL MANAGER PRICE ALTER FUNCTION");
 
+		Message msg1 = new Message("req_regional");
+		Message ms2 = new Message("req_regional");
+		List<PricesUpdateRequest> data21 = new ArrayList<>();
 		if(res.equals("accept")){
-
+			System.out.println("IN SERVER REGIONAL MANAGER REQ ACCEPTED");
 			try{
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
@@ -1587,10 +1604,11 @@ public class SimpleServer extends AbstractServer {
 			query.from(PricesUpdateRequest.class);
 			List<PricesUpdateRequest> requestList = session.createQuery(query).getResultList();
 
-			int request_num = (Integer) ms.getObject1();
+			int request_num = Integer.parseInt((String) ms.getObject1());
 			PricesUpdateRequest temp = new PricesUpdateRequest();
 			for(PricesUpdateRequest ptr : requestList){
 				if(ptr.getPricesUpdateReqId() == request_num){
+					System.out.println("request to accept found in db");
 					temp=ptr;
 				}
 			}
@@ -1601,9 +1619,9 @@ public class SimpleServer extends AbstractServer {
 			CriteriaQuery<ParkingLot> query1 = builder1.createQuery(ParkingLot.class);
 			query1.from(ParkingLot.class);
 			List<ParkingLot> parkingLots = session.createQuery(query1).getResultList();
-
+			Integer ID =0;
 			for(ParkingLot parkingLot : parkingLots){
-				if(parkingLot.getParking_id() == temp.getParkingManager().getParkingLot().getParking_id()){
+				if(parkingLot.getParkingManager().getid() == temp.getParkingManagerID()){
 					PricesClass occasionalPrice = new PricesClass(temp.getOccasionalPrice(),"occasionalPrice");
 					PricesClass preOrderPrice = new PricesClass(temp.getPreOrderPrice(),"preOrderPrice");
 					PricesClass PartTimePrice = new PricesClass(temp.getPartTimePrice(),"PartTimePrice");
@@ -1614,9 +1632,19 @@ public class SimpleServer extends AbstractServer {
 					parkingLot.setPartTimePrice(PartTimePrice);
 					parkingLot.setFullSubPrice(fullSubPrice);
 					parkingLot.setMultiCarPrice(MultiCarPrice);
+					ID = parkingLot.getParking_id();
+					session.saveOrUpdate(parkingLot);
 				}
 			}
-			session.update(parkingLots);
+
+				session.delete(temp);
+				CriteriaBuilder builder44 = session.getCriteriaBuilder();
+				CriteriaQuery<PricesUpdateRequest> query44 = builder44.createQuery(PricesUpdateRequest.class);
+				query44.from(PricesUpdateRequest.class);
+				data21 = session.createQuery(query44).getResultList();
+					msg1.setObject1(data21);
+					ms2.setObject1(data21);
+
 			session.flush();
 			session.getTransaction().commit();
 
@@ -1634,9 +1662,10 @@ public class SimpleServer extends AbstractServer {
 		}
 
 		}else{
-
+			System.out.println("IN SERVER REGIONAL MANAGER REQ DENIED");
 			return ms2;
 		}
+		System.out.println("IN SERVER REGIONAL MANAGER REQ ACCEPTED TIME TO RETURN TO HANDLE  IN SERVER");
 		return msg1;
 
 	}
@@ -1850,7 +1879,24 @@ public class SimpleServer extends AbstractServer {
 			Vector<PricesUpdateRequest> prices_update_req3 = new Vector<PricesUpdateRequest>();
 			User MANGER_3 = new ParkingManager("BASHAR","PASS3","BASHAR","BASHOTY",1,null,prices_update_req3);
 
+
 			session.save(MANGER_3);
+
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingManager> query = builder.createQuery(ParkingManager.class);
+			query.from(ParkingManager.class);
+			List<ParkingManager> parkingManagers = session.createQuery(query).getResultList();
+			System.out.print("\n\n\n***Managerss:***** \n \n\n");
+			for (ParkingManager parkingManager :parkingManagers) {
+				System.out.print("Id: ");
+				System.out.print(parkingManager.getUserID());
+				System.out.print(", First Name: ");
+				System.out.print(parkingManager.getFirstName());
+				System.out.print(", LastName: ");
+				System.out.print(parkingManager.getLastName());
+
+				System.out.print('\n');
+			}
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -1904,9 +1950,14 @@ public class SimpleServer extends AbstractServer {
 			List<ParkingWorker> parkingWorkers = session.createQuery(query1).getResultList();
 
 
+
+			if(parkingManagers.get(0) == null)
+				System.out.println("\n\n\n\n\n\naaaaaaaaaassssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n\n\n");
 			parkingLot1.setParkingManager(parkingManagers.get(0));
 			parkingLot1.setParkingWorker(parkingWorkers.get(0));
 			parkingWorkers.get(0).setParkingLot(parkingLot1);
+			parkingManagers.get(0).setParkingLot(parkingLot1);
+			session.saveOrUpdate(parkingManagers.get(0));
 			session.saveOrUpdate(parkingWorkers.get(0));
 
 
@@ -1928,11 +1979,17 @@ public class SimpleServer extends AbstractServer {
 
 			session.save(parkingLot1);
 			//___________________________________________________________________________________________
+
+
 			System.out.println("Parking Lot2");
 			ParkingLot parkingLot2 = new ParkingLot("Hanmal",3,5,false);
-			parkingLot1.setParkingManager(parkingManagers.get(1));
-			parkingLot1.setParkingWorker(parkingWorkers.get(1));
-			parkingWorkers.get(1).setParkingLot(parkingLot1);
+
+			parkingLot2.setParkingManager(parkingManagers.get(1));
+			parkingLot2.setParkingWorker(parkingWorkers.get(1));
+
+			parkingWorkers.get(1).setParkingLot(parkingLot2);
+			parkingManagers.get(1).setParkingLot(parkingLot2);
+			session.saveOrUpdate(parkingManagers.get(1));
 			session.saveOrUpdate(parkingWorkers.get(1));
 			//parking spots initialize
 			for(int i = 0; i< parkingLot2.getDimensions(); i++)
@@ -1948,7 +2005,16 @@ public class SimpleServer extends AbstractServer {
 					}
 				}
 			}
-			session.saveOrUpdate(parkingLot2);
+
+
+			System.out.println("\n\n\n\n\n\naaaaaaaaaassss\n\n\n");
+			for(ParkingManager parkingManager: parkingManagers){
+
+				System.out.println(parkingManager.getFirstName());
+
+
+			}
+			session.save(parkingLot2);
 
 
 			//________________________________________________________________________________________________________________
@@ -1956,9 +2022,11 @@ public class SimpleServer extends AbstractServer {
 
 			ParkingLot parkingLot3 = new ParkingLot("Bat-Galim",3,5,false);
 
-			parkingLot1.setParkingManager(parkingManagers.get(2));
-			parkingLot1.setParkingWorker(parkingWorkers.get(2));
-			parkingWorkers.get(2).setParkingLot(parkingLot1);
+			parkingLot3.setParkingManager(parkingManagers.get(2));
+			parkingLot3.setParkingWorker(parkingWorkers.get(2));
+			parkingWorkers.get(2).setParkingLot(parkingLot3);
+			parkingManagers.get(2).setParkingLot(parkingLot3);
+			session.saveOrUpdate(parkingManagers.get(2));
 			session.saveOrUpdate(parkingWorkers.get(2));
 
 			//parking spots initialize
@@ -1975,7 +2043,41 @@ public class SimpleServer extends AbstractServer {
 					}
 				}
 			}
-			session.saveOrUpdate(parkingLot3);
+			session.save(parkingLot3);
+
+			/***************************** print everything for sanity check ************************************/
+
+			CriteriaBuilder builder11 = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingLot> query11 = builder11.createQuery(ParkingLot.class);
+			query11.from(ParkingLot.class);
+			List<ParkingLot> data11 = session.createQuery(query11).getResultList();
+
+			for(int i=0; i<20;i++){
+				System.out.println("\n");
+				System.out.println("/***************************** print everything for sanity check ************************************/");
+			}
+
+			for(ParkingLot parkingLot:data11){
+				System.out.println("\n");
+				System.out.println("parking lot:");
+				System.out.println("name: "+parkingLot.getName());
+				System.out.println("parking_id: "+parkingLot.getParking_id());
+				System.out.println("Manager_name: "+parkingLot.getParkingManager().getFirstName());
+				System.out.println("manager_id: "+parkingLot.getParkingManager().getid());
+				System.out.println("parking_dims: "+parkingLot.getDimensions());
+				System.out.println("worker_name: "+parkingLot.getParkingWorker().getFirstName());
+				System.out.println("worker_id: "+parkingLot.getParkingWorker().getUserID());
+				System.out.println("\n");
+			}
+
+
+
+
+			for(int i=0; i<20;i++){
+				System.out.println("\n");
+				System.out.println("end___check");
+			}
+
 
 			session.flush();
 			session.getTransaction().commit();

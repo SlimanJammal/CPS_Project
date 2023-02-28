@@ -13,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -80,6 +79,14 @@ public class RegionalManager {
     @FXML // fx:id="PartTimeTF"
     private TextField PartTimeTF; // Value injected by FXMLLoader
 
+    @FXML
+    private TextArea SCREEN1;
+
+    @FXML
+    private TextArea SCREEN2;
+
+    @FXML
+    private TextArea SCREEN3;
 
 
     @FXML // fx:id="PreOrderTF"
@@ -402,7 +409,7 @@ public class RegionalManager {
             List<PriceRequest> list2 = new ArrayList<>();
 
             for(PricesUpdateRequest A : pricesList){
-                PriceRequest new_req = new PriceRequest(A.getPricesUpdateReqId(),A.getParkingManager().getFirstName() ,A.getRequest());
+                PriceRequest new_req = new PriceRequest(A.getPricesUpdateReqId()," manager id -"+A.getParkingManagerID(),A.getRequest());
                 list2.add(new_req);
             }
 
@@ -413,7 +420,7 @@ public class RegionalManager {
             RequestsTable.setItems(list);
 
         } else if(event.getMessage().getMessage().equals("show_prices_regional")){
-
+            System.out.println("client side - prices update : ");
            String parkingName = (String) event.getMessage().getObject1();
 
             if(parkingName.equals("1")){
