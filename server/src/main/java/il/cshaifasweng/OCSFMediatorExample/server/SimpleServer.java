@@ -1562,7 +1562,7 @@ public class SimpleServer extends AbstractServer {
 					List<ParkingLot> parkingLots = session.createQuery(query).getResultList();
 
 					List<ParkingSpot> parkingSpots = parkingLots.get(index).getSpots();
-
+					parking_spots_state.append("Parking Lot").append(index).append(" spots stat:");
 					for (int i = 0; i < parkingSpots.size(); i++) {
 						parking_spots_state.append(i);
 						parking_spots_state.append("  ");
