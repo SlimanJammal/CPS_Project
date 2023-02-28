@@ -51,7 +51,11 @@ public class SimpleClient extends AbstractClient {
 		} else if(ms.getMessage().endsWith("regional")){
 			System.out.println("event bus regional's subscribe");
 			EventBus.getDefault().post(new RegionalManagerEvent((Message) msg));
+		}else if(ms.getMessage().equals(""))
+		{
+
 		}
+
 
 	}
 	

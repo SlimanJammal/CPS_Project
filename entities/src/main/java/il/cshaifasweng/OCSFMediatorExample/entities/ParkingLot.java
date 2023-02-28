@@ -17,7 +17,7 @@ public class ParkingLot implements Serializable{
     static int count = 0;
     private int width;
     private int slots_num;
-
+    private String Status;
     public int getOccupied_slots_num() {
         return occupied_slots_num;
     }
@@ -28,7 +28,13 @@ public class ParkingLot implements Serializable{
 
     private int occupied_slots_num;
 
+    public String getStatus() {
+        return Status;
+    }
 
+    public void setStatus(String status) {
+        Status = status;
+    }
 
     private String name;
     private int numberOfFreeSlots;
@@ -284,5 +290,16 @@ public class ParkingLot implements Serializable{
 
     public void addSpot(ParkingSpot s) {
         Spots.add(s);
+    }
+
+    //depth height width
+    //depth = 3 , height = 3;
+    public int CalculateLocation(int x, int y, int z)
+    {
+        int delta_x = x * 3 * this.getWidth();
+        int delta_y = y * this.getWidth();
+        int delta_z = z;
+        int delta = delta_x + delta_y + delta_z;
+        return delta;
     }
 }

@@ -312,6 +312,8 @@ public class EmployeeWindow {
         String OccasionalParkingSlot = OccasionParkingSlot.getText().toString();
         String OccasionalVehicleID = OcassionVehicleID.getText().toString();
         String OccasionalCommandID = OccasionID.getText().toString();
+        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
+        ParkingLot parkingLot =  parkingWorker.getParkingLot();
         //Reset Textboxes after receiving request information.
         {
             SystemParkingID.setText("");
@@ -324,6 +326,7 @@ public class EmployeeWindow {
         msg.setObject1(OccasionalParkingSlot);
         msg.setObject2(OccasionalVehicleID);
         msg.setObject3(OccasionalCommandID);
+        msg.setObject4(parkingLot.getParking_id());
 
         try
         {
