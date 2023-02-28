@@ -13,11 +13,11 @@ public class App
     public static void main( String[] args ) throws IOException
     {
         server = new SimpleServer(3000);
-//
-//        SimpleServer.addParkingManagers();
-//        SimpleServer.addParkingWorkers();
-//        SimpleServer.addRegionalManager();
-//        SimpleServer.Add_Parking_Lots();
+
+        SimpleServer.addParkingManagers();
+        SimpleServer.addParkingWorkers();
+        SimpleServer.addRegionalManager();
+        SimpleServer.Add_Parking_Lots();
 
         server.listen();
         System.out.println("SERVER IS UP...");
