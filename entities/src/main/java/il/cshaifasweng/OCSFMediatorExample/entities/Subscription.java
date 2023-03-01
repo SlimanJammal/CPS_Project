@@ -12,6 +12,16 @@ public abstract class Subscription implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Subscriptionssssubsid_;
 
+    public String getSubscriptionNumber() {
+        return subscriptionNumber;
+    }
+
+    public void setSubscriptionNumber(String subscriptionNumber) {
+        this.subscriptionNumber = subscriptionNumber;
+    }
+
+    private String subscriptionNumber;
+
     public int getId_() {
         return Subscriptionssssubsid_;
     }

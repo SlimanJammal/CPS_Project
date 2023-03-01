@@ -37,6 +37,7 @@ public class PartialSub extends Subscription  implements Serializable {
 
         this.CustomerId=id;
         this.CarNumber=carnum;
+        this.setSubscriptionNumber(id);
 
         this.StartDate = new Date();
         updateEndDate();//this initializes end date according to start date;

@@ -62,12 +62,14 @@ public class CpsKiosk {
     void CustomerBtn(ActionEvent event) throws IOException {
       App.setRoot("ocasionalParking");
     }
+    String parkingLotName;
 
     @FXML
     void EnterParkingBTN(ActionEvent event) throws IOException {
         Message msg= new Message("EnterParking4");
         msg.setLicensePlate(LICENSE_LOGIN_TF.getText());
         msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
+        msg.setObject1(parkingLotName);
         SimpleClient.getClient().sendToServer(msg);
 
         // todo send alert
@@ -118,6 +120,16 @@ public class CpsKiosk {
         msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
+    }
+    @Subscribe
+    public void EnterEvent(EnterParkingEvent event) throws IOException{
+        System.out.println((String)event.getMessage().getObject1() );
+        System.out.println("EnterEvent");
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                    (String)event.getMessage().getObject1() );
+            alert.show();
+        });
     }
     @Subscribe
     public void allowManager(loginManagerKioskEvent allowing) throws IOException {
@@ -243,6 +255,7 @@ public class CpsKiosk {
     @FXML
     void initialize() {
         EventBus.getDefault().register(this);
+        parkingLotName = DataSingleton.getInstance().getDataName();
 
     }
 

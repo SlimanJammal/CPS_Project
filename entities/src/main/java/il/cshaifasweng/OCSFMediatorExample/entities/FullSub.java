@@ -30,6 +30,7 @@ public class FullSub extends Subscription implements Serializable {
     public FullSub(String id,String carnum)
     {
         this.CustomerId=id;
+        this.setSubscriptionNumber(id);
         this.CarNumber=carnum;
         FullSubId = Integer.toString(getId_());
         this.StartDate= new Date();

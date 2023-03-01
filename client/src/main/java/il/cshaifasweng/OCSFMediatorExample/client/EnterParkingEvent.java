@@ -2,12 +2,10 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
-import java.io.Serializable;
-
-public class EmployeeWindowEvent implements Serializable {
+public class EnterParkingEvent {
     private Message message;
 
-    public EmployeeWindowEvent(Message message) {
+    public EnterParkingEvent(Message message) {
         this.message = message;
     }
 
@@ -20,3 +18,4 @@ public class EmployeeWindowEvent implements Serializable {
     }
 
 }
+

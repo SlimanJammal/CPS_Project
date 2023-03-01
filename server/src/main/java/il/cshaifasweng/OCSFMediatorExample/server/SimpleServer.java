@@ -807,6 +807,7 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("Occasion Request"))
 		{
+
 			//todo all
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Parking Slot ID
@@ -820,8 +821,58 @@ public class SimpleServer extends AbstractServer {
 			Message msg69 = SendOccasionRequest(ParkingSlotID,CarNumber,OccasionID,ParkingLotID);
 			client.sendToClient(msg69);
 		}else if(ms.getMessage().equals("EnterParking4")){
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
 			String subNumber = ms.getSubNum();
 			String CarNumber = ms.getLicensePlate();
+			String parkingLotName = (String) ms.getObject1();
+
+			//todo open a session for getAll
+			List<PartialSub> partialSubs = getAll(PartialSub.class);
+			List<MultiSub> multiSubs = getAll(MultiSub.class);
+			List<FullSub> fullSubs = getAll(FullSub.class);
+			boolean found = false;
+			System.out.println(partialSubs.size()+","+multiSubs.size()+","+fullSubs.size());
+
+
+			for (PartialSub partialSub : partialSubs){
+				if (partialSub.getSubNum().equals(subNumber) && partialSub.getCarNumber().equals(CarNumber)) {
+
+					found = true;
+					break;
+				}
+			}
+			for (MultiSub multiSub : multiSubs){
+				if (multiSub.getSubNum().equals(subNumber) && multiSub.getCarNumber().equals(CarNumber)) {
+
+					found = true;
+					break;
+				}
+			}
+			for (FullSub fullSub : fullSubs){
+				if (fullSub.getSubNum().equals(subNumber) && fullSub.getCarNumber().equals(CarNumber)) {
+
+					found = true;
+					break;
+				}
+			}
+
+			Message returnMsg = new Message("EnterParkingReply");
+			if(!found){
+
+				returnMsg.setObject1("Subscription not found");
+			}else{
+				if(EnterCar(parkingLotName,subNumber,CarNumber)){
+					returnMsg.setObject1("Car Entered Successfully");
+				}else{
+					returnMsg.setObject1("Unable to Enter Car");
+				}
+
+			}
+
+			client.sendToClient(returnMsg);
+			session.close();
 
 
 		}
@@ -834,24 +885,29 @@ public class SimpleServer extends AbstractServer {
 			//Check other parking places to send a vehicle to...
 			//Object #1 - Subscriber Type
 			//Object #2 - Customer ID
-			//Object #3 - Car Number
-			//Object #4 - Starting Date ; YYYY:MM:DD
+			//Object #3 - Starting Date ; YYYY:MM:DD
+			//Object #4 - Car Number
 			//Object #5 - Entrance Hour	; HH:MM
 			//Object #6 - Departure Hour ; HH:MM
 			//Object #7 - Regular Parking Lot - Parking Slot
 
+
 			String SubscriberType = ms.getObject1().toString();
+			System.out.println(SubscriberType);
 			String CustomerID = ms.getObject2().toString();
-			String CarNumber = ms.getObject3().toString();
-			String StartingDate = ms.getObject4().toString();
+			String CarNumber = ms.getObject4().toString();
+			String StartingDate = ms.getObject3().toString();
 			String EntranceHour = ms.getObject5().toString();
+			System.out.println(StartingDate );
 			String DepartureHour = ms.getObject6().toString();
 			String RegularParkingLot = ms.getObject7().toString();
 			System.out.println("servers side after loading values");
 
 			//Staring Date Components
 
+			System.out.println(StartingDate );
 			String[] split = StartingDate.split("/");
+			System.out.println(split[0]+split[1]+split[2] );
 			//Staring Date Components
 			int Year = Integer.valueOf(split[0]);
 			int Month = Integer.valueOf(split[1]);
@@ -869,7 +925,8 @@ public class SimpleServer extends AbstractServer {
 			System.out.println("servers side before checking type of sub");
 
 			if(SubscriberType.equals("Single Monthly Subscription"))
-			{    System.out.println("single monthly");
+			{
+				System.out.println("single monthly");
 				Boolean newCustumer = true;
 				PartialSub input = new PartialSub(CustomerID,CarNumber);
 				Date Temp = new Date(Year,Month,Day);
@@ -907,7 +964,7 @@ public class SimpleServer extends AbstractServer {
 			else if(SubscriberType.equals("Multi Monthly Subscription"))
 
 			{   System.out.println("multi monthly");
-				MultiSub input = new MultiSub();
+				MultiSub input = new MultiSub(CustomerID);
 				Date Temp = new Date(Year,Month,Day);
 				input.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
 // todo here we can have a problem if we are trying to multiple cars and one of them exists
@@ -1025,6 +1082,68 @@ public class SimpleServer extends AbstractServer {
 .MMMMM..MMMMM..MMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
 ..........................................................................................................................*/
 
+	private boolean EnterCar(String parkingName,String customerID,String licencePlate){
+
+		SessionFactory sessionFactory = getSessionFactory();
+		session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		List<ParkingLot> parkingLots = getAll(ParkingLot.class);
+		for(ParkingLot parkingLot : parkingLots){
+			if (parkingLot.getName().equals(parkingName)){
+
+				if(parkingLot.isFull()){
+					return false;
+				}else{
+					List<ParkingSpot> parkingSpots = parkingLot.getSpots();
+					List<PreOrder> preOrders = parkingLot.getPreordersList();
+
+					for (PreOrder preOrder : preOrders){
+						if(preOrder.getCarNumber().equals(licencePlate)){
+							preOrders.remove(preOrder);
+							parkingLot.decPreOrderNum();
+						}
+					}
+
+					for(ParkingSpot parkingSpot : parkingSpots){
+						if(parkingSpot.getCurrentState().equals("Available")){
+
+							//////////////////// THIS IS IRRELEVANT FOR NOW ////////////////////////
+							// instead of getting the list from the parking lot we need to update
+							// the values inside the parking lot
+							// so maybe get size and then use internal functions like getstatus and what not
+							// to get the data and update it
+							// takeSpot(cusId,Plate,Index){set spot to taken and add values }
+							parkingSpot.setCurrentState("Taken");
+							parkingSpot.setCus_ID(customerID);
+							parkingSpot.setLicesnes_Plate(licencePlate);
+							parkingLot.decNumberOfFreeSlots();
+
+							parkingLot.setSpotsList(parkingSpots);
+							try {
+								session.update(parkingLot);
+								session.getTransaction().commit();
+							}catch (HibernateException e) {
+								e.printStackTrace();
+							}
+							return true;
+
+						}
+						else{
+							return false;
+						}
+					}
+
+				}
+
+
+				break;
+			}
+		}
+
+		return true;
+	}
+
 	private void EnterParking(Message msg)
 	{
 		// I assume name of the park is stored in object 4
@@ -1097,12 +1216,6 @@ public class SimpleServer extends AbstractServer {
 		finally {
 			       	 session.close();
 		}
-
-
-
-
-
-
 
 	}
 
