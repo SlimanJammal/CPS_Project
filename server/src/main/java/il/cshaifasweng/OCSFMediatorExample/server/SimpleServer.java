@@ -2631,4 +2631,36 @@ public class SimpleServer extends AbstractServer {
 
 
 	}
+
+	public static void customerReminder(){
+		try {
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<PreOrder> query = builder.createQuery(PreOrder.class);
+			query.from(PreOrder.class);
+			List<PreOrder> data21 = session.createQuery(query).getResultList();
+			LocalDate now_date = LocalDate.now();
+			LocalTime now_time = LocalTime.now();
+
+			for (PreOrder a : data21) {
+				System.out.println("order date = "+a.getEntranceDate());
+				System.out.println("order time = "+a.getEntranceTime());
+				System.out.println("now date = "+now_date);
+				System.out.println("now time = "+now_time);
+				if ( now_date.isEqual(a.getEntranceDate())  && Duration.between(now_time,a.getEntranceTime()).toHours() < 1) {
+					EmailSender.sendEmail(a.getEmail_(),"Haifa Parkings","Dear Sir, \n"+"this is a reminder for your preOrder parking in "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.");
+					session.flush();
+				}
+			}
+
+			session.getTransaction().commit();
+		}catch(Exception E){
+
+			E.printStackTrace();
+		}
+
+	}
 }
