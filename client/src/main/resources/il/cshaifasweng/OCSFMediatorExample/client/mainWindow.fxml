@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <AnchorPane prefHeight="224.0" prefWidth="459.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MainWindow">
    <children>
       <AnchorPane layoutX="-70.0" prefHeight="224.0" prefWidth="326.0">
          <children>
-            <Button fx:id="KioskBtn" layoutX="353.0" layoutY="152.0" mnemonicParsing="false" onAction="#KioskBtn" prefHeight="26.0" prefWidth="97.0" text="Kiosk" />
             <Button fx:id="WebsiteBtn" layoutX="157.0" layoutY="152.0" mnemonicParsing="false" onAction="#WebsiteBtn" prefHeight="26.0" prefWidth="97.0" text="Website" />
             <Text layoutX="206.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome " wrappingWidth="195.66331481933594">
                <font>
                   <Font size="45.0" />
                </font>
             </Text>
+            <MenuButton fx:id="WhichKiosk" layoutX="347.0" layoutY="152.0" mnemonicParsing="false" onAction="#WhichKiosk" text="Choose kiosk">
+              <items>
+                <MenuItem fx:id="GermanColonyItem" mnemonicParsing="false" onAction="#GermanColonyItem" text="German_Colony" />
+                <MenuItem fx:id="HanamalItem" mnemonicParsing="false" onAction="#HanamalItem" text="Hanmal" />
+                  <MenuItem fx:id="BatGalimItem" mnemonicParsing="false" onAction="#BatGalimItem" text="Bat-Galim" />
+              </items>
+            </MenuButton>
          </children>
       </AnchorPane>
    </children>

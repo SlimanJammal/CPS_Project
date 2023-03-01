@@ -40,6 +40,7 @@ public class ParkingLot implements Serializable{
     private int numberOfPreOrders;
 
 
+
     @OneToOne(cascade = CascadeType.ALL)
     private PricesClass occasionalPrice;
 
@@ -96,9 +97,17 @@ public class ParkingLot implements Serializable{
     private List<ParkingSpot> Spots;
 
 
+    public void setSpotsList(List<ParkingSpot> input){
+        Spots = input;
+    }
     public void incPreOrderNum(){
         numberOfPreOrders++;
     }
+    public void decPreOrderNum(){
+        numberOfPreOrders--;
+    }
+    public void incNumberOfFreeSlots(){numberOfFreeSlots++;}
+    public void decNumberOfFreeSlots(){numberOfFreeSlots--;}
 
     public Boolean existsFreeSlots(int preOrdersNum_){
         if(numberOfFreeSlots-preOrdersNum_ ==0) {

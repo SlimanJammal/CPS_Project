@@ -13,11 +13,11 @@ public class MultiSub extends PartialSub  implements Serializable {
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "Subscriptionssssubsid_")
 //    private List<PartialSub> cars;
 
-    public MultiSub() {
+    public MultiSub(String ID) {
+        this.setSubscriptionNumber(ID);
         /** very important if you add another constructor add this line!!*/
 
     }
-
     public void InsertToList(String CustomerID,String CarNumber )
     {
 

@@ -118,13 +118,20 @@ public class RegisterNewSubscription {
 
         //Send Data TO SERVER!!!
         Message msg = new Message("Register New Subscriber");
+        //Object #1 - Subscriber Type
+        //Object #2 - Customer ID
+        //Object #3 - Starting Date ; YYYY:MM:DD
+        //Object #4 - Car Number
+        //Object #5 - Entrance Hour	; HH:MM
+        //Object #6 - Departure Hour ; HH:MM
+        //Object #7 - Regular Parking Lot - Parking Slot
         msg.setObject1(ParkingType);
         msg.setObject2(CustomerID);
         msg.setObject3(StartingDate);
-        msg.setObject4(RegularParking);
+        msg.setObject4(CarLicense);
         msg.setObject5(EntranceParkingTime);
         msg.setObject6(DepartureParkingTime);
-        msg.setObject7(ParkingType);
+        msg.setObject7(RegularParking);
 
         try
         {
