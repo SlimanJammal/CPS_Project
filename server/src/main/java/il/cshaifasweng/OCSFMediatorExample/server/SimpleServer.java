@@ -1070,6 +1070,7 @@ public class SimpleServer extends AbstractServer {
 			session.close();
 
 
+
 		}
 
 		// RegisterNewSubscription Window
