@@ -24,6 +24,8 @@ public class DataSingleton implements Serializable {
 
     private String caller;
 
+    private Object RegionalListOfRequests;
+
 
     private DataSingleton(){}
 
@@ -53,5 +55,13 @@ public class DataSingleton implements Serializable {
 
     public void setCaller(String caller) {
         this.caller = caller;
+    }
+
+    public Object getRegionalListOfRequests() {
+        return RegionalListOfRequests;
+    }
+
+    public void setRegionalListOfRequests(Object regionalListOfRequests) {
+        RegionalListOfRequests = regionalListOfRequests;
     }
 }

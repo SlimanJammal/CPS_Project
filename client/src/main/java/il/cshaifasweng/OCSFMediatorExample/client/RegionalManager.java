@@ -6,17 +6,18 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.PricesClass;
+import il.cshaifasweng.OCSFMediatorExample.entities.PricesUpdateRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,6 +52,9 @@ public class RegionalManager {
     @FXML
     private TextField PartTimeTF3;
 
+    @FXML
+    private Button refreshRequestsBTN;
+
     @FXML // fx:id="MultiTF1"
     private TextField MultiTF1; // Value injected by FXMLLoader
 
@@ -75,6 +79,14 @@ public class RegionalManager {
     @FXML // fx:id="PartTimeTF"
     private TextField PartTimeTF; // Value injected by FXMLLoader
 
+    @FXML
+    private TextArea SCREEN1;
+
+    @FXML
+    private TextArea SCREEN2;
+
+    @FXML
+    private TextArea SCREEN3;
 
 
     @FXML // fx:id="PreOrderTF"
@@ -230,6 +242,19 @@ public class RegionalManager {
         }
     }
 
+    @FXML
+    void refreshRequestsBTN(ActionEvent event) {
+
+        Message msg = new Message("RegionalManager_ShowPriceRequests");
+        try{
+            SimpleClient.getClient().sendToServer(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
 
     @FXML
@@ -363,9 +388,10 @@ public class RegionalManager {
     }
 
     @Subscribe
-    public void HandleMessageFromServer(RegionalManagerEvent event){
+    public void regionalhandlerr(RegionalManagerEvent event){
         // message field decides what case we re in
         //the first stat is for main window and show stat regional is for secondary windows
+        System.out.println("back to regional's subscribe");
         if(event.getMessage().getMessage().equals("stat_regional") || event.getMessage().getMessage().equals("show_stat_regional")){
             Alert alert = new Alert(Alert.AlertType.WARNING,
                     String.format(": \n"+event.getMessage().getObject1(),
@@ -375,17 +401,26 @@ public class RegionalManager {
             );
             alert.show();
             //todo alert about stats
-        } else if(event.getMessage().getMessage().equals("requests_list_update_regional")){
+        } else if(event.getMessage().getMessage().equals("req_regional")){
+            System.out.println("back to regional's request");
 
-            List<PriceRequest> pricesList = (List<PriceRequest>)event.getMessage().getObject1();
-            ObservableList<PriceRequest> list = FXCollections.observableArrayList();
+            List<PricesUpdateRequest> pricesList = (List<PricesUpdateRequest>)event.getMessage().getObject1();
+
+            List<PriceRequest> list2 = new ArrayList<>();
+
+            for(PricesUpdateRequest A : pricesList){
+                PriceRequest new_req = new PriceRequest(A.getPricesUpdateReqId()," manager id -"+A.getParkingManagerID(),A.getRequest());
+                list2.add(new_req);
+            }
+
+            ObservableList<PriceRequest> list = FXCollections.observableArrayList(list2);
             NumberColMainWin.setCellValueFactory(new PropertyValueFactory<PriceRequest,Integer>("number"));
             ManagerNameCol.setCellValueFactory(new PropertyValueFactory<PriceRequest,String>("managerName"));
             RequestCol.setCellValueFactory(new PropertyValueFactory<PriceRequest,String>("Request"));
             RequestsTable.setItems(list);
 
         } else if(event.getMessage().getMessage().equals("show_prices_regional")){
-
+            System.out.println("client side - prices update : ");
            String parkingName = (String) event.getMessage().getObject1();
 
             if(parkingName.equals("1")){
@@ -417,10 +452,10 @@ public class RegionalManager {
 
         } else if(event.getMessage().getMessage().equals("pdf_regional")){
             //todo do stuuffff
-            Alert alert = new Alert(Alert.AlertType.WARNING,
-                    "PDF SENT"
-            );
-            alert.show();
+//            Alert alert = new Alert(Alert.AlertType.WARNING,
+//                    "PDF SENT"
+//            );
+//            alert.show();
 
         }
 
@@ -486,6 +521,12 @@ public class RegionalManager {
         msg.setObject4(FullSubsTF.getText());
         msg.setObject5(MultiTF.getText());
 
+       OcasionalTF.setText("sent");
+       PreOrderTF.setText("sent");
+       PartTimeTF1.setText("sent");
+       FullSubsTF.setText("sent");
+       MultiTF.setText("sent");
+
 
 
         try {
@@ -509,6 +550,12 @@ public class RegionalManager {
         msg.setObject3(PartTimeTF2.getText());
         msg.setObject4(FullSubsTF1.getText());
         msg.setObject5(MultiTF1.getText());
+
+        OcasionalTF1.setText("sent");
+        PreOrderTF1.setText("sent");
+        PartTimeTF2.setText("sent");
+        FullSubsTF1.setText("sent");
+        MultiTF1.setText("sent");
 
 
 
@@ -534,6 +581,12 @@ public class RegionalManager {
         msg.setObject4(FullSubsTF2.getText());
         msg.setObject5(MultiTF2.getText());
 
+        OcasionalTF2.setText("sent");
+        PreOrderTF2.setText("sent");
+        PartTimeTF3.setText("sent");
+        FullSubsTF2.setText("sent");
+        MultiTF2.setText("sent");
+
 
         try {
             SimpleClient.getClient().sendToServer(msg);
@@ -543,7 +596,7 @@ public class RegionalManager {
     }
     @FXML
     void initialize() {
-        //todo print requests list for the regional manger on startup
+
         EventBus.getDefault().register(this);
 
     }

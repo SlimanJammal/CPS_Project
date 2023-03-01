@@ -106,7 +106,7 @@ public class CpsWebsite {
             data.setDataName("RegionalManager");
             il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager regionalManager = (il.cshaifasweng.OCSFMediatorExample.entities.RegionalManager) allowing.getMsg().getObject2();
             data.setData(regionalManager.getUserID());
-
+            data.setRegionalListOfRequests(allowing.getMsg().getObject4());
             data.setCaller("cpsWebsite");
             App.setRoot("RegionalManager");
 
@@ -123,32 +123,28 @@ public class CpsWebsite {
 
     @FXML
     void WorkerBtn(ActionEvent event) throws IOException {
-        Message msg= new Message("loginEmployee_WEBSITE");
+        Message msg= new Message("loginEmployee_CPS");
         msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
-    public void allowWorker(loginWorkerEvent allowing) throws IOException {
-        if(allowing.getMsg().getObject1().toString().equals("success")) {
+    public void allowWorker(loginWorkerWebsiteEvent allowing) throws IOException {
+        if (allowing.getMsg().getObject1().toString().equals("success")) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
-            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
+            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject2();
             data.setData(parkingWorker.getUserID());
 
             data.setCaller("cpsWebsite");
             App.setRoot("EmployeeWindow");
         } else {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                        "UserName or PassWord Wrong"
-                );
-                alert.show();
-            });
+
+            ID_LOGIN_TF.setText("access denied");
+            PW_LOGIN_TF.clear();
 
         }
     }
-
 
     @FXML
     void PW_LOGIN_TF(ActionEvent event) {

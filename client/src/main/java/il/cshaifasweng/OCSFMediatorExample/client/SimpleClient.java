@@ -15,6 +15,7 @@ public class SimpleClient extends AbstractClient {
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
+		System.out.println("EventBus entered");
 		Message ms=(Message) msg;
 		if (ms.getMessage().equals("hello")) {
 			EventBus.getDefault().post(new WarningEvent((Message) msg));
@@ -25,8 +26,12 @@ public class SimpleClient extends AbstractClient {
 				EventBus.getDefault().post(new loginManagerWebsitekEvent((Message) msg));
 			}
 
-		} else if (ms.getMessage().equals("AllowEmployee")) {
-			EventBus.getDefault().post(new loginWorkerEvent((Message) msg));
+		} else if (ms.getMessage().startsWith("AllowEmployee")) {
+			if(ms.getMessage().endsWith("CPS")){
+				EventBus.getDefault().post(new loginWorkerWebsiteEvent((Message) msg));
+			}else {
+				EventBus.getDefault().post(new loginWorkerEvent((Message) msg));
+			}
 		}else if (ms.getMessage().equals("SubRenewed")) {
 			EventBus.getDefault().post(new SubRenewEvent((Message) msg));
 		} else if (ms.getMessage().equals("pricesReturned") ||ms.getMessage().equals("prices update request sent") ) {
@@ -44,8 +49,17 @@ public class SimpleClient extends AbstractClient {
 		else if (ms.getMessage().equals("OcasionalParking")){
 			EventBus.getDefault().post(new OcasionalEvent((Message) msg));
 		} else if(ms.getMessage().endsWith("regional")){
+			System.out.println("event bus regional's subscribe");
 			EventBus.getDefault().post(new RegionalManagerEvent((Message) msg));
+		}else if(ms.getMessage().equals(""))
+		{
+
 		}
+		else if(ms.getMessage().equals("EnterParkingReply"))
+		{
+			EventBus.getDefault().post(new EnterParkingEvent((Message) msg));
+		}
+
 
 	}
 	

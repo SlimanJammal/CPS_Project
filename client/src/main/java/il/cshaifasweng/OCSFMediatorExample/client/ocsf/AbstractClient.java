@@ -4,6 +4,8 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client.ocsf;
 
+import il.cshaifasweng.OCSFMediatorExample.client.DataSingleton;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -320,7 +322,9 @@ public abstract class AbstractClient implements Runnable
    * such as cleaning up and terminating, or attempting to
    * reconnect.
    */
-  protected void connectionClosed() {}
+  protected void connectionClosed() {
+
+  }
 
   /**
    * Hook method called each time an exception is thrown by the

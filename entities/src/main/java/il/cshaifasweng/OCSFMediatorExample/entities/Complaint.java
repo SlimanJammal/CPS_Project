@@ -3,10 +3,11 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="Complaints")
-public class Complaint {
+public class Complaint implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

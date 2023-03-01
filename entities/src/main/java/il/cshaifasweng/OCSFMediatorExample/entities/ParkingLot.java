@@ -1,8 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ public class ParkingLot implements Serializable{
     static int count = 0;
     private int width;
     private int slots_num;
-
+    private String Status;
     public int getOccupied_slots_num() {
         return occupied_slots_num;
     }
@@ -28,12 +26,19 @@ public class ParkingLot implements Serializable{
 
     private int occupied_slots_num;
 
+    public String getStatus() {
+        return Status;
+    }
 
+    public void setStatus(String status) {
+        Status = status;
+    }
 
     private String name;
     private int numberOfFreeSlots;
     private int numberOfFullSubs;
     private int numberOfPreOrders;
+
 
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -58,37 +63,29 @@ public class ParkingLot implements Serializable{
     private ParkingWorker parkingWorker;
 
 
-//    @NotNull
-    public List<PreOrder> getPreordersList() {
-        return preordersList;
+////    @NotNull
+//    public List<PreOrder> getPreordersList() {
+//        return preordersList;
+//    }
+//
+//    public void addPreOrder(PreOrder order){
+//        preordersList.add(order);
+//    }
+
+//    @OneToMany
+//    private List<PreOrder> preordersList;
+
+//    public List<OccCustomer> getOccasionalCustomers() {
+//        return OccasionalCustomers;
+//    }
+
+    public void addOccasionalCustomers(){
+//        OccasionalCustomers.add(customer);
+       numberOfFreeSlots--;
     }
 
-    public void addPreOrder(PreOrder order){
-        preordersList.add(order);
-    }
-
-    @OneToMany
-    private List<PreOrder> preordersList;
-
-    public List<OccCustomer> getOccasionalCustomers() {
-        return OccasionalCustomers;
-    }
-
-    public void addOccasionalCustomers(OccCustomer customer){
-        OccasionalCustomers.add(customer);
-        for(int i = 0; i< dimensions*9; i++)
-        {
-
-                    if(Spots.get(i).CurrentState.equals("available")){
-                        Spots.get(i).setCurrentState("taken");
-                        numberOfFreeSlots--;
-                    }
-
-        }
-    }
-
-    @OneToMany
-    private List<OccCustomer> OccasionalCustomers;
+//    @OneToMany
+//    private List<OccCustomer> OccasionalCustomers;
 
 //    @NotNull
     int dimensions;
@@ -100,12 +97,20 @@ public class ParkingLot implements Serializable{
     private List<ParkingSpot> Spots;
 
 
+    public void setSpotsList(List<ParkingSpot> input){
+        Spots = input;
+    }
     public void incPreOrderNum(){
         numberOfPreOrders++;
     }
+    public void decPreOrderNum(){
+        numberOfPreOrders--;
+    }
+    public void incNumberOfFreeSlots(){numberOfFreeSlots++;}
+    public void decNumberOfFreeSlots(){numberOfFreeSlots--;}
 
-    public Boolean existsFreeSlots(){
-        if(numberOfFreeSlots-numberOfPreOrders == width*9) {
+    public Boolean existsFreeSlots(int preOrdersNum_){
+        if(numberOfFreeSlots-preOrdersNum_ ==0) {
             return false;
         }
         else return true;
@@ -284,5 +289,16 @@ public class ParkingLot implements Serializable{
 
     public void addSpot(ParkingSpot s) {
         Spots.add(s);
+    }
+
+    //depth height width
+    //depth = 3 , height = 3;
+    public int CalculateLocation(int x, int y, int z)
+    {
+        int delta_x = x * 3 * this.getWidth();
+        int delta_y = y * this.getWidth();
+        int delta_z = z;
+        int delta = delta_x + delta_y + delta_z;
+        return delta;
     }
 }

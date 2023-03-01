@@ -4,19 +4,25 @@ import com.sun.istack.NotNull;
 //import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
 @Table(name = "Customer")
-public class OccCustomer extends Customer {
+public class OccCustomer extends Customer implements Serializable {
 
     private String OccCustomerId;
 //    @NotNull
     private String CarNumber;
 //    @NotNull
 //    long StartTime ;
-    Time StartTime;
+    LocalTime StartTime;
+
+    LocalDate StartDate;
+
 
 //    @NotNull
      String CustomerId;
@@ -24,6 +30,8 @@ public class OccCustomer extends Customer {
     Time FinishTime;
 //    @NotNull
     String Email;
+
+    int parking_lot_id;
 
     public OccCustomer()
     {OccCustomerId = getCustomerId();}
@@ -36,17 +44,19 @@ public class OccCustomer extends Customer {
         OccCustomerId = getCustomerId();
     }
 
-
+    public LocalDate getStartDate() {
+        return  LocalDate.now();
+    }
 
     public String getOccCustomerId() {
         return OccCustomerId;
     }
 
-    public Date getFinishTime() {
-        return FinishTime;
-    }
+//    public Date getFinishTime() {
+//        return FinishTime;
+//    }
 
-    public Date getStartTime() {
+    public LocalTime getStartTime() {
         return StartTime;
     }
 
@@ -78,11 +88,23 @@ public class OccCustomer extends Customer {
         FinishTime = finishTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(LocalTime startTime) {
         StartTime = startTime;
     }
 
     public void setOccCustomerId(String occCustomerId) {
         OccCustomerId = occCustomerId;
+    }
+
+    public int getParking_lot_id() {
+        return parking_lot_id;
+    }
+
+    public void setParking_lot_id(int parking_lot_id) {
+        this.parking_lot_id = parking_lot_id;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        StartDate = startDate;
     }
 }

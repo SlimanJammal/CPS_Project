@@ -21,7 +21,6 @@ public class App
 
         server.listen();
         System.out.println("SERVER IS UP...");
-        //todo uncomment this after implementing (3ekronet bsht4el bs bswesh ashe)
-//        Scheduler_CPS.startJobScheduling();
+        Scheduler_CPS.startJobScheduling();
     }
 }

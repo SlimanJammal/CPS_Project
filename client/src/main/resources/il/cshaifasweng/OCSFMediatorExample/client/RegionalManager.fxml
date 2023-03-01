@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -23,18 +24,11 @@
                         <TextField fx:id="requestTF" layoutX="53.0" layoutY="323.0" onAction="#requestTF" promptText="Request Number" />
                         <Button fx:id="DeclineBtn" layoutX="323.0" layoutY="323.0" mnemonicParsing="false" onAction="#DeclineBtn" text="Decline" />
                         <Button fx:id="AcceptBtn" layoutX="230.0" layoutY="323.0" mnemonicParsing="false" onAction="#AcceptBtn" text="Accept" />
-                        <MenuButton fx:id="ParkingStatisticsMen" layoutX="609.0" layoutY="221.0" mnemonicParsing="false" onAction="#ParkingStatisticsMen" text="Statistics">
+                        <MenuButton fx:id="ParkingStatisticsMen" layoutX="694.0" layoutY="107.0" mnemonicParsing="false" onAction="#ParkingStatisticsMen" text="PDF">
                            <items>
                               <MenuItem fx:id="menuPdf1" mnemonicParsing="false" onAction="#menuPdf1" text="Parking 1" />
                               <MenuItem fx:id="menuPdf2" mnemonicParsing="false" onAction="#menuPdf2" text="Parking 2" />
                               <MenuItem fx:id="menuPdf3" mnemonicParsing="false" onAction="#menuPdf3" text="Parking 3" />
-                           </items>
-                        </MenuButton>
-                        <MenuButton fx:id="PDFRequest" layoutX="595.0" layoutY="151.0" mnemonicParsing="false" onAction="#PDFRequest" text="Parking Name">
-                           <items>
-                              <MenuItem fx:id="menuStat1" mnemonicParsing="false" onAction="#menuStat1" text="Parking 1" />
-                              <MenuItem fx:id="menuStat2" mnemonicParsing="false" onAction="#menuStat2" text="Parking 2" />
-                              <MenuItem fx:id="menuStat3" mnemonicParsing="false" onAction="#menuStat3" text="Parking 3" />
                            </items>
                         </MenuButton>
                         <Text fill="#1b8ec0" layoutX="282.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Regional Manager" wrappingWidth="280.93670654296875">
@@ -42,8 +36,7 @@
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Text layoutX="559.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request PDF: " />
-                        <Text layoutX="559.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request:" />
+                        <Text layoutX="631.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request:" />
                         <AnchorPane layoutX="168.0" layoutY="540.0" prefHeight="200.0" prefWidth="463.0" />
                         <TableView fx:id="RequestsTable" layoutX="27.0" layoutY="107.0" prefHeight="200.0" prefWidth="437.0">
                            <columns>
@@ -53,6 +46,7 @@
                            </columns>
                         </TableView>
                         <Button fx:id="backbtn" layoutX="688.0" layoutY="590.0" mnemonicParsing="false" onAction="#backbtn" text="back" />
+                        <Button fx:id="refreshRequestsBTN" layoutX="438.0" layoutY="323.0" mnemonicParsing="false" onAction="#refreshRequestsBTN" text="Refresh Requests" />
                      </children>
                   </AnchorPane>
             </content>
@@ -83,11 +77,12 @@
                               <TextField fx:id="PartTimeTF1" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
                               <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
                               <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-                              <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="9.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="60.32891845703131" />
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBTN1" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit1" text="Submit" />
+                              <TextArea fx:id="SCREEN1" layoutX="513.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -120,11 +115,12 @@
                               <TextField fx:id="PartTimeTF2" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF2" prefHeight="25.0" prefWidth="76.0" />
                               <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
                               <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-                              <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="11.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="57.32891845703131" />
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF1" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBtn2" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit2" text="Submit" />
+                              <TextArea fx:id="SCREEN2" layoutX="513.0" layoutY="177.0" prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -157,11 +153,12 @@
                               <TextField fx:id="PartTimeTF3" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF3" prefHeight="25.0" prefWidth="76.0" />
                               <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
                               <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-                              <Text layoutX="11.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="121.3289184570313" />
+                              <Text layoutX="11.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="58.32891845703131" />
                               <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
                               <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF2" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBtn3" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit3" text="Submit" />
+                              <TextArea fx:id="SCREEN3" layoutX="513.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </AnchorPane>
                      </children>
