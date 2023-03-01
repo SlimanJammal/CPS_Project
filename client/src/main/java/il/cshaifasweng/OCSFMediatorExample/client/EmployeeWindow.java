@@ -6,6 +6,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
 import il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -346,9 +347,10 @@ public class EmployeeWindow {
         ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
         ParkingLot parkingLot =  parkingWorker.getParkingLot();
         msg.setObject4(parkingLot);
-
+        Alert alert = new Alert(Alert.AlertType.NONE);
         try
         {
+          alert.setContentText("parking spot saved ");
             SimpleClient.getClient().sendToServer(msg);
         }
         catch (IOException e)
@@ -406,14 +408,17 @@ public class EmployeeWindow {
         Message msg = new Message("System Request");
         msg.setObject1(ParkingID);
         msg.setObject2(SystemCommand);
+        Alert alert = new Alert(Alert.AlertType.NONE);
+
 
         try
         {
             SimpleClient.getClient().sendToServer(msg);
+            alert.setContentText("Park: "+ParkingID +"is starting up ");
         }
         catch (IOException e)
         {
-            // TODO Auto-generated catch block
+            alert.setContentText("Park: "+ParkingID +"failed to start ");
             e.printStackTrace();
         }
 

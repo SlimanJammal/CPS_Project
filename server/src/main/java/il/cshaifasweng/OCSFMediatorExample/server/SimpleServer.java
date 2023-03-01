@@ -696,6 +696,7 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("Activate Parking Spot"))
 		{
+			System.out.println("active spot");
 			String ParkingSpotID = (ms.getObject1().toString());
 			ParkingLot parkingLot = (ParkingLot) ms.getObject2();
 			Message msg12 = ParkingSpotStateUpdate(ParkingSpotID,parkingLot, "Activate");
@@ -705,6 +706,7 @@ public class SimpleServer extends AbstractServer {
               int index=0;
 			 for(ParkingSpot ps: spots)
 			 {
+				 System.out.println(ps.getCurrentState());
 				 if(    ps.getdepth()==(int)((Message) msg).getObject3() &&
 						 ps.getheight()==(int)((Message) msg).getObject1()&&
 				         ps.getwidth()==(int)((Message) msg).getObject4())
@@ -714,6 +716,7 @@ public class SimpleServer extends AbstractServer {
 				 }
 			 }
 			 spots.get(index).setCurrentState("empty");
+			 System.out.println(spots.get(index).getCurrentState());
 			 session.saveOrUpdate(spots);
 			 session.close();
 
@@ -729,12 +732,10 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("System Request"))
 		{
-			//todo all
-			//Check other parking places to send a vehicle to...
-			//Object #1 - Parking ID
-			//Object #2 - System Command ID / ON OR OFF
+
 			String ParkingID = ms.getObject1().toString();
 			String SystemCommand = ms.getObject2().toString();
+			Add_Parking_Lots();
 
 			Message msg69 = ParkingLotCommand(ParkingID,SystemCommand);
 
