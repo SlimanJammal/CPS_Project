@@ -233,7 +233,7 @@ public class CpsKiosk {
     void checkReservBtn(ActionEvent event) throws IOException {
         DataSingleton data = DataSingleton.getInstance();
         data.setCaller("cpsKiosk");
-        App.setRoot("RequestStatus");//todo check reservation window
+        App.setRoot("CheckReservation");//todo check reservation window
     }
 
 

@@ -5,7 +5,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
-import il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -182,8 +181,8 @@ public class CpsWebsite {
     @FXML
     void checkReservBtn(ActionEvent event) throws IOException {
         DataSingleton data = DataSingleton.getInstance();
-        data.setCaller("cpsWebsite");
-        App.setRoot("RequestStatus");//todo check reservation window
+        data.setCaller("cpsKiosk");
+        App.setRoot("CheckReservation");//todo check reservation window
     }
 
     @FXML
