@@ -1,6 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -662,27 +661,68 @@ public class SimpleServer extends AbstractServer {
 		else if(ms.getMessage().equals("Deactivate Parking Spot"))
 		{
 
-			//Deactivate Parking Spot
-			//Object #1 - Parking Spot ID
-			//object #2 parkingLot
-
 			String ParkingSpotID = (ms.getObject1().toString());
 			ParkingLot parkingLot = (ParkingLot) ms.getObject2();
 			Message msg12 = ParkingSpotStateUpdate(ParkingSpotID,parkingLot, "Deactivate");
+			try {
+				session=getSessionFactory().openSession();
+				List<ParkingSpot> spots=getAll(ParkingSpot.class);
+				int index=0;
+				for(ParkingSpot ps: spots)
+				{
+					if(    ps.getdepth()==(int)((Message) msg).getObject3() &&
+							ps.getheight()==(int)((Message) msg).getObject1()&&
+							ps.getwidth()==(int)((Message) msg).getObject4())
+
+					{
+						index= spots.indexOf(ps);
+					}
+				}
+				spots.get(index).setCurrentState("construction");
+				session.saveOrUpdate(spots);
+				session.close();
+
+
+			}
+			catch (Exception EXP)
+			{
+				throw EXP;
+			}
 			msg12.setMessage("EmployeeWindow");
 			client.sendToClient(msg12);
+
+
 
 		}
 		else if(ms.getMessage().equals("Activate Parking Spot"))
 		{
-
-			//Activate Parking Slot
-			//Object #1 - Parking Slot ID
-			//object #2 parkingLot
-
 			String ParkingSpotID = (ms.getObject1().toString());
 			ParkingLot parkingLot = (ParkingLot) ms.getObject2();
 			Message msg12 = ParkingSpotStateUpdate(ParkingSpotID,parkingLot, "Activate");
+         try {
+			 session=getSessionFactory().openSession();
+			 List<ParkingSpot> spots=getAll(ParkingSpot.class);
+              int index=0;
+			 for(ParkingSpot ps: spots)
+			 {
+				 if(    ps.getdepth()==(int)((Message) msg).getObject3() &&
+						 ps.getheight()==(int)((Message) msg).getObject1()&&
+				         ps.getwidth()==(int)((Message) msg).getObject4())
+
+				 {
+					 index= spots.indexOf(ps);
+				 }
+			 }
+			 spots.get(index).setCurrentState("empty");
+			 session.saveOrUpdate(spots);
+			 session.close();
+
+
+		 }
+		 catch (Exception EXP)
+		 {
+			 throw EXP;
+		 }
 			msg12.setMessage("EmployeeWindow");
 			client.sendToClient(msg12);
 
@@ -723,6 +763,94 @@ public class SimpleServer extends AbstractServer {
 			String ParkingSlotID = ms.getObject1().toString();
 			String CarNumber = ms.getObject2().toString();
 			String OccasionID = ms.getObject3().toString();
+			int index;
+
+			try {
+				session=getSessionFactory().openSession();
+				session.beginTransaction();
+				ParkingLot parkingLot = (ParkingLot) ms.getObject4();
+				int spotindex=0;
+
+				if(!parkingLot.isFull())
+				{
+					List <ParkingSpot> spots=parkingLot.getSpots();
+					for(ParkingSpot ps : spots)
+					{
+						if(ps.getCurrentState().equals("empty"))
+						{
+							spotindex=spots.indexOf(ps);
+						}
+					}
+
+					spots.get(spotindex).setCurrentState("held for"+CarNumber +" "+OccasionID);
+					session.flush();
+				}
+				session.flush();
+				session.getTransaction().commit();
+
+
+
+			}
+			catch (Exception EXP)
+			{
+				session.getTransaction().rollback();
+			}
+			finally {
+				session.close();
+			}
+
+
+
+		}
+		else if(ms.getMessage().equals("Cancel Occasion Request"))
+		{
+			//todo all
+			//Check other parking places to send a vehicle to...
+			//Object #1 - Parking Slot ID
+			//Object #2 - Car ID
+			//Object #3 - Occasion ID
+			String ParkingSlotID = ms.getObject1().toString();
+			String CarNumber = ms.getObject2().toString();
+			String OccasionID = ms.getObject3().toString();
+			int index;
+
+			try {
+				session=getSessionFactory().openSession();
+				session.beginTransaction();
+				ParkingLot parkingLot = (ParkingLot) ms.getObject4();
+				int spotindex=0;
+
+				if(!parkingLot.isFull())
+				{
+					List <ParkingSpot> spots=parkingLot.getSpots();
+					for(ParkingSpot ps : spots)
+					{
+						if(ps.getCurrentState().equals("held for"+CarNumber+" "+OccasionID))
+						{
+							spotindex=spots.indexOf(ps);
+						}
+					}
+
+					spots.get(spotindex).setCurrentState("empty");
+					session.flush();
+				}
+				session.flush();
+				session.getTransaction().commit();
+
+
+
+
+			}
+			catch (Exception EXP)
+			{
+				session.getTransaction().rollback();
+			}
+			finally {
+				session.close();
+			}
+
+
+
 		}
 
 		// RegisterNewSubscription Window
@@ -942,18 +1070,34 @@ public class SimpleServer extends AbstractServer {
 		//we have variables called licenes plate and id in message already
 		//assume in object 3 the exit date/time
 		//;
-		System.out.println("first");
-        String parkName=(String) msg.getObject4();
-		System.out.println("After message");
-		ParkingLot pk=new ParkingLot();
-		System.out.println("After Parking lot");
-		String hql="From ParkingLot ";
-		System.out.println("After query");
-     	session.getSessionFactory().openSession();
-		System.out.println("After open session");
-		Query query = session.createQuery(hql);
-		System.out.println("After query");
-		List<ParkingLot> ParkingsList = query.getResultList();
+
+			System.out.println("first");
+			String parkName = (String) msg.getObject4();
+			System.out.println("After message");
+			ParkingLot pk = new ParkingLot();
+			System.out.println("After Parking lot");
+			String hql = "From ParkingLot ";
+			System.out.println("After query");
+			try {
+				this.session=getSessionFactory().openSession();
+				this.session.beginTransaction();
+			}catch (Exception exp)
+			{
+				exp.printStackTrace();
+			}
+			System.out.println("After open session");
+	    	Query query = null;
+			try {
+				 query = this.session.createQuery(hql);
+			}
+			catch (Exception ex)
+			{
+				ex.printStackTrace();
+			}
+
+			System.out.println("After query");
+			List<ParkingLot> ParkingsList = query.getResultList();
+
 		System.out.println("second");
 		for(ParkingLot temp:ParkingsList)
 		{
@@ -979,13 +1123,14 @@ public class SimpleServer extends AbstractServer {
 			}
 		}
 		System.out.println("forth");
-		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
-		{
-			@Override
-			public int compare(ParkingSpot p1, ParkingSpot p2) {
-				return p1.getExitDate().compareTo(p2.getExitDate());
-			}
-		});
+//		Collections.sort(pk.getSpots(), new Comparator<ParkingSpot>()
+//		{
+//			@Override
+//			public int compare(ParkingSpot p1, ParkingSpot p2) {
+//				return p1.getExitDate().compareTo(p2.getExitDate());
+//			}
+//		});
+
 		  int i=pk.getOccupied_slots_num();
 		for (int depth=0;depth<3;depth++)
 		{
@@ -1004,15 +1149,17 @@ public class SimpleServer extends AbstractServer {
 		  }
 		}
 		try {
-			         		session.saveOrUpdate(pk);
+			         		this.session.saveOrUpdate(pk);
 
 		}
 		catch (Exception e)
 		{
-			session.getTransaction().rollback();
+			this.session.getTransaction().rollback();
 		}
 		finally {
-			       	 session.close();
+			this.session.flush();
+			this.session.beginTransaction().commit();
+			       	 this.session.close();
 		}
 		System.out.println("last");
 

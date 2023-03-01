@@ -103,6 +103,7 @@
                   </Label>
                   <Button fx:id="OccasionSaveButton" layoutX="299.0" layoutY="210.0" mnemonicParsing="false" onAction="#SubmitOccasionSavingSpot" prefHeight="34.0" prefWidth="80.0" text="Submit" />
                   <Button fx:id="PreviousWindowBT4" layoutX="24.0" layoutY="312.0" mnemonicParsing="false" onAction="#OnPreviousWindowButton1" prefHeight="34.0" prefWidth="135.0" text="Previous Window" />
+                  <Button fx:id="CancelSave" layoutX="173.0" layoutY="210.0" mnemonicParsing="false" onAction="#CancelSubmitOccasionSavingSpot" prefHeight="34.0" prefWidth="63.0" text="cancel" />
                </children>
             </AnchorPane>
         </content>
@@ -116,15 +117,17 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="UpdateParkingSpot" layoutX="327.0" layoutY="80.0" onAction="#UpdateTheParkingSpot" prefHeight="29.0" prefWidth="153.0" promptText="#ID" />
-                  <Button fx:id="ActivateParkingSpot" layoutX="171.0" layoutY="132.0" mnemonicParsing="false" onAction="#ActivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Active" />
-                  <Button fx:id="DectivateParkingSpot" layoutX="327.0" layoutY="132.0" mnemonicParsing="false" onAction="#DeactivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Deactive" />
+                  <Button fx:id="ActivateParkingSpot" layoutX="157.0" layoutY="247.0" mnemonicParsing="false" onAction="#ActivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Active" />
+                  <Button fx:id="DectivateParkingSpot" layoutX="290.0" layoutY="247.0" mnemonicParsing="false" onAction="#DeactivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Deactive" />
                   <Label layoutX="167.0" layoutY="27.0" prefHeight="38.0" prefWidth="265.0" text="Parking Spot Status Update" textFill="#fc0000">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
                   <Button fx:id="PreviousWindowBT1" layoutX="22.0" layoutY="317.0" mnemonicParsing="false" onAction="#OnPreviousWindowButton1" prefHeight="34.0" prefWidth="135.0" text="Previous Window" />
+                  <TextField fx:id="rowTF" layoutX="166.0" layoutY="126.0" promptText="enter row " />
+                  <TextField fx:id="colTF" layoutX="166.0" layoutY="161.0" promptText="enter column(up to 3)" />
+                  <TextField fx:id="depthTF" layoutX="167.0" layoutY="198.0" promptText="enter depth(up to 3) " />
                </children></AnchorPane>
       </content>
     </Tab>

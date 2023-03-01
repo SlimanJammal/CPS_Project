@@ -6,7 +6,6 @@ import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
 import il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -76,21 +75,35 @@ public class EmployeeWindow {
 
     @FXML
     private Label LabelOutput;
+    @FXML
+    private  TextField rowTF;
+    @FXML
+    private  TextField colTF;
+    @FXML
+    private  TextField depthTF;
+
+
 
     @FXML
     void ActivateParkingSpot(ActionEvent event) {
         //Activate Parking Spot
-        String ActivateParkingSpotID = UpdateParkingSpot.getText().toString();
+//        String ActivateParkingSpotID = UpdateParkingSpot.getText().toString();
         //Reset TextBox's Values!
         {
             UpdateParkingSpot.setText("");
         }
         //send message to server ...
         Message msg = new Message("Activate Parking Spot");
-        msg.setObject1(ActivateParkingSpotID);
+//        msg.setObject1(ActivateParkingSpotID);
         ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
         ParkingLot parkingLot =  parkingWorker.getParkingLot();
         msg.setObject2(parkingLot);
+
+
+        msg.setObject1(rowTF.getText());
+//        msg.setObject2(colTF.getText());
+        msg.setObject3(depthTF.getText());
+        msg.setObject4(colTF.getText());
         try
         {
             SimpleClient.getClient().sendToServer(msg);
@@ -105,18 +118,24 @@ public class EmployeeWindow {
 
     @FXML
     void DeactivateParkingSpot(ActionEvent event) {
-        //Deactivate Parking Spot
-        String DeactivateParkingSpotID = UpdateParkingSpot.getText().toString();
+        //Activate Parking Spot
+//        String ActivateParkingSpotID = UpdateParkingSpot.getText().toString();
         //Reset TextBox's Values!
         {
             UpdateParkingSpot.setText("");
         }
         //send message to server ...
-        Message msg = new Message("Deactivate Parking Spot");
-        msg.setObject1(DeactivateParkingSpotID);
+        Message msg = new Message("Dectivate Parking Spot");
+//        msg.setObject1(ActivateParkingSpotID);
         ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
         ParkingLot parkingLot =  parkingWorker.getParkingLot();
         msg.setObject2(parkingLot);
+
+
+        msg.setObject1(rowTF.getText());
+//        msg.setObject2(colTF.getText());
+        msg.setObject3(depthTF.getText());
+        msg.setObject4(colTF.getText());
         try
         {
             SimpleClient.getClient().sendToServer(msg);
@@ -324,6 +343,9 @@ public class EmployeeWindow {
         msg.setObject1(OccasionalParkingSlot);
         msg.setObject2(OccasionalVehicleID);
         msg.setObject3(OccasionalCommandID);
+        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
+        ParkingLot parkingLot =  parkingWorker.getParkingLot();
+        msg.setObject4(parkingLot);
 
         try
         {
@@ -336,6 +358,40 @@ public class EmployeeWindow {
         }
 
     }
+
+    @FXML
+    void CancelSubmitOccasionSavingSpot(ActionEvent event) {
+        String OccasionalParkingSlot = OccasionParkingSlot.getText().toString();
+        String OccasionalVehicleID = OcassionVehicleID.getText().toString();
+        String OccasionalCommandID = OccasionID.getText().toString();
+        //Reset Textboxes after receiving request information.
+        {
+            SystemParkingID.setText("");
+            SystemCommandID.setText("");
+            SystemCommandID.setText("");
+
+        }
+        //send message to server ...
+        Message msg = new Message("Cancel Occasion Request");
+        msg.setObject1(OccasionalParkingSlot);
+        msg.setObject2(OccasionalVehicleID);
+        msg.setObject3(OccasionalCommandID);
+        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
+        ParkingLot parkingLot =  parkingWorker.getParkingLot();
+        msg.setObject4(parkingLot);
+
+        try
+        {
+            SimpleClient.getClient().sendToServer(msg);
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
     //========================== Initialize System Startup =============================
     @FXML
     void SubmitSystemStartUp(ActionEvent event) {
