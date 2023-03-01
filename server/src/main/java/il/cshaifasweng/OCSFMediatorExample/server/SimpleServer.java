@@ -1014,7 +1014,6 @@ public class SimpleServer extends AbstractServer {
 			}
 
 
-
 		}else if(ms.getMessage().equals("EnterParking4")){
 			SessionFactory sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
