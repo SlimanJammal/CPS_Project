@@ -1,8 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -64,37 +62,29 @@ public class ParkingLot implements Serializable{
     private ParkingWorker parkingWorker;
 
 
-//    @NotNull
-    public List<PreOrder> getPreordersList() {
-        return preordersList;
+////    @NotNull
+//    public List<PreOrder> getPreordersList() {
+//        return preordersList;
+//    }
+//
+//    public void addPreOrder(PreOrder order){
+//        preordersList.add(order);
+//    }
+
+//    @OneToMany
+//    private List<PreOrder> preordersList;
+
+//    public List<OccCustomer> getOccasionalCustomers() {
+//        return OccasionalCustomers;
+//    }
+
+    public void addOccasionalCustomers(){
+//        OccasionalCustomers.add(customer);
+       numberOfFreeSlots--;
     }
 
-    public void addPreOrder(PreOrder order){
-        preordersList.add(order);
-    }
-
-    @OneToMany
-    private List<PreOrder> preordersList;
-
-    public List<OccCustomer> getOccasionalCustomers() {
-        return OccasionalCustomers;
-    }
-
-    public void addOccasionalCustomers(OccCustomer customer){
-        OccasionalCustomers.add(customer);
-        for(int i = 0; i< dimensions*9; i++)
-        {
-
-                    if(Spots.get(i).CurrentState.equals("available")){
-                        Spots.get(i).setCurrentState("taken");
-                        numberOfFreeSlots--;
-                    }
-
-        }
-    }
-
-    @OneToMany
-    private List<OccCustomer> OccasionalCustomers;
+//    @OneToMany
+//    private List<OccCustomer> OccasionalCustomers;
 
 //    @NotNull
     int dimensions;
@@ -110,8 +100,8 @@ public class ParkingLot implements Serializable{
         numberOfPreOrders++;
     }
 
-    public Boolean existsFreeSlots(){
-        if(numberOfFreeSlots-numberOfPreOrders == width*9) {
+    public Boolean existsFreeSlots(int preOrdersNum_){
+        if(numberOfFreeSlots-preOrdersNum_ ==0) {
             return false;
         }
         else return true;

@@ -1,35 +1,49 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
+@Table(name = "deletedOrders")
 public class DeletedOrders implements Serializable {
-    private static final long serialVersionUID = -8224097662914849956L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int DeletedId ;
 
-    public void setOrder(Object order) {
-        this.order = order;
+
+
+    LocalDate deleteDate;
+
+    LocalTime deleteTime;
+
+    int parking_lot_id;
+
+    public LocalDate getDeleteDate() {
+        return deleteDate;
     }
 
-    Object order;   //this object is mainly to save what type of parking and all the info we used to order
-                    // for statistics, we don't need it, but you might find it useful.
-
-    public void setDeletetime(LocalDateTime deletetime) {
-        this.deletetime = deletetime;
+    public void setDeleteDate(LocalDate deleteDate) {
+        this.deleteDate = deleteDate;
     }
 
-    public LocalDateTime getDeletetime() {
-        return deletetime;
+    public LocalTime getDeleteTime() {
+        return deleteTime;
     }
 
-    LocalDateTime deletetime;
+    public void setDeleteTime(LocalTime deleteTime) {
+        this.deleteTime = deleteTime;
+    }
+
+    public int getParking_lot_id() {
+        return parking_lot_id;
+    }
+
+    public void setParking_lot_id(int parking_lot_id) {
+        this.parking_lot_id = parking_lot_id;
+    }
 }

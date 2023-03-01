@@ -25,6 +25,7 @@
             </Text>
             <Button fx:id="SubmitBTN" layoutX="266.0" layoutY="280.0" mnemonicParsing="false" onAction="#SubmitBTN" text="Submit" />
             <Button fx:id="backbtn" layoutX="10.0" layoutY="280.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="25.0" prefWidth="54.0" text="back" />
+            <TextField fx:id="parkingNameTF" layoutX="308.0" layoutY="227.0" promptText="Parking Name" />
          </children>
       </AnchorPane>
    </children>

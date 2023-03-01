@@ -5,6 +5,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.mysql.cj.xdevapi.Client;
 import il.cshaifasweng.OCSFMediatorExample.client.DataSingleton;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
@@ -172,29 +173,30 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if (ms.getMessage().equals("cancelOrder")) {
             Message cancelingmsg=(Message) msg;
+            SessionFactory sessionFactory = getSessionFactory();
 			session.getSessionFactory().openSession();
+			session.beginTransaction();
 			String cancelinghql = "FROM PreOrder ";
 			Query query = session.createQuery(cancelinghql);
 			List<PreOrder> results = query.getResultList();
 			PreOrder refund=new PreOrder();
 
-			//todo change checking order and add refund stuff
+
 			for(PreOrder record : results)
 			{
 				if(     record.getCarNumber().equals(cancelingmsg.getObject1())
 						&& record.getEmail_().equals(cancelingmsg.getObject3())
 				        && record.getEntranceDate().equals(cancelingmsg.getObject4())
-//						&& record.getExit_().equals(cancelingmsg.getObject5())
 						&& record.getPreOrderId().equals(cancelingmsg.getObject6())
 					)
 				{
 					try {
 						refund=record;
 						DeletedOrders entityToAdd = new DeletedOrders();
-						entityToAdd.setDeletetime( LocalDateTime.now()); //format= dd/mm/yyyy
-						entityToAdd.setOrder(record);
+						entityToAdd.setDeleteDate( LocalDate.now());
+						entityToAdd.setDeleteTime(LocalTime.now());
+//						entityToAdd.setParking_lot_id();
 						session.save(entityToAdd);
-
 						PreOrder entityToDelete = session.get(PreOrder.class, record.getId_());
 						session.delete(entityToDelete);
 						session.getTransaction().commit();
@@ -211,30 +213,34 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 
-		// here I want to calculate the refund:
-			Date cancellationTime=new Date();
-			//TODO CHANGE PARSING AND VARIABLES TYPES
-			LocalDate expectedEntrance = refund.getEntranceDate();
 
-			Duration duration = Duration.between((Temporal) cancellationTime, (Temporal) expectedEntrance);
-			long hours = duration.toHours();
-			if(hours<0)
-			{
-				// no refund time already passed
+			//refund
+			LocalDate order_date = refund.getEntranceDate();
+			LocalTime order_time = refund.getEntranceTime();
+			Message msg333 = new Message("OneTimeParkingOrder");
+			msg333.setObject1("no refund");
+			if(order_date.isBefore(LocalDate.now())) {
+				if(order_time.isBefore(LocalTime.now())) {
+					LocalTime diff =  order_time.minusHours(LocalTime.now().getHour());
+					long diif_ = diff.getHour();
+					if (diif_ < 1 ) {
+						System.out.println("refund 10%");
+						msg333.setObject1("refund 10%");
+					} else if (diif_ < 3) {
+						System.out.println("refund 50%");
+						msg333.setObject1("refund 50%");
+					} else {
+						System.out.println("refund 90%");
+						msg333.setObject1("refund 90%");
+					}
+				}
 			}
-			else if (hours>=0 && hours<=1) {
-				System.out.println("refund 10%");
+			try {
+				client.sendToClient(msg333);
 
+			}catch (Exception e){
+				e.printStackTrace();
 			}
-			else if (hours>=1 && hours<3) {
-				System.out.println("refund 50%");
-
-			}
-			else if (hours>=3) {
-				System.out.println("refund 90%");
-
-			}
-
 
 		} else if (ms.getMessage().startsWith("loginManager")) {
 				Message MSG=new Message("AllowManager_KIOSK");
@@ -296,37 +302,32 @@ public class SimpleServer extends AbstractServer {
 		else if(ms.getMessage().equals("ParkingManager_showStats"))
 		{
 
-			session.getSessionFactory().openSession();
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
 			session.beginTransaction();
 
-			String hql = "FROM DeletedOrders ";
-			String Latehql = "FROM Late ";
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<DeletedOrders> query = builder.createQuery(DeletedOrders.class);
+			query.from(DeletedOrders.class);
+			List<DeletedOrders> data = session.createQuery(query).getResultList();
 
-			Query query = session.createQuery(hql);
-			Query Latequery = session.createQuery(Latehql);
-
-			List<DeletedOrders> DeletedOrdersList = query.getResultList();
-			List<Late> LateList = Latequery.getResultList();
 
 			int Deletedmean=0;
-			for(DeletedOrders order : DeletedOrdersList)
-			{ String date=(String)order.getDeletetime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-				String today =(String)(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-				if(date.equals(today))
-				{
+//			ParkingManager parkingManager= (ParkingManager) ms.getObject1();
+//			int manager_id = parkingManager.getParkingLot().getParking_id();
+
+			for(DeletedOrders order:data){
+				if(order.getDeleteDate().equals(LocalDate.now()) ){
+
 					Deletedmean++;
+
 				}
 			}
 
+
+
 			int Latemean=0;
-			for(Late order : LateList)
-			{ String date=(String)order.getDeletetime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-				String today =(String)(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-				if(date.equals(today))
-				{
-					Latemean++;
-				}
-			}
+
 
 
 			Message MSG=new Message("statsReturned");
@@ -642,41 +643,77 @@ public class SimpleServer extends AbstractServer {
 			// leaving time is saved as a string in object4
 			OccCustomer customer = new OccCustomer((String) ms.getObject1(),(String)ms.getObject2(),(String)ms.getObject3());
 			customer.setCustomerId((String) ms.getObject1());
-
+			customer.setStartDate(LocalDate.now());
 			String temp = (String)ms.getObject4();
 			String[] parsed = temp.split(":");
-//			System.out.println(parsed[0]);
-//			System.out.println(parsed[1]);
-//			System.out.println(parsed[2]);
+			//getting parking  id
+			String given_parking_name = (String) ms.getObject5();
+			try {
+				SessionFactory sessionFactory = getSessionFactory();
+				session = sessionFactory.openSession();
+				session.beginTransaction();
+
+				System.out.println("one time parking order in server111 printing...");
+				CriteriaBuilder builder1 = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingLot> query1 = builder1.createQuery(ParkingLot.class);
+				query1.from(ParkingLot.class);
+				List<ParkingLot> preOrders = session.createQuery(query1).getResultList();
+				for(ParkingLot a : preOrders){
+					if(a.getName().equals(given_parking_name)){
+						customer.setParking_lot_id(a.getParking_id());
+					}
+				}
+				session.getTransaction().commit();
+				session.close();
+			}catch(Exception e){
+				System.out.println("failed transaction one time parking");
+				e.printStackTrace();
+			}
             String id=customer.getCustomerId();
 			System.out.println(id);
 
-			Time tempTime = new Time(Integer.parseInt(parsed[0]),Integer.parseInt(parsed[1]),Integer.parseInt(parsed[2]));
-			customer.setStartTime(tempTime);
+			String fields4 = (String)ms.getObject4();
+			String[] estimated_leave_time = fields4.split(":");
+			LocalTime leave_time = LocalTime.of(Integer.parseInt(estimated_leave_time[0]), Integer.parseInt(estimated_leave_time[1]),1,1);
+
+			customer.setStartTime(leave_time);
 
 			try {
-				session = getSessionFactory().openSession();
-				session.beginTransaction();
-				// add new occasional customer to the db .
-				session.save(customer);
-				session.flush();
-				session.getTransaction().commit();
+
 
 				Message msg2 = routingOrders(customer,"OccCustomer");
-				msg2.setObject1("success");
-//				Message msg2 = new Message("prices update request sent");
+
+
+
 				client.sendToClient(msg2);
+
 			} catch (Exception exception) {
-				if (session != null) {
-					session.getTransaction().rollback();
-				}
+
 				Message msg2 = new Message("OccCustomer");
 				msg2.setObject1("fail");
 				client.sendToClient(msg2);
 				System.err.println("An error occurred, changes have been rolled back.");
 				exception.printStackTrace();
-			} finally {
+			}
+
+			try {
+				SessionFactory sessionFactory = getSessionFactory();
+				session = sessionFactory.openSession();
+				session.beginTransaction();
+
+				System.out.println("one time parking order in server111 printing...");
+				CriteriaBuilder builder1 = session.getCriteriaBuilder();
+				CriteriaQuery<OccCustomer> query1 = builder1.createQuery(OccCustomer.class);
+				query1.from(OccCustomer.class);
+				List<OccCustomer> preOrders = session.createQuery(query1).getResultList();
+				for(OccCustomer a : preOrders){
+					System.out.println(a.getEmail());
+				}
+				session.getTransaction().commit();
 				session.close();
+			}catch(Exception e){
+				System.out.println("failed transaction one time parking");
+				e.printStackTrace();
 			}
 
 			// return msg with "OcasionalParking" in name object1 a string success/fail
@@ -700,53 +737,80 @@ public class SimpleServer extends AbstractServer {
 			// checking fields input if okay add the client, else return failed
 			// checked everything except time/date
 			if (fieldsChecker_OneTimeParkingOrder(fields)) {
-				PreOrder tempPreOrder = new PreOrder(fields.get(5), fields.get(0), fields.get(1), fields.get(2));
-				String tempEta = fields.get(3);
-				String tempEtd = fields.get(4);
-
-				//input example 22:15-2022:11:24
-				// hour in - 0 , minutes in - 1
-				String[] estimated_arrival_time = fields.get(3).split("-")[1].split(":");
-				//0 - year,1 - month,2 -day
-				String[] estimated_arrival_date = fields.get(3).split("-")[2].split(":");
-
-				// hour in - 0 , minutes in - 1
-				String[] estimated_leave_time = fields.get(4).split("-")[1].split(":");
-				//0 - year,1 - month,2 -day
-				String[] estimated_leave_date = fields.get(4).split("-")[2].split(":");
+				try{
+					System.out.println("one time parking order in server5543");
+					PreOrder tempPreOrder = new PreOrder(fields.get(5), fields.get(0), fields.get(1), fields.get(2));
+					String fields3 = (String)fields.get(3);
+					String fields4 = (String)fields.get(4);
 
 
+					System.out.println(fields3);
+					System.out.println(fields4);
+
+					//input example 22:15-2022:11:24
+					// hour in - 0 , minutes in - 1
+					String[] estimated_arrival_time = fields3.split("-")[0].split(":");
+					//0 - year,1 - month,2 -day
+					String[] estimated_arrival_date = fields3.split("-")[1].split(":");
+
+					// hour in - 0 , minutes in - 1
+					String[] estimated_leave_time = fields4.split("-")[0].split(":");
+					//0 - year,1 - month,2 -day
+					String[] estimated_leave_date = fields4.split("-")[1].split(":");
+
+					System.out.println("one time parking order in server5543");
 //				 Initialize to a specific date using year, month, and day values
-				LocalDate arrival_date = LocalDate.of(Integer.parseInt(estimated_arrival_date[0]), Integer.parseInt(estimated_arrival_date[1]), Integer.parseInt(estimated_arrival_date[2]));
-				//hour , minute
-				LocalTime arrival_time = LocalTime.of(Integer.parseInt(estimated_arrival_time[0]),Integer.parseInt(estimated_arrival_time[1]));
+					LocalDate arrival_date = LocalDate.of(Integer.parseInt(estimated_arrival_date[0]), Integer.parseInt(estimated_arrival_date[1]), Integer.parseInt(estimated_arrival_date[2]));
+					//hour , minute
+					LocalTime arrival_time = LocalTime.of(Integer.parseInt(estimated_arrival_time[0]), Integer.parseInt(estimated_arrival_time[1]),1,1);
 
-				//				 Initialize to a specific date using year, month, and day values
-				LocalDate leave_date = LocalDate.of(Integer.parseInt(estimated_leave_date[0]), Integer.parseInt(estimated_leave_date[1]), Integer.parseInt(estimated_leave_date[2]));
-				//hour , minute
-				LocalTime leave_time = LocalTime.of(Integer.parseInt(estimated_leave_time[0]),Integer.parseInt(estimated_leave_time[1]));
+					//				 Initialize to a specific date using year, month, and day values
+					LocalDate leave_date = LocalDate.of(Integer.parseInt(estimated_leave_date[0]), Integer.parseInt(estimated_leave_date[1]), Integer.parseInt(estimated_leave_date[2]));
+					//hour , minute
+					LocalTime leave_time = LocalTime.of(Integer.parseInt(estimated_leave_time[0]), Integer.parseInt(estimated_leave_time[1]),1,1);
 
 //				LocalDate Eta = new LocalDateStringConverter(Integer.parseInt(parsedEta[0]), Integer.parseInt(parsedEta[1]), Integer.parseInt(parsedEta[2]), Integer.parseInt(parsedEta[3]), 0);
 //				Date Etd = new Date(Integer.parseInt(parsedEtd[0]), Integer.parseInt(parsedEtd[1]), Integer.parseInt(parsedEtd[2]), Integer.parseInt(parsedEtd[3]), 0);
-				tempPreOrder.setEntranceDate(arrival_date);
-				tempPreOrder.setEntranceTime(arrival_time);
-				tempPreOrder.setExitDate(leave_date);
-				tempPreOrder.setExitTime(leave_time);
+					tempPreOrder.setEntranceDate(arrival_date);
+					tempPreOrder.setEntranceTime(arrival_time);
+					tempPreOrder.setExitDate(leave_date);
+					tempPreOrder.setExitTime(leave_time);
 
 
+					System.out.println("now should enter routing");
 
+					//todo in parkingEnter return message store "OneTimeParkingOrder" in the title,
+					// and the first object fail/success as a string, rest of the info choose when implementing
+					Message msg2 = routingOrders(tempPreOrder, "PreOrder");
 
-				//todo in parkingEnter return message store "OneTimeParkingOrder" in the title,
-				// and the first object fail/success as a string, rest of the info choose when implementing
-				Message msg2 = routingOrders(tempPreOrder,"PreOrder");
-
-				client.sendToClient(msg2);
-
+					client.sendToClient(msg2);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			} else {
 				//failed
 				Message msg2 = new Message("OneTimeParkingOrder");
 				client.sendToClient(msg2);
 				msg2.setObject1("fail");
+			}
+			try {
+				SessionFactory sessionFactory = getSessionFactory();
+				session = sessionFactory.openSession();
+				session.beginTransaction();
+
+				System.out.println("one time parking order in server111 printing...");
+				CriteriaBuilder builder1 = session.getCriteriaBuilder();
+				CriteriaQuery<PreOrder> query1 = builder1.createQuery(PreOrder.class);
+				query1.from(PreOrder.class);
+				List<PreOrder> preOrders = session.createQuery(query1).getResultList();
+				for(PreOrder a : preOrders){
+					System.out.println(a.getEmail_());
+				}
+				session.getTransaction().commit();
+				session.close();
+			}catch(Exception e){
+				System.out.println("failed transaction one time parking");
+				e.printStackTrace();
 			}
 
 		} else if(ms.getMessage().endsWith("regional")){
@@ -827,21 +891,22 @@ public class SimpleServer extends AbstractServer {
 			client.sendToClient(msg69);
 
 		}
-		else if(ms.getMessage().equals("Occasion Request"))
-		{
-			//todo all
-			//Check other parking places to send a vehicle to...
-			//Object #1 - Parking Slot ID
-			//Object #2 - Car ID
-			//Object #3 - Occasion ID
-			String ParkingSlotID = ms.getObject1().toString();
-			String CarNumber = ms.getObject2().toString();
-			String OccasionID = ms.getObject3().toString();
-			String ParkingLotID = ms.getObject4().toString();
-
-			Message msg69 = SendOccasionRequest(ParkingSlotID,CarNumber,OccasionID,ParkingLotID);
-			client.sendToClient(msg69);
-		}else if(ms.getMessage().equals("EnterParking4")){
+//		else if(ms.getMessage().equals("Occasion Request"))
+//		{
+//			//todo all
+//			//Check other parking places to send a vehicle to...
+//			//Object #1 - Parking Slot ID
+//			//Object #2 - Car ID
+//			//Object #3 - Occasion ID
+//			String ParkingSlotID = ms.getObject1().toString();
+//			String CarNumber = ms.getObject2().toString();
+//			String OccasionID = ms.getObject3().toString();
+//			String ParkingLotID = ms.getObject4().toString();
+//
+//			Message msg69 = SendOccasionRequest(ParkingSlotID,CarNumber,OccasionID,ParkingLotID);
+//			client.sendToClient(msg69);
+//		}
+			else if(ms.getMessage().equals("EnterParking4")){
 			String subNumber = ms.getSubNum();
 			String CarNumber = ms.getLicensePlate();
 
@@ -1404,82 +1469,87 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	private Message routingOrders(Object ParkingEntryOrder, String type) {
-
+		System.out.println("in routing order");
 		//this function takes an order such as preorder or occasional customer etc.., and the type in "type"
 		// so we can convert it to the given type and add it. it returns a Message and it's fields are set according to
 		// the caller.
 		// it should every order to function that saves it/or let's the customer enter the parking
-		session = getSessionFactory().openSession();
-		session.beginTransaction();
-		System.out.println("in routing order");
 		Message msg2 = new Message("");
+		try{
+			SessionFactory sessionFactory =getSessionFactory();
+			session =sessionFactory.openSession();
+			session.beginTransaction();
+			System.out.println("in routing order");
+
 		if (type.equals("PreOrder")){
 			PreOrder newOrder = (PreOrder) ParkingEntryOrder;
 			String parking = newOrder.getParking_requested();
 			List<ParkingLot> parkingList = getAll(ParkingLot.class);
 			for(ParkingLot parkingLot : parkingList){
-				if(parkingLot.getName().equals(parking)){
+				if(parkingLot.getName().equals(parking)) {
 					//todo a function that calculates number of orders with a given period of date and time
+					PreOrder order = (PreOrder) ParkingEntryOrder;
+					int preOrdersNumber = getPreOrdersNumberByDateInParkingLot(parkingLot, order.getEntranceDate());
 					//and then send the result to existsFreeSlots
-					if(parkingLot.existsFreeSlots()){
-						parkingLot.addPreOrder(newOrder);
+					System.out.println("parking width:  "+parkingLot.getWidth());
+					if (parkingLot.existsFreeSlots(preOrdersNumber)) {
+//						parkingLot.addPreOrder(newOrder);
 						parkingLot.incPreOrderNum(); // todo remove after adding ^^
-						try {
 
-							session.update(parkingLot);
-							session.flush();
-							session.getTransaction().commit();
-							 msg2 = new Message("OneTimeParkingOrder");
-							msg2.setObject1("success");
-						}
-						catch (Exception exception) {
-							if (session != null) {
-								session.getTransaction().rollback();
+						order.setParking_lot_id(parkingLot.getParking_id());
+//						session.saveOrUpdate(parkingLot);
+						session.save(order);
+//						session.flush();
 
-								exception.printStackTrace();
-								System.out.println("in routing order pre order session failed");
-							}
-							msg2 = new Message("OneTimeParkingOrder");
-							msg2.setObject1("fail");
-							exception.printStackTrace();
-						} finally {
-							assert session != null;
-							session.close();
-						}
+						session.flush();
+//						session.getTransaction().commit();
+						System.out.println("preOrder added");
+						msg2 = new Message("OneTimeParkingOrder");
+						msg2.setObject1("success");
+
+						msg2 = new Message("OneTimeParkingOrder");
+						msg2.setObject1("success");
+
+
+					}else {
+						msg2 = new Message("OneTimeParkingOrder");
+						msg2.setObject1("preorder_parking_is_full");
 					}
 				}
-			}
 
+
+		}
 		}else{
 			// here type is "OccCustomer"
-
+			System.out.println("in routing occasional");
 			OccCustomer newCustomer = (OccCustomer) ParkingEntryOrder;
 			DataSingleton data = DataSingleton.getInstance();
-			String parking = (String) data.getData();
-			List<ParkingLot> parkingList = getAll(ParkingLot.class);
-			for(ParkingLot parkingLot : parkingList){
-				if(parkingLot.getName().equals(parking)){
-					if(parkingLot.existsFreeSlots()){
-						parkingLot.addOccasionalCustomers(newCustomer);
-						try {
 
-							session.update(parkingLot);
+			List<ParkingLot> parkingList = getAll(ParkingLot.class);
+			System.out.println("in routing occasional 2");
+			for(ParkingLot parkingLot : parkingList){
+				if(parkingLot.getParking_id() == newCustomer.getParking_lot_id()){
+					System.out.println("in routing occasional cc");
+					OccCustomer order = (OccCustomer) ParkingEntryOrder;
+					int preOrdersNumber = getPreOrdersNumberByDateInParkingLot(parkingLot,order.getStartDate());
+					if(parkingLot.existsFreeSlots(preOrdersNumber)){
+						System.out.println("in routing occasional dd");
+							parkingLot.addOccasionalCustomers();
+						System.out.println("in routing occasional saving...");
+							order.setParking_lot_id(parkingLot.getParking_id());
+
+							session.save(order);
 							session.flush();
-							session.getTransaction().commit();
+//							session.saveOrUpdate(parkingLot);
+							System.out.println("occasional added");
 							msg2 = new Message("OccCustomer");
 							msg2.setObject1("success");
-						}
-						catch (Exception exception) {
-							if (session != null) {
-								session.getTransaction().rollback();
-							}
-							 msg2 = new Message("OccCustomer");
-							msg2.setObject1("fail");
-							exception.printStackTrace();
-						} finally {
-							assert session != null;
-							session.close();
-						}
+						System.out.println("in routing occasional saving... saved");
+
+					}else {
+						System.out.println("in routing occasional 2 fuull");
+						msg2 = new Message("OneTimeParkingOrder");
+						msg2.setObject1("occasional_parking_is_full");
 					}
 				}
 			}
@@ -1487,10 +1557,37 @@ public class SimpleServer extends AbstractServer {
 
 		}
 
+			session.getTransaction().commit();
+		}catch (Exception e){
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			msg2 = new Message("OccCustomer");
+			msg2.setObject1("fail");
+			e.printStackTrace();
+		}
+		session.close();
+
 		System.out.println("routing orders time to return");
 		System.out.println("message is : "+ msg2.getMessage());
 		return msg2;
 
+	}
+
+	private int getPreOrdersNumberByDateInParkingLot(ParkingLot parkingLot, LocalDate entranceDate) {
+		System.out.println("getting preOrdersNumber");
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<PreOrder> query = builder.createQuery(PreOrder.class);
+		query.from(PreOrder.class);
+		List<PreOrder> preOrders = session.createQuery(query).getResultList();
+		int count = 0;
+		for(PreOrder preOrder : preOrders){
+			if(preOrder.getParking_requested().equals(parkingLot.getName()) && preOrder.getEntranceDate() == entranceDate){
+				count++;
+			}
+		}
+
+		return count;
 	}
 
 	private Message ParkingLotCommand(String ParkingID, String SystemCommand) {
@@ -1826,43 +1923,45 @@ public class SimpleServer extends AbstractServer {
 		// 1- DesiredParking         4- Etd
 		// 2- Email                  5- Id number
 
-		String regex_multi_number = "\\d+";
-		Pattern p = Pattern.compile(regex_multi_number);
-		Matcher m = p.matcher(fields.get(0));
-
-		if(!m.matches()){
-			//0- car number field error
-			return false;
-		}
-
-		String regex_one_number = "\\d";
-		Pattern q = Pattern.compile(regex_multi_number);
-		Matcher s = q.matcher(fields.get(1));
-
-		// 3 is parkings number update if changed !!!!!!!!!
-		if(!s.matches() || s.matches() && (Integer.parseInt(fields.get(1)) > 3 || Integer.parseInt(fields.get(1)) < 1)){
-			// 1- parking number error
-			return false;
-		}
-
-
-		String regex_email = ".+@.+"; // email should start with a char and contain a @ after it and then more chars
-		Pattern pp = Pattern.compile(regex_multi_number);
-		Matcher mail = pp.matcher(fields.get(2));
-
-		if(!mail.matches()){
-			//2- email error
-			return false;
-		}
-
-
-
-		Matcher mma = p.matcher(fields.get(5));
-
-		if(!mma.matches()){
-			//5- id number wrong
-			return false;
-		}
+//		String regex_multi_number = "\\d+";
+//		Pattern p = Pattern.compile(regex_multi_number);
+//		Matcher m = p.matcher(fields.get(0));
+//
+//		if(!m.matches()){
+//			//0- car number field error
+//			System.out.println("car number error");
+//			return false;
+//		}
+//
+//		String regex_one_number = "\\d";
+//		Pattern q = Pattern.compile(regex_multi_number);
+//		Matcher s = q.matcher(fields.get(1));
+//
+//		// 3 is parkings number update if changed !!!!!!!!!
+//		if(!s.matches() || s.matches() && (Integer.parseInt(fields.get(1)) > 3 || Integer.parseInt(fields.get(1)) < 1)){
+//			// 1- parking number error
+//			System.out.println("p number error");
+//			return false;
+//		}
+//
+//
+//		String regex_email = ".+@.+"; // email should start with a char and contain a @ after it and then more chars
+//		Pattern pp = Pattern.compile(regex_multi_number);
+//		Matcher mail = pp.matcher(fields.get(2));
+//
+//		if(!mail.matches()){
+//			//2- email error
+//			return false;
+//		}
+//
+//
+//
+//		Matcher mma = p.matcher(fields.get(5));
+//
+//		if(!mma.matches()){
+//			//5- id number wrong
+//			return false;
+//		}
 
 		return true;
 	}
@@ -2237,5 +2336,38 @@ public class SimpleServer extends AbstractServer {
 		}
 	}
 
+	public static void updatePreOrders(){
+	try {
+		SessionFactory sessionFactory = getSessionFactory();
+		session = sessionFactory.openSession();
+		session.beginTransaction();
 
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<PreOrder> query = builder.createQuery(PreOrder.class);
+		query.from(PreOrder.class);
+		List<PreOrder> data21 = session.createQuery(query).getResultList();
+		LocalDate now_date = LocalDate.now();
+		LocalTime now_time = LocalTime.now();
+
+		for (PreOrder a : data21) {
+			System.out.println("order date = "+a.getEntranceDate());
+			System.out.println("order time = "+a.getEntranceTime());
+			System.out.println("now date = "+now_date);
+			System.out.println("now time = "+now_time);
+			if (now_date.isAfter(a.getEntranceDate())  || now_date.isEqual(a.getEntranceDate())  && now_time.isAfter(a.getEntranceTime())) {
+				System.out.println("order of car number - "+a.getCarNumber()+" was deleted" + " customer - late");
+				session.delete(a);
+				session.flush();
+			}
+		}
+
+		session.getTransaction().commit();
+	}catch(Exception E){
+
+		E.printStackTrace();
+	}
+
+
+
+	}
 }

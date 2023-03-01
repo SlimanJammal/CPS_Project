@@ -28,6 +28,7 @@ public class PreOrder  implements Serializable {
     LocalDate exitDate;  //date includes year:month:day
     LocalTime exitTime; //hour , minute
 
+    int parking_lot_id;
 
 //    @NotNull
     String Email_;
@@ -113,4 +114,11 @@ public class PreOrder  implements Serializable {
         Parking_requested = parking_requested;
     }
 
+    public int getParking_lot_id() {
+        return parking_lot_id;
+    }
+
+    public void setParking_lot_id(int parking_lot_id) {
+        this.parking_lot_id = parking_lot_id;
+    }
 }

@@ -5,6 +5,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -20,6 +21,8 @@ public class OcasionalParking {
     @FXML // fx:id="IdNumberTF"
     private TextField IdNumberTF; // Value injected by FXMLLoader
 
+    @FXML
+    private TextField parkingNameTF;
     @FXML // fx:id="SubmitBTN"
     private Button SubmitBTN; // Value injected by FXMLLoader
 
@@ -49,20 +52,28 @@ public class OcasionalParking {
             message.setObject2(licensePlateTF.getText());
             message.setObject3(emailTF.getText());
             message.setObject4(leavingTimeTF.getText());
+            if(parkingNameTF.getText().equals("Hanmal") || parkingNameTF.getText().equals("German_Colony") ||parkingNameTF.getText().equals("Bat-Galim")) {
+                message.setObject5(parkingNameTF.getText());
 
-            // Id number is saved as a string in object1
-            // license plate number is saved as a string in object2
-            // email is saved as a string in object3
-            // leaving time is saved as a string in object4
+                // Id number is saved as a string in object1
+                // license plate number is saved as a string in object2
+                // email is saved as a string in object3
+                // leaving time is saved as a string in object4
 
-            IdNumberTF.clear();
-            licensePlateTF.clear();
-            emailTF.clear();
-            leavingTimeTF.clear();
+                IdNumberTF.clear();
+                licensePlateTF.clear();
+                emailTF.clear();
+                leavingTimeTF.clear();
+                parkingNameTF.clear();
+                SimpleClient.getClient().sendToServer(message);
 
+            } else {
+
+             parkingNameTF.setText("Wrong ParkingLot Name");
+            }
 
             //send message to the server containing the new prices
-            SimpleClient.getClient().sendToServer(message);
+
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -97,11 +108,11 @@ public class OcasionalParking {
     public void HandleMessagesFromServer_(OcasionalEvent event){
         Message msg = event.getMessage();
 
-//        System.out.println(msg.getMessage());
-        Alert alert = new Alert(Alert.AlertType.WARNING,
-                msg.getMessage());
-        alert.show();
-
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING,
+                    event.getMessage().getObject1().toString());
+            alert.show();
+        });
     }
     @FXML
     void initialize() {

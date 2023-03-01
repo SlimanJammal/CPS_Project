@@ -17,6 +17,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 public class OneTimeParkingOrder {
 
@@ -106,13 +107,25 @@ public class OneTimeParkingOrder {
         //todo  warning pop up if everything is okay/not with info
         // if everything is good clear fields
         if(event.getMessage().getObject1().toString().equals("success")) {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.WARNING,
-                        String.format("Message: %s\n",
-                                "Success")
-                );
-                alert.show();
-            });
+//            Platform.runLater(() -> {
+//                Alert alert = new Alert(Alert.AlertType.WARNING,
+//                        String.format("Message: %s\n",
+//                                "Success")
+//                );
+//                alert.show();
+//            });
+            CarNumberTF.setText("success");
+            DesiredParkingTF.setText("success");
+            EmailTF.setText("success");
+            EtaTF.setText("success");
+            EtdTF.setText("success");
+            IdNumberTF.setText("success");
+
+            try {
+                TimeUnit.SECONDS.sleep(7);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             CarNumberTF.clear();
             DesiredParkingTF.clear();
@@ -129,6 +142,50 @@ public class OneTimeParkingOrder {
                 );
                 alert.show();
             });
+        } else if(event.getMessage().getObject1().toString().startsWith("refund ")){
+            CarNumberTF.setText(event.getMessage().getObject1().toString());
+            DesiredParkingTF.setText(event.getMessage().getObject1().toString());
+            EmailTF.setText(event.getMessage().getObject1().toString());
+            EtaTF.setText(event.getMessage().getObject1().toString());
+            EtdTF.setText(event.getMessage().getObject1().toString());
+            IdNumberTF.setText(event.getMessage().getObject1().toString());
+
+
+            try {
+                TimeUnit.SECONDS.sleep(7);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            CarNumberTF.clear();
+            DesiredParkingTF.clear();
+            EmailTF.clear();
+            EtaTF.clear();
+            EtdTF.clear();
+            IdNumberTF.clear();
+
+
+        }else if(event.getMessage().getObject1().toString().equals("preorder_parking_is_full")){
+            CarNumberTF.setText(event.getMessage().getObject1().toString());
+            DesiredParkingTF.setText(event.getMessage().getObject1().toString());
+            EmailTF.setText(event.getMessage().getObject1().toString());
+            EtaTF.setText(event.getMessage().getObject1().toString());
+            EtdTF.setText(event.getMessage().getObject1().toString());
+            IdNumberTF.setText(event.getMessage().getObject1().toString());
+
+
+            try {
+                TimeUnit.SECONDS.sleep(7);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            CarNumberTF.clear();
+            DesiredParkingTF.clear();
+            EmailTF.clear();
+            EtaTF.clear();
+            EtdTF.clear();
+            IdNumberTF.clear();
         }
 
     }
