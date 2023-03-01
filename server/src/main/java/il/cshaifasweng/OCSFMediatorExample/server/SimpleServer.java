@@ -1182,10 +1182,17 @@ public class SimpleServer extends AbstractServer {
 					return false;
 				}else{
 					List<ParkingSpot> parkingSpots = parkingLot.getSpots();
-					List<PreOrder> preOrders = parkingLot.getPreordersList();
+
+
+
+					CriteriaBuilder builder1 = session.getCriteriaBuilder();
+					CriteriaQuery<PreOrder> query1 = builder1.createQuery(PreOrder.class);
+					query1.from(PreOrder.class);
+					List<PreOrder> preOrders  = session.createQuery(query1).getResultList();
+
 
 					for (PreOrder preOrder : preOrders){
-						if(preOrder.getCarNumber().equals(licencePlate)){
+						if(preOrder.getCarNumber().equals(licencePlate) && preOrder.getParking_lot_id() == parkingLot.getParking_id()){
 							preOrders.remove(preOrder);
 							parkingLot.decPreOrderNum();
 						}

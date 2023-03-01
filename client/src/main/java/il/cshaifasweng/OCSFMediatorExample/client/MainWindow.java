@@ -23,15 +23,15 @@ public class MainWindow {
     private Button WebsiteBtn; // Value injected by FXMLLoader
 
     @FXML
-    private MenuButton WhichKiosk;
+    private MenuButton WhichKiosk1;
     @FXML
-    private MenuItem BatGalimItem;
+    private MenuItem BatGalimItem1;
 
     @FXML
-    private MenuItem GermanColonyItem;
+    private MenuItem GermanColonyItem1;
 
     @FXML
-    private MenuItem HanamalItem;
+    private MenuItem HanamalItem1;
 
 
 
@@ -41,6 +41,7 @@ public class MainWindow {
             DataSingleton data =DataSingleton.getInstance();
             data.setCaller("MainWindow");
             data.setDataName("Bat-Galim");
+            WhichKiosk1.hide();
             App.setRoot("cpsKiosk");
         }
         catch (IOException e) {
@@ -55,6 +56,7 @@ public class MainWindow {
             DataSingleton data =DataSingleton.getInstance();
             data.setCaller("MainWindow");
             data.setDataName("German_Colony");
+            WhichKiosk1.hide();
             App.setRoot("cpsKiosk");
         }
         catch (IOException e) {
@@ -70,6 +72,7 @@ public class MainWindow {
             DataSingleton data =DataSingleton.getInstance();
             data.setCaller("MainWindow");
             data.setDataName("Hanamal");
+            WhichKiosk1.hide();
             App.setRoot("cpsKiosk");
         }
         catch (IOException e) {

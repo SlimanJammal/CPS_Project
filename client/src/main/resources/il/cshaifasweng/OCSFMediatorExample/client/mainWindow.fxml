@@ -17,11 +17,11 @@
                   <Font size="45.0" />
                </font>
             </Text>
-            <MenuButton fx:id="WhichKiosk" layoutX="347.0" layoutY="152.0" mnemonicParsing="false" onAction="#WhichKiosk" text="Choose kiosk">
+            <MenuButton fx:id="WhichKiosk1" layoutX="347.0" layoutY="152.0" mnemonicParsing="false" onAction="#WhichKiosk" text="Choose kiosk">
               <items>
-                <MenuItem fx:id="GermanColonyItem" mnemonicParsing="false" onAction="#GermanColonyItem" text="German_Colony" />
-                <MenuItem fx:id="HanamalItem" mnemonicParsing="false" onAction="#HanamalItem" text="Hanmal" />
-                  <MenuItem fx:id="BatGalimItem" mnemonicParsing="false" onAction="#BatGalimItem" text="Bat-Galim" />
+                <MenuItem fx:id="GermanColonyItem1" mnemonicParsing="false" onAction="#GermanColonyItem" text="German_Colony" />
+                <MenuItem fx:id="HanamalItem1" mnemonicParsing="false" onAction="#HanamalItem" text="Hanmal" />
+                  <MenuItem fx:id="BatGalimItem1" mnemonicParsing="false" onAction="#BatGalimItem" text="Bat-Galim" />
               </items>
             </MenuButton>
          </children>
