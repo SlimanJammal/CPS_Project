@@ -5,7 +5,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.mysql.cj.xdevapi.Client;
 import il.cshaifasweng.OCSFMediatorExample.client.DataSingleton;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
@@ -25,14 +24,9 @@ import javax.persistence.criteria.Root;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.*;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.Temporal;
 import java.util.*;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SimpleServer extends AbstractServer {
 
@@ -95,7 +89,16 @@ public class SimpleServer extends AbstractServer {
 				System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
 
 
-		} else if(ms.getMessage().equals("RegionalManager_ShowPriceRequests")){
+		} else if(ms.getMessage().equals("CheckReservation")){
+			try{
+				client.sendToClient(CheckReservationStatus(ms));
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+
+
+
+		}else if(ms.getMessage().equals("RegionalManager_ShowPriceRequests")){
 			List<PricesUpdateRequest> data21 = new ArrayList<>();
 			try {
 				SessionFactory sessionFactory = getSessionFactory();
@@ -821,71 +824,105 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if(ms.getMessage().equals("Deactivate Parking Spot"))
 		{
+			System.out.println("deactivate client server ");
 
-			String ParkingSpotID = (ms.getObject1().toString());
-			ParkingLot parkingLot = (ParkingLot) ms.getObject2();
-			Message msg12 = ParkingSpotStateUpdate(ParkingSpotID,parkingLot, "Deactivate");
+			Message msg00 = new Message("Employee_return");
+			msg00.setObject1("failed");
+
 			try {
-				session=getSessionFactory().openSession();
-				List<ParkingSpot> spots=getAll(ParkingSpot.class);
-				int index=0;
-				for(ParkingSpot ps: spots)
-				{
-					if(    ps.getdepth()==(int)((Message) msg).getObject3() &&
-							ps.getheight()==(int)((Message) msg).getObject1()&&
-							ps.getwidth()==(int)((Message) msg).getObject4())
+				SessionFactory sessionFactory = session.getSessionFactory();
+				session = sessionFactory.openSession();
+				session.beginTransaction();
 
-					{
-						index= spots.indexOf(ps);
+				CriteriaBuilder builder1 = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingWorker> query1 = builder1.createQuery(ParkingWorker.class);
+				query1.from(ParkingWorker.class);
+				List<ParkingWorker> parkingWorkers  = session.createQuery(query1).getResultList();
+
+				CriteriaBuilder builder11 = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingSpot> query11 = builder11.createQuery(ParkingSpot.class);
+				query11.from(ParkingSpot.class);
+				List<ParkingSpot> parkingSpots  = session.createQuery(query11).getResultList();
+
+				int worker_id = (int) ms.getObject2();
+				int spot_id = Integer.parseInt((String) ms.getObject1());
+
+				for(ParkingSpot parkingSpot : parkingSpots){
+					System.out.println("spot id - "+parkingSpot.getSpotId_() + "worker id-"+parkingSpot.getParkingLot().getParkingWorker0().getUserID());
+					if(parkingSpot.getParkingLot().getParkingWorker0().getUserID() == worker_id && parkingSpot.getSpotId_()== spot_id){
+						parkingSpot.setCurrentState("Deactivated");
+						session.saveOrUpdate(parkingSpot);
+						session.flush();
+						msg00.setObject1("Deactivated");
+						System.out.println("deactivate client server 1");
 					}
 				}
-				spots.get(index).setCurrentState("construction");
-				session.saveOrUpdate(spots);
-				session.close();
 
+				session.getTransaction().commit();
+				System.out.println("deactivate client server 2");
 
 			}
-			catch (Exception EXP)
+			catch (Exception ex)
 			{
-				throw EXP;
+				if(session != null)
+					session.getTransaction().rollback();
+				ex.printStackTrace();
 			}
-			msg12.setMessage("EmployeeWindow");
-			client.sendToClient(msg12);
+			session.close();
+			client.sendToClient(msg00);
+
 
 
 
 		}
 		else if(ms.getMessage().equals("Activate Parking Spot"))
 		{
-			String ParkingSpotID = (ms.getObject1().toString());
-			ParkingLot parkingLot = (ParkingLot) ms.getObject2();
-			Message msg12 = ParkingSpotStateUpdate(ParkingSpotID,parkingLot, "Activate");
-         try {
-			 session=getSessionFactory().openSession();
-			 List<ParkingSpot> spots=getAll(ParkingSpot.class);
-              int index=0;
-			 for(ParkingSpot ps: spots)
-			 {
-				 if(    ps.getdepth()==(int)((Message) msg).getObject3() &&
-						 ps.getheight()==(int)((Message) msg).getObject1()&&
-				         ps.getwidth()==(int)((Message) msg).getObject4())
-
-				 {
-					 index= spots.indexOf(ps);
-				 }
-			 }
-			 spots.get(index).setCurrentState("empty");
-			 session.saveOrUpdate(spots);
-			 session.close();
 
 
-		 }
-		 catch (Exception EXP)
-		 {
-			 throw EXP;
-		 }
-			msg12.setMessage("EmployeeWindow");
-			client.sendToClient(msg12);
+			Message msg00 = new Message("Employee_return");
+			msg00.setObject1("failed");
+			System.out.println("activate client server ");
+			try {
+				SessionFactory sessionFactory = session.getSessionFactory();
+				session = sessionFactory.openSession();
+				session.beginTransaction();
+
+				CriteriaBuilder builder1 = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingWorker> query1 = builder1.createQuery(ParkingWorker.class);
+				query1.from(ParkingWorker.class);
+				List<ParkingWorker> parkingWorkers  = session.createQuery(query1).getResultList();
+
+				CriteriaBuilder builder11 = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingSpot> query11 = builder11.createQuery(ParkingSpot.class);
+				query11.from(ParkingSpot.class);
+				List<ParkingSpot> parkingSpots  = session.createQuery(query11).getResultList();
+
+				int worker_id = (int) ms.getObject2();
+				int spot_id = Integer.parseInt((String) ms.getObject1());
+//				System.out.println("given worker id = " + worker_id);
+//				System.out.println("given spot id = " + spot_id);
+				for(ParkingSpot parkingSpot : parkingSpots){
+
+//					System.out.println("spot id - "+parkingSpot.getSpotId_() + "worker id-"+parkingSpot.getParkingLot().getParkingWorker0().getUserID());
+					if(parkingSpot.getParkingLot().getParkingWorker0().getUserID() == worker_id && parkingSpot.getSpotId_()== spot_id){
+						parkingSpot.setCurrentState("empty"); // empty is active
+						session.saveOrUpdate(parkingSpot);
+						session.flush();
+						msg00.setObject1("Activated");
+					}
+				}
+
+				session.getTransaction().commit();
+
+			}
+			catch (Exception ex)
+			{
+				if(session != null)
+					session.getTransaction().rollback();
+				ex.printStackTrace();
+			}
+			session.close();
+			client.sendToClient(msg00);
 
 		}
 		else if(ms.getMessage().equals("System Request"))
@@ -916,102 +953,99 @@ public class SimpleServer extends AbstractServer {
 			client.sendToClient(msg69);
 
 		}
-		else if(ms.getMessage().equals("Occasion Request"))
+		else if(ms.getMessage().equals("submit_occasion"))
 		{
 
-			//todo all
-			//Check other parking places to send a vehicle to...
-			//Object #1 - Parking Slot ID
-			//Object #2 - Car ID
-			//Object #3 - Occasion ID
-			String ParkingSlotID = ms.getObject1().toString();
-			String CarNumber = ms.getObject2().toString();
-			String OccasionID = ms.getObject3().toString();
-			int index;
+			System.out.println("server submit ocassion");
+			Message msg00 = new Message("Employee_return");
+			msg00.setObject1("failed_occasion");
 
 			try {
-				session=getSessionFactory().openSession();
+				SessionFactory sessionFactory = session.getSessionFactory();
+				session = sessionFactory.openSession();
 				session.beginTransaction();
-				ParkingLot parkingLot = (ParkingLot) ms.getObject4();
-				int spotindex=0;
 
-				if(!parkingLot.isFull())
-				{
-					List <ParkingSpot> spots=parkingLot.getSpots();
-					for(ParkingSpot ps : spots)
-					{
-						if(ps.getCurrentState().equals("empty"))
-						{
-							spotindex=spots.indexOf(ps);
-						}
+				CriteriaBuilder builder1 = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingWorker> query1 = builder1.createQuery(ParkingWorker.class);
+				query1.from(ParkingWorker.class);
+				List<ParkingWorker> parkingWorkers  = session.createQuery(query1).getResultList();
+
+				CriteriaBuilder builder11 = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingSpot> query11 = builder11.createQuery(ParkingSpot.class);
+				query11.from(ParkingSpot.class);
+				List<ParkingSpot> parkingSpots  = session.createQuery(query11).getResultList();
+
+				int worker_id = (int) ms.getObject2();
+				int spot_id = Integer.parseInt((String) ms.getObject1());
+
+				for(ParkingSpot parkingSpot : parkingSpots){
+					System.out.println("server submit ocassion");
+					if(parkingSpot.getParkingLot().getParkingWorker0().getUserID() == worker_id && parkingSpot.getSpotId_()== spot_id){
+						parkingSpot.setCurrentState("Saved_for_Occasion"); // empty is active
+						session.saveOrUpdate(parkingSpot);
+						session.flush();
+						msg00.setObject1("occasion_submitted");
 					}
-
-					spots.get(spotindex).setCurrentState("held for"+CarNumber +" "+OccasionID);
-					session.flush();
 				}
-				session.flush();
+
 				session.getTransaction().commit();
 
-
-
 			}
-			catch (Exception EXP)
+			catch (Exception ex)
 			{
-				session.getTransaction().rollback();
+				if(session != null)
+					session.getTransaction().rollback();
+				ex.printStackTrace();
 			}
-			finally {
-				session.close();
-			}
-
-
+			session.close();
+			client.sendToClient(msg00);
 
 		}
-		else if(ms.getMessage().equals("Cancel Occasion Request"))
+		else if(ms.getMessage().equals("cancel_Occasion"))
 		{
-			//todo all
-			//Check other parking places to send a vehicle to...
-			//Object #1 - Parking Slot ID
-			//Object #2 - Car ID
-			//Object #3 - Occasion ID
-			String ParkingSlotID = ms.getObject1().toString();
-			String CarNumber = ms.getObject2().toString();
-			String OccasionID = ms.getObject3().toString();
-			int index;
+
+			Message msg00 = new Message("Employee_return");
+			msg00.setObject1("failed_occasion");
 
 			try {
-				session=getSessionFactory().openSession();
+				SessionFactory sessionFactory = session.getSessionFactory();
+				session = sessionFactory.openSession();
 				session.beginTransaction();
-				ParkingLot parkingLot = (ParkingLot) ms.getObject4();
-				int spotindex=0;
 
-				if(!parkingLot.isFull())
-				{
-					List <ParkingSpot> spots=parkingLot.getSpots();
-					for(ParkingSpot ps : spots)
-					{
-						if(ps.getCurrentState().equals("held for"+CarNumber+" "+OccasionID))
-						{
-							spotindex=spots.indexOf(ps);
-						}
+				CriteriaBuilder builder1 = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingWorker> query1 = builder1.createQuery(ParkingWorker.class);
+				query1.from(ParkingWorker.class);
+				List<ParkingWorker> parkingWorkers  = session.createQuery(query1).getResultList();
+
+				CriteriaBuilder builder11 = session.getCriteriaBuilder();
+				CriteriaQuery<ParkingSpot> query11 = builder11.createQuery(ParkingSpot.class);
+				query11.from(ParkingSpot.class);
+				List<ParkingSpot> parkingSpots  = session.createQuery(query11).getResultList();
+
+				int worker_id = (int) ms.getObject2();
+				int spot_id = Integer.parseInt((String) ms.getObject1());
+
+				for(ParkingSpot parkingSpot : parkingSpots){
+					if(parkingSpot.getParkingLot().getParkingWorker0().getUserID() == worker_id && parkingSpot.getSpotId_()== spot_id){
+						parkingSpot.setCurrentState("empty"); // empty is active
+						session.saveOrUpdate(parkingSpot);
+						session.flush();
+						msg00.setObject1("occasion_canceled");
 					}
-
-					spots.get(spotindex).setCurrentState("empty");
-					session.flush();
 				}
-				session.flush();
+
 				session.getTransaction().commit();
 
-
-
-
 			}
-			catch (Exception EXP)
+			catch (Exception ex)
 			{
-				session.getTransaction().rollback();
+				if(session != null)
+					session.getTransaction().rollback();
+				ex.printStackTrace();
 			}
-			finally {
-				session.close();
-			}
+			session.close();
+
+			client.sendToClient(msg00);
 
 
 
@@ -1244,8 +1278,6 @@ public class SimpleServer extends AbstractServer {
 			}
 
 		}
-		//===================================================================================
-		// Check Status Window
 		else if(ms.getMessage().equals("Check Client Spot Status"))
 		{
 			//todo all
@@ -1257,6 +1289,43 @@ public class SimpleServer extends AbstractServer {
 		}
 
 	}
+
+	private Message CheckReservationStatus(Message ms) {
+
+		CriteriaBuilder builder1 = session.getCriteriaBuilder();
+		CriteriaQuery<PreOrder> query1 = builder1.createQuery(PreOrder.class);
+		query1.from(PreOrder.class);
+		List<PreOrder> preOrders  = session.createQuery(query1).getResultList();
+
+		String customerId = ms.getObject1().toString();
+		int parking_id = 0;
+
+		CriteriaBuilder builder11 = session.getCriteriaBuilder();
+		CriteriaQuery<ParkingLot> query11 = builder11.createQuery(ParkingLot.class);
+		query11.from(ParkingLot.class);
+		List<ParkingLot> ParkingLots  = session.createQuery(query11).getResultList();
+
+		for(ParkingLot parkingLot:ParkingLots){
+			if(parkingLot.getName().equals(ms.getObject2().toString())){
+				parking_id = parkingLot.getParking_id();
+			}
+		}
+
+		for(PreOrder preOrder:preOrders){
+			if(preOrder.getPreOrderId().equals(customerId) && preOrder.getParking_lot_id() == parking_id){
+				Message msg = new Message("checkReservation");
+				msg.setObject1("Your order is confirmed ");
+
+				return  msg;
+			}
+		}
+
+		Message msg = new Message("checkReservation");
+		msg.setObject1("Your order was not found");
+
+		return  msg;
+	}
+
 
 	/**.....................................................................................................................
 .MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
@@ -1748,14 +1817,15 @@ public class SimpleServer extends AbstractServer {
 			List<ParkingLot> parkingList = getAll(ParkingLot.class);
 			for(ParkingLot parkingLot : parkingList){
 				if(parkingLot.getName().equals(parking)) {
-					//todo a function that calculates number of orders with a given period of date and time
+
 					PreOrder order = (PreOrder) ParkingEntryOrder;
 					int preOrdersNumber = getPreOrdersNumberByDateInParkingLot(parkingLot, order.getEntranceDate());
+					int deactivatedSpotsNumber = getNotEmptySpotsNumberInParkinglot(parkingLot);
 					//and then send the result to existsFreeSlots
 					System.out.println("parking width:  "+parkingLot.getWidth());
-					if (parkingLot.existsFreeSlots(preOrdersNumber)) {
+					if (parkingLot.existsFreeSlots(preOrdersNumber+deactivatedSpotsNumber)) {
 //						parkingLot.addPreOrder(newOrder);
-						parkingLot.incPreOrderNum(); // todo remove after adding ^^
+						parkingLot.incPreOrderNum();
 
 						order.setParking_lot_id(parkingLot.getParking_id());
 //						session.saveOrUpdate(parkingLot);
@@ -1793,7 +1863,8 @@ public class SimpleServer extends AbstractServer {
 					System.out.println("in routing occasional cc");
 					OccCustomer order = (OccCustomer) ParkingEntryOrder;
 					int preOrdersNumber = getPreOrdersNumberByDateInParkingLot(parkingLot,order.getStartDate());
-					if(parkingLot.existsFreeSlots(preOrdersNumber)){
+					int deactivatedSpotsNumber = getNotEmptySpotsNumberInParkinglot(parkingLot);
+					if(parkingLot.existsFreeSlots(preOrdersNumber+deactivatedSpotsNumber)){
 						System.out.println("in routing occasional dd");
 							parkingLot.addOccasionalCustomers();
 						System.out.println("in routing occasional saving...");
@@ -1833,6 +1904,25 @@ public class SimpleServer extends AbstractServer {
 		System.out.println("message is : "+ msg2.getMessage());
 		return msg2;
 
+	}
+
+	private int getNotEmptySpotsNumberInParkinglot(ParkingLot parkingLot) {
+
+		System.out.println("getting not empty spots number");
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<ParkingSpot> query = builder.createQuery(ParkingSpot.class);
+		query.from(ParkingSpot.class);
+		List<ParkingSpot> parkingSpots = session.createQuery(query).getResultList();
+		int count =0;
+
+		for(ParkingSpot parkingSpot : parkingSpots){
+			if(parkingSpot.getParking_lot_id() == parkingLot.getParking_id() && !parkingSpot.getCurrentState().equals("empty")){
+				count++;
+			}
+		}
+
+
+		return count;
 	}
 
 	private int getPreOrdersNumberByDateInParkingLot(ParkingLot parkingLot, LocalDate entranceDate) {
@@ -2463,7 +2553,7 @@ public class SimpleServer extends AbstractServer {
 			if(parkingManagers.get(0) == null)
 				System.out.println("\n\n\n\n\n\naaaaaaaaaassssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n\n\n");
 			parkingLot1.setParkingManager(parkingManagers.get(0));
-			parkingLot1.setParkingWorker(parkingWorkers.get(0));
+			parkingLot1.addParkingWorker(parkingWorkers.get(0));
 			parkingWorkers.get(0).setParkingLot(parkingLot1);
 			parkingManagers.get(0).setParkingLot(parkingLot1);
 			session.saveOrUpdate(parkingManagers.get(0));
@@ -2494,7 +2584,7 @@ public class SimpleServer extends AbstractServer {
 			ParkingLot parkingLot2 = new ParkingLot("Hanmal",3,5,false);
 
 			parkingLot2.setParkingManager(parkingManagers.get(1));
-			parkingLot2.setParkingWorker(parkingWorkers.get(1));
+			parkingLot2.addParkingWorker(parkingWorkers.get(1));
 
 			parkingWorkers.get(1).setParkingLot(parkingLot2);
 			parkingManagers.get(1).setParkingLot(parkingLot2);
@@ -2532,7 +2622,7 @@ public class SimpleServer extends AbstractServer {
 			ParkingLot parkingLot3 = new ParkingLot("Bat-Galim",3,5,false);
 
 			parkingLot3.setParkingManager(parkingManagers.get(2));
-			parkingLot3.setParkingWorker(parkingWorkers.get(2));
+			parkingLot3.addParkingWorker(parkingWorkers.get(2));
 			parkingWorkers.get(2).setParkingLot(parkingLot3);
 			parkingManagers.get(2).setParkingLot(parkingLot3);
 			session.saveOrUpdate(parkingManagers.get(2));
@@ -2574,8 +2664,8 @@ public class SimpleServer extends AbstractServer {
 				System.out.println("Manager_name: "+parkingLot.getParkingManager().getFirstName());
 				System.out.println("manager_id: "+parkingLot.getParkingManager().getid());
 				System.out.println("parking_dims: "+parkingLot.getDimensions());
-				System.out.println("worker_name: "+parkingLot.getParkingWorker().getFirstName());
-				System.out.println("worker_id: "+parkingLot.getParkingWorker().getUserID());
+				System.out.println("worker_name: "+parkingLot.getParkingWorker0().getFirstName());
+				System.out.println("worker_id: "+parkingLot.getParkingWorker0().getUserID());
 				System.out.println("\n");
 			}
 
@@ -2652,10 +2742,9 @@ public class SimpleServer extends AbstractServer {
 				System.out.println("now time = "+now_time);
 				if ( now_date.isEqual(a.getEntranceDate())  && Duration.between(now_time,a.getEntranceTime()).toHours() < 1) {
 					EmailSender.sendEmail(a.getEmail_(),"Haifa Parkings","Dear Sir, \n"+"this is a reminder for your preOrder parking in "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.");
-					session.flush();
+//					session.flush();
 				}
 			}
-
 			session.getTransaction().commit();
 		}catch(Exception E){
 

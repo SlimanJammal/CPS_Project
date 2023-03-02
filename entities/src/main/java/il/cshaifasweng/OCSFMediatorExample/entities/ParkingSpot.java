@@ -119,8 +119,12 @@ public class ParkingSpot  implements Serializable {
         CurrentState = currentState;
     }
 
-    public int getParkingLot() {
-        return parking_lot_id ;
+    public ParkingLot getParkingLot() {
+        return parkingLot ;
+    }
+
+    public int getParking_lot_id(){
+        return parking_lot_id;
     }
 
     public void setParkingLot(int parkingLot) {

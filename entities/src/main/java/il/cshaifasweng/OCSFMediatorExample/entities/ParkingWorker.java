@@ -1,17 +1,15 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name="Userlike")
 public class ParkingWorker extends User implements Serializable {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "parking_id")
     private ParkingLot parkingLot;
 
     public ParkingWorker(String userName, String password, String firstName, String lastName, int permission, ParkingLot parkingLot) {

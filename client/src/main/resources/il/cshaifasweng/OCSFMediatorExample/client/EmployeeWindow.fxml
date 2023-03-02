@@ -41,47 +41,13 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab closable="false" text="Send Customer To Another Parking">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="457.0" prefWidth="600.0">
-               <children>
-                  <TextField fx:id="ResendLicenseID" layoutX="150.0" layoutY="63.0" onAction="#OnLicensePlateID" promptText="License Plate ID" />
-                  <Label layoutX="94.0" layoutY="14.0" prefHeight="35.0" prefWidth="411.0" text="Send Customer To Another Parking" textFill="BLUE">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="ResendUserID" layoutX="150.0" layoutY="113.0" onAction="#OnChangeUserID" promptText="User ID" />
-                  <TextField fx:id="ResendParkingID" layoutX="150.0" layoutY="163.0" onAction="#OnChangeParkingID" promptText="Parking ID" />
-                  <Label layoutX="14.0" layoutY="61.0" prefHeight="30.0" prefWidth="114.0" text="License Plate ID :">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="14.0" layoutY="111.0" prefHeight="30.0" prefWidth="114.0" text="User ID :">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="14.0" layoutY="161.0" prefHeight="30.0" prefWidth="114.0" text="Parking ID :">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="ResendParkingButton" layoutX="257.0" layoutY="207.0" mnemonicParsing="false" onAction="#SubmitAnotherParking" prefHeight="33.0" prefWidth="85.0" text="Submit" />
-                  <Button fx:id="PreviousWindowBT3" layoutX="14.0" layoutY="310.0" mnemonicParsing="false" onAction="#OnPreviousWindowButton1" prefHeight="34.0" prefWidth="135.0" text="Previous Window" />
-               </children>
-            </AnchorPane>
-        </content>
-      </Tab>
       <Tab closable="false" text="Save Parking Spot For Ocasion">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="OccasionParkingSlot" layoutX="162.0" layoutY="78.0" onAction="#OnChangeOccasionParkingSlotID" promptText="Parking Slot ID" />
+                  <TextField fx:id="OccasionParkingSlot" layoutX="162.0" layoutY="78.0" onAction="#OnChangeOccasionParkingSlotID" promptText="Parking Spot Id" />
                   <TextField fx:id="OcassionVehicleID" layoutX="162.0" layoutY="119.0" onAction="#OnChangeVehicleParkingID" promptText="Vehicle ID" />
-                  <TextField fx:id="OccasionID" layoutX="162.0" layoutY="160.0" onAction="#OnChangeOcassionID" promptText="Occasion ID" />
-                  <Label layoutX="24.0" layoutY="75.0" prefHeight="30.0" prefWidth="112.0" text="Parking Slot ID :">
+                  <Label layoutX="24.0" layoutY="75.0" prefHeight="30.0" prefWidth="112.0" text="Parking Spot ID :">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -91,19 +57,14 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="24.0" layoutY="157.0" prefHeight="30.0" prefWidth="112.0" text="Ocassion ID :">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
                   <Label layoutX="119.0" layoutY="14.0" prefHeight="42.0" prefWidth="362.0" text="Save Parking Spot For Ocassion" textFill="BLUE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Button fx:id="OccasionSaveButton" layoutX="299.0" layoutY="210.0" mnemonicParsing="false" onAction="#SubmitOccasionSavingSpot" prefHeight="34.0" prefWidth="80.0" text="Submit" />
+                  <Button fx:id="OccasionSaveButton" layoutX="247.0" layoutY="186.0" mnemonicParsing="false" onAction="#SubmitOccasionSavingSpot" prefHeight="34.0" prefWidth="80.0" text="Submit" />
                   <Button fx:id="PreviousWindowBT4" layoutX="24.0" layoutY="312.0" mnemonicParsing="false" onAction="#OnPreviousWindowButton1" prefHeight="34.0" prefWidth="135.0" text="Previous Window" />
-                  <Button fx:id="CancelSave" layoutX="173.0" layoutY="210.0" mnemonicParsing="false" onAction="#CancelSubmitOccasionSavingSpot" prefHeight="34.0" prefWidth="63.0" text="cancel" />
+                  <Button fx:id="CancelSave" layoutX="130.0" layoutY="186.0" mnemonicParsing="false" onAction="#CancelSubmitOccasionSavingSpot" prefHeight="34.0" prefWidth="63.0" text="cancel" />
                </children>
             </AnchorPane>
         </content>
@@ -117,17 +78,15 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="ActivateParkingSpot" layoutX="157.0" layoutY="247.0" mnemonicParsing="false" onAction="#ActivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Active" />
-                  <Button fx:id="DectivateParkingSpot" layoutX="290.0" layoutY="247.0" mnemonicParsing="false" onAction="#DeactivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Deactive" />
+                  <Button fx:id="ActivateParkingSpot" layoutX="131.0" layoutY="186.0" mnemonicParsing="false" onAction="#ActivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Active" />
+                  <Button fx:id="DectivateParkingSpot" layoutX="280.0" layoutY="186.0" mnemonicParsing="false" onAction="#DeactivateParkingSpot" prefHeight="26.0" prefWidth="69.0" text="Deactive" />
                   <Label layoutX="167.0" layoutY="27.0" prefHeight="38.0" prefWidth="265.0" text="Parking Spot Status Update" textFill="#fc0000">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
                   <Button fx:id="PreviousWindowBT1" layoutX="22.0" layoutY="317.0" mnemonicParsing="false" onAction="#OnPreviousWindowButton1" prefHeight="34.0" prefWidth="135.0" text="Previous Window" />
-                  <TextField fx:id="rowTF" layoutX="166.0" layoutY="126.0" promptText="enter row " />
-                  <TextField fx:id="colTF" layoutX="166.0" layoutY="161.0" promptText="enter column(up to 3)" />
-                  <TextField fx:id="depthTF" layoutX="167.0" layoutY="198.0" promptText="enter depth(up to 3) " />
+                  <TextField fx:id="rowTF" layoutX="166.0" layoutY="126.0" promptText="SpotID" />
                </children></AnchorPane>
       </content>
     </Tab>

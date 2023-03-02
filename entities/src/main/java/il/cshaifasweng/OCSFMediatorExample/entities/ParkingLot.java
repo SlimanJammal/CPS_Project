@@ -59,8 +59,8 @@ public class ParkingLot implements Serializable{
     @OneToOne(cascade = CascadeType.ALL)
     private ParkingManager parkingManager;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ParkingWorker parkingWorker;
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="parkingLot")
+    private List<ParkingWorker> parkingWorkers;
 
 
 ////    @NotNull
@@ -120,6 +120,7 @@ public class ParkingLot implements Serializable{
     {
         slots_num = width_ *9;
         //kept both to avoid errors
+        parkingWorkers = new ArrayList<>();
         width=width_;
         this.numberOfFreeSlots=slots_num;
         this.numberOfPreOrders=0;
@@ -279,12 +280,12 @@ public class ParkingLot implements Serializable{
         return parkingManager;
     }
 
-    public ParkingWorker getParkingWorker() {
-        return parkingWorker;
+    public ParkingWorker getParkingWorker0() {
+        return parkingWorkers.get(0);
     }
 
-    public void setParkingWorker(ParkingWorker parkingWorker) {
-        this.parkingWorker = parkingWorker;
+    public void addParkingWorker(ParkingWorker parkingWorker) {
+        this.parkingWorkers.add(parkingWorker);
     }
 
     public void addSpot(ParkingSpot s) {

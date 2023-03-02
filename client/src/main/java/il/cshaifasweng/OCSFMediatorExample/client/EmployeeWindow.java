@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class EmployeeWindow {
 
@@ -84,27 +85,22 @@ public class EmployeeWindow {
     private  TextField depthTF;
 
 
+    @FXML
+    private TextField ParkingLotNameOccasion;
+
+
 
     @FXML
     void ActivateParkingSpot(ActionEvent event) {
-        //Activate Parking Spot
-//        String ActivateParkingSpotID = UpdateParkingSpot.getText().toString();
-        //Reset TextBox's Values!
-        {
-            UpdateParkingSpot.setText("");
-        }
-        //send message to server ...
+
+
+        System.out.println("activate client ");
         Message msg = new Message("Activate Parking Spot");
-//        msg.setObject1(ActivateParkingSpotID);
-        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
-        ParkingLot parkingLot =  parkingWorker.getParkingLot();
-        msg.setObject2(parkingLot);
-
-
         msg.setObject1(rowTF.getText());
-//        msg.setObject2(colTF.getText());
-        msg.setObject3(depthTF.getText());
-        msg.setObject4(colTF.getText());
+        int worker_id  = (int) DataSingleton.getInstance().getData();
+        msg.setObject2(worker_id);
+
+
         try
         {
             SimpleClient.getClient().sendToServer(msg);
@@ -119,24 +115,14 @@ public class EmployeeWindow {
 
     @FXML
     void DeactivateParkingSpot(ActionEvent event) {
-        //Activate Parking Spot
-//        String ActivateParkingSpotID = UpdateParkingSpot.getText().toString();
-        //Reset TextBox's Values!
-        {
-            UpdateParkingSpot.setText("");
-        }
-        //send message to server ...
-        Message msg = new Message("Dectivate Parking Spot");
-//        msg.setObject1(ActivateParkingSpotID);
-        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
-        ParkingLot parkingLot =  parkingWorker.getParkingLot();
-        msg.setObject2(parkingLot);
 
 
+        Message msg = new Message("Deactivate Parking Spot");
         msg.setObject1(rowTF.getText());
-//        msg.setObject2(colTF.getText());
-        msg.setObject3(depthTF.getText());
-        msg.setObject4(colTF.getText());
+        int worker_id  = (int) DataSingleton.getInstance().getData();
+        msg.setObject2(worker_id);
+        System.out.println("deactivate client ");
+
         try
         {
             SimpleClient.getClient().sendToServer(msg);
@@ -146,6 +132,7 @@ public class EmployeeWindow {
 
             e.printStackTrace();
         }
+
 
     }
 
@@ -326,27 +313,18 @@ public class EmployeeWindow {
             e.printStackTrace();
         }
     }
+
     //========================== Submit Occasion Park Saving =============================
     @FXML
     void SubmitOccasionSavingSpot(ActionEvent event) {
-        String OccasionalParkingSlot = OccasionParkingSlot.getText().toString();
-        String OccasionalVehicleID = OcassionVehicleID.getText().toString();
-        String OccasionalCommandID = OccasionID.getText().toString();
-        //Reset Textboxes after receiving request information.
-        {
-            SystemParkingID.setText("");
-            SystemCommandID.setText("");
-            SystemCommandID.setText("");
 
-        }
-        //send message to server ...
-        Message msg = new Message("Occasion Request");
-        msg.setObject1(OccasionalParkingSlot);
-        msg.setObject2(OccasionalVehicleID);
-        msg.setObject3(OccasionalCommandID);
-        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
-        ParkingLot parkingLot =  parkingWorker.getParkingLot();
-        msg.setObject4(parkingLot);
+             Message msg = new Message("submit_occasion");
+
+
+             msg.setObject1(OccasionParkingSlot.getText());
+             msg.setObject2(DataSingleton.getInstance().getData());
+//             msg.setObject2(ParkingLotNameOccasion.getText());
+
 
         try
         {
@@ -357,29 +335,17 @@ public class EmployeeWindow {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
 
     }
 
     @FXML
     void CancelSubmitOccasionSavingSpot(ActionEvent event) {
-        String OccasionalParkingSlot = OccasionParkingSlot.getText().toString();
-        String OccasionalVehicleID = OcassionVehicleID.getText().toString();
-        String OccasionalCommandID = OccasionID.getText().toString();
-        //Reset Textboxes after receiving request information.
-        {
-            SystemParkingID.setText("");
-            SystemCommandID.setText("");
-            SystemCommandID.setText("");
 
-        }
-        //send message to server ...
-        Message msg = new Message("Cancel Occasion Request");
-        msg.setObject1(OccasionalParkingSlot);
-        msg.setObject2(OccasionalVehicleID);
-        msg.setObject3(OccasionalCommandID);
-        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
-        ParkingLot parkingLot =  parkingWorker.getParkingLot();
-        msg.setObject4(parkingLot);
+        Message msg = new Message("cancel_Occasion");
+
+        msg.setObject1(OccasionParkingSlot.getText());
+        msg.setObject2(DataSingleton.getInstance().getData());
 
         try
         {
@@ -390,6 +356,7 @@ public class EmployeeWindow {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
 
     }
 
@@ -468,10 +435,7 @@ public class EmployeeWindow {
 //            e.printStackTrace();
 //        }
 //    }
-    //_________________________________________________________________________________________________________________
-    //_________________________________________________________________________________________________________________
-    //___________________________________________ Assistnat Functions _________________________________________________
-    //assistant function that detect input of type string is number or not...
+
     public boolean IsNumber(String Input)
     {
         for(char a : Input.toCharArray())
@@ -492,6 +456,35 @@ public class EmployeeWindow {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        System.out.println("employee subscribe");
+        if(msg.getObject1().toString().equals("failed_occasion") || msg.getObject1().toString().equals("occasion_canceled") ||
+                msg.getObject1().toString().equals("occasion_submitted")){
+            OccasionParkingSlot.setText( msg.getObject1().toString());
+            OcassionVehicleID.clear();
+
+            try {
+                TimeUnit.SECONDS.sleep(4);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            OccasionParkingSlot.clear();
+
+        }
+
+        if(msg.getObject1().toString().equals("failed") || msg.getObject1().toString().equals("Activated") ||
+                msg.getObject1().toString().equals( "Deactivated") ){
+            rowTF.setText(msg.getObject1().toString());
+
+            try {
+                TimeUnit.SECONDS.sleep(4);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            rowTF.clear();
+
         }
 
     }

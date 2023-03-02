@@ -3,9 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -22,6 +20,18 @@ public class CheckReservation {
 
     @FXML
     private TextField ParkingNameTf;
+
+    @FXML
+    private TextArea screenTf;
+
+    @FXML
+    private RadioButton Radio1;
+
+    @FXML
+    private RadioButton Radio2;
+
+    @FXML
+    private RadioButton Radio3;
 
     @FXML
     private Button SubmitBtn;
@@ -41,7 +51,19 @@ public class CheckReservation {
     void SubmitBtn(ActionEvent event) {
         Message temp = new Message("CheckReservation");
         temp.setObject1(IdTf.getText());
-        temp.setObject2(ParkingNameTf.getText());
+        if(Radio1.isSelected())
+        {
+            temp.setObject2("German_Colony");
+        }
+        else if(Radio2.isSelected())
+        {
+            temp.setObject2("Hanmal");
+        }
+        else if(Radio3.isSelected())
+        {
+            temp.setObject2("Bat-Galim");
+        }
+
         IdTf.clear();
         ParkingNameTf.clear();
 
@@ -57,14 +79,17 @@ public class CheckReservation {
 
 
     }
+    @FXML
+    void OnRadioButton(ActionEvent event) {
+
+    }
 
     @Subscribe
     public void complaintHandleFromServer(CheckReservationEvent event){
 
         Message msg = event.getMessage();
-        Alert alert = new Alert(Alert.AlertType.WARNING,
-                msg.getMessage());
-        alert.show();
+
+       screenTf.setText(msg.getObject1().toString());
     }
     @FXML
     void initialize() {
