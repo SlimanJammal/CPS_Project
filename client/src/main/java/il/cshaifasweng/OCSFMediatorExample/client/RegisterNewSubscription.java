@@ -30,8 +30,8 @@ public class RegisterNewSubscription {
     @FXML // fx:id="RegularParkingTF"
     private TextField RegularParkingTF; // Value injected by FXMLLoader
 
-    @FXML // fx:id="StartingDateTF"
-    private DatePicker StartingDateTF;
+    @FXML
+    private TextField DateTF;
 
     @FXML
     private RadioButton Radio1;
@@ -97,7 +97,7 @@ public class RegisterNewSubscription {
         //REgisterBtn.setVisible(false);
         String CustomerID = CustomerIdTF.getText();
         String CarLicense = CarNumberTF.getText();
-        String StartingDate = StartingDateTF.toString();
+        String StartingDate = DateTF.getText();
         String RegularParking = RegularParkingTF.getText();
         String EntranceParkingTime = EntranceHourTF.getText();
         String DepartureParkingTime = DepatureHourTF.getText();
@@ -218,7 +218,7 @@ public class RegisterNewSubscription {
     }
 
     @FXML
-    void OnStartingDate(ActionEvent event) {
+    void DateTF(ActionEvent event) {
     }
 
     @FXML

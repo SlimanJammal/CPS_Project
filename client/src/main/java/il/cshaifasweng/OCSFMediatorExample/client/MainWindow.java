@@ -41,6 +41,7 @@ public class MainWindow {
             DataSingleton data =DataSingleton.getInstance();
             data.setCaller("MainWindow");
             data.setDataName("Bat-Galim");
+            WhichKiosk.hide();
             App.setRoot("cpsKiosk");
         }
         catch (IOException e) {
@@ -55,6 +56,7 @@ public class MainWindow {
             DataSingleton data =DataSingleton.getInstance();
             data.setCaller("MainWindow");
             data.setDataName("German_Colony");
+            WhichKiosk.hide();
             App.setRoot("cpsKiosk");
         }
         catch (IOException e) {
@@ -70,6 +72,7 @@ public class MainWindow {
             DataSingleton data =DataSingleton.getInstance();
             data.setCaller("MainWindow");
             data.setDataName("Hanamal");
+            WhichKiosk.hide();
             App.setRoot("cpsKiosk");
         }
         catch (IOException e) {

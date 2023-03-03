@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -14,9 +15,14 @@ public class PartialSub extends Subscription  implements Serializable {
 //    @NotNull
     String CarNumber;
 //    @NotNull
-    Date StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
-//    @NotNull
-    Date EndDate;
+    LocalDate StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
+
+    public LocalDate getEndDate() {
+        return EndDate;
+    }
+
+    //    @NotNull
+    LocalDate EndDate;
     boolean Entered;
 //    @NotNull
     String SubNum;
@@ -39,8 +45,9 @@ public class PartialSub extends Subscription  implements Serializable {
         this.CarNumber=carnum;
         this.setSubscriptionNumber(id);
 
-        this.StartDate = new Date();
-        updateEndDate();//this initializes end date according to start date;
+        this.StartDate =  LocalDate.now();
+        this.EndDate =  LocalDate.now();
+        //updateEndDate();//this initializes end date according to start date;
     }
 
     public String getCarNumber() {
@@ -52,7 +59,7 @@ public class PartialSub extends Subscription  implements Serializable {
 //    }
 
     public String getSubNum() {
-        return SubNum;
+        return getSubscriptionNumber();
     }
 
     public String getCustomerId() {
@@ -60,31 +67,15 @@ public class PartialSub extends Subscription  implements Serializable {
     }
 
     public void updateEndDate(){
-        int startDay = StartDate.getDay();
-        int startMonth = StartDate.getMonth();
-        int startYear = StartDate.getYear();
-
-        if (startDay+28 > 31){
-            startDay = startDay+28 % 30;
-            startMonth++;
-        }else{
-            startDay+=28;
-        }
-        if(startMonth>12){
-            startMonth=1;
-            startYear++;
-        }
-
-        EndDate.setYear(startYear);
-        EndDate.setMonth(startMonth);
-        EndDate.setDate(startDay);
+        LocalDate temp = LocalDate.now();
+        this.EndDate = temp.plusDays(28);
     }
 
     public boolean isEntered() {
         return Entered;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return StartDate;
     }
 
@@ -96,8 +87,10 @@ public class PartialSub extends Subscription  implements Serializable {
         CustomerId = customerId;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
+
         StartDate = startDate;
+        EndDate = startDate.plusDays(28);
     }
 
     public void setCarNumber(String carNumber) {
@@ -126,5 +119,12 @@ public class PartialSub extends Subscription  implements Serializable {
 
     public void setDepartureHour(String entranceHour) {
         DepartureHour = DepartureHour;
+    }
+    public void print(){
+        System.out.println("Customer ID = "+CustomerId);
+        System.out.println("Subscription number= "+ getSubscriptionNumber());
+        System.out.println("Car number= "+ getCarNumber());
+        System.out.println("Subscription start= "+ getStartDate().toString());
+        System.out.println("Subscription End= "+ getEndDate().toString());
     }
 }
