@@ -90,15 +90,15 @@ public class EmployeeWindow {
         //Activate Parking Spot
 //        String ActivateParkingSpotID = UpdateParkingSpot.getText().toString();
         //Reset TextBox's Values!
-        {
-            UpdateParkingSpot.setText("");
-        }
-        //send message to server ...
+
+//            UpdateParkingSpot.setText("");
+
+//        send message to server ...
         Message msg = new Message("Activate Parking Spot");
 //        msg.setObject1(ActivateParkingSpotID);
-        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
-        ParkingLot parkingLot =  parkingWorker.getParkingLot();
-        msg.setObject2(parkingLot);
+//        ParkingWorker parkingWorker = (ParkingWorker) DataSingleton.getInstance().getData();
+//        ParkingLot parkingLot =  parkingWorker.getParkingLot();
+        msg.setObject2(DataSingleton.getInstance().getData());
 
 
         msg.setObject1(rowTF.getText());
@@ -107,6 +107,7 @@ public class EmployeeWindow {
         msg.setObject4(colTF.getText());
         try
         {
+            System.out.println("before sending activation to server");
             SimpleClient.getClient().sendToServer(msg);
         }
         catch (IOException e)
@@ -122,9 +123,9 @@ public class EmployeeWindow {
         //Activate Parking Spot
 //        String ActivateParkingSpotID = UpdateParkingSpot.getText().toString();
         //Reset TextBox's Values!
-        {
-            UpdateParkingSpot.setText("");
-        }
+
+//            UpdateParkingSpot.setText("");
+
         //send message to server ...
         Message msg = new Message("Dectivate Parking Spot");
 //        msg.setObject1(ActivateParkingSpotID);

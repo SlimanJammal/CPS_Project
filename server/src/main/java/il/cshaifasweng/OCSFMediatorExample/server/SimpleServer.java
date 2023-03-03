@@ -5,7 +5,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.mysql.cj.xdevapi.Client;
 import il.cshaifasweng.OCSFMediatorExample.client.DataSingleton;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
@@ -25,14 +24,11 @@ import javax.persistence.criteria.Root;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.*;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.Temporal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SimpleServer extends AbstractServer {
 
@@ -859,18 +855,24 @@ public class SimpleServer extends AbstractServer {
 		{
 			System.out.println("active spot");
 			String ParkingSpotID = (ms.getObject1().toString());
-			ParkingLot parkingLot = (ParkingLot) ms.getObject2();
-			Message msg12 = ParkingSpotStateUpdate(ParkingSpotID,parkingLot, "Activate");
+			System.out.println("setting up variables1");
+			ParkingWorker parkingWorker = (ParkingWorker) ms.getObject2();
+			System.out.println("setting up variables2");
+//			Message msg12 = ParkingSpotStateUpdate(ParkingSpotID,parkingLot, "Activate");
+			System.out.println("setting up variables");
          try {
 			 session=getSessionFactory().openSession();
 			 List<ParkingSpot> spots=getAll(ParkingSpot.class);
+			 System.out.println("all parking spots from database");
               int index=0;
 			 for(ParkingSpot ps: spots)
 			 {
 				 System.out.println(ps.getCurrentState());
 				 if(    ps.getdepth()==(int)((Message) msg).getObject3() &&
 						 ps.getheight()==(int)((Message) msg).getObject1()&&
-				         ps.getwidth()==(int)((Message) msg).getObject4())
+				         ps.getwidth()==(int)((Message) msg).getObject4()&&
+						 ps.getParkingLot()==parkingWorker.getParkingLot().getParking_id()
+				 )
 
 				 {
 					 index= spots.indexOf(ps);
@@ -887,8 +889,8 @@ public class SimpleServer extends AbstractServer {
 		 {
 			 throw EXP;
 		 }
-			msg12.setMessage("EmployeeWindow");
-			client.sendToClient(msg12);
+//			msg12.setMessage("EmployeeWindow");
+//			client.sendToClient(msg12);
 
 		}
 		else if(ms.getMessage().equals("System Request"))

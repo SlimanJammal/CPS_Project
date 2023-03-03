@@ -3,20 +3,25 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="228.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CheckReservation">
+<Pane style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CheckReservation">
    <children>
-      <Text layoutX="45.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check Reservation Status" wrappingWidth="254.21630859375">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
-      <TextField fx:id="IdTf" layoutX="45.0" layoutY="95.0" prefHeight="25.0" prefWidth="223.0" promptText="enter your id number here" />
-      <TextField fx:id="ParkingNameTf" layoutX="45.0" layoutY="139.0" prefHeight="25.0" prefWidth="223.0" promptText="enter the parking lot name here" />
-      <Button fx:id="SubmitBtn" layoutX="45.0" layoutY="183.0" mnemonicParsing="false" onAction="#SubmitBtn" text="Submit" />
-      <Button fx:id="BackBtn" layoutX="117.0" layoutY="183.0" mnemonicParsing="false" onAction="#BackBtn" text="Back" />
+      <AnchorPane prefHeight="228.0" prefWidth="400.0">
+         <children>
+            <Text fill="BLUEVIOLET" layoutX="45.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check Reservation Status" wrappingWidth="254.21630859375">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <TextField fx:id="IdTf" layoutX="14.0" layoutY="72.0" prefHeight="25.0" prefWidth="223.0" promptText="enter your id number here" style="-fx-background-color: BLACK; -fx-border-color: BLUEVIOLET;" />
+            <TextField fx:id="ParkingNameTf" layoutX="14.0" layoutY="114.0" prefHeight="25.0" prefWidth="223.0" promptText="enter the parking lot name here" style="-fx-background-color: BLACK; -fx-border-color: BLUEVIOLET;" />
+            <Button fx:id="SubmitBtn" layoutX="18.0" layoutY="157.0" mnemonicParsing="false" onAction="#SubmitBtn" style="-fx-background-color: BLACK; -fx-border-color: BLUEVIOLET;" text="Submit" textFill="WHITE" />
+            <Button fx:id="BackBtn" layoutX="95.0" layoutY="157.0" mnemonicParsing="false" onAction="#BackBtn" style="-fx-background-color: BLACK; -fx-border-color: BLUEVIOLET;" text="Back" textFill="WHITE" />
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</Pane>
