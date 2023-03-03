@@ -4,6 +4,8 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
@@ -16,7 +18,7 @@
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="615.0">
+            <AnchorPane layoutX="5.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="615.0">
                <children>
                   <AnchorPane layoutX="16.0" layoutY="90.0" prefHeight="62.0" prefWidth="568.0">
                      <children>
@@ -184,7 +186,7 @@
                   </Text>
                   <AnchorPane layoutX="332.0" layoutY="232.0" prefHeight="232.0" prefWidth="278.0">
                      <children>
-                        <PasswordField fx:id="SUBSNUM_LOGIN_TF" layoutX="121.0" layoutY="115.0" onAction="#SUBSNUM_LOGIN_TF" promptText="subscription number" style="-fx-background-color: BLACK; -fx-border-width: 3; -fx-border-color: #4ee44e;" />
+                        <PasswordField fx:id="SUBSNUM_LOGIN_TF" layoutX="121.0" layoutY="109.0" onAction="#SUBSNUM_LOGIN_TF" promptText="subscription number" style="-fx-background-color: BLACK; -fx-border-width: 3; -fx-border-color: #4ee44e;" />
                         <TextField fx:id="LICENSE_LOGIN_TF" layoutX="121.0" layoutY="46.0" onAction="#LICENSE_LOGIN_TF" promptText="plate number" style="-fx-background-color: BLACK; -fx-border-width: 3; -fx-border-color: #4ee44e;" />
                         <Button fx:id="RenewSubsBtn" layoutX="128.0" layoutY="161.0" mnemonicParsing="false" onAction="#RenewSubsBtn" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Renew Subscription">
                            <textFill>
@@ -224,15 +226,23 @@
                               </LinearGradient>
                            </textFill>
                         </Button>
-                        <Text fill="#4ee44e" layoutX="75.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PLATES" />
-                        <Text fill="#4ee44e" layoutX="64.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SUBNUM" />
+                        <ImageView fitHeight="32.0" fitWidth="102.0" layoutX="50.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/images/71GXWTdc+4L.jpg" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="51.0" fitWidth="63.0" layoutX="62.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/images/lock-icon-isolated-black-background-simple-vector-logo-163369340.jpg" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="55.0" layoutY="232.0" prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <PasswordField fx:id="PW_LOGIN_TF" layoutX="-3.0" layoutY="108.0" onAction="#PW_LOGIN_TF" promptText="password" style="-fx-background-color: BLACK; -fx-border-width: 3; -fx-border-color: #4ee44e;" />
                         <TextField fx:id="ID_LOGIN_TF" layoutX="-3.0" layoutY="48.0" onAction="#ID_LOGIN_TF" prefHeight="26.0" prefWidth="150.0" promptText="id number" style="-fx-background-color: BLACK; -fx-border-width: 3; -fx-border-color: #4ee44e;" />
-                        <Button fx:id="WorkerBtn" layoutX="72.0" layoutY="142.0" mnemonicParsing="false" onAction="#WorkerBtn" prefHeight="27.0" prefWidth="84.0" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Worker">
+                        <Button fx:id="WorkerBtn" layoutX="100.0" layoutY="152.0" mnemonicParsing="false" onAction="#WorkerBtn" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Worker">
                            <textFill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -269,12 +279,64 @@
                                  </stops>
                               </LinearGradient>
                            </textFill>
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/images/tie-icon-necktie-and-neckcloth-symbol-flat-vector-6577370.jpg" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
                         <Text fill="#4ee44e" layoutX="-9.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee login">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Text>
+                        <Button fx:id="ManagerBtn" layoutX="-47.0" layoutY="152.0" mnemonicParsing="false" onAction="#ManagerBtn" prefHeight="32.0" prefWidth="122.0" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Manager">
+                           <textFill>
+                              <LinearGradient endX="1.0" endY="1.0">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.9629629850387573" green="1.0" blue="0.9629629850387573" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.006729475100942127">
+                                       <color>
+                                          <Color red="0.9629629850387573" green="1.0" blue="0.9629629850387573" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.2775038571381674">
+                                       <color>
+                                          <Color red="0.4748538136482239" green="0.9157894849777222" blue="0.4748538136482239" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.4878048780487805">
+                                       <color>
+                                          <Color red="1.0" green="1.0" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.7563930013458948">
+                                       <color>
+                                          <Color red="0.30588236451148987" green="0.8941176533699036" blue="0.30588236451148987" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="1.0" green="1.0" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </textFill>
+                           <graphic>
+                              <ImageView fitHeight="29.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </AnchorPane>
                   <Text fill="#4ee44e" layoutX="429.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Login">
@@ -282,46 +344,22 @@
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <Button fx:id="ManagerBtn" layoutX="3.0" layoutY="373.0" mnemonicParsing="false" onAction="#ManagerBtn" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Manager">
-                     <textFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="0.9629629850387573" green="1.0" blue="0.9629629850387573" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.006729475100942127">
-                                 <color>
-                                    <Color red="0.9629629850387573" green="1.0" blue="0.9629629850387573" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.2775038571381674">
-                                 <color>
-                                    <Color red="0.4748538136482239" green="0.9157894849777222" blue="0.4748538136482239" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.4878048780487805">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.7563930013458948">
-                                 <color>
-                                    <Color red="0.30588236451148987" green="0.8941176533699036" blue="0.30588236451148987" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </textFill>
-                  </Button>
                   <Text fill="#4ee44e" layoutX="14.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
-                  <Text fill="#4ee44e" layoutX="9.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PASS" />
+                  <ImageView fitHeight="51.0" fitWidth="58.0" layoutX="2.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="51.0" fitWidth="49.0" layoutX="-1.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images/lock-icon-isolated-black-background-simple-vector-logo-163369340.jpg" />
+                     </image>
+                  </ImageView>
+<!--                  <ImageView fitHeight="129.0" fitWidth="167.0" layoutX="211.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                     <image>-->
+<!--                        <Image url="@images/images/large%20(2).png" />-->
+<!--                     </image>-->
+<!--                  </ImageView>-->
                </children>
             </AnchorPane>
             <Button fx:id="backbtn" layoutX="84.0" layoutY="462.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="25.0" prefWidth="68.0" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="back">

@@ -6,6 +6,8 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
@@ -13,7 +15,6 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <Pane style="-fx-background-color: GREY;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkingManager">
    <children>
@@ -51,8 +52,22 @@
                   <TableColumn fx:id="price" prefWidth="101.20001220703125" text="Price" />
                </columns>
             </TableView>
-            <Button fx:id="showPricesBTN" layoutX="222.0" layoutY="621.0" mnemonicParsing="false" onAction="#showPrices" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="ShowPrices" />
-            <Button fx:id="ShowStatBtn" layoutX="486.0" layoutY="577.0" mnemonicParsing="false" onAction="#ShowStatBtn" prefHeight="32.0" prefWidth="95.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="Show Statistics" />
+            <Button fx:id="showPricesBTN" layoutX="186.0" layoutY="612.0" mnemonicParsing="false" onAction="#showPrices" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="ShowPrices">
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images/money-icon-on-grey-background-coins-in-flat-style-vector-20021638.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="ShowStatBtn" layoutX="447.0" layoutY="577.0" mnemonicParsing="false" onAction="#ShowStatBtn" prefHeight="32.0" prefWidth="133.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="Show Statistics">
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images/marketi-report-statistic-icon-13.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
             <Text layoutX="373.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
@@ -200,6 +215,11 @@
             <Button fx:id="backbtn" layoutX="640.0" layoutY="634.0" mnemonicParsing="false" onAction="#backbtn" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="back" />
             <TextArea fx:id="statsScreen" layoutX="380.0" layoutY="377.0" prefHeight="200.0" prefWidth="200.0" promptText="NO STATS TO SHOW" />
             <AmbientLight color="CHARTREUSE" layoutX="495.0" layoutY="185.0" lightOn="true" />
+            <ImageView fitHeight="135.0" fitWidth="230.0" layoutX="260.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

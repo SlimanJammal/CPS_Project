@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
@@ -34,7 +33,8 @@ public class MainWindow {
     @FXML
     void play(ActionEvent event)
     {
-        parkingmainwindow.setVisible(true);
+
+
         setRotate(green,true,360,10);
         setRotate(red,true,360,10);
     }
@@ -60,8 +60,7 @@ public class MainWindow {
     @FXML
     private MenuItem HanamalItem1;
 
-    @FXML
-    private ImageView parkingmainwindow;
+
 
 
     @FXML
