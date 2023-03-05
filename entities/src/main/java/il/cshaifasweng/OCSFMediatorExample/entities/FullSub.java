@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -16,11 +17,16 @@ public class FullSub extends Subscription implements Serializable {
 //    @NotNull
     String CustomerId;
 
-    Date StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
+    LocalDate StartDate;  //format year:month:day   // we need year and month because we might have a sub close to the end of december
+
+    public LocalDate getEndDate() {
+        return EndDate;
+    }
+
+    //    @NotNull
+    LocalDate EndDate;
 //    @NotNull
-    Date EndDate;
-//    @NotNull
-    Date StartParking; //format includes days we will use it as a counter for if it reaches 14
+    LocalDate StartParking; //format includes days we will use it as a counter for if it reaches 14
 //    @NotNull
     String SubNum;
     public FullSub(){
@@ -33,11 +39,12 @@ public class FullSub extends Subscription implements Serializable {
         this.setSubscriptionNumber(id);
         this.CarNumber=carnum;
         FullSubId = Integer.toString(getId_());
-        this.StartDate= new Date();
-        updateEndDate();
+        this.StartDate= LocalDate.now();
+        this.EndDate = LocalDate.now();
+//        updateEndDate();
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return StartDate;
     }
 
@@ -50,10 +57,10 @@ public class FullSub extends Subscription implements Serializable {
     }
 
     public String getSubNum() {
-        return SubNum;
+        return getSubscriptionNumber();
     }
 
-    public Date getStartParking() {
+    public LocalDate getStartParking() {
         return StartParking;
     }
 
@@ -69,15 +76,17 @@ public class FullSub extends Subscription implements Serializable {
         CarNumber = carNumber;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate)
+    {
         StartDate = startDate;
+        EndDate = startDate.plusDays(28);
     }
 
     public void setFullSubId(String fullSubId) {
         FullSubId = fullSubId;
     }
 
-    public void setStartParking(Date startParking) {
+    public void setStartParking(LocalDate startParking) {
         StartParking = startParking;
     }
 
@@ -86,24 +95,16 @@ public class FullSub extends Subscription implements Serializable {
     }
 
     public void updateEndDate(){
-        int startDay = StartDate.getDay();
-        int startMonth = StartDate.getMonth();
-        int startYear = StartDate.getYear();
+       LocalDate temp = LocalDate.now();
+       EndDate = temp.plusDays(28);
+    }
 
-        if (startDay+28 > 31){
-            startDay = startDay+28 % 30;
-            startMonth++;
-        }else{
-            startDay+=28;
-        }
-        if(startMonth>12){
-            startMonth=1;
-            startYear++;
-        }
-
-        EndDate.setYear(startYear);
-        EndDate.setMonth(startMonth);
-        EndDate.setDate(startDay);
+    public void print(){
+        System.out.println("Customer ID = "+CustomerId);
+        System.out.println("Subscription number= "+ getSubscriptionNumber());
+        System.out.println("Car number= "+ getCarNumber());
+        System.out.println("Subscription start= "+ getStartDate().toString());
+        System.out.println("Subscription End= "+ getEndDate().toString());
     }
 
 }

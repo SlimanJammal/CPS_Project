@@ -366,13 +366,13 @@ public class SimpleServer extends AbstractServer {
 			List<FullSub> fullListDB = getAll(FullSub.class);
 			List<MultiSub> multiListDB = getAll(MultiSub.class);
 			for (PartialSub partialSub : partialListDB) {
-				String ID = Integer.toString(partialSub.getId_());
+				String ID = partialSub.getCustomerId();
 				String Licence = partialSub.getCarNumber();
 				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
 					try {
 
 						partialSub.updateEndDate();
-						session.update(partialSub);
+						session.saveOrUpdate(partialSub);
 						session.flush();
 						session.getTransaction().commit();
 						Message msg2 = new Message("SubRenewed");
@@ -398,7 +398,7 @@ public class SimpleServer extends AbstractServer {
 					try {
 
 						fullsub.updateEndDate();
-						session.update(fullsub);
+						session.saveOrUpdate(fullsub);
 						session.flush();
 						session.getTransaction().commit();
 						Message msg2 = new Message("SubRenewed");
@@ -419,13 +419,13 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 			for (MultiSub multisub : multiListDB) {
-				String ID = Integer.toString(multisub.getId_());
+				String ID = multisub.getCustomerId();
 				String Licence = multisub.getCarNumber();
 				if (Subnumber.equals(ID) && Licence.equals(LicencePlateNum)) {
 					try {
 
 						multisub.updateEndDate();
-						session.update(multisub);
+						session.saveOrUpdate(multisub);
 						session.flush();
 						session.getTransaction().commit();
 						Message msg2 = new Message("SubRenewed");
@@ -445,6 +445,7 @@ public class SimpleServer extends AbstractServer {
 					flag = true;
 					break;
 				}
+				printSubscribers();
 			}
 
 			// if the client is found inform him that sub is renewed
@@ -1139,9 +1140,9 @@ public class SimpleServer extends AbstractServer {
 			String[] split = StartingDate.split("/");
 			System.out.println(split[0]+split[1]+split[2] );
 			//Staring Date Components
-			int Year = Integer.valueOf(split[0]);
-			int Month = Integer.valueOf(split[1]);
-			int Day = Integer.valueOf(split[2]);
+			int Year = Integer.parseInt(split[2]);
+			int Month = Integer.parseInt(split[1]);
+			int Day = Integer.parseInt(split[0]);
 
 			//Entrance Hour Components
 			//No Need For Now
@@ -1157,21 +1158,26 @@ public class SimpleServer extends AbstractServer {
 			if(SubscriberType.equals("Single Monthly Subscription"))
 			{
 				System.out.println("single monthly");
-				Boolean newCustumer = true;
+				boolean newCustumer = true;
+				System.out.println(CustomerID);
 				PartialSub input = new PartialSub(CustomerID,CarNumber);
-				Date Temp = new Date(Year,Month,Day);
+				System.out.println(input.getCustomerId());
+				LocalDate Temp = LocalDate.of(Year, Month, Day);
 				input.setStartDate(Temp);
 				input.setEntranceHour(EntranceHour);
 				input.setDepartureHour(DepartureHour);
 				List<PartialSub> partialSubs = getAll(PartialSub.class);
 				for (PartialSub partialSub:partialSubs){
-					if(partialSub.getCustomerId().equals(CustomerID)){
+					if (partialSub.getCustomerId().equals(CustomerID)) {
 						newCustumer = false;
+						break;
 					}
 				}
 				try{
 					if(newCustumer){
 						session.save(input);
+						session.flush();
+						session.getTransaction().commit();
 						MSG.setMessage("success");
 					}else{
 						MSG.setMessage("Customer already exists");
@@ -1185,7 +1191,6 @@ public class SimpleServer extends AbstractServer {
 					MSG.setMessage("fail");
 					exception.printStackTrace();
 				} finally {
-
 					client.sendToClient(MSG);
 					session.close();
 				}
@@ -1194,9 +1199,10 @@ public class SimpleServer extends AbstractServer {
 			else if(SubscriberType.equals("Multi Monthly Subscription"))
 
 			{   System.out.println("multi monthly");
-				MultiSub input = new MultiSub(CustomerID);
-				Date Temp = new Date(Year,Month,Day);
+				MultiSub input = new MultiSub(CustomerID,CarNumber);
+				LocalDate Temp = LocalDate.of(Year,Month,Day);
 				input.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
+				input.setStartDate(Temp);
 // todo here we can have a problem if we are trying to multiple cars and one of them exists
 				Boolean newCustomer = true;
 				Boolean newCar = true;
@@ -1205,25 +1211,14 @@ public class SimpleServer extends AbstractServer {
 				for (MultiSub multiSub : multiSubs){
 					if(multiSub.getCustomerId().equals(CustomerID)){
 						newCustomer = false;
-//						List<PartialSub> cars = multiSub.getCars();
-//						for (PartialSub car : cars){
-//							if(car.getCarNumber().equals(CarNumber)){
-//								newCar=false;
-//							}
 
-//						if(newCar){
-//							multiSub.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
-//							tempmultiSub = multiSub;
-//						}
 					}
 				}
 				try{
-//					if(!newCustomer & newCar){
-//						session.update(tempmultiSub);
-//						MSG.setMessage("customer exists added new car");
-//					}else
 						if(newCustomer){
 						session.save(input);
+						session.flush();
+						session.getTransaction().commit();
 						MSG.setMessage("customer added successfully");
 					}else{
 						MSG.setMessage("fail");
@@ -1245,10 +1240,9 @@ public class SimpleServer extends AbstractServer {
 			{
 				System.out.println("full sub");
 				FullSub input = new FullSub(CustomerID,CarNumber);
-				Date Temp = new Date(Year,Month,Day);
+				LocalDate Temp = LocalDate.of(Year,Month,Day);
 				input.setStartDate(Temp);
-
-				Boolean newCustomer = true;
+				boolean newCustomer = true;
 				List<FullSub> fullSubs = getAll(FullSub.class);
 				for(FullSub fullSub : fullSubs){
 					if(fullSub.getCustomerId().equals(CustomerID)){
@@ -1259,6 +1253,8 @@ public class SimpleServer extends AbstractServer {
 				try{
 					if(newCustomer) {
 						session.save(input);
+						session.flush();
+						session.getTransaction().commit();
 						MSG.setMessage("success");
 					}else{
 						MSG.setMessage("fail customer exists");
@@ -1277,6 +1273,7 @@ public class SimpleServer extends AbstractServer {
 
 			}
 
+			printSubscribers();
 		}
 		else if(ms.getMessage().equals("Check Client Spot Status"))
 		{
@@ -2687,40 +2684,60 @@ public class SimpleServer extends AbstractServer {
 		}
 	}
 
-	public static void updatePreOrders(){
-	try {
-		SessionFactory sessionFactory = getSessionFactory();
-		session = sessionFactory.openSession();
-		session.beginTransaction();
+	public static void updatePreOrders() {
+		try {
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
 
-		CriteriaBuilder builder = session.getCriteriaBuilder();
-		CriteriaQuery<PreOrder> query = builder.createQuery(PreOrder.class);
-		query.from(PreOrder.class);
-		List<PreOrder> data21 = session.createQuery(query).getResultList();
-		LocalDate now_date = LocalDate.now();
-		LocalTime now_time = LocalTime.now();
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<PreOrder> query = builder.createQuery(PreOrder.class);
+			query.from(PreOrder.class);
+			List<PreOrder> data21 = session.createQuery(query).getResultList();
+			LocalDate now_date = LocalDate.now();
+			LocalTime now_time = LocalTime.now();
 
-		for (PreOrder a : data21) {
-			System.out.println("order date = "+a.getEntranceDate());
-			System.out.println("order time = "+a.getEntranceTime());
-			System.out.println("now date = "+now_date);
-			System.out.println("now time = "+now_time);
-			if (now_date.isAfter(a.getEntranceDate())  || now_date.isEqual(a.getEntranceDate())  && now_time.isAfter(a.getEntranceTime())) {
-				System.out.println("order of car number - "+a.getCarNumber()+" was deleted" + " customer - late");
-				session.delete(a);
-				session.flush();
+			for (PreOrder a : data21) {
+				System.out.println("order date = " + a.getEntranceDate());
+				System.out.println("order time = " + a.getEntranceTime());
+				System.out.println("now date = " + now_date);
+				System.out.println("now time = " + now_time);
+				if (now_date.isAfter(a.getEntranceDate()) || now_date.isEqual(a.getEntranceDate()) && now_time.isAfter(a.getEntranceTime())) {
+					System.out.println("order of car number - " + a.getCarNumber() + " was deleted" + " customer - late");
+					session.delete(a);
+					session.flush();
+				}
 			}
+
+			session.getTransaction().commit();
+		} catch (Exception E) {
+
+			E.printStackTrace();
 		}
+	}
 
-		session.getTransaction().commit();
-	}catch(Exception E){
 
-		E.printStackTrace();
+	public void printSubscribers(){
+		session = getSessionFactory().openSession();
+		session.beginTransaction();
+		List<PartialSub> partialSubz = getAll(PartialSub.class);
+		for (PartialSub partialSub:partialSubz){
+			partialSub.print();
+		}
+		List<MultiSub> multiSubz = getAll(MultiSub.class);
+		for (MultiSub multisub_:multiSubz){
+			multisub_.print();
+		}
+		List<FullSub> fullSubz = getAll(FullSub.class);
+		for (FullSub fullsub:fullSubz){
+			fullsub.print();
+		}
+		session.close();
 	}
 
 
 
-	}
+
 
 	public static void customerReminder(){
 		try {

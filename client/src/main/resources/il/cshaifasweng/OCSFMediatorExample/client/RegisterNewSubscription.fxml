@@ -104,6 +104,7 @@
                   </LinearGradient>
                </textFill>
             </RadioButton>
+            <TextField fx:id="DateTF" layoutX="130.0" layoutY="147.0" onAction="#DateTF" prefHeight="26.0" prefWidth="166.0" promptText="Date DD/MM/YYYY" />
             <ImageView fitHeight="36.0" fitWidth="82.0" layoutX="5.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
