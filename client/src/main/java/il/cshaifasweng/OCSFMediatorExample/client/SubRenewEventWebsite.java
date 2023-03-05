@@ -2,11 +2,9 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
-import java.io.Serializable;
-
-public class SubRenewEvent implements Serializable {
-   private Message msg;
-    public SubRenewEvent(Message msg) {
+public class SubRenewEventWebsite {
+    private Message msg;
+    public SubRenewEventWebsite (Message msg) {
         this.msg=msg;
     }
 

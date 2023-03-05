@@ -204,18 +204,20 @@ public class CpsKiosk {
 
     @FXML
     void RenewSubsBtn(ActionEvent event) throws IOException {
-        Message msg= new Message("RenewSub");
+        Message msg= new Message("RenewSub_kiosk");
         msg.setLicensePlate(LICENSE_LOGIN_TF.getText());
         msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
         SimpleClient.getClient().sendToServer(msg);
     }
+
     @Subscribe
     void setRenewSubsSuccess(SubRenewEvent event)
     {
-        Alert alert = new Alert(Alert.AlertType.WARNING,
-                String.format("Message: Sub renewed"));
-        alert.show();
-}
+            System.out.println("thbane");
+//        Alert alert = new Alert(Alert.AlertType.WARNING,
+//                String.format("Message: Sub renewed"));
+//        alert.show();
+    }
 
     @FXML
     void ReserveParkingBtn(ActionEvent event) throws IOException {

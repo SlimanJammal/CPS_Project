@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -29,7 +28,6 @@
             <TextField fx:id="CarNumberTF" layoutX="53.0" layoutY="310.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="166.0" promptText="Car Number" />
             <TextField fx:id="RegularParkingTF" layoutX="47.0" layoutY="271.0" onAction="#RegularParkingTF" prefHeight="26.0" prefWidth="166.0" promptText="Parking ID" />
             <Button fx:id="RegisterBtn" layoutX="180.0" layoutY="346.0" mnemonicParsing="false" onAction="#RegisterBtn" prefHeight="26.0" prefWidth="92.0" text="Register" />
-            <DatePicker fx:id="StartingDateTF" layoutX="54.0" layoutY="147.0" onAction="#OnStartingDate" prefHeight="26.0" prefWidth="166.0" promptText="DD/MM/YYYY" />
             <Label fx:id="LabelOutput" layoutX="103.0" layoutY="36.0" prefHeight="26.0" prefWidth="117.0" text="Output Label" textFill="RED" visible="false" />
             <TextField fx:id="DepatureHourTF" layoutX="54.0" layoutY="230.0" onAction="#OnDepatureHourTF" prefHeight="26.0" prefWidth="82.0" promptText="HH:MM" />
             <Label layoutX="-1.0" layoutY="35.0" prefHeight="26.0" prefWidth="138.0" text="Subscription Type :">
@@ -104,7 +102,7 @@
                   </LinearGradient>
                </textFill>
             </RadioButton>
-            <TextField fx:id="DateTF" layoutX="130.0" layoutY="147.0" onAction="#DateTF" prefHeight="26.0" prefWidth="166.0" promptText="Date DD/MM/YYYY" />
+            <TextField fx:id="DateTF" layoutX="54.0" layoutY="148.0" onAction="#DateTF" prefHeight="26.0" prefWidth="166.0" promptText="Date DD/MM/YYYY" />
             <ImageView fitHeight="36.0" fitWidth="82.0" layoutX="5.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />

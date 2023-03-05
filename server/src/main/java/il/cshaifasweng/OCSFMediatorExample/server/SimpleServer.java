@@ -350,8 +350,8 @@ public class SimpleServer extends AbstractServer {
 			System.out.println("before sending to client ");
 			client.sendToClient(MSG);
 		}
-		else if(ms.getMessage().equals("RenewSub")) {
-
+		else if(ms.getMessage().startsWith("RenewSub")) {
+			System.out.println("renew sub server start.........");
 			session = getSessionFactory().openSession();
 			session.beginTransaction();
 
@@ -361,7 +361,9 @@ public class SimpleServer extends AbstractServer {
 			String LicencePlateNum = (String) ms.getLicensePlate();
 
 
+			System.out.println(ms.getMessage());
 			// todo when we find the subscriber to renew what do we do ??
+			Message msg2 = new Message("SubRenewed");
 			List<PartialSub> partialListDB = getAll(PartialSub.class);
 			List<FullSub> fullListDB = getAll(FullSub.class);
 			List<MultiSub> multiListDB = getAll(MultiSub.class);
@@ -375,17 +377,17 @@ public class SimpleServer extends AbstractServer {
 						session.saveOrUpdate(partialSub);
 						session.flush();
 						session.getTransaction().commit();
-						Message msg2 = new Message("SubRenewed");
-						client.sendToClient(msg2);
+//						Message msg2 = new Message("SubRenewed");
+
 					} catch (Exception exception) {
 						if (session != null) {
 							session.getTransaction().rollback();
 						}
-						Message msg2 = new Message("SubRenewed");
 						client.sendToClient(msg2);
 						exception.printStackTrace();
 					} finally {
 						session.close();
+						client.sendToClient(msg2);
 					}
 					flag = true;
 					break;
@@ -401,18 +403,28 @@ public class SimpleServer extends AbstractServer {
 						session.saveOrUpdate(fullsub);
 						session.flush();
 						session.getTransaction().commit();
-						Message msg2 = new Message("SubRenewed");
+						msg2.setMessage("SubRenewed_website");
+						System.out.println(ms.getMessage());
+						if(ms.getMessage().equals("SubRenewed_kiosk")) {
+							System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+							msg2.setMessage("SubRenewed_kiosk");
+						}
 						msg2.setObject1("success");
 						client.sendToClient(msg2);
 					} catch (Exception exception) {
 						if (session != null) {
 							session.getTransaction().rollback();
 						}
-						Message msg2 = new Message("SubRenewed");
+						msg2.setMessage("SubRenewed_website");
+						System.out.println(ms.getMessage());
+						if(ms.getMessage().equals("SubRenewed_kiosk")) {
+							msg2.setMessage("SubRenewed_kiosk");
+						}
 						client.sendToClient(msg2);
 						exception.printStackTrace();
 					} finally {
 						session.close();
+						client.sendToClient(msg2);
 					}
 					flag = true;
 					break;
@@ -428,36 +440,36 @@ public class SimpleServer extends AbstractServer {
 						session.saveOrUpdate(multisub);
 						session.flush();
 						session.getTransaction().commit();
-						Message msg2 = new Message("SubRenewed");
+						msg2.setMessage("SubRenewed_website");
+						System.out.println(ms.getMessage());
+						if(ms.getMessage().equals("SubRenewed_kiosk")) {
+							System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+							msg2.setMessage("SubRenewed_kiosk");
+						}
 						msg2.setObject1("success");
 						client.sendToClient(msg2);
 					} catch (Exception exception) {
 						if (session != null) {
 							session.getTransaction().rollback();
 						}
-						Message msg2 = new Message("SubRenewed");
+						msg2.setMessage("SubRenewed_website");
+						System.out.println(ms.getMessage());
+						if(ms.getMessage().equals("SubRenewed_kiosk")) {
+							System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+							msg2.setMessage("SubRenewed_kiosk");
+						}
 						msg2.setObject1("success");
-						client.sendToClient(msg2);
+
 						exception.printStackTrace();
 					} finally {
 						session.close();
+						client.sendToClient(msg2);
 					}
 					flag = true;
 					break;
 				}
-				printSubscribers();
 			}
-
-			// if the client is found inform him that sub is renewed
-//			if (flag) {
-//				Message MSG = new Message("SubRenewed");
-//				MSG.setObject1("success");
-//				client.sendToClient(MSG);
-//			} else {
-//				Message MSG = new Message("SubRenewed");
-//				MSG.setObject1("fail");
-//				client.sendToClient(MSG);
-//			}
+//			printSubscribers();
 		}
 		else if(ms.getMessage().equals("ParkingManager_alterPrices")) {
 			// adds a price change request to the regional manager's requests list

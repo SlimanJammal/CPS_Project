@@ -32,8 +32,17 @@ public class SimpleClient extends AbstractClient {
 			}else {
 				EventBus.getDefault().post(new loginWorkerEvent((Message) msg));
 			}
-		}else if (ms.getMessage().equals("SubRenewed")) {
-			EventBus.getDefault().post(new SubRenewEvent((Message) msg));
+		}else if (ms.getMessage().startsWith("SubRenewed")) {
+
+			System.out.println("SubRenewEvent in event bus");
+			if(ms.getMessage().endsWith(("kiosk"))) {
+				System.out.println("SubRenewEvent in event bus Kiosk");
+				EventBus.getDefault().post(new SubRenewEvent((Message) msg));
+			}else {
+				System.out.println("SubRenewEvent in event bus Website");
+				EventBus.getDefault().post(new SubRenewEventWebsite((Message) msg));
+			}
+
 		} else if (ms.getMessage().equals("pricesReturned") ||ms.getMessage().equals("prices update request sent") ) {
 			EventBus.getDefault().post(new showPricesEvent((Message) msg));
 		}else if (ms.getMessage().equals("statsReturned")) {
