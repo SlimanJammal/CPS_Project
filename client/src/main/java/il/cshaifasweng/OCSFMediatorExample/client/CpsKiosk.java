@@ -211,12 +211,15 @@ public class CpsKiosk {
     }
 
     @Subscribe
-    void setRenewSubsSuccess(SubRenewEvent event)
+   public void setRenewSubsSuccess(SubRenewEvent event)
     {
-            System.out.println("thbane");
-//        Alert alert = new Alert(Alert.AlertType.WARNING,
-//                String.format("Message: Sub renewed"));
-//        alert.show();
+//            System.out.println("thbane");
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                    "Message: Sub renewed"
+            );
+            alert.show();
+        });
     }
 
     @FXML

@@ -161,10 +161,13 @@ public class CpsWebsite {
     @Subscribe
     void setRenewSubsSuccess(SubRenewEventWebsite event)
     {
-        System.out.println("cps websiter subs");
-//        Alert alert = new Alert(Alert.AlertType.WARNING,
-//                String.format("Message: Sub renewed"));
-//        alert.show();
+//        System.out.println("cps websiter subs");
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                    "Message: Sub renewed"
+            );
+            alert.show();
+        });
     }
 
     @FXML

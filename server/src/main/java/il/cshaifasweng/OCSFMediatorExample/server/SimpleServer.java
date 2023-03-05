@@ -377,6 +377,11 @@ public class SimpleServer extends AbstractServer {
 						session.saveOrUpdate(partialSub);
 						session.flush();
 						session.getTransaction().commit();
+						msg2.setMessage("SubRenewed_website");
+						System.out.println(ms.getMessage());
+						if(ms.getMessage().equals("RenewSub_kiosk")) {
+							msg2.setMessage("SubRenewed_kiosk");
+						}
 //						Message msg2 = new Message("SubRenewed");
 
 					} catch (Exception exception) {
@@ -404,9 +409,7 @@ public class SimpleServer extends AbstractServer {
 						session.flush();
 						session.getTransaction().commit();
 						msg2.setMessage("SubRenewed_website");
-						System.out.println(ms.getMessage());
 						if(ms.getMessage().equals("SubRenewed_kiosk")) {
-							System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 							msg2.setMessage("SubRenewed_kiosk");
 						}
 						msg2.setObject1("success");
@@ -443,7 +446,6 @@ public class SimpleServer extends AbstractServer {
 						msg2.setMessage("SubRenewed_website");
 						System.out.println(ms.getMessage());
 						if(ms.getMessage().equals("SubRenewed_kiosk")) {
-							System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 							msg2.setMessage("SubRenewed_kiosk");
 						}
 						msg2.setObject1("success");
@@ -455,7 +457,6 @@ public class SimpleServer extends AbstractServer {
 						msg2.setMessage("SubRenewed_website");
 						System.out.println(ms.getMessage());
 						if(ms.getMessage().equals("SubRenewed_kiosk")) {
-							System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 							msg2.setMessage("SubRenewed_kiosk");
 						}
 						msg2.setObject1("success");
@@ -1387,7 +1388,7 @@ public class SimpleServer extends AbstractServer {
 					}
 
 					for(ParkingSpot parkingSpot : parkingSpots){
-						if(parkingSpot.getCurrentState().equals("Available")){
+						if(parkingSpot.getCurrentState().equals("empty")){
 
 							//////////////////// THIS IS IRRELEVANT FOR NOW ////////////////////////
 							// instead of getting the list from the parking lot we need to update
@@ -1395,7 +1396,7 @@ public class SimpleServer extends AbstractServer {
 							// so maybe get size and then use internal functions like getstatus and what not
 							// to get the data and update it
 							// takeSpot(cusId,Plate,Index){set spot to taken and add values }
-							parkingSpot.setCurrentState("Taken");
+							parkingSpot.setCurrentState("taken");
 							parkingSpot.setCus_ID(customerID);
 							parkingSpot.setLicesnes_Plate(licencePlate);
 							parkingLot.decNumberOfFreeSlots();
