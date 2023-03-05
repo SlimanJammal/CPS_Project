@@ -1,42 +1,226 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.AmbientLight?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkingManager">
+<Pane style="-fx-background-color: GREY;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkingManager">
    <children>
-      <Text fill="#21dc75" layoutX="260.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Text>
-      <TableView fx:id="PricesTable" layoutX="18.0" layoutY="409.0" prefHeight="200.0" prefWidth="274.0">
-         <columns>
-            <TableColumn fx:id="pricetype" prefWidth="172.0" text="Price Type" />
-            <TableColumn fx:id="price" prefWidth="101.20001220703125" text="Price" />
-         </columns>
-      </TableView>
-      <Button fx:id="showPricesBTN" layoutX="321.0" layoutY="634.0" mnemonicParsing="false" onAction="#showPrices" text="ShowPrices" />
-      <Button fx:id="ShowStatBtn" layoutX="640.0" layoutY="493.0" mnemonicParsing="false" onAction="#ShowStatBtn" prefHeight="32.0" prefWidth="95.0" text="Show Statistics" />
-      <Text layoutX="539.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875" />
-      <TextField fx:id="OcasionalTF" layoutX="79.0" layoutY="131.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" />
-      <TextField fx:id="PreOrderTF" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
-      <TextField fx:id="FullSubsTF" layoutX="79.0" layoutY="238.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" />
-      <TextField fx:id="PartTimeTF" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" />
-      <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
-      <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
-      <Text layoutX="12.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="62.32891845703131" />
-      <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
-      <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
-      <TextField fx:id="MultiTF" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
-      <Button fx:id="SubmitBtn" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#SubmitBtn" text="Submit" />
-      <Button fx:id="backbtn" layoutX="640.0" layoutY="634.0" mnemonicParsing="false" onAction="#backbtn" text="back" />
-      <TextArea fx:id="statsScreen" layoutX="534.0" layoutY="219.0" prefHeight="200.0" prefWidth="200.0" />
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="794.0">
+         <children>
+            <Text layoutX="260.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
+               <font>
+                  <Font size="32.0" />
+               </font>
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.48855989232839825">
+                           <color>
+                              <Color green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Text>
+            <TableView fx:id="PricesTable" layoutX="18.0" layoutY="366.0" prefHeight="243.0" prefWidth="274.0">
+               <columns>
+                  <TableColumn fx:id="pricetype" prefWidth="172.0" text="Price Type" />
+                  <TableColumn fx:id="price" prefWidth="101.20001220703125" text="Price" />
+               </columns>
+            </TableView>
+            <Button fx:id="showPricesBTN" layoutX="186.0" layoutY="612.0" mnemonicParsing="false" onAction="#showPrices" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="ShowPrices">
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images/money-icon-on-grey-background-coins-in-flat-style-vector-20021638.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="ShowStatBtn" layoutX="447.0" layoutY="577.0" mnemonicParsing="false" onAction="#ShowStatBtn" prefHeight="32.0" prefWidth="133.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="Show Statistics">
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images/marketi-report-statistic-icon-13.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Text layoutX="373.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.48855989232839825">
+                           <color>
+                              <Color red="0.17640000581741333" green="0.817852258682251" blue="0.9800000190734863" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Text>
+            <TextField fx:id="OcasionalTF" layoutX="99.0" layoutY="90.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
+            <TextField fx:id="PreOrderTF" layoutX="99.0" layoutY="129.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
+            <TextField fx:id="FullSubsTF" layoutX="99.0" layoutY="220.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
+            <TextField fx:id="PartTimeTF" layoutX="99.0" layoutY="170.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
+            <Text layoutX="34.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.48855989232839825">
+                           <color>
+                              <Color green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Text>
+            <Text layoutX="36.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.48855989232839825">
+                           <color>
+                              <Color green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Text>
+            <Text layoutX="23.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="75.59999999999985">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.48855989232839825">
+                           <color>
+                              <Color green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Text>
+            <Text layoutX="24.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.48855989232839825">
+                           <color>
+                              <Color green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Text>
+            <Text layoutX="34.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.48855989232839825">
+                           <color>
+                              <Color green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Text>
+            <TextField fx:id="MultiTF" layoutX="99.0" layoutY="264.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
+            <Button fx:id="SubmitBtn" layoutX="128.0" layoutY="306.0" mnemonicParsing="false" onAction="#SubmitBtn" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="Submit" />
+            <Button fx:id="backbtn" layoutX="640.0" layoutY="634.0" mnemonicParsing="false" onAction="#backbtn" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="back" />
+            <TextArea fx:id="statsScreen" layoutX="380.0" layoutY="377.0" prefHeight="200.0" prefWidth="200.0" promptText="NO STATS TO SHOW" />
+            <AmbientLight color="CHARTREUSE" layoutX="495.0" layoutY="185.0" lightOn="true" />
+            <ImageView fitHeight="135.0" fitWidth="230.0" layoutX="260.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</Pane>

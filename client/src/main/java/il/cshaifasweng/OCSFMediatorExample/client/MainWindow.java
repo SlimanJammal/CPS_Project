@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import org.greenrobot.eventbus.EventBus;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
@@ -34,6 +33,8 @@ public class MainWindow {
     @FXML
     void play(ActionEvent event)
     {
+
+
         setRotate(green,true,360,10);
         setRotate(red,true,360,10);
     }
@@ -58,6 +59,7 @@ public class MainWindow {
 
     @FXML
     private MenuItem HanamalItem1;
+
 
 
 
