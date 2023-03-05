@@ -9,10 +9,13 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="411.0" prefWidth="352.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RegisterNewSubscription">
+<AnchorPane prefHeight="411.0" prefWidth="352.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RegisterNewSubscription">
    <children>
       <Text fill="BLUE" layoutX="39.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register New Subscription" wrappingWidth="298.21630859375">
          <font>
@@ -21,7 +24,7 @@
       </Text>
       <AnchorPane layoutX="14.0" layoutY="22.0" prefHeight="380.0" prefWidth="323.0">
          <children>
-            <TextField fx:id="CustomerIdTF" layoutX="54.0" layoutY="108.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="166.0" promptText="Customer ID" />
+            <TextField fx:id="CustomerIdTF" layoutX="54.0" layoutY="108.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="166.0" promptText="Customer ID" style="-fx-font-style: blue;" />
             <TextField fx:id="EntranceHourTF" layoutX="54.0" layoutY="187.0" onAction="#OnEntranceHourTF" prefHeight="26.0" prefWidth="82.0" promptText="HH:MM" />
             <TextField fx:id="CarNumberTF" layoutX="53.0" layoutY="310.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="166.0" promptText="Car Number" />
             <TextField fx:id="RegularParkingTF" layoutX="47.0" layoutY="271.0" onAction="#RegularParkingTF" prefHeight="26.0" prefWidth="166.0" promptText="Parking ID" />
@@ -42,16 +45,64 @@
                <toggleGroup>
                   <ToggleGroup fx:id="SubscriptionType" />
                </toggleGroup>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.8578947186470032" green="0.1270955204963684" blue="0.1270955204963684" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
             </RadioButton>
             <RadioButton fx:id="Radio2" layoutX="152.0" layoutY="63.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Multi Monthly Subscription" toggleGroup="$SubscriptionType">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.9210526347160339" green="0.08528265357017517" blue="0.08528265357017517" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
             </RadioButton>
             <RadioButton fx:id="Radio3" layoutX="152.0" layoutY="84.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Fully Subscription" toggleGroup="$SubscriptionType">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.9105263352394104" green="0.08768031001091003" blue="0.08768031001091003" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
             </RadioButton>
             <ImageView fitHeight="36.0" fitWidth="82.0" layoutX="5.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
                <image>

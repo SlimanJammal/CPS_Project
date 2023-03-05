@@ -181,7 +181,7 @@ public class CpsWebsite {
     @FXML
     void checkReservBtn(ActionEvent event) throws IOException {
         DataSingleton data = DataSingleton.getInstance();
-        data.setCaller("cpsKiosk");
+        data.setCaller("cpsWebsite");
         App.setRoot("CheckReservation");//todo check reservation window
     }
 

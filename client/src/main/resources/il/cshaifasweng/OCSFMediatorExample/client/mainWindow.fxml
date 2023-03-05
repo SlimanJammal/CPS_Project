@@ -16,7 +16,7 @@
 
 <Pane style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MainWindow">
    <children>
-      <AnchorPane layoutY="-6.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="486.0" prefWidth="526.0">
+      <AnchorPane layoutY="-6.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="335.0" prefWidth="526.0">
          <children>
             <Button fx:id="WebsiteBtn" layoutX="52.0" layoutY="243.0" mnemonicParsing="false" onAction="#WebsiteBtn" prefHeight="26.0" prefWidth="97.0" style="-fx-background-color: #000000; -fx-border-color: #8A2BE2; -fx-border-width: 3;" text="Website" textFill="BLUEVIOLET">
                <font>

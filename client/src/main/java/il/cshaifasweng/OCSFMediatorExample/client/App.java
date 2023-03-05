@@ -29,6 +29,7 @@ public class App extends Application {
     	client.openConnection();
         scene = new Scene(loadFXML("mainWindow"),800,800);
         STAGE = stage;
+//        STAGE.setResizable(false);
         STAGE.setScene(scene);
 //        scene.getStylesheets().add("MainWndowstyling.css");
         STAGE.show();

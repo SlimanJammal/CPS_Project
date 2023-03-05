@@ -9,20 +9,20 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="288.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CheckReservation">
+<AnchorPane prefHeight="288.0" prefWidth="448.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CheckReservation">
    <children>
-      <Text layoutX="97.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check Reservation Status" wrappingWidth="254.21630859375">
+      <Text fill="#17d54a" layoutX="97.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check Reservation Status" wrappingWidth="254.21630859375">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="IdTf" layoutX="45.0" layoutY="91.0" prefHeight="25.0" prefWidth="223.0" promptText="enter your id number here" />
-      <Button fx:id="SubmitBtn" layoutX="45.0" layoutY="221.0" mnemonicParsing="false" onAction="#SubmitBtn" text="Submit" />
-      <Button fx:id="BackBtn" layoutX="378.0" layoutY="221.0" mnemonicParsing="false" onAction="#BackBtn" text="Back" />
-      <TextArea fx:id="screenTf" layoutX="271.0" layoutY="91.0" prefHeight="100.0" prefWidth="160.0" promptText="Please write your information to get your Preorder's Status" />
+      <TextField fx:id="IdTf" layoutX="45.0" layoutY="91.0" prefHeight="25.0" prefWidth="223.0" promptText="enter your id number here" style="-fx-background-color: blue;" />
+      <Button fx:id="SubmitBtn" layoutX="45.0" layoutY="221.0" mnemonicParsing="false" onAction="#SubmitBtn" text="Submit" textFill="#44bf17" />
+      <Button fx:id="BackBtn" layoutX="378.0" layoutY="221.0" mnemonicParsing="false" onAction="#BackBtn" text="Back" textFill="#184cf0" textOverrun="WORD_ELLIPSIS" />
+      <TextArea fx:id="screenTf" layoutX="271.0" layoutY="91.0" prefHeight="100.0" prefWidth="160.0" promptText="Please write your information to get your Preorder's Status" style="-fx-background-color: blue;" />
       <AnchorPane layoutX="17.0" layoutY="126.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="44.0" prefWidth="280.0">
          <children>
-            <RadioButton fx:id="Radio1" layoutX="36.0" layoutY="-7.0" mnemonicParsing="false" onAction="#OnRadioButton" selected="true" text="German Colony">
+            <RadioButton fx:id="Radio1" layoutX="36.0" layoutY="-7.0" mnemonicParsing="false" onAction="#OnRadioButton" selected="true" text="German Colony" textFill="#b40d0d">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
@@ -30,12 +30,12 @@
                   <ToggleGroup fx:id="parkingName" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="Radio2" layoutX="36.0" layoutY="15.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Hanmal" toggleGroup="$parkingName">
+            <RadioButton fx:id="Radio2" layoutX="36.0" layoutY="15.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Hanmal" textFill="#df1212" toggleGroup="$parkingName">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="Radio3" layoutX="36.0" layoutY="36.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Bat-Galim" toggleGroup="$parkingName">
+            <RadioButton fx:id="Radio3" layoutX="36.0" layoutY="36.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Bat-Galim" textFill="#ebb915" toggleGroup="$parkingName">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
