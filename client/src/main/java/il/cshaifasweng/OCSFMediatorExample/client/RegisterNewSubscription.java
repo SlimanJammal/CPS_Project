@@ -251,4 +251,6 @@ public class RegisterNewSubscription {
         return true;
     }
 
+    public void OnStartingDate(ActionEvent event) {
+    }
 }

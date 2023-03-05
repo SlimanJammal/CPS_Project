@@ -9,6 +9,8 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
@@ -40,7 +42,14 @@
                            </font>
                         </Text>
                         <Text layoutX="631.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request:" />
-                        <AnchorPane layoutX="168.0" layoutY="540.0" prefHeight="200.0" prefWidth="463.0" />
+                        <AnchorPane layoutX="168.0" layoutY="540.0" prefHeight="200.0" prefWidth="463.0">
+                           <children>
+                              <ImageView fitHeight="166.0" fitWidth="340.0" layoutX="-165.0" layoutY="-58.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
+                                 </image>
+                              </ImageView>
+                           </children></AnchorPane>
                         <TableView fx:id="RequestsTable" layoutX="27.0" layoutY="107.0" prefHeight="200.0" prefWidth="437.0">
                            <columns>
                               <TableColumn fx:id="NumberColMainWin" prefWidth="75.0" text="Number" />
@@ -86,6 +95,11 @@
                               <TextField fx:id="MultiTF" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBTN1" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit1" text="Submit" />
                               <TextArea fx:id="SCREEN1" layoutX="513.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" />
+                              <ImageView fitHeight="135.0" fitWidth="230.0" layoutX="230.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                      </children>
@@ -124,6 +138,11 @@
                               <TextField fx:id="MultiTF1" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBtn2" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit2" text="Submit" textFill="#0fd5d8" />
                               <TextArea fx:id="SCREEN2" layoutX="513.0" layoutY="177.0" prefHeight="200.0" prefWidth="200.0" />
+                              <ImageView fitHeight="135.0" fitWidth="230.0" layoutX="221.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                      </children>
@@ -242,6 +261,11 @@
                               <TextField fx:id="MultiTF2" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBtn3" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit3" text="Submit" />
                               <TextArea fx:id="SCREEN3" layoutX="513.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" />
+                              <ImageView fitHeight="135.0" fitWidth="230.0" layoutX="217.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                      </children>
