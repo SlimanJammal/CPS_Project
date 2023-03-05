@@ -338,12 +338,12 @@ public class SimpleServer extends AbstractServer {
 			Message msg1 = tryLogIn(data);
 			User user1 = (User) msg1.getObject1();
 			int permission_check = user1.getPermission();
-			if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 2 ){
+			if(msg1.getMessage().equals("tryLogin_UserFound") && (permission_check == 2 || permission_check == 3) ){
 				//parking worker
 				MSG.setObject1("success");
 				MSG.setObject2(msg1.getObject1()); // return User
 				MSG.setObject3(permission_check);
-			}else {
+			} else{
 				MSG.setObject1("fail");
 			}
 
@@ -1063,6 +1063,22 @@ public class SimpleServer extends AbstractServer {
 
 
 
+		}else if(ms.getMessage().startsWith("cs_")) {
+			Message msg45 = new Message("cs_");
+
+			if(ms.getMessage().endsWith("accept")){
+
+				msg45 = complaintUpdate(msg45,"accept");
+
+			}else if(ms.getMessage().endsWith("decline")){
+				msg45 = complaintUpdate(msg45,"decline");
+
+			}else {
+				//todo refresh complaints
+			}
+
+			client.sendToClient(msg45);
+
 		}else if(ms.getMessage().equals("EnterParking4")){
 			SessionFactory sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
@@ -1298,6 +1314,45 @@ public class SimpleServer extends AbstractServer {
 			client.sendToClient(msg69);
 		}
 
+	}
+
+	private Message complaintUpdate(Message msg45, String status) {
+		Message ms = new Message("cs");
+
+		try{
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			CriteriaBuilder builder1 = session.getCriteriaBuilder();
+			CriteriaQuery<Complaint> query1 = builder1.createQuery(Complaint.class);
+			query1.from(Complaint.class);
+			List<Complaint> complaints  = session.createQuery(query1).getResultList();
+			int complaint_id = (Integer)msg45.getObject1();
+			for (Complaint complaint : complaints){
+				if(complaint.getComplaintId_() == complaint_id){
+					session.delete(complaint);
+					session.flush();
+					complaints.remove(complaint);
+					if(msg45.getMessage().endsWith("accept")){
+						ms = new Message("cs_accept");
+					}else {
+						ms = new Message("cs_decline");
+					}
+				}
+			}
+			ms.setObject2(complaints);
+			session.getTransaction().commit();
+
+
+
+		}catch(Exception e){
+			if(session != null)
+				session.getTransaction().rollback();
+			e.printStackTrace();
+		}
+		session.close();
+		return ms;
 	}
 
 	private Message CheckReservationStatus(Message ms) {
@@ -2530,6 +2585,26 @@ public class SimpleServer extends AbstractServer {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		}
+	}
+
+
+
+	public static void addCustomerServiceEmployee( ) {
+		// 1 customer service employee
+		int index = 1;
+		try {
+			for(int i =0 ; i < index; i++) {
+				User customerServiceEmployee = new CustomerServiceWorker("cs"+Integer.toString(i),"123"+Integer.toString(i),"worker"+Integer.toString(i),"fam"+Integer.toString(i),3);
+				SessionFactory sessionFactory = getSessionFactory();
+				session = sessionFactory.openSession();
+				session.beginTransaction();
+				session.save(customerServiceEmployee);
+				session.getTransaction().commit();
+			}
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		session.close();
 	}
 
 

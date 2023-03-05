@@ -43,4 +43,8 @@ public class Complaint implements Serializable {
     public void setComplaintText(String complaintText) {
         this.complaintText = complaintText;
     }
+
+    public int getComplaintId_() {
+        return ComplaintId_;
+    }
 }

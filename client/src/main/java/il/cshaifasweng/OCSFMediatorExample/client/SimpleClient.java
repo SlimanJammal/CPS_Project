@@ -73,6 +73,9 @@ public class SimpleClient extends AbstractClient {
 		} else if(ms.getMessage().equals("Employee_return")){
 			EventBus.getDefault().post(new EmployeeWindowEvent((Message) msg));
 
+		}else if(ms.getMessage().startsWith("cs")){
+			EventBus.getDefault().post(new CustomerServiceEvent((Message) msg));
+
 		}
 
 

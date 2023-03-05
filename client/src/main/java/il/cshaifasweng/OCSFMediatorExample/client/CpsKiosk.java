@@ -96,17 +96,27 @@ public class CpsKiosk {
 
         System.out.println("Allow Worker");
         System.out.println(allowing.getMsg().getObject1());
-
-        if(allowing.getMsg().getObject1().toString().equals("success")) {
+        int perm_lvl =  (Integer) allowing.getMsg().getObject3();
+        if(allowing.getMsg().getObject1().toString().equals("success") && perm_lvl == 2) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
             il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject2();
             data.setData(parkingWorker.getUserID());
 
             data.setCaller("cpsKiosk");
-            System.out.println("aere wsl set root ");
+
             App.setRoot("EmployeeWindow");
-        } else {
+        } else if(allowing.getMsg().getObject1().toString().equals("success") && perm_lvl == 3){
+            DataSingleton data = DataSingleton.getInstance();
+            data.setDataName("CustomerService");
+            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject2();
+            data.setData(parkingWorker.getUserID());
+
+            data.setCaller("cpsKiosk");
+
+            App.setRoot("CustomerService");
+
+        }else {
             ID_LOGIN_TF.setText("access denied");
             PW_LOGIN_TF.clear();
 
@@ -221,6 +231,7 @@ public class CpsKiosk {
             alert.show();
         });
     }
+
 
     @FXML
     void ReserveParkingBtn(ActionEvent event) throws IOException {

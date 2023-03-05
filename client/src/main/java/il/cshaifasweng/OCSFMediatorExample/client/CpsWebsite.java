@@ -130,7 +130,9 @@ public class CpsWebsite {
     }
     @Subscribe
     public void allowWorker(loginWorkerWebsiteEvent allowing) throws IOException {
-        if (allowing.getMsg().getObject1().toString().equals("success")) {
+        int perm_lvl = (Integer) allowing.getMsg().getObject3();
+
+        if (allowing.getMsg().getObject1().toString().equals("success") && perm_lvl == 2) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
             il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject2();
@@ -138,6 +140,16 @@ public class CpsWebsite {
 
             data.setCaller("cpsWebsite");
             App.setRoot("EmployeeWindow");
+        } else if(allowing.getMsg().getObject1().toString().equals("success") && perm_lvl == 3){
+            DataSingleton data = DataSingleton.getInstance();
+            data.setDataName("CustomerService");
+            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject2();
+            data.setData(parkingWorker.getUserID());
+
+            data.setCaller("cpsWebsite");
+
+            App.setRoot("CustomerService");
+
         } else {
 
             ID_LOGIN_TF.setText("access denied");
@@ -159,7 +171,7 @@ public class CpsWebsite {
         SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
-    void setRenewSubsSuccess(SubRenewEventWebsite event)
+   public void setRenewSubsSuccess(SubRenewEventWebsite event)
     {
 //        System.out.println("cps websiter subs");
         Platform.runLater(() -> {
