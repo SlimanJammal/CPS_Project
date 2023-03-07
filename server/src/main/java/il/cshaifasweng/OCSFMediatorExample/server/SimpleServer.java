@@ -59,6 +59,7 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(PricesUpdateRequest.class);
 		configuration.addAnnotatedClass(Subscriber.class);
 		configuration.addAnnotatedClass(Subscription.class);
+		configuration.addAnnotatedClass(CustomerServiceWorker.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -609,20 +610,23 @@ public class SimpleServer extends AbstractServer {
 			// each complaint contains two fields
 			// 1- customer ID
 			// 2- the complaint text
-			// bruv u gud ? -> no im not gud im god
+
 
 			Comp tempComplaint = (Comp) ms.getObject1();
 			Complaint new_complaint = new Complaint();
 			new_complaint.setComplaintText(tempComplaint.getComplaintText());
 			new_complaint.setCustomerId_(Integer.parseInt(tempComplaint.getCustomerId()));
-
-			session = getSessionFactory().openSession();
-			session.beginTransaction();
-			session.save(tempComplaint);
-			Message msg2 = new Message("Complaint received successfully!");
-			client.sendToClient(msg2);
-			session.flush();
-			session.getTransaction().commit();
+			try {
+				session = getSessionFactory().openSession();
+				session.beginTransaction();
+				session.save(new_complaint);
+				Message msg2 = new Message("Complaint received successfully!");
+				client.sendToClient(msg2);
+				session.flush();
+				session.getTransaction().commit();
+			}catch (Exception e){
+				e.printStackTrace();
+			}
 			session.close();
 
 			// useless code to check if things work
@@ -1065,6 +1069,7 @@ public class SimpleServer extends AbstractServer {
 
 		}else if(ms.getMessage().startsWith("cs_")) {
 			Message msg45 = new Message("cs_");
+			msg45.setObject1(ms.getObject1());
 
 			if(ms.getMessage().endsWith("accept")){
 
@@ -1074,7 +1079,7 @@ public class SimpleServer extends AbstractServer {
 				msg45 = complaintUpdate(msg45,"decline");
 
 			}else {
-				//todo refresh complaints
+				msg45 = complaintUpdate(msg45,"refresh");
 			}
 
 			client.sendToClient(msg45);
@@ -1328,18 +1333,26 @@ public class SimpleServer extends AbstractServer {
 			CriteriaQuery<Complaint> query1 = builder1.createQuery(Complaint.class);
 			query1.from(Complaint.class);
 			List<Complaint> complaints  = session.createQuery(query1).getResultList();
-			int complaint_id = (Integer)msg45.getObject1();
-			for (Complaint complaint : complaints){
-				if(complaint.getComplaintId_() == complaint_id){
-					session.delete(complaint);
-					session.flush();
-					complaints.remove(complaint);
-					if(msg45.getMessage().endsWith("accept")){
-						ms = new Message("cs_accept");
-					}else {
-						ms = new Message("cs_decline");
+			if(!status.equals("refresh")) {
+				int complaint_id =  Integer.parseInt((String) msg45.getObject1());
+				for (Complaint complaint : complaints) {
+					if (complaint.getComplaintId_() == complaint_id) {
+						session.delete(complaint);
+						session.flush();
+						complaints.remove(complaint);
+						if (msg45.getMessage().endsWith("accept")) {
+							ms = new Message("cs_accept");
+						} else {
+							ms = new Message("cs_decline");
+						}
 					}
 				}
+			}
+
+			for(Complaint a :  complaints){
+				System.out.println("complaint- " +a.getComplaintId_());
+				System.out.println("text- " +a.getComplaintText());
+				System.out.println("\n\n\n");
 			}
 			ms.setObject2(complaints);
 			session.getTransaction().commit();
@@ -1352,6 +1365,7 @@ public class SimpleServer extends AbstractServer {
 			e.printStackTrace();
 		}
 		session.close();
+
 		return ms;
 	}
 

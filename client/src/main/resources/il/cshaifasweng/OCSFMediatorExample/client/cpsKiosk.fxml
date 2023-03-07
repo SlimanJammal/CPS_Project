@@ -17,7 +17,7 @@
 
 <Pane style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CpsKiosk">
    <children>
-      <AnchorPane layoutX="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="615.0">
+      <AnchorPane layoutX="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="668.0">
          <children>
             <AnchorPane layoutX="16.0" layoutY="90.0" prefHeight="62.0" prefWidth="568.0">
                <children>
@@ -301,6 +301,44 @@
                   <Image url="@images/images/depositphotos_410809358-stock-video-glowing-neon-line-remove-shopping.jpg" />
                </image>
             </ImageView>
+            <Button fx:id="complaintBTN" layoutX="525.0" layoutY="463.0" mnemonicParsing="false" onAction="#complaintBTNa" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Complaint Submit">
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.9629629850387573" green="1.0" blue="0.9629629850387573" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.006729475100942127">
+                           <color>
+                              <Color red="0.9629629850387573" green="1.0" blue="0.9629629850387573" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.2775038571381674">
+                           <color>
+                              <Color red="0.4748538136482239" green="0.9157894849777222" blue="0.4748538136482239" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.4878048780487805">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.7563930013458948">
+                           <color>
+                              <Color red="0.30588236451148987" green="0.8941176533699036" blue="0.30588236451148987" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+            </Button>
          </children>
          <effect>
             <InnerShadow>

@@ -12,6 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
@@ -100,7 +101,7 @@ public class CustomerService {
     public void handelstuff(CustomerServiceEvent event){
         System.out.println("back to customer service client");
 
-        List<Complaint> Complaints = (List<Complaint>)event.getMessage().getObject1();
+        List<Complaint> Complaints = (List<Complaint>)event.getMessage().getObject2();
 
         List<PriceRequest> list2 = new ArrayList<>();
 
@@ -115,5 +116,13 @@ public class CustomerService {
         RequestCol.setCellValueFactory(new PropertyValueFactory<PriceRequest,String>("Request"));
         RequestsTable.setItems(list);
     }
+
+
+    @FXML
+    void initialize() {
+        EventBus.getDefault().register(this);
+
+    }
+
 
 }

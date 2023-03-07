@@ -13,8 +13,8 @@ public abstract class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Customersid;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ComplaintId_")
-    List<Complaint> complaintsVector;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ComplaintId_")
+//    List<Complaint> complaintsVector;
 
     public int getId_() {
         return Customersid;

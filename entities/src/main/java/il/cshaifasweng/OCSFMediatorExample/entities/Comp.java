@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Comp implements Serializable {
     String  customerId;
     String  complaintText;
+    String mail;
 
     public Comp(String Id, String Text){
         this.customerId = Id;

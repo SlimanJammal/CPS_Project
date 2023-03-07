@@ -22,7 +22,7 @@
                <children>
                   <AnchorPane layoutX="16.0" layoutY="90.0" prefHeight="62.0" prefWidth="568.0">
                      <children>
-                        <Button fx:id="ReserveParkingBtn" layoutX="79.0" layoutY="17.0" mnemonicParsing="false" onAction="#ReserveParkingBtn" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Reserve Parking">
+                        <Button fx:id="ReserveParkingBtn" layoutX="135.0" layoutY="17.0" mnemonicParsing="false" onAction="#ReserveParkingBtn" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Reserve Parking">
                            <textFill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -60,7 +60,7 @@
                               </LinearGradient>
                            </textFill>
                         </Button>
-                        <Button fx:id="checkReservBtn" layoutX="225.0" layoutY="17.0" mnemonicParsing="false" onAction="#checkReservBtn" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Check-Reservation">
+                        <Button fx:id="checkReservBtn" layoutX="256.0" layoutY="17.0" mnemonicParsing="false" onAction="#checkReservBtn" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Check-Reservation">
                            <textFill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -99,6 +99,44 @@
                            </textFill>
                         </Button>
                         <Button fx:id="createNewSubsBtn" layoutX="386.0" layoutY="17.0" mnemonicParsing="false" onAction="#createNewSubsBtn" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Create New Subscription">
+                           <textFill>
+                              <LinearGradient endX="1.0" endY="1.0">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.9629629850387573" green="1.0" blue="0.9629629850387573" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.006729475100942127">
+                                       <color>
+                                          <Color red="0.9629629850387573" green="1.0" blue="0.9629629850387573" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.2775038571381674">
+                                       <color>
+                                          <Color red="0.4748538136482239" green="0.9157894849777222" blue="0.4748538136482239" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.4878048780487805">
+                                       <color>
+                                          <Color red="1.0" green="1.0" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.7563930013458948">
+                                       <color>
+                                          <Color red="0.30588236451148987" green="0.8941176533699036" blue="0.30588236451148987" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="1.0" green="1.0" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </textFill>
+                        </Button>
+                        <Button fx:id="complaintBTN" layoutX="-11.0" layoutY="17.0" mnemonicParsing="false" onAction="#complaintBTNa" style="-fx-background-color: #000000; -fx-border-color: #4ee44e;" text="Submit A Complaint">
                            <textFill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>

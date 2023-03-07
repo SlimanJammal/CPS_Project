@@ -21,6 +21,8 @@ public class CpsKiosk {
 
     @FXML // fx:id="CustomerBtn"
     private Button CustomerBtn; // Value injected by FXMLLoader
+    @FXML
+    private Button complaintBTN;
 
     @FXML // fx:id="EnterParkingBTN"
     private Button EnterParkingBTN; // Value injected by FXMLLoader
@@ -83,6 +85,16 @@ public class CpsKiosk {
     @FXML
     void LICENSE_LOGIN_TF(ActionEvent event) {
 
+    }
+    @FXML
+    void complaintBTNa(ActionEvent event) {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsKiosk");
+        try {
+            App.setRoot("ComplaintSubmittion");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     void WorkerBtn(ActionEvent event) throws IOException {

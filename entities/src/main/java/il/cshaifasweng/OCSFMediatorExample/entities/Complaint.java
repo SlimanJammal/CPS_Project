@@ -14,6 +14,7 @@ public class Complaint implements Serializable {
     int ComplaintId_;
 //    @NotNull
     boolean Entered_;
+    String mail;
 
 
     int customerId_;

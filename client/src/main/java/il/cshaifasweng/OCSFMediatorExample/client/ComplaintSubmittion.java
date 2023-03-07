@@ -16,6 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class ComplaintSubmittion {
 
@@ -72,9 +73,17 @@ public class ComplaintSubmittion {
     public void complaintHandleFromServer(ComplaintEvent event){
 
         Message msg = event.getMessage();
-        Alert alert = new Alert(Alert.AlertType.WARNING,
-                msg.getMessage());
-        alert.show();
+//        Alert alert = new Alert(Alert.AlertType.WARNING,
+//                msg.getMessage());
+//        alert.show();
+        ComplaintTA.setText("complaint sent");
+        try {
+            TimeUnit.SECONDS.sleep(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ComplaintTA.clear();
+
     }
     @FXML
     void initialize() {

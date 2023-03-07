@@ -22,6 +22,9 @@ public class CpsWebsite {
     @FXML
     private Button backbtn;
 
+    @FXML
+    private Button complaintBTN;
+
     @FXML // fx:id="CustomerBtn"
     private Button CustomerBtn; // Value injected by FXMLLoader
 
@@ -79,6 +82,18 @@ public class CpsWebsite {
         msg.setPassword(PW_LOGIN_TF.getText());
 
         SimpleClient.getClient().sendToServer(msg);
+    }
+
+
+    @FXML
+    void complaintBTNa(ActionEvent event) {
+        DataSingleton data = DataSingleton.getInstance();
+        data.setCaller("cpsWebsite");
+        try {
+            App.setRoot("ComplaintSubmittion");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @Subscribe
     public void allowManager(loginManagerWebsitekEvent allowing) throws IOException {
@@ -143,8 +158,8 @@ public class CpsWebsite {
         } else if(allowing.getMsg().getObject1().toString().equals("success") && perm_lvl == 3){
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("CustomerService");
-            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject2();
-            data.setData(parkingWorker.getUserID());
+            il.cshaifasweng.OCSFMediatorExample.entities.CustomerServiceWorker CustomerServiceWorkerz = (il.cshaifasweng.OCSFMediatorExample.entities.CustomerServiceWorker) allowing.getMsg().getObject2();
+            data.setData(CustomerServiceWorkerz.getUserID());
 
             data.setCaller("cpsWebsite");
 
