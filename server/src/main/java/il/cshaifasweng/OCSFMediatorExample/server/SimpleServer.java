@@ -1391,9 +1391,10 @@ public class SimpleServer extends AbstractServer {
 		}
 
 		for(PreOrder preOrder:preOrders){
+			System.out.println("preorder -"+preOrder.getPreOrderId());
 			if(preOrder.getPreOrderId().equals(customerId) && preOrder.getParking_lot_id() == parking_id){
 				Message msg = new Message("checkReservation");
-				msg.setObject1("Your order is confirmed ");
+				msg.setObject1("Your order is confirmed, See you "+preOrder.getEntranceDate());
 
 				return  msg;
 			}

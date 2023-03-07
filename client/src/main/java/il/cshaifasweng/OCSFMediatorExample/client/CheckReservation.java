@@ -65,7 +65,7 @@ public class CheckReservation {
         }
 
         IdTf.clear();
-        ParkingNameTf.clear();
+//        ParkingNameTf.clear();
 
         try
         {
