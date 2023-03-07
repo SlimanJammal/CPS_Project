@@ -1122,7 +1122,7 @@ public class SimpleServer extends AbstractServer {
 
 				returnMsg.setObject1("Subscription not found");
 			}else{
-				if(EnterCar(parkingLotName,subNumber,CarNumber)){
+				if(EnterCar(parkingLotName,subNumber,CarNumber,false)){
 					returnMsg.setObject1("Car Entered Successfully");
 				}else{
 					returnMsg.setObject1("Unable to Enter Car");
@@ -1412,7 +1412,7 @@ public class SimpleServer extends AbstractServer {
 .MMMMM..MMMMM..MMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
 ..........................................................................................................................*/
 
-	private boolean EnterCar(String parkingName,String customerID,String licencePlate){
+	private boolean EnterCar(String parkingName,String customerID,String licencePlate, boolean isOccasional){
 
 		SessionFactory sessionFactory = getSessionFactory();
 		session = sessionFactory.openSession();
@@ -1455,6 +1455,7 @@ public class SimpleServer extends AbstractServer {
 							parkingSpot.setCus_ID(customerID);
 							parkingSpot.setLicesnes_Plate(licencePlate);
 							parkingLot.decNumberOfFreeSlots();
+							parkingSpot.setOccasional(isOccasional);
 
 							parkingLot.setSpotsList(parkingSpots);
 							try {
@@ -2593,14 +2594,15 @@ public class SimpleServer extends AbstractServer {
 		// 1 customer service employee
 		int index = 1;
 		try {
-			for(int i =0 ; i < index; i++) {
-				User customerServiceEmployee = new CustomerServiceWorker("cs"+Integer.toString(i),"123"+Integer.toString(i),"worker"+Integer.toString(i),"fam"+Integer.toString(i),3);
+				System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+				User customerServiceEmployee = new CustomerServiceWorker("cs","123","jack","fam",3);
 				SessionFactory sessionFactory = getSessionFactory();
 				session = sessionFactory.openSession();
 				session.beginTransaction();
+			System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
 				session.save(customerServiceEmployee);
 				session.getTransaction().commit();
-			}
+			System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		}
@@ -2856,5 +2858,22 @@ public class SimpleServer extends AbstractServer {
 			E.printStackTrace();
 		}
 
+	}
+
+	int removeCarFromParking(String carNumber,String parkingLotName){
+		SessionFactory sessionFactory = getSessionFactory();
+		session = sessionFactory.openSession();
+		session.beginTransaction();
+		List<ParkingLot> parkingLots = getAll(ParkingLot.class);
+		for (ParkingLot parkingLot : parkingLots){
+			if(parkingLot.getName().equals(parkingLotName)){
+
+				int price = parkingLot.findAndCalcPrice(carNumber);
+				parkingLot.removeCar(carNumber);
+				return price;
+			}
+		}
+
+		return -1;
 	}
 }

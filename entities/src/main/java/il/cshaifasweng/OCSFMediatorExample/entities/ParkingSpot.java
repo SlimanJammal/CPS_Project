@@ -4,6 +4,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,6 +31,7 @@ public class ParkingSpot  implements Serializable {
     }
 
     LocalDateTime ExitDate;
+    LocalDateTime EntryDate;
     public String getCus_ID() {
         return Cus_ID;
     }
@@ -52,6 +54,16 @@ public class ParkingSpot  implements Serializable {
 
     String CurrentState;
 
+    public boolean isOccasional() {
+        return isOccasional;
+    }
+
+    public void setOccasional(boolean occasional) {
+        isOccasional = occasional;
+    }
+
+    boolean isOccasional;
+
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "id")
 //    private ParkingLot parkingLot;
@@ -70,12 +82,25 @@ public class ParkingSpot  implements Serializable {
         CurrentState = state;
         parking_lot_id  = thispark;
         parkingLot = parkingLot_;
+        EntryDate = LocalDateTime.now();
 
+    }
+
+    public void resetEntryDate(){
+        EntryDate = LocalDateTime.now();
     }
 
 
     public ParkingSpot() {
 
+    }
+
+
+
+    void reset(){
+        this.CurrentState = "empty";
+        this.Licesnes_Plate = "";
+        this.Cus_ID = "";
     }
 
     public int getSpotId_() {

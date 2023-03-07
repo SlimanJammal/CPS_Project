@@ -3,6 +3,8 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +116,34 @@ public class ParkingLot implements Serializable{
             return false;
         }
         else return true;
+    }
+    public boolean removeCar(String carNum){
+        for(ParkingSpot parkingSpot : Spots){
+            if(parkingSpot.Licesnes_Plate.equals(carNum)){
+                parkingSpot.reset();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // return value is -1 if car doesnt exist
+    public int findAndCalcPrice(String carNum){
+        for (ParkingSpot parkingSpot : Spots ){
+            if  (parkingSpot.Licesnes_Plate.equals(carNum)){
+                if (parkingSpot.isOccasional()){
+                    int hours = LocalDateTime.now().getHour() - parkingSpot.ExitDate.getHour();
+                    if(hours < 0 ){
+                        // todo fix this 24 thingy
+                        return (hours+24) *occasionalPrice.getPrice();
+                    }else{
+                        return hours * occasionalPrice.getPrice();
+                    }
+                }
+                return 0;
+            }
+        }
+        return -1;
     }
 
     public ParkingLot(String name_,int width_, int dims, boolean isFull)
