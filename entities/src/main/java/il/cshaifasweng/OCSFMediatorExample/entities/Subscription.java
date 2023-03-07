@@ -25,4 +25,10 @@ public abstract class Subscription implements Serializable {
     public int getId_() {
         return Subscriptionssssubsid_;
     }
+
+    boolean mail_sent;
+
+    public boolean isMail_sent() {
+        return mail_sent;
+    }
 }

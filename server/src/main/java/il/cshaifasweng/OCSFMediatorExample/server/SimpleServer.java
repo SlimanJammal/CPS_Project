@@ -78,7 +78,6 @@ public class SimpleServer extends AbstractServer {
 
 
 
-
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException { //
 		String msgString = msg.toString();
@@ -2862,8 +2861,9 @@ public class SimpleServer extends AbstractServer {
 				System.out.println("order time = "+a.getEntranceTime());
 				System.out.println("now date = "+now_date);
 				System.out.println("now time = "+now_time);
-				if ( now_date.isEqual(a.getEntranceDate())  && Duration.between(now_time,a.getEntranceTime()).toHours() < 1) {
+				if ( now_date.isEqual(a.getEntranceDate())  && Duration.between(now_time,a.getEntranceTime()).toHours() < 1 && !a.isIs_reminded()) {
 					EmailSender.sendEmail(a.getEmail_(),"Haifa Parkings","Dear Sir, \n"+"this is a reminder for your preOrder parking in "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.");
+					a.setIs_reminded(true);
 //					session.flush();
 				}
 			}
@@ -2874,6 +2874,67 @@ public class SimpleServer extends AbstractServer {
 		}
 
 	}
+
+	public static void SubscriptionReminder() {
+
+		//todo
+//		try {
+//			SessionFactory sessionFactory = getSessionFactory();
+//			session = sessionFactory.openSession();
+//			session.beginTransaction();
+//
+//			CriteriaBuilder builder = session.getCriteriaBuilder();
+//			CriteriaQuery<MultiSub> query = builder.createQuery(MultiSub.class);
+//			query.from(MultiSub.class);
+//			List<MultiSub> data21 = session.createQuery(query).getResultList();
+//			LocalDate now_date = LocalDate.now();
+//			LocalTime now_time = LocalTime.now();
+//
+//			for (MultiSub a : data21) {
+//				System.out.println("subs end date = "+a.getEndDate());
+//				System.out.println("now date = "+now_date);
+//				System.out.println("now time = "+now_time);
+//				if ( now_date.isEqual(a.getEndDate())  && !a.isMail_sent()) {
+//					EmailSender.sendEmail(a.get,"Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.");
+////					session.flush();
+//				}
+//			}
+//			session.getTransaction().commit();
+//		}catch(Exception E){
+//
+//			E.printStackTrace();
+//		}
+//
+//
+//		try {
+//			SessionFactory sessionFactory = getSessionFactory();
+//			session = sessionFactory.openSession();
+//			session.beginTransaction();
+//
+//			CriteriaBuilder builder = session.getCriteriaBuilder();
+//			CriteriaQuery<PartialSub> query = builder.createQuery(PartialSub.class);
+//			query.from(PartialSub.class);
+//			List<PartialSub> data21 = session.createQuery(query).getResultList();
+//			LocalDate now_date = LocalDate.now();
+//			LocalTime now_time = LocalTime.now();
+//
+//			for (PartialSub a : data21) {
+//				System.out.println("subs end date = "+a.getEndDate());
+//				System.out.println("now date = "+now_date);
+//				System.out.println("now time = "+now_time);
+//				if ( now_date.isEqual(a.getEndDate())  && !a.isMail_sent()) {
+//					EmailSender.sendEmail(a.get,"Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.");
+////					session.flush();
+//				}
+//			}
+//			session.getTransaction().commit();
+//		}catch(Exception E){
+//
+//			E.printStackTrace();
+//		}
+
+	}
+
 
 	int removeCarFromParking(String carNumber,String parkingLotName){
 		SessionFactory sessionFactory = getSessionFactory();

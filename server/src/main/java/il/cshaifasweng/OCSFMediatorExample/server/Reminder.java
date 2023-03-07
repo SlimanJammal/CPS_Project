@@ -12,6 +12,8 @@ public class Reminder implements Job {
 
         SimpleServer.updatePreOrders();
 
+        SimpleServer.SubscriptionReminder();
+
 
 
 

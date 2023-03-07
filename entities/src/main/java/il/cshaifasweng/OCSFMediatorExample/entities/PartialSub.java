@@ -47,6 +47,7 @@ public class PartialSub extends Subscription  implements Serializable {
 
         this.StartDate =  LocalDate.now();
         this.EndDate =  LocalDate.now();
+        mail_sent =false;
         //updateEndDate();//this initializes end date according to start date;
     }
 

@@ -67,6 +67,7 @@ public class MultiSub extends Subscription  implements Serializable {
 
         this.StartDate =  LocalDate.now();
         this.EndDate =  LocalDate.now();
+        mail_sent =false;
     }
 
     public MultiSub() {

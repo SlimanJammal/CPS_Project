@@ -28,6 +28,7 @@ public class PreOrder  implements Serializable {
     LocalDate exitDate;  //date includes year:month:day
     LocalTime exitTime; //hour , minute
 
+    private boolean is_reminded;
     int parking_lot_id;
 
 //    @NotNull
@@ -42,6 +43,7 @@ public class PreOrder  implements Serializable {
         this.CarNumber=carnum;
         this.Parking_requested=PlaceToPark;
         this.Email_ =mail;
+        is_reminded =false;
     }
 
     public int getId_() {
@@ -64,7 +66,13 @@ public class PreOrder  implements Serializable {
         return entranceDate;
     }
 
+    public boolean isIs_reminded() {
+        return is_reminded;
+    }
 
+    public void setIs_reminded(boolean is_reminded) {
+        this.is_reminded = is_reminded;
+    }
 
     public String getParking_requested() {
         return Parking_requested;
