@@ -85,7 +85,7 @@ public class ParkingManager {
         Message msg = new Message("ParkingManager_showStats");
 
         //MANAGER NAME/PARKING NUMBER
-        msg.setObject1(DataSingleton.getInstance().getDataName());
+        msg.setObject1(DataSingleton.getInstance().getData());
 
         SimpleClient.getClient().sendToServer(msg);
     }
@@ -97,9 +97,9 @@ public class ParkingManager {
 
         Integer first = (Integer) ms.getObject1();
         Integer second = (Integer) ms.getObject2();
-//        Integer third = (Integer) ms.getObject3();
+        Integer third = (Integer) ms.getObject3();
 
-        String data = "DeleteMean: " + first + " \n" + "LateMean: "+ second;
+        String data = "Canceled Mean: " + first + " \n" + "Late Mean: "+ second  + " \n" + "Completed Mean: " + third;
         statsScreen.setText(data);
 //
     }

@@ -7,9 +7,18 @@ public class Comp implements Serializable {
     String  complaintText;
     String mail;
 
-    public Comp(String Id, String Text){
+    public Comp(String Id, String Text,String email){
         this.customerId = Id;
         this.complaintText = Text;
+        this.mail = email;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getCustomerId(){

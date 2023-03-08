@@ -22,18 +22,19 @@
             <AnchorPane layoutX="14.0" layoutY="78.0" prefHeight="254.0" prefWidth="510.0">
                <children>
                   <TextField fx:id="CustomerIdTF" layoutX="81.0" layoutY="37.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="199.0" promptText="Customer ID" style="-fx-background-color: BLACK; -fx-border-color: WHITE;" />
-                  <TextArea fx:id="ComplaintTA" layoutX="69.0" layoutY="74.0" prefHeight="138.0" prefWidth="422.0" promptText="Complaint " style="-fx-background-color: BLACK; -fx-border-color: WHITE;" />
+                  <TextArea fx:id="ComplaintTA" layoutX="69.0" layoutY="102.0" prefHeight="138.0" prefWidth="422.0" promptText="Complaint " style="-fx-background-color: BLACK; -fx-border-color: WHITE;" />
                   <Text fill="WHITE" layoutX="359.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sorry we aren't perfect but you can help us do better" wrappingWidth="150.78594970703125" />
                   <ImageView fitHeight="48.0" fitWidth="95.0" layoutX="29.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="36.0" layoutX="24.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="32.0" fitWidth="24.0" layoutX="36.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/email-icon-black-background-black-flat-style-vector-illustration-email-icon-black-background-black-flat-style-vector-168420610.jpg" />
                      </image>
                   </ImageView>
+                  <TextField fx:id="emailtf" layoutX="81.0" layoutY="72.0" onAction="#emailtf" prefHeight="26.0" prefWidth="199.0" promptText="Email" style="-fx-background-color: BLACK; -fx-border-color: WHITE;" />
                </children>
             </AnchorPane>
             <Button fx:id="SubmitBtn" layoutX="412.0" layoutY="339.0" mnemonicParsing="false" onAction="#SubmitBtn" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: BLACK; -fx-border-color: WHITE;" text="Submit" textFill="WHITE" />

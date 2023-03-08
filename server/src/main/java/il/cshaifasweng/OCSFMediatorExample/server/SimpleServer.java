@@ -163,35 +163,52 @@ public class SimpleServer extends AbstractServer {
             SessionFactory sessionFactory = getSessionFactory();
 			session.getSessionFactory().openSession();
 			session.beginTransaction();
-			String cancelinghql = "FROM PreOrder ";
-			Query query = session.createQuery(cancelinghql);
-			List<PreOrder> results = query.getResultList();
+
+
+			CriteriaBuilder builder11 = session.getCriteriaBuilder();
+			CriteriaQuery<PreOrder> query11 = builder11.createQuery(PreOrder.class);
+			query11.from(PreOrder.class);
+			List<PreOrder> preOrders = session.createQuery(query11).getResultList();
+
+
 			PreOrder refund=new PreOrder();
 
 
-			for(PreOrder record : results)
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingLot> query1 = builder.createQuery(ParkingLot.class);
+			query1.from(ParkingLot.class);
+			List<ParkingLot> parkingLots = session.createQuery(query1).getResultList();
+			System.out.println("canceling pre order 1");
+
+
+			for(PreOrder preOrder : preOrders)
 			{
-				if(     record.getCarNumber().equals(cancelingmsg.getObject1())
-						&& record.getEmail_().equals(cancelingmsg.getObject3())
-				        && record.getEntranceDate().equals(cancelingmsg.getObject4())
-						&& record.getPreOrderId().equals(cancelingmsg.getObject6())
+				if(     preOrder.getCarNumber().equals((String)cancelingmsg.getObject1())
+						&& preOrder.getEmail_().equals((String)cancelingmsg.getObject3())
+						&& preOrder.getPreOrderId().equals((String) cancelingmsg.getObject6())
 					)
 				{
 					try {
-						refund=record;
-						DeletedOrders entityToAdd = new DeletedOrders();
-						entityToAdd.setDeleteDate( LocalDate.now());
-						entityToAdd.setDeleteTime(LocalTime.now());
-//						entityToAdd.setParking_lot_id();
-						session.save(entityToAdd);
-						PreOrder entityToDelete = session.get(PreOrder.class, record.getId_());
-						session.delete(entityToDelete);
-						session.getTransaction().commit();
+
+						for(ParkingLot parkingLot:parkingLots){
+							if(preOrder.getParking_lot_id() == parkingLot.getParking_id()){
+								parkingLot.setNumber_of_canceled_preorders(parkingLot.getNumber_of_canceled_preorders()+1);
+								session.update(parkingLot);
+							}
+						}
+
+						System.out.println("canceling pre order 2");
+						refund=preOrder;
+						session.delete(preOrder);
 						session.flush();
+						session.getTransaction().commit();
+						System.out.println("canceling pre order 3");
 					}
 					catch (Exception exp)
 					{
-						session.getTransaction().rollback();
+						exp.printStackTrace();
+						if(session != null)
+							session.getTransaction().rollback();
 					}
 					finally {
 						session.close();
@@ -199,7 +216,7 @@ public class SimpleServer extends AbstractServer {
 
 				}
 			}
-
+			System.out.println("canceling pre order refund");
 
 			//refund
 			LocalDate order_date = refund.getEntranceDate();
@@ -223,6 +240,7 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 			try {
+				System.out.println("canceling pre order going back");
 				client.sendToClient(msg333);
 
 			}catch (Exception e){
@@ -289,38 +307,43 @@ public class SimpleServer extends AbstractServer {
 		else if(ms.getMessage().equals("ParkingManager_showStats"))
 		{
 
+			try{
 			SessionFactory sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
 			session.beginTransaction();
 
 			CriteriaBuilder builder = session.getCriteriaBuilder();
-			CriteriaQuery<DeletedOrders> query = builder.createQuery(DeletedOrders.class);
-			query.from(DeletedOrders.class);
-			List<DeletedOrders> data = session.createQuery(query).getResultList();
+			CriteriaQuery<ParkingLot> query = builder.createQuery(ParkingLot.class);
+			query.from(ParkingLot.class);
+			List<ParkingLot> parkingLots = session.createQuery(query).getResultList();
 
+			Integer manager_id = (Integer) ms.getObject1();
+			int late = 0;
+			int canceled =0;
+			int done = 0;
 
-			int Deletedmean=0;
-//			ParkingManager parkingManager= (ParkingManager) ms.getObject1();
-//			int manager_id = parkingManager.getParkingLot().getParking_id();
-
-			for(DeletedOrders order:data){
-				if(order.getDeleteDate().equals(LocalDate.now()) ){
-
-					Deletedmean++;
-
+			for(ParkingLot parkingLot:parkingLots){
+				if(parkingLot.getParkingManager().getid() == manager_id ){
+					late = parkingLot.getNumber_of_late_preorders();
+					canceled = parkingLot.getNumber_of_canceled_preorders();
+					done = parkingLot.getNumber_of_done_preorders();
 				}
 			}
 
 
 
-			int Latemean=0;
-
-
 
 			Message MSG=new Message("statsReturned");
-			MSG.setObject1(Deletedmean);
-			MSG.setObject2(Latemean);
+			MSG.setObject1(canceled);
+			MSG.setObject2(late);
+			MSG.setObject3(done);
+			client.sendToClient(MSG);
+
 			session.getTransaction().commit();
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+
 			session.close();
 
 
@@ -615,6 +638,7 @@ public class SimpleServer extends AbstractServer {
 			Complaint new_complaint = new Complaint();
 			new_complaint.setComplaintText(tempComplaint.getComplaintText());
 			new_complaint.setCustomerId_(Integer.parseInt(tempComplaint.getCustomerId()));
+			new_complaint.setMail(tempComplaint.getMail());
 			try {
 				session = getSessionFactory().openSession();
 				session.beginTransaction();
@@ -1320,6 +1344,32 @@ public class SimpleServer extends AbstractServer {
 
 	}
 
+
+
+
+	/**.....................................................................................................................
+.MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
+.MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH....OOOOOOOOOOOOO....DDDDDDDDDDDDDD....SSSSSSSSSSSS....
+.MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH...OOOOOOOOOOOOOOO...DDDDDDDDDDDDDD...SSSSSSSSSSSSS....
+.MMMMMMMM...MMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOOOOO.OOOOOOO...DDDDD..DDDDDDDD..SSSSSS.SSSSSSS...
+.MMMMMMMM..MMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOOO.....OOOOOO..DDDDD.....DDDDD..SSSSS....SSSSS...
+.MMMMMMMM..MMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOO.......OOOOO..DDDDD.....DDDDDD.SSSSSSS..........
+.MMMMMMMM..MMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH.HOOOOO.......OOOOO..DDDDD......DDDDD.SSSSSSSSSS.......
+.MMMMMMMMMMMMMMMMMM..EEEEEEEEEEEEEE.......TTTTT.....HHHHHHHHHHHHHHH.HOOOO........OOOOO..DDDDD......DDDDD..SSSSSSSSSSSS....
+.MMMMMMMMMMMMMMMMMM..EEEEEEEEEEEEEE.......TTTTT.....HHHHHHHHHHHHHHH.HOOOO........OOOOO..DDDDD......DDDDD...SSSSSSSSSSSS...
+.MMMMMMMMMMMMMMMMMM..EEEEEEEEEEEEEE.......TTTTT.....HHHHHHHHHHHHHHH.HOOOO........OOOOO..DDDDD......DDDDD.....SSSSSSSSSS...
+.MMMMMMMMMMMMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH.HOOOOO.......OOOOO..DDDDD......DDDDD.........SSSSSS...
+.MMMMMMMMMMMMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOO.......OOOOO..DDDDD.....DDDDDDDSSSS......SSSSS..
+.MMMMM.MMMMMMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOOO.....OOOOOO..DDDDD.....DDDDD.DSSSSS....SSSSSS..
+.MMMMM.MMMMMM.MMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOOOOO.OOOOOOO...DDDDD...DDDDDDD..SSSSSSSSSSSSSS...
+.MMMMM.MMMMMM.MMMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH...OOOOOOOOOOOOOOO...DDDDDDDDDDDDDD...SSSSSSSSSSSSSS...
+.MMMMM.MMMMMM.MMMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH....OOOOOOOOOOOOO....DDDDDDDDDDDDDD....SSSSSSSSSSSS....
+.MMMMM..MMMMM..MMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
+..........................................................................................................................*/
+
+
+
+
 	private Message complaintUpdate(Message msg45, String status) {
 		Message ms = new Message("cs");
 
@@ -1338,12 +1388,17 @@ public class SimpleServer extends AbstractServer {
 					if (complaint.getComplaintId_() == complaint_id) {
 						session.delete(complaint);
 						session.flush();
-						complaints.remove(complaint);
+
 						if (msg45.getMessage().endsWith("accept")) {
+							EmailSender.sendEmail(complaint.getMail(),complaint.getComplaintId_() +" complaint"," following your complaint on our service you received a 100 shekels coupon");
+
 							ms = new Message("cs_accept");
 						} else {
+							EmailSender.sendEmail(complaint.getMail(),complaint.getComplaintId_() +" complaint","your complaint was denied.");
+
 							ms = new Message("cs_decline");
 						}
+						complaints.remove(complaint);
 					}
 				}
 			}
@@ -1406,25 +1461,7 @@ public class SimpleServer extends AbstractServer {
 	}
 
 
-	/**.....................................................................................................................
-.MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
-.MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH....OOOOOOOOOOOOO....DDDDDDDDDDDDDD....SSSSSSSSSSSS....
-.MMMMMMM....MMMMMMM..EEEEEEEEEEEEEE..TTTTTTTTTTTTTTTHHHHH.....HHHHH...OOOOOOOOOOOOOOO...DDDDDDDDDDDDDD...SSSSSSSSSSSSS....
-.MMMMMMMM...MMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOOOOO.OOOOOOO...DDDDD..DDDDDDDD..SSSSSS.SSSSSSS...
-.MMMMMMMM..MMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOOO.....OOOOOO..DDDDD.....DDDDD..SSSSS....SSSSS...
-.MMMMMMMM..MMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOO.......OOOOO..DDDDD.....DDDDDD.SSSSSSS..........
-.MMMMMMMM..MMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH.HOOOOO.......OOOOO..DDDDD......DDDDD.SSSSSSSSSS.......
-.MMMMMMMMMMMMMMMMMM..EEEEEEEEEEEEEE.......TTTTT.....HHHHHHHHHHHHHHH.HOOOO........OOOOO..DDDDD......DDDDD..SSSSSSSSSSSS....
-.MMMMMMMMMMMMMMMMMM..EEEEEEEEEEEEEE.......TTTTT.....HHHHHHHHHHHHHHH.HOOOO........OOOOO..DDDDD......DDDDD...SSSSSSSSSSSS...
-.MMMMMMMMMMMMMMMMMM..EEEEEEEEEEEEEE.......TTTTT.....HHHHHHHHHHHHHHH.HOOOO........OOOOO..DDDDD......DDDDD.....SSSSSSSSSS...
-.MMMMMMMMMMMMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH.HOOOOO.......OOOOO..DDDDD......DDDDD.........SSSSSS...
-.MMMMMMMMMMMMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOO.......OOOOO..DDDDD.....DDDDDDDSSSS......SSSSS..
-.MMMMM.MMMMMMMMMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOOO.....OOOOOO..DDDDD.....DDDDD.DSSSSS....SSSSSS..
-.MMMMM.MMMMMM.MMMMM..EEEEE................TTTTT.....HHHHH.....HHHHH..OOOOOOOO.OOOOOOO...DDDDD...DDDDDDD..SSSSSSSSSSSSSS...
-.MMMMM.MMMMMM.MMMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH...OOOOOOOOOOOOOOO...DDDDDDDDDDDDDD...SSSSSSSSSSSSSS...
-.MMMMM.MMMMMM.MMMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH....OOOOOOOOOOOOO....DDDDDDDDDDDDDD....SSSSSSSSSSSS....
-.MMMMM..MMMMM..MMMM..EEEEEEEEEEEEEEE......TTTTT.....HHHHH.....HHHHH.....OOOOOOOOOO......DDDDDDDDDDDD.......SSSSSSSSSS.....
-..........................................................................................................................*/
+
 
 	private boolean EnterCar(String parkingName,String customerID,String licencePlate, boolean isOccasional){
 
@@ -2801,6 +2838,13 @@ public class SimpleServer extends AbstractServer {
 			LocalDate now_date = LocalDate.now();
 			LocalTime now_time = LocalTime.now();
 
+			CriteriaBuilder builder1 = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingLot> query1 = builder1.createQuery(ParkingLot.class);
+			query1.from(ParkingLot.class);
+			List<ParkingLot> parkingLots = session.createQuery(query1).getResultList();
+
+
+
 			for (PreOrder a : data21) {
 				System.out.println("order date = " + a.getEntranceDate());
 				System.out.println("order time = " + a.getEntranceTime());
@@ -2808,6 +2852,13 @@ public class SimpleServer extends AbstractServer {
 				System.out.println("now time = " + now_time);
 				if (now_date.isAfter(a.getEntranceDate()) || now_date.isEqual(a.getEntranceDate()) && now_time.isAfter(a.getEntranceTime())) {
 					System.out.println("order of car number - " + a.getCarNumber() + " was deleted" + " customer - late");
+					for(ParkingLot parkingLot:parkingLots) {
+						if (a.getParking_lot_id() == parkingLot.getParking_id()) {
+							parkingLot.setNumber_of_late_preorders(parkingLot.getNumber_of_late_preorders() + 1);
+							session.update(parkingLot);
+						}
+					}
+
 					session.delete(a);
 					session.flush();
 				}
@@ -2875,6 +2926,7 @@ public class SimpleServer extends AbstractServer {
 
 	}
 
+
 	public static void SubscriptionReminder() {
 
 		//todo
@@ -2934,6 +2986,8 @@ public class SimpleServer extends AbstractServer {
 //		}
 
 	}
+
+
 
 
 	int removeCarFromParking(String carNumber,String parkingLotName){

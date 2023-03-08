@@ -20,9 +20,10 @@ public class Complaint implements Serializable {
     int customerId_;
     String  complaintText;
 
-    public Complaint(int customerId_, String complaintText) {
+    public Complaint(int customerId_, String complaintText, String email) {
         this.customerId_ = customerId_;
         this.complaintText = complaintText;
+        this.mail = email;
     }
 
     public Complaint() {
@@ -47,5 +48,13 @@ public class Complaint implements Serializable {
 
     public int getComplaintId_() {
         return ComplaintId_;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 }

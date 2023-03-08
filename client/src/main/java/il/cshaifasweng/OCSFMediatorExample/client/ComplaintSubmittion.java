@@ -23,6 +23,9 @@ public class ComplaintSubmittion {
     @FXML // fx:id="ComplaintTA"
     private TextArea ComplaintTA; // Value injected by FXMLLoader
 
+
+    @FXML
+    private TextField emailtf;
     @FXML // fx:id="CustomerIdTF"
     private TextField CustomerIdTF; // Value injected by FXMLLoader
 
@@ -33,6 +36,10 @@ public class ComplaintSubmittion {
     private Button BackBtn; // Value injected by FXMLLoader
 
     @FXML
+    void emailtf(ActionEvent event) {
+
+    }
+    @FXML
     void CustomerIdTF(ActionEvent event) {
 
     }
@@ -42,10 +49,11 @@ public class ComplaintSubmittion {
         try {
 //            System.out.println("kelhom 4nole wma gedro");
             Message message = new Message("Complaint");
-            Comp newComplaint = new Comp(CustomerIdTF.getText(),ComplaintTA.getText());
+            Comp newComplaint = new Comp(CustomerIdTF.getText(),ComplaintTA.getText(),emailtf.getText());
             message.setObject1(newComplaint);
             CustomerIdTF.clear();
             ComplaintTA.clear();
+            emailtf.clear();
 
             //send message to the server containing the new prices
             SimpleClient.getClient().sendToServer(message);

@@ -65,6 +65,10 @@ public class ParkingLot implements Serializable{
     private List<ParkingWorker> parkingWorkers;
 
 
+    private int number_of_done_preorders ;
+    private int number_of_canceled_preorders;
+    private int number_of_late_preorders;
+
 ////    @NotNull
 //    public List<PreOrder> getPreordersList() {
 //        return preordersList;
@@ -157,7 +161,9 @@ public class ParkingLot implements Serializable{
         this.name = name_;
         this.dimensions =dims;
         this.full=isFull;
-
+        number_of_canceled_preorders =0;
+        number_of_done_preorders = 0;
+        number_of_late_preorders =0;
         Spots = new ArrayList<ParkingSpot>() ;
 //        for(int i = 0; i< dimensions; i++)
 //        {
@@ -190,6 +196,9 @@ public class ParkingLot implements Serializable{
 
 
     public ParkingLot() {
+        number_of_canceled_preorders =0;
+        number_of_done_preorders = 0;
+        number_of_late_preorders =0;
     }
 
     public String getName() {
@@ -227,7 +236,29 @@ public class ParkingLot implements Serializable{
     }
 
 
+    public int getNumber_of_done_preorders() {
+        return number_of_done_preorders;
+    }
 
+    public void setNumber_of_done_preorders(int number_of_done_preorders) {
+        this.number_of_done_preorders = number_of_done_preorders;
+    }
+
+    public int getNumber_of_canceled_preorders() {
+        return number_of_canceled_preorders;
+    }
+
+    public void setNumber_of_canceled_preorders(int number_of_canceled_preorders) {
+        this.number_of_canceled_preorders = number_of_canceled_preorders;
+    }
+
+    public int getNumber_of_late_preorders() {
+        return number_of_late_preorders;
+    }
+
+    public void setNumber_of_late_preorders(int number_of_late_preorders) {
+        this.number_of_late_preorders = number_of_late_preorders;
+    }
 
     public void setParking_id(int parking_id) {
         this.parking_id = parking_id;
