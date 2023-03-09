@@ -27,7 +27,7 @@ public class OccCustomer extends Customer implements Serializable {
 //    @NotNull
      String CustomerId;
 //    long FinishTime ;
-    Time FinishTime;
+    LocalTime FinishTime;
 //    @NotNull
     String Email;
 
@@ -84,9 +84,11 @@ public class OccCustomer extends Customer implements Serializable {
         CarNumber = carNumber;
     }
 
-    public void setFinishTime(Time finishTime) {
+    public void setFinishTime(LocalTime finishTime) {
         FinishTime = finishTime;
     }
+
+    public LocalTime getFinishTime(){return FinishTime;}
 
     public void setStartTime(LocalTime startTime) {
         StartTime = startTime;
@@ -107,4 +109,5 @@ public class OccCustomer extends Customer implements Serializable {
     public void setStartDate(LocalDate startDate) {
         StartDate = startDate;
     }
+
 }

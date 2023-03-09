@@ -76,6 +76,9 @@ public class SimpleClient extends AbstractClient {
 		}else if(ms.getMessage().startsWith("cs")){
 			EventBus.getDefault().post(new CustomerServiceEvent((Message) msg));
 
+		}else if(ms.getMessage().equals("ExitParkingReply"))
+		{
+			EventBus.getDefault().post(new EnterParkingEvent((Message) msg));
 		}
 
 

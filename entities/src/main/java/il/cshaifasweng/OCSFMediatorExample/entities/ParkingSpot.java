@@ -30,6 +30,14 @@ public class ParkingSpot  implements Serializable {
         ExitDate = exitDate;
     }
 
+    public LocalDateTime getEntryDate() {
+        return EntryDate;
+    }
+
+    public void setEntryDate(LocalDateTime entryDate) {
+        EntryDate = entryDate;
+    }
+
     LocalDateTime ExitDate;
     LocalDateTime EntryDate;
     public String getCus_ID() {

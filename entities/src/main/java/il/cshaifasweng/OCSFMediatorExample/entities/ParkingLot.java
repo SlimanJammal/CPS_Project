@@ -121,9 +121,12 @@ public class ParkingLot implements Serializable{
         for(ParkingSpot parkingSpot : Spots){
             if(parkingSpot.Licesnes_Plate.equals(carNum)){
                 parkingSpot.reset();
+                System.out.println("inside remove car");
+                printParkingSpots();
                 return true;
             }
         }
+        printParkingSpots();
         return false;
     }
 
@@ -131,8 +134,11 @@ public class ParkingLot implements Serializable{
     public int findAndCalcPrice(String carNum){
         for (ParkingSpot parkingSpot : Spots ){
             if  (parkingSpot.Licesnes_Plate.equals(carNum)){
+//                parkingSpot.reset();
                 if (parkingSpot.isOccasional()){
-                    int hours = LocalDateTime.now().getHour() - parkingSpot.ExitDate.getHour();
+                    System.out.println("before hours");
+                    int hours = LocalDateTime.now().getHour() - parkingSpot.EntryDate.getHour();
+                    System.out.println("after hours");
                     if(hours < 0 ){
                         // todo fix this 24 thingy
                         return (hours+24) *occasionalPrice.getPrice();
@@ -332,4 +338,12 @@ public class ParkingLot implements Serializable{
         int delta = delta_x + delta_y + delta_z;
         return delta;
     }
+
+    public void printParkingSpots(){
+        for (int i= 0 ; i<Spots.size()-3; i+=3){
+            System.out.println(Spots.get(i).CurrentState+" "+Spots.get(i+1).CurrentState+" "+Spots.get(i+2).CurrentState);
+        }
+    }
+
+
 }
