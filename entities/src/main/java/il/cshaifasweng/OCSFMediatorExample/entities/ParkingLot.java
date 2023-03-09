@@ -137,7 +137,7 @@ public class ParkingLot implements Serializable{
 //                parkingSpot.reset();
                 if (parkingSpot.isOccasional()){
                     System.out.println("before hours");
-                    int hours = LocalDateTime.now().getHour() - parkingSpot.EntryDate.getHour();
+                    int hours = LocalDateTime.now().getHour() - parkingSpot.EntryDate.getHour() + 1;
                     System.out.println("after hours");
                     if(hours < 0 ){
                         // todo fix this 24 thingy
