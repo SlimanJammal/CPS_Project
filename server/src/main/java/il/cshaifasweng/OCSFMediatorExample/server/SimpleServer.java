@@ -1382,23 +1382,34 @@ public class SimpleServer extends AbstractServer {
 			CriteriaQuery<Complaint> query1 = builder1.createQuery(Complaint.class);
 			query1.from(Complaint.class);
 			List<Complaint> complaints  = session.createQuery(query1).getResultList();
+			Complaint complaint_to_remove = new Complaint();
 			if(!status.equals("refresh")) {
 				int complaint_id =  Integer.parseInt((String) msg45.getObject1());
 				for (Complaint complaint : complaints) {
 					if (complaint.getComplaintId_() == complaint_id) {
 						session.delete(complaint);
-						session.flush();
+						complaint_to_remove =complaint;
+						System.out.println("email -  to send to "+complaint.getMail());
+						if (status.equals("accept")) {
+							try {
 
-						if (msg45.getMessage().endsWith("accept")) {
-							EmailSender.sendEmail(complaint.getMail(),complaint.getComplaintId_() +" complaint"," following your complaint on our service you received a 100 shekels coupon");
-
+								System.out.println("email -  to send to in accept "+complaint.getMail());
+								new EmailSender().sendMail(complaint.getComplaintId_() + " complaint", " following your complaint on our service you received a 100 shekels coupon", complaint.getMail());
+								System.out.println("email back from sending"+complaint.getMail());
+							}catch (Exception e){
+								e.printStackTrace();
+							}
 							ms = new Message("cs_accept");
 						} else {
-							EmailSender.sendEmail(complaint.getMail(),complaint.getComplaintId_() +" complaint","your complaint was denied.");
-
+							try {
+								System.out.println("email -  to send to in decline "+complaint.getMail());
+							new EmailSender().sendMail(complaint.getComplaintId_() +" complaint","your complaint was denied.",complaint.getMail());
+							}catch (Exception e){
 							ms = new Message("cs_decline");
+								e.printStackTrace();
+							}
 						}
-						complaints.remove(complaint);
+//						complaints.remove(complaint);
 					}
 				}
 			}
@@ -1408,6 +1419,7 @@ public class SimpleServer extends AbstractServer {
 				System.out.println("text- " +a.getComplaintText());
 				System.out.println("\n\n\n");
 			}
+			complaints.remove(complaint_to_remove);
 			ms.setObject2(complaints);
 			session.getTransaction().commit();
 
@@ -2913,7 +2925,7 @@ public class SimpleServer extends AbstractServer {
 				System.out.println("now date = "+now_date);
 				System.out.println("now time = "+now_time);
 				if ( now_date.isEqual(a.getEntranceDate())  && Duration.between(now_time,a.getEntranceTime()).toHours() < 1 && !a.isIs_reminded()) {
-					EmailSender.sendEmail(a.getEmail_(),"Haifa Parkings","Dear Sir, \n"+"this is a reminder for your preOrder parking in "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.");
+					new EmailSender().sendMail("Haifa Parkings","Dear Sir, \n"+"this is a reminder for your preOrder parking in "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.",a.getEmail_());
 					a.setIs_reminded(true);
 //					session.flush();
 				}
