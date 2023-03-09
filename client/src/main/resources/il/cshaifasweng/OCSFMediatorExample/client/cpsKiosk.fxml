@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CpsKiosk">
+<Pane style="-fx-background-color: #0f0e10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CpsKiosk">
    <children>
       <AnchorPane layoutX="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="668.0">
          <children>
@@ -123,11 +123,11 @@
                   <Font size="38.0" />
                </font>
             </Text>
-            <AnchorPane layoutX="332.0" layoutY="232.0" prefHeight="232.0" prefWidth="278.0">
+            <AnchorPane layoutX="333.0" layoutY="232.0" prefHeight="232.0" prefWidth="278.0">
                <children>
                   <PasswordField fx:id="SUBSNUM_LOGIN_TF" layoutX="114.0" layoutY="106.0" onAction="#SUBSNUM_LOGIN_TF" promptText="Subscription Number" />
                   <TextField fx:id="LICENSE_LOGIN_TF" layoutX="114.0" layoutY="47.0" onAction="#LICENSE_LOGIN_TF" promptText="plate number" />
-                  <Button fx:id="RenewSubsBtn" layoutY="169.0" mnemonicParsing="false" onAction="#RenewSubsBtn" style="-fx-background-color: BLACK;" text="Renew Subscription">
+                  <Button fx:id="RenewSubsBtn" layoutX="9.0" layoutY="156.0" mnemonicParsing="false" onAction="#RenewSubsBtn" prefHeight="26.0" prefWidth="134.0" style="-fx-background-color: BLACK;" text="Renew Subscription">
                      <textFill>
                         <LinearGradient cycleMethod="REPEAT" endX="1.0" endY="1.0">
                            <stops>
@@ -150,7 +150,7 @@
                         </LinearGradient>
                      </textFill>
                   </Button>
-                  <Button fx:id="EnterParkingBTN" layoutX="172.0" layoutY="169.0" mnemonicParsing="false" onAction="#EnterParkingBTN" style="-fx-background-color: BLACK;" text="Enter Parking">
+                  <Button fx:id="EnterParkingBTN" layoutX="159.0" layoutY="156.0" mnemonicParsing="false" onAction="#EnterParkingBTN" style="-fx-background-color: BLACK;" text="Enter Parking">
                      <textFill>
                         <LinearGradient cycleMethod="REPEAT" endX="1.0" endY="1.0">
                            <stops>
@@ -183,6 +183,29 @@
                         <Image url="@images/images/lock-icon-isolated-black-background-simple-vector-logo-163369340.jpg" />
                      </image>
                   </ImageView>
+                  <Button fx:id="ExitParkingBTN" layoutX="159.0" layoutY="195.0" mnemonicParsing="false" onAction="#ExitParkingBTN" prefHeight="26.0" prefWidth="89.0" style="-fx-background-color: BLACK;" text="Exit Parking">
+                     <textFill>
+                        <LinearGradient cycleMethod="REPEAT" endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.1327095478773117" green="0.1327095478773117" blue="0.7789473533630371" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.38761776581426655">
+                                 <color>
+                                    <Color red="0.1327095478773117" green="0.1327095478773117" blue="0.7789473533630371" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Button>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="42.0" layoutY="232.0" prefHeight="200.0" prefWidth="200.0">
