@@ -46,7 +46,6 @@ public class OcasionalParking {
     @FXML
     void SubmitBTN(ActionEvent event) {
         try {
-            System.out.println("kelhom 4nole wma gedro");
             Message message = new Message("OcasionalParking");
             message.setObject1(IdNumberTF.getText());
             message.setObject2(licensePlateTF.getText());
@@ -98,7 +97,7 @@ public class OcasionalParking {
     @FXML
     void backbtn(ActionEvent event) {
         try {
-            App.setRoot(DataSingleton.getInstance().getCaller());
+            App.setRoot("cpsKiosk");
         } catch (IOException e) {
             e.printStackTrace();
         }

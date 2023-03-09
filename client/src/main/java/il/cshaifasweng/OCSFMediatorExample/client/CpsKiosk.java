@@ -24,6 +24,9 @@ public class CpsKiosk {
     @FXML
     private Button complaintBTN;
 
+    @FXML
+    private Button ExitParkingBTN;
+
     @FXML // fx:id="EnterParkingBTN"
     private Button EnterParkingBTN; // Value injected by FXMLLoader
 
@@ -66,6 +69,15 @@ public class CpsKiosk {
     }
     String parkingLotName;
 
+
+    @FXML
+    void ExitParkingBTN(ActionEvent event) throws IOException {
+        Message msg= new Message("ExitParking");
+        msg.setLicensePlate(LICENSE_LOGIN_TF.getText());
+        msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
+        msg.setObject1(parkingLotName);
+        SimpleClient.getClient().sendToServer(msg);
+    }
     @FXML
     void EnterParkingBTN(ActionEvent event) throws IOException {
         Message msg= new Message("EnterParking4");
