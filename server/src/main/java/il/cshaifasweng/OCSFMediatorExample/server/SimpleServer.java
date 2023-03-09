@@ -3014,9 +3014,11 @@ public class SimpleServer extends AbstractServer {
 	}
 
 
-	public static void SubscriptionReminder() {
 
-		//todo
+
+	public static void SubscriptionReminder() {
+//
+//
 //		try {
 //			SessionFactory sessionFactory = getSessionFactory();
 //			session = sessionFactory.openSession();
@@ -3033,8 +3035,11 @@ public class SimpleServer extends AbstractServer {
 //				System.out.println("subs end date = "+a.getEndDate());
 //				System.out.println("now date = "+now_date);
 //				System.out.println("now time = "+now_time);
-//				if ( now_date.isEqual(a.getEndDate())  && !a.isMail_sent()) {
-//					EmailSender.sendEmail(a.get,"Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.");
+//				if ( now_date.(a.getEndDate())  && !a.isMail_sent()) {
+//
+//					new EmailSender().sendMail("Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.",MAIL);
+//					a.setMail_sent(true);
+//					session.update(a);
 ////					session.flush();
 //				}
 //			}
@@ -3062,8 +3067,10 @@ public class SimpleServer extends AbstractServer {
 //				System.out.println("now date = "+now_date);
 //				System.out.println("now time = "+now_time);
 //				if ( now_date.isEqual(a.getEndDate())  && !a.isMail_sent()) {
-//					EmailSender.sendEmail(a.get,"Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.");
+//					new EmailSender.sendMail("Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.",MAIL);
 ////					session.flush();
+//					a.setMail_sent(true);
+//					session.update(a);
 //				}
 //			}
 //			session.getTransaction().commit();

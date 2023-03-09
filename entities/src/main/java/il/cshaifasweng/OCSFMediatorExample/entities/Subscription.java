@@ -31,4 +31,8 @@ public abstract class Subscription implements Serializable {
     public boolean isMail_sent() {
         return mail_sent;
     }
+
+    public void setMail_sent(boolean mail_sent) {
+        this.mail_sent = mail_sent;
+    }
 }

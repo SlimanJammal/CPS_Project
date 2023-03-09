@@ -133,8 +133,8 @@ public class CpsKiosk {
         } else if(allowing.getMsg().getObject1().toString().equals("success") && perm_lvl == 3){
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("CustomerService");
-            il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject2();
-            data.setData(parkingWorker.getUserID());
+            il.cshaifasweng.OCSFMediatorExample.entities.CustomerServiceWorker CustomerServiceWorkerz = (il.cshaifasweng.OCSFMediatorExample.entities.CustomerServiceWorker) allowing.getMsg().getObject2();
+            data.setData(CustomerServiceWorkerz.getUserID());
 
             data.setCaller("cpsKiosk");
 
