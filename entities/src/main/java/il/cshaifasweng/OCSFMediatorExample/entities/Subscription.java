@@ -20,6 +20,15 @@ public abstract class Subscription implements Serializable {
         this.subscriptionNumber = subscriptionNumber;
     }
 
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    private String Email;
     private String subscriptionNumber;
 
     public int getId_() {

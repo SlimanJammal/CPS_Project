@@ -84,6 +84,13 @@ public class OneTimeParkingOrder {
         // 1- DesiredParking         4- Etd
         // 2- Email                  5- Id number
 
+//        msg.setObject1(CarNumberTF.getText());
+//        msg.setObject1(DesiredParkingTF.getText());
+//        msg.setObject1(EmailTF.getText());
+//        msg.setObject1(EtaTF.getText());
+//        msg.setObject1(EtdTF.getText());
+//        msg.setObject1(IdNumberTF.getText());
+
         fields.add(CarNumberTF.getText());
         fields.add(DesiredParkingTF.getText());
         fields.add(EmailTF.getText());
