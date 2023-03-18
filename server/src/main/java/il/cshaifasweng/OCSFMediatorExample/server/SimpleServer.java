@@ -1185,14 +1185,24 @@ public class SimpleServer extends AbstractServer {
 			List<PartialSub> partialSubs = getAll(PartialSub.class);
 			List<MultiSub> multiSubs = getAll(MultiSub.class);
 			List<FullSub> fullSubs = getAll(FullSub.class);
+			List<PreOrder> preOrders = getAll(PreOrder.class);
 			boolean found = false;
+			boolean sub = false;
 			System.out.println(partialSubs.size()+","+multiSubs.size()+","+fullSubs.size());
 
 
+			for (PreOrder preOrder : preOrders){
+				if (preOrder.getPreOrderId().equals(subNumber) && preOrder.getCarNumber().equals(CarNumber)) {
+
+					found = true;
+					break;
+				}
+			}
 			for (PartialSub partialSub : partialSubs){
 				if (partialSub.getSubNum().equals(subNumber) && partialSub.getCarNumber().equals(CarNumber)) {
 
 					found = true;
+					sub = true;
 					break;
 				}
 			}
@@ -1200,6 +1210,7 @@ public class SimpleServer extends AbstractServer {
 				if (multiSub.getSubNum().equals(subNumber) && multiSub.getCarNumber().equals(CarNumber)) {
 
 					found = true;
+					sub = true;
 					break;
 				}
 			}
@@ -1207,22 +1218,30 @@ public class SimpleServer extends AbstractServer {
 				if (fullSub.getSubNum().equals(subNumber) && fullSub.getCarNumber().equals(CarNumber)) {
 
 					found = true;
+					sub = true;
 					break;
 				}
 			}
 
+			LocalTime time = LocalTime.now();
 			Message returnMsg = new Message("EnterParkingReply");
 			if(!found){
 
 				returnMsg.setObject1("Subscription not found");
-			}else{
-				LocalTime time = LocalTime.now();
+			}else if(sub){
+
 				if(EnterCar(parkingLotName,subNumber,CarNumber,false,time)){
 					returnMsg.setObject1("Car Entered Successfully");
 				}else{
 					returnMsg.setObject1("Unable to Enter Car");
 				}
 
+			}else{
+				if(EnterCar(parkingLotName,subNumber,CarNumber,true,time)){
+					returnMsg.setObject1("Car Entered Successfully");
+				}else{
+					returnMsg.setObject1("Unable to Enter Car");
+				}
 			}
 
 			client.sendToClient(returnMsg);
@@ -1244,7 +1263,7 @@ public class SimpleServer extends AbstractServer {
 			//Object #4 - Car Number
 			//Object #5 - Entrance Hour	; HH:MM
 			//Object #6 - Departure Hour ; HH:MM
-			//Object #7 - Regular Parking Lot - Parking Slot
+			//Object #7 - Email
 
 
 			String SubscriberType = ms.getObject1().toString();
@@ -1255,7 +1274,7 @@ public class SimpleServer extends AbstractServer {
 			String EntranceHour = ms.getObject5().toString();
 			System.out.println(StartingDate );
 			String DepartureHour = ms.getObject6().toString();
-			String RegularParkingLot = ms.getObject7().toString();
+			String Email = ms.getObject7().toString();
 			System.out.println("servers side after loading values");
 
 			//Staring Date Components
@@ -1285,6 +1304,7 @@ public class SimpleServer extends AbstractServer {
 				boolean newCustumer = true;
 				System.out.println(CustomerID);
 				PartialSub input = new PartialSub(CustomerID,CarNumber);
+				input.setEmail(Email);
 				System.out.println(input.getCustomerId());
 				LocalDate Temp = LocalDate.of(Year, Month, Day);
 				input.setStartDate(Temp);
@@ -1327,6 +1347,7 @@ public class SimpleServer extends AbstractServer {
 				LocalDate Temp = LocalDate.of(Year,Month,Day);
 				input.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
 				input.setStartDate(Temp);
+				input.setEmail(Email);
 // todo here we can have a problem if we are trying to multiple cars and one of them exists
 				Boolean newCustomer = true;
 				Boolean newCar = true;
@@ -1366,6 +1387,7 @@ public class SimpleServer extends AbstractServer {
 				FullSub input = new FullSub(CustomerID,CarNumber);
 				LocalDate Temp = LocalDate.of(Year,Month,Day);
 				input.setStartDate(Temp);
+				input.setEmail(Email);
 				boolean newCustomer = true;
 				List<FullSub> fullSubs = getAll(FullSub.class);
 				for(FullSub fullSub : fullSubs){

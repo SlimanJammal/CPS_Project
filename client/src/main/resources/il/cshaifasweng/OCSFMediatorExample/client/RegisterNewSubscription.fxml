@@ -26,7 +26,7 @@
             <TextField fx:id="CustomerIdTF" layoutX="54.0" layoutY="108.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="166.0" promptText="Customer ID" style="-fx-font-style: blue;" />
             <TextField fx:id="EntranceHourTF" layoutX="54.0" layoutY="187.0" onAction="#OnEntranceHourTF" prefHeight="26.0" prefWidth="82.0" promptText="HH:MM" />
             <TextField fx:id="CarNumberTF" layoutX="53.0" layoutY="310.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="166.0" promptText="Car Number" />
-            <TextField fx:id="RegularParkingTF" layoutX="47.0" layoutY="271.0" onAction="#RegularParkingTF" prefHeight="26.0" prefWidth="166.0" promptText="Parking ID" />
+            <TextField fx:id="RegularParkingTF" layoutX="47.0" layoutY="271.0" onAction="#RegularParkingTF" prefHeight="26.0" prefWidth="166.0" promptText="Email " />
             <Button fx:id="RegisterBtn" layoutX="180.0" layoutY="346.0" mnemonicParsing="false" onAction="#RegisterBtn" prefHeight="26.0" prefWidth="92.0" text="Register" />
             <Label fx:id="LabelOutput" layoutX="103.0" layoutY="36.0" prefHeight="26.0" prefWidth="117.0" text="Output Label" textFill="RED" visible="false" />
             <TextField fx:id="DepatureHourTF" layoutX="54.0" layoutY="230.0" onAction="#OnDepatureHourTF" prefHeight="26.0" prefWidth="82.0" promptText="HH:MM" />

@@ -98,7 +98,7 @@ public class RegisterNewSubscription {
         String CustomerID = CustomerIdTF.getText();
         String CarLicense = CarNumberTF.getText();
         String StartingDate = DateTF.getText();
-        String RegularParking = RegularParkingTF.getText();
+        String Email = RegularParkingTF.getText(); // this is the email adress of the customer
         String EntranceParkingTime = EntranceHourTF.getText();
         String DepartureParkingTime = DepatureHourTF.getText();
         String ParkingType = "";
@@ -124,14 +124,14 @@ public class RegisterNewSubscription {
         //Object #4 - Car Number
         //Object #5 - Entrance Hour	; HH:MM
         //Object #6 - Departure Hour ; HH:MM
-        //Object #7 - Regular Parking Lot - Parking Slot
+        //Object #7 - Email
         msg.setObject1(ParkingType);
         msg.setObject2(CustomerID);
         msg.setObject3(StartingDate);
         msg.setObject4(CarLicense);
         msg.setObject5(EntranceParkingTime);
         msg.setObject6(DepartureParkingTime);
-        msg.setObject7(RegularParking);
+        msg.setObject7(Email);
 
         try
         {
