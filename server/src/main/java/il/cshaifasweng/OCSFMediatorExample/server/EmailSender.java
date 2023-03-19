@@ -44,10 +44,10 @@ public class EmailSender {
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, GsonFactory jsonFactory )
             throws IOException, IOException {
         // Load client secrets.
-        InputStream in = EmailSender.class.getResourceAsStream("/client_secret_334150897118-p8tclir8jfuh31id12qniv73q3q72614.apps.googleusercontent.com.json");
+        InputStream in = EmailSender.class.getResourceAsStream("/client_secret_448344868655-1guure747fio77g8em41kot40sdngqtr.apps.googleusercontent.com.json");
 
         GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(jsonFactory, new InputStreamReader(EmailSender.class.getResourceAsStream("/client_secret_334150897118-p8tclir8jfuh31id12qniv73q3q72614.apps.googleusercontent.com.json")));
+                GoogleClientSecrets.load(jsonFactory, new InputStreamReader(EmailSender.class.getResourceAsStream("/client_secret_448344868655-1guure747fio77g8em41kot40sdngqtr.apps.googleusercontent.com.json")));
 
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(

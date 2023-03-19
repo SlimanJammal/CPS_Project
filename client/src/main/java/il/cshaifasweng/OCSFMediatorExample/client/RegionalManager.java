@@ -289,6 +289,7 @@ public class RegionalManager {
     @FXML
     void ShowStatBtn1(ActionEvent event) {
         Message msg = new Message("show_stat1_regional");
+        msg.setObject1("German_Colony");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
@@ -300,6 +301,7 @@ public class RegionalManager {
     @FXML
     void ShowStatBtn2(ActionEvent event) {
         Message msg = new Message("show_stat2_regional");
+        msg.setObject1("Hanmal");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
@@ -311,6 +313,7 @@ public class RegionalManager {
     @FXML
     void ShowStatBtn3(ActionEvent event) {
         Message msg = new Message("show_stat3_regional");
+        msg.setObject1("Bat-Galim");
         //send to server
         try{
             SimpleClient.getClient().sendToServer(msg);
@@ -392,15 +395,52 @@ public class RegionalManager {
         // message field decides what case we re in
         //the first stat is for main window and show stat regional is for secondary windows
         System.out.println("back to regional's subscribe");
+        String parkingName2 = (String) event.getMessage().getObject4();
         if(event.getMessage().getMessage().equals("stat_regional") || event.getMessage().getMessage().equals("show_stat_regional")){
-            Alert alert = new Alert(Alert.AlertType.WARNING,
-                    String.format(": \n"+event.getMessage().getObject1(),
-                            ": \n"+event.getMessage().getObject2(),
-                            ": \n"+event.getMessage().getObject3()
-                    )
-            );
-            alert.show();
+
+
+            if(parkingName2.equals("German_Colony")){
+
+                Message ms = event.getMessage();
+
+                Integer first = (Integer) ms.getObject1();
+                Integer second = (Integer) ms.getObject2();
+                Integer third = (Integer) ms.getObject3();
+
+                String data = "Canceled Mean: " + first + " \n" + "Late Mean: "+ second  + " \n" + "Completed Mean: " + third;
+                SCREEN1.setText(data);
+
+            }else if(parkingName2.equals("Hanmal")){
+                Message ms = event.getMessage();
+
+                Integer first = (Integer) ms.getObject1();
+                Integer second = (Integer) ms.getObject2();
+                Integer third = (Integer) ms.getObject3();
+
+                String data = "Canceled Mean: " + first + " \n" + "Late Mean: "+ second  + " \n" + "Completed Mean: " + third;
+                SCREEN2.setText(data);
+
+
+            } else {
+
+
+                Message ms = event.getMessage();
+
+                Integer first = (Integer) ms.getObject1();
+                Integer second = (Integer) ms.getObject2();
+                Integer third = (Integer) ms.getObject3();
+
+                String data = "Canceled Mean: " + first + " \n" + "Late Mean: "+ second  + " \n" + "Completed Mean: " + third;
+                SCREEN3.setText(data);
+            }
+
+
             //todo alert about stats
+
+
+
+
+
         } else if(event.getMessage().getMessage().equals("req_regional")){
             System.out.println("back to regional's request");
 

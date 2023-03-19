@@ -1193,7 +1193,6 @@ public class SimpleServer extends AbstractServer {
 
 			for (PreOrder preOrder : preOrders){
 				if (preOrder.getPreOrderId().equals(subNumber) && preOrder.getCarNumber().equals(CarNumber)) {
-
 					found = true;
 					break;
 				}
@@ -2350,9 +2349,47 @@ public class SimpleServer extends AbstractServer {
 
 	private Message showStatRegional(Message ms) {
 
-		//todo delete not needed
+		Message MSG=new Message("stat_regional");
+		try{
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
 
-		return null;
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<ParkingLot> query = builder.createQuery(ParkingLot.class);
+			query.from(ParkingLot.class);
+			List<ParkingLot> parkingLots = session.createQuery(query).getResultList();
+
+			String parking_name = (String) ms.getObject1();
+			int late = 0;
+			int canceled =0;
+			int done = 0;
+
+			for(ParkingLot parkingLot:parkingLots){
+				if(parkingLot.getName().equals(parking_name) ){
+					late = parkingLot.getNumber_of_late_preorders();
+					canceled = parkingLot.getNumber_of_canceled_preorders();
+					done = parkingLot.getNumber_of_done_preorders();
+				}
+			}
+
+
+
+
+
+			MSG.setObject1(canceled);
+			MSG.setObject2(late);
+			MSG.setObject3(done);
+			MSG.setObject4(ms.getObject1());
+
+			session.getTransaction().commit();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+		session.close();
+		return  MSG;
+
 	}
 
 	private Message pdfRegional(Message ms){
