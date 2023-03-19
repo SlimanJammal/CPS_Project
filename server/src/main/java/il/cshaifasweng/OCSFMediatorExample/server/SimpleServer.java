@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Date;
 
@@ -833,7 +834,7 @@ public class SimpleServer extends AbstractServer {
 
 					System.out.println("one time parking order in server5543");
 //				 Initialize to a specific date using year, month, and day values
-					LocalDate arrival_date = LocalDate.of(Integer.parseInt(estimated_arrival_date[0]), Integer.parseInt(estimated_arrival_date[1]), Integer.parseInt(estimated_arrival_date[2]));
+					LocalDate arrival_date = LocalDate.of(Integer.parseInt(estimated_arrival_date[0]), Integer.parseInt(estimated_arrival_date[1]), Integer.parseInt(estimated_arrival_date[2])+1);
 					//hour , minute
 					LocalTime arrival_time = LocalTime.of(Integer.parseInt(estimated_arrival_time[0]), Integer.parseInt(estimated_arrival_time[1]),1,1);
 
@@ -1194,6 +1195,7 @@ public class SimpleServer extends AbstractServer {
 			for (PreOrder preOrder : preOrders){
 				if (preOrder.getPreOrderId().equals(subNumber) && preOrder.getCarNumber().equals(CarNumber)) {
 					found = true;
+					session.delete(preOrder);
 					break;
 				}
 			}
@@ -1244,6 +1246,7 @@ public class SimpleServer extends AbstractServer {
 			}
 
 			client.sendToClient(returnMsg);
+			session.getTransaction().commit();
 			session.close();
 
 
@@ -2997,8 +3000,13 @@ public class SimpleServer extends AbstractServer {
 				System.out.println("order time = " + a.getEntranceTime());
 				System.out.println("now date = " + now_date);
 				System.out.println("now time = " + now_time);
-				if (now_date.isAfter(a.getEntranceDate()) || now_date.isEqual(a.getEntranceDate()) && now_time.isAfter(a.getEntranceTime())) {
+				System.out.println("cust id - "+a.getPreOrderId());
+				System.out.println("parking "+a.getParking_requested());
+				if (now_date.isAfter(a.getEntranceDate()) ||( now_date.isEqual(a.getEntranceDate()) && now_time.isAfter(a.getEntranceTime()))) {
 					System.out.println("order of car number - " + a.getCarNumber() + " was deleted" + " customer - late");
+					System.out.println("cust id - "+a.getPreOrderId());
+					System.out.println("parking "+a.getParking_requested());
+
 					for(ParkingLot parkingLot:parkingLots) {
 						if (a.getParking_lot_id() == parkingLot.getParking_id()) {
 							parkingLot.setNumber_of_late_preorders(parkingLot.getNumber_of_late_preorders() + 1);
@@ -3077,67 +3085,104 @@ public class SimpleServer extends AbstractServer {
 
 
 	public static void SubscriptionReminder() {
-//
-//
-//		try {
-//			SessionFactory sessionFactory = getSessionFactory();
-//			session = sessionFactory.openSession();
-//			session.beginTransaction();
-//
-//			CriteriaBuilder builder = session.getCriteriaBuilder();
-//			CriteriaQuery<MultiSub> query = builder.createQuery(MultiSub.class);
-//			query.from(MultiSub.class);
-//			List<MultiSub> data21 = session.createQuery(query).getResultList();
-//			LocalDate now_date = LocalDate.now();
-//			LocalTime now_time = LocalTime.now();
-//
-//			for (MultiSub a : data21) {
-//				System.out.println("subs end date = "+a.getEndDate());
-//				System.out.println("now date = "+now_date);
-//				System.out.println("now time = "+now_time);
-//				if ( now_date.(a.getEndDate())  && !a.isMail_sent()) {
-//
-//					new EmailSender().sendMail("Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.",MAIL);
-//					a.setMail_sent(true);
-//					session.update(a);
-////					session.flush();
-//				}
-//			}
-//			session.getTransaction().commit();
-//		}catch(Exception E){
-//
-//			E.printStackTrace();
-//		}
-//
-//
-//		try {
-//			SessionFactory sessionFactory = getSessionFactory();
-//			session = sessionFactory.openSession();
-//			session.beginTransaction();
-//
-//			CriteriaBuilder builder = session.getCriteriaBuilder();
-//			CriteriaQuery<PartialSub> query = builder.createQuery(PartialSub.class);
-//			query.from(PartialSub.class);
-//			List<PartialSub> data21 = session.createQuery(query).getResultList();
-//			LocalDate now_date = LocalDate.now();
-//			LocalTime now_time = LocalTime.now();
-//
-//			for (PartialSub a : data21) {
-//				System.out.println("subs end date = "+a.getEndDate());
-//				System.out.println("now date = "+now_date);
-//				System.out.println("now time = "+now_time);
-//				if ( now_date.isEqual(a.getEndDate())  && !a.isMail_sent()) {
-//					new EmailSender.sendMail("Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+a.getParking_requested()+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.",MAIL);
-////					session.flush();
-//					a.setMail_sent(true);
-//					session.update(a);
-//				}
-//			}
-//			session.getTransaction().commit();
-//		}catch(Exception E){
-//
-//			E.printStackTrace();
-//		}
+
+
+		try {
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<MultiSub> query = builder.createQuery(MultiSub.class);
+			query.from(MultiSub.class);
+			List<MultiSub> data21 = session.createQuery(query).getResultList();
+			LocalDate now_date = LocalDate.now();
+			LocalTime now_time = LocalTime.now();
+
+			for (MultiSub a : data21) {
+				System.out.println("subs end date = "+a.getEndDate());
+				System.out.println("now date = "+now_date);
+				System.out.println("now time = "+now_time);
+				System.out.println("email "+a.getEmail());
+				if ( now_date.until(a.getEndDate(), ChronoUnit.WEEKS) <= 1 && !a.isMail_sent()) {
+
+					new EmailSender().sendMail("Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.",a.getEmail());
+					a.setMail_sent(true);
+					session.update(a);
+//					session.flush();
+				}
+			}
+			session.getTransaction().commit();
+			session.close();
+		}catch(Exception E){
+
+			E.printStackTrace();
+		}
+
+
+		try {
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<PartialSub> query = builder.createQuery(PartialSub.class);
+			query.from(PartialSub.class);
+			List<PartialSub> data21 = session.createQuery(query).getResultList();
+			LocalDate now_date = LocalDate.now();
+			LocalTime now_time = LocalTime.now();
+
+			for (PartialSub a : data21) {
+				System.out.println("subs end date = "+a.getEndDate());
+				System.out.println("now date = "+now_date);
+				System.out.println("now time = "+now_time);
+				System.out.println("email "+a.getEmail());
+				if ( now_date.until(a.getEndDate(), ChronoUnit.WEEKS) <= 1 && !a.isMail_sent()) {
+					new EmailSender().sendMail("Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.",a.getEmail());
+//					session.flush();
+					a.setMail_sent(true);
+					session.update(a);
+				}
+			}
+			session.getTransaction().commit();
+			session.close();
+		}catch(Exception E){
+
+			E.printStackTrace();
+		}
+
+
+
+		try {
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<FullSub> query = builder.createQuery(FullSub.class);
+			query.from(FullSub.class);
+			List<FullSub> data21 = session.createQuery(query).getResultList();
+			LocalDate now_date = LocalDate.now();
+			LocalTime now_time = LocalTime.now();
+
+			for (FullSub a : data21) {
+				System.out.println("subs end date = "+a.getEndDate());
+				System.out.println("now date = "+now_date);
+				System.out.println("now time = "+now_time);
+				System.out.println("email "+a.getEmail());
+				if ( now_date.until(a.getEndDate(), ChronoUnit.WEEKS) <= 1 && !a.isMail_sent()) {
+					new EmailSender().sendMail("Haifa Parkings","Dear Sir, \n"+"this is a reminder for you to renew your subscription "+"parking."+"\n\n\n\nBest regards,\n Hiafa Parkings.",a.getEmail());
+//					session.flush();
+					a.setMail_sent(true);
+					session.update(a);
+				}
+			}
+			session.getTransaction().commit();
+			session.close();
+		}catch(Exception E){
+
+			E.printStackTrace();
+		}
 
 	}
 
@@ -3146,24 +3191,29 @@ public class SimpleServer extends AbstractServer {
 
 	int removeCarFromParking(String carNumber,String parkingLotName){
 		System.out.println("inside remove car from parking");
-		SessionFactory sessionFactory = getSessionFactory();
-		session = sessionFactory.openSession();
-		session.beginTransaction();
+		try {
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
 
-		List<ParkingLot> parkingLots = getAll(ParkingLot.class);
+			List<ParkingLot> parkingLots = getAll(ParkingLot.class);
 
-		for (ParkingLot parkingLot : parkingLots){
-			if(parkingLot.getName().equals(parkingLotName)){
-				System.out.println("before price calc");
-				int price = parkingLot.findAndCalcPrice(carNumber);
-				System.out.println("car found and the price is"+ price);
-				parkingLot.removeCar(carNumber);
-				session.saveOrUpdate(parkingLot);
-				session.close();
-				return price;
+			for (ParkingLot parkingLot : parkingLots) {
+				if (parkingLot.getName().equals(parkingLotName)) {
+					System.out.println("before price calc");
+					int price = parkingLot.findAndCalcPrice(carNumber);
+					System.out.println("car found and the price is" + price);
+					parkingLot.removeCar(carNumber);
+					session.saveOrUpdate(parkingLot);
+					session.close();
+					return price;
+				}
 			}
+		}catch(Exception e){
+			if(session != null)
+				session.getTransaction().rollback();
+			e.printStackTrace();
 		}
-
 		session.close();
 		return -1;
 	}
