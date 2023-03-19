@@ -64,10 +64,15 @@ public class OcasionalParking {
                 emailTF.clear();
                 leavingTimeTF.clear();
                 parkingNameTF.clear();
-                SimpleClient.getClient().sendToServer(message);
+                if(isnumeric((String)message.getObject1())
+                   &&isnumeric((String)message.getObject2())
+                   &&isMail((String)message.getObject3())
+                )
+                {
+                    SimpleClient.getClient().sendToServer(message);
+                }
 
             } else {
-
              parkingNameTF.setText("Wrong ParkingLot Name");
             }
 
@@ -117,6 +122,25 @@ public class OcasionalParking {
     void initialize() {
         EventBus.getDefault().register(this);
 
+    }
+    boolean isnumeric(String str)
+    {
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i)<'0'||str.charAt(i)>'9')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    boolean isMail(String str)
+    {
+        if(str.endsWith(".com")&&(str.contains("@gmail")||str.contains("@hotmail")))
+        {
+            return true;
+        }
+        return false;
     }
 
 }

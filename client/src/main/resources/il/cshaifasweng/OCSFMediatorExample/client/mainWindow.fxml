@@ -14,11 +14,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MainWindow">
+<Pane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MainWindow">
    <children>
       <AnchorPane layoutY="-6.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="335.0" prefWidth="526.0">
          <children>
-            <Button fx:id="WebsiteBtn" layoutX="52.0" layoutY="243.0" mnemonicParsing="false" onAction="#WebsiteBtn" prefHeight="26.0" prefWidth="97.0" style="-fx-background-color: #000000; -fx-border-color: #8A2BE2; -fx-border-width: 3;" text="Website" textFill="BLUEVIOLET">
+            <Button fx:id="WebsiteBtn" layoutX="52.0" layoutY="243.0" mnemonicParsing="false" onAction="#WebsiteBtn" prefHeight="26.0" prefWidth="97.0" style="-fx-border-color: #8A2BE2; -fx-border-width: 3;" text="Website" textFill="BLUEVIOLET">
                <font>
                   <Font size="14.0" />
                </font>
@@ -28,33 +28,7 @@
                   <Font size="45.0" />
                </font>
             </Text>
-            <Circle fx:id="green" layoutX="101.0" layoutY="86.0" radius="60.0" strokeType="INSIDE" strokeWidth="3.0" style="-fx-stroke-dash-array: 15;">
-               <fill>
-                  <LinearGradient endX="1.0" endY="1.0">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color red="1.0" green="0.970370352268219" blue="0.970370352268219" />
-                           </color>
-                        </Stop>
-                        <Stop offset="0.006729475100942127">
-                           <color>
-                              <Color red="1.0" green="0.970370352268219" blue="0.970370352268219" />
-                           </color>
-                        </Stop>
-                        <Stop offset="0.5773889636608344">
-                           <color>
-                              <Color />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </LinearGradient>
-               </fill>
+            <Circle fx:id="green" fill="#fffbfb" layoutX="101.0" layoutY="86.0" radius="60.0" strokeType="INSIDE" strokeWidth="3.0" style="-fx-stroke-dash-array: 15;">
                <stroke>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -82,35 +56,8 @@
                   </LinearGradient>
                </stroke>
             </Circle>
-            <Button fx:id="MagicButton" layoutX="207.0" layoutY="112.0" mnemonicParsing="false" onAction="#play" style="-fx-background-color: #000000; -fx-border-color: #8A2BE2;" text="magic button">
-               <textFill>
-                  <LinearGradient cycleMethod="REPEAT" endX="1.0" endY="1.0" startX="0.05303030664270575" startY="0.03409089464129824">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color red="0.5411764979362488" green="0.16862745583057404" blue="0.886274516582489" />
-                           </color>
-                        </Stop>
-                        <Stop offset="0.006729475100942127">
-                           <color>
-                              <Color red="0.5411764979362488" green="0.16862745583057404" blue="0.886274516582489" />
-                           </color>
-                        </Stop>
-                        <Stop offset="0.4555920296753438">
-                           <color>
-                              <Color red="0.3365302085876465" green="0.8736842274665833" blue="0.8110162615776062" />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color red="0.5411764979362488" green="0.16862745583057404" blue="0.886274516582489" />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </LinearGradient>
-               </textFill>
-            </Button>
-            <MenuButton fx:id="WhichKiosk1" layoutX="353.0" layoutY="243.0" mnemonicParsing="false" onAction="#WhichKiosk" style="-fx-background-color: #000000; -fx-border-color: #8A2BE2; -fx-border-width: 3;" text="Choose kiosk" textFill="BLUEVIOLET" textOverrun="WORD_ELLIPSIS">
+            <Button fx:id="MagicButton" layoutX="207.0" layoutY="112.0" mnemonicParsing="false" onAction="#play" style="-fx-border-color: #8A2BE2;" text="magic button" />
+            <MenuButton fx:id="WhichKiosk1" layoutX="353.0" layoutY="243.0" mnemonicParsing="false" onAction="#WhichKiosk" style="-fx-border-color: #8A2BE2; -fx-border-width: 3;" text="Choose kiosk" textFill="BLUEVIOLET" textOverrun="WORD_ELLIPSIS">
               <items>
                 <MenuItem fx:id="GermanColonyItem1" mnemonicParsing="false" onAction="#GermanColonyItem" text="German_Colony" />
                 <MenuItem fx:id="HanamalItem1" mnemonicParsing="false" onAction="#HanamalItem" text="Hanmal" />
@@ -120,28 +67,7 @@
                   <Font size="14.0" />
                </font>
             </MenuButton>
-            <Circle fx:id="red" layoutX="431.0" layoutY="85.0" radius="60.0" strokeType="INSIDE" strokeWidth="3.0" style="-fx-stroke-dash-array: 15;">
-               <fill>
-                  <LinearGradient endX="1.0" endY="1.0">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color />
-                           </color>
-                        </Stop>
-                        <Stop offset="0.414535666218035">
-                           <color>
-                              <Color />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color red="1.0" green="1.0" blue="1.0" />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </LinearGradient>
-               </fill>
+            <Circle fx:id="red" fill="WHITE" layoutX="431.0" layoutY="85.0" radius="60.0" strokeType="INSIDE" strokeWidth="3.0" style="-fx-stroke-dash-array: 15;">
                <stroke>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>

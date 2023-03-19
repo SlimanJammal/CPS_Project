@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CustomerService">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CustomerService">
    <children>
       <TextField fx:id="requestTF" layoutX="63.0" layoutY="333.0" onAction="#requestTF" promptText="Request Number" />
       <Button fx:id="DeclineBtn" layoutX="333.0" layoutY="333.0" mnemonicParsing="false" onAction="#DeclineBtn" text="Decline" />

@@ -80,8 +80,16 @@ public class CpsWebsite {
         Message msg= new Message("loginManager_WEBSITE");
         msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
-
-        SimpleClient.getClient().sendToServer(msg);
+        for(int i=0;i<ID_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getID().charAt(i)<'0'||msg.getID().charAt(i)>'9')
+            {
+                ID_LOGIN_TF.setText("notValid");
+            }
+        }
+            if(!ID_LOGIN_TF.getText().equals("notValid")) {
+                SimpleClient.getClient().sendToServer(msg);
+            }
     }
 
 
@@ -141,7 +149,17 @@ public class CpsWebsite {
         Message msg= new Message("loginEmployee_CPS");
         msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
-        SimpleClient.getClient().sendToServer(msg);
+
+        for(int i=0;i<ID_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getID().charAt(i)<'0'||msg.getID().charAt(i)>'9')
+            {
+                ID_LOGIN_TF.setText("notValid");
+            }
+        }
+        if(!ID_LOGIN_TF.getText().equals("notValid")) {
+            SimpleClient.getClient().sendToServer(msg);
+        }
     }
     @Subscribe
     public void allowWorker(loginWorkerWebsiteEvent allowing) throws IOException {
@@ -183,7 +201,27 @@ public class CpsWebsite {
         Message msg= new Message("RenewSub_website");
         msg.setLicensePlate(LICENSE_LOGIN_TF.getText());
         msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
-        SimpleClient.getClient().sendToServer(msg);
+
+        for(int i=0;i<LICENSE_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getLicensePlate().charAt(i)<'0'||msg.getLicensePlate().charAt(i)>'9')
+            {
+                LICENSE_LOGIN_TF.setText("notValid");
+            }
+        }
+        for(int i=0;i<SUBSNUM_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getSubNum().charAt(i)<'0'||msg.getSubNum().charAt(i)>'9')
+            {
+                SUBSNUM_LOGIN_TF.setText("notValid");
+            }
+        }
+
+
+        if(!LICENSE_LOGIN_TF.getText().equals("notValid")&&!SUBSNUM_LOGIN_TF.getText().equals("notValid"))
+        {
+            SimpleClient.getClient().sendToServer(msg);
+        }
     }
     @Subscribe
    public void setRenewSubsSuccess(SubRenewEventWebsite event)

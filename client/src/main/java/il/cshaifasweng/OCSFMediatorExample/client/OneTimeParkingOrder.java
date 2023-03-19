@@ -101,6 +101,11 @@ public class OneTimeParkingOrder {
         System.out.println("submit pre order pressed");
         //send to server
         try{
+            if(
+                    isnumeric(fields.elementAt(0))
+                    && isnumeric(fields.elementAt(5))
+                    && isMail(fields.elementAt(2))
+            )
             SimpleClient.getClient().sendToServer(msg);
         } catch (IOException e) {
             e.printStackTrace();
@@ -235,6 +240,25 @@ public class OneTimeParkingOrder {
     void initialize() {
         EventBus.getDefault().register(this);
 
+    }
+    boolean isnumeric(String str)
+    {
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i)<'0'||str.charAt(i)>'9')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    boolean isMail(String str)
+    {
+        if(str.endsWith(".com")&&(str.contains("@gmail")||str.contains("@hotmail")))
+        {
+            return true;
+        }
+        return false;
     }
 
 }

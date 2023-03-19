@@ -9,26 +9,26 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.OneTimeParkingOrder">
+<Pane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.OneTimeParkingOrder">
    <children>
       <AnchorPane prefHeight="231.0" prefWidth="529.0">
          <children>
-            <AnchorPane prefHeight="256.0" prefWidth="530.0" style="-fx-background-color: BLACK;">
+            <AnchorPane prefHeight="256.0" prefWidth="530.0" style="-fx-background-color: white;">
                <children>
-                  <Text fill="WHITE" layoutX="23.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="On Time Parking Pre-Order" wrappingWidth="420.62420654296875">
+                  <Text layoutX="23.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="On Time Parking Pre-Order" wrappingWidth="420.62420654296875">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="IdNumberTF" layoutX="54.0" layoutY="64.0" onAction="#IdNumberTF" prefHeight="30.0" prefWidth="180.0" promptText="ID number" style="-fx-background-color: BLACK; -fx-border-color: WHITE; -fx-border-width: 2;" />
-                  <TextField fx:id="EmailTF" layoutX="54.0" layoutY="102.0" onAction="#EmailTF" prefHeight="30.0" prefWidth="180.0" promptText="Email" style="-fx-background-color: BLACK; -fx-border-color: WHITE; -fx-border-width: 2;" />
-                  <TextField fx:id="EtaTF" layoutX="54.0" layoutY="141.0" onAction="#EtaTF" prefHeight="30.0" prefWidth="180.0" promptText=" arrival hh:mm-yyyy:mm:dd" style="-fx-background-color: BLACK; -fx-border-color: WHITE; -fx-border-width: 2;" />
-                  <TextField fx:id="CarNumberTF" layoutX="312.0" layoutY="64.0" onAction="#CarNumberTF" prefHeight="30.0" prefWidth="180.0" promptText="Car License number" style="-fx-background-color: BLACK; -fx-border-color: WHITE; -fx-border-width: 2;" />
-                  <TextField fx:id="DesiredParkingTF" layoutX="312.0" layoutY="102.0" onAction="#DesiredParkingTF" prefHeight="30.0" prefWidth="180.0" promptText="Desired Parking" style="-fx-background-color: BLACK; -fx-border-color: WHITE; -fx-border-width: 2;" />
-                  <TextField fx:id="EtdTF" layoutX="312.0" layoutY="141.0" onAction="#EtdTF" prefHeight="30.0" prefWidth="180.0" promptText="leave hh:mm-yyyy:mm:dd" style="-fx-background-color: BLACK; -fx-border-color: WHITE; -fx-border-width: 2;" />
-                  <Button fx:id="CheckoutBtn" layoutX="359.0" layoutY="202.0" mnemonicParsing="false" onAction="#CheckoutBtn" prefHeight="26.0" prefWidth="133.0" style="-fx-background-color: BLACK; -fx-border-color: WHITE; -fx-border-width: 2;" text="Submit" textFill="WHITE" />
-                  <Button fx:id="backBtn" layoutX="29.0" layoutY="202.0" mnemonicParsing="false" onAction="#backBtn" style="-fx-background-color: BLACK; -fx-border-color: WHITE; -fx-border-width: 2;" text="Back" textFill="WHITE" />
-                  <Button fx:id="cancelRes" layoutX="178.0" layoutY="202.0" mnemonicParsing="false" onAction="#CancelResBtn" style="-fx-background-color: BLACK; -fx-border-color: RED; -fx-border-width: 2;" text="cancel reservation" textFill="RED" />
+                  <TextField fx:id="IdNumberTF" layoutX="54.0" layoutY="64.0" onAction="#IdNumberTF" prefHeight="30.0" prefWidth="180.0" promptText="ID number" style="-fx-border-color: black; -fx-border-width: 2;" />
+                  <TextField fx:id="EmailTF" layoutX="54.0" layoutY="102.0" onAction="#EmailTF" prefHeight="30.0" prefWidth="180.0" promptText="Email" style="-fx-border-color: black; -fx-border-width: 2;" />
+                  <TextField fx:id="EtaTF" layoutX="54.0" layoutY="141.0" onAction="#EtaTF" prefHeight="30.0" prefWidth="180.0" promptText=" arrival hh:mm-yyyy:mm:dd" style="-fx-border-color: black; -fx-border-width: 2;" />
+                  <TextField fx:id="CarNumberTF" layoutX="312.0" layoutY="64.0" onAction="#CarNumberTF" prefHeight="30.0" prefWidth="180.0" promptText="Car License number" style="-fx-border-color: black; -fx-border-width: 2;" />
+                  <TextField fx:id="DesiredParkingTF" layoutX="312.0" layoutY="102.0" onAction="#DesiredParkingTF" prefHeight="30.0" prefWidth="180.0" promptText="Desired Parking" style="-fx-border-color: black; -fx-border-width: 2;" />
+                  <TextField fx:id="EtdTF" layoutX="312.0" layoutY="141.0" onAction="#EtdTF" prefHeight="30.0" prefWidth="180.0" promptText="leave hh:mm-yyyy:mm:dd" style="-fx-border-color: black; -fx-border-width: 2;" />
+                  <Button fx:id="CheckoutBtn" layoutX="359.0" layoutY="202.0" mnemonicParsing="false" onAction="#CheckoutBtn" prefHeight="26.0" prefWidth="133.0" style="-fx-border-color: black; -fx-border-width: 2;" text="Submit" />
+                  <Button fx:id="backBtn" layoutX="29.0" layoutY="202.0" mnemonicParsing="false" onAction="#backBtn" style="-fx-border-color: black; -fx-border-width: 2;" text="Back" />
+                  <Button fx:id="cancelRes" layoutX="178.0" layoutY="202.0" mnemonicParsing="false" onAction="#CancelResBtn" style="-fx-border-color: black; -fx-border-width: 2;" text="cancel reservation" />
                   <ImageView fitHeight="46.0" fitWidth="46.0" layoutX="6.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
