@@ -99,7 +99,7 @@ public class MainWindow {
         try{
             DataSingleton data =DataSingleton.getInstance();
             data.setCaller("MainWindow");
-            data.setDataName("Hanamal");
+            data.setDataName("Hanmal");
             WhichKiosk1.hide();
             App.setRoot("cpsKiosk");
         }

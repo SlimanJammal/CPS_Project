@@ -91,6 +91,7 @@ public class ParkingSpot  implements Serializable {
         parking_lot_id  = thispark;
         parkingLot = parkingLot_;
         EntryDate = LocalDateTime.now();
+        Licesnes_Plate = "";
 
     }
 

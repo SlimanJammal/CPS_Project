@@ -30,24 +30,24 @@ import java.util.Set;
 
 public class EmailSender {
 
-    private static final String email_ = "sw.2023.parking@gmail.com";
+    private static final String email_ = "parking.project.mail@gmail.com";
     private final Gmail service;
 
     public EmailSender() throws Exception{
         NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         GsonFactory jsonFactory = GsonFactory.getDefaultInstance();
-         service = new Gmail.Builder(HTTP_TRANSPORT, jsonFactory, getCredentials(HTTP_TRANSPORT,jsonFactory))
-                .setApplicationName("mailer")
+        service = new Gmail.Builder(HTTP_TRANSPORT, jsonFactory, getCredentials(HTTP_TRANSPORT,jsonFactory))
+                .setApplicationName("test mailer")
                 .build();
     }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, GsonFactory jsonFactory )
             throws IOException, IOException {
         // Load client secrets.
-        InputStream in = EmailSender.class.getResourceAsStream("/client_secret_334150897118-p8tclir8jfuh31id12qniv73q3q72614.apps.googleusercontent.com.json");
+        InputStream in = EmailSender.class.getResourceAsStream("/client_secret_1062051525486-poc9vsjlun435ehe7t3mhqat2fj13189.apps.googleusercontent.com.json");
 
         GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(jsonFactory, new InputStreamReader(EmailSender.class.getResourceAsStream("/client_secret_334150897118-p8tclir8jfuh31id12qniv73q3q72614.apps.googleusercontent.com.json")));
+                GoogleClientSecrets.load(jsonFactory, new InputStreamReader(EmailSender.class.getResourceAsStream("/client_secret_1062051525486-poc9vsjlun435ehe7t3mhqat2fj13189.apps.googleusercontent.com.json")));
 
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
