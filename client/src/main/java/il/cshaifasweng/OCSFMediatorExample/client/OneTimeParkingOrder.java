@@ -9,17 +9,18 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 public class OneTimeParkingOrder {
+
+    private String desiredParkingName;
 
     @FXML // fx:id="CarNumberTF"
     private TextField CarNumberTF; // Value injected by FXMLLoader
@@ -47,11 +48,84 @@ public class OneTimeParkingOrder {
     @FXML
     private Button backBtn;
 
+    @FXML
+    void DesiredParkingMB(ActionEvent event) {
+
+    }
+
+    @FXML
+    private MenuItem BatGalimItem1;
+
+    @FXML
+    private MenuItem GermanColonyItem1;
+
+    @FXML
+    private MenuItem HanamalItem1;
+
+
+    @FXML
+    private DatePicker ArrivalDate;
+
+    @FXML
+    private DatePicker DepartureDate;
+
+    @FXML
+    void DepartureDateDP(ActionEvent event) {
+        LocalDate ld = DepartureDate.getValue();
+        if(ld != null &&ld.isBefore(LocalDate.now())){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "plese pick a date that is not in the past."
+                );
+                alert.show();
+            });
+            DepartureDate.setValue(null);
+        }
+    }
+
+    @FXML
+    void ArrivalDateDP(ActionEvent event) {
+        LocalDate ld = ArrivalDate.getValue();
+        if(ld != null && ld.isBefore(LocalDate.now())){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "plese pick a date that is not in the past."
+                );
+                alert.show();
+            });
+            ArrivalDate.setValue(null);
+        }
+    }
+
 
     private int msgId = 0;
     @FXML
     void CarNumberTF(ActionEvent event) {
+        if(!isNumeric(CarNumberTF.getText())){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "Car Number Should contain numbers only !"
+                );
+                alert.show();
+            });
+            CarNumberTF.clear();
+        }
+    }
 
+    @FXML
+    void BatGalimItem1(ActionEvent event) {
+        desiredParkingName="Bat-Galim";
+    }
+
+
+    @FXML
+    void GermanColonyItem1(ActionEvent event) {
+        desiredParkingName="German_Colony";
+    }
+
+    @FXML
+    void HanamalItem1(ActionEvent event) {
+        desiredParkingName="Hanmal";
     }
 
     @FXML
@@ -60,7 +134,7 @@ public class OneTimeParkingOrder {
         Message msg = new Message("cancelOrder");
 
         msg.setObject1(CarNumberTF.getText());
-        msg.setObject2(DesiredParkingTF.getText());
+        msg.setObject2(desiredParkingName);
         msg.setObject3(EmailTF.getText());
         msg.setObject4(EtaTF.getText());
         msg.setObject5(EtdTF.getText());
@@ -83,6 +157,8 @@ public class OneTimeParkingOrder {
         // 0- car number             3- Eta
         // 1- DesiredParking         4- Etd
         // 2- Email                  5- Id number
+        // object 2 -> arrival date (LocalDate)
+        // object 3 -> departure date (LocalDate)
 
 //        msg.setObject1(CarNumberTF.getText());
 //        msg.setObject1(DesiredParkingTF.getText());
@@ -97,6 +173,9 @@ public class OneTimeParkingOrder {
         fields.add(EtaTF.getText());
         fields.add(EtdTF.getText());
         fields.add(IdNumberTF.getText());
+        msg.setObject2(ArrivalDate.getValue());
+        msg.setObject3(DepartureDate.getValue());
+
         msg.setObject1(fields);
         System.out.println("submit pre order pressed");
         //send to server
@@ -121,12 +200,19 @@ public class OneTimeParkingOrder {
 //                );
 //                alert.show();
 //            });
-            CarNumberTF.setText("success");
-            DesiredParkingTF.setText("success");
-            EmailTF.setText("success");
-            EtaTF.setText("success");
-            EtdTF.setText("success");
-            IdNumberTF.setText("success");
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "Complaint sent successfully "
+                );
+                alert.show();
+            });
+
+//            CarNumberTF.setText("success");
+//            DesiredParkingTF.setText("success");
+//            EmailTF.setText("success");
+//            EtaTF.setText("success");
+//            EtdTF.setText("success");
+//            IdNumberTF.setText("success");
 
             try {
                 TimeUnit.SECONDS.sleep(7);
@@ -143,9 +229,8 @@ public class OneTimeParkingOrder {
 
         } else if(event.getMessage().getObject1().toString().equals("fail")){
             Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.WARNING,
-                        String.format("Message: %s\n",
-                                "Submission Failed - Wrong Input, Try Again")
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "Submission Failed - Wrong Input, Try Again"
                 );
                 alert.show();
             });
@@ -197,10 +282,7 @@ public class OneTimeParkingOrder {
 
     }
 
-    @FXML
-    void DesiredParkingTF(ActionEvent event) {
 
-    }
 
     @FXML
     void EmailTF(ActionEvent event) {
@@ -219,7 +301,15 @@ public class OneTimeParkingOrder {
 
     @FXML
     void IdNumberTF(ActionEvent event) {
-
+        if(!isNumeric(IdNumberTF.getText())){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "Car Number Should contain numbers only !"
+                );
+                alert.show();
+            });
+            IdNumberTF.clear();
+        }
     }
 
     @FXML
@@ -235,6 +325,14 @@ public class OneTimeParkingOrder {
     void initialize() {
         EventBus.getDefault().register(this);
 
+    }
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
 }

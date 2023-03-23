@@ -79,6 +79,8 @@ public class SimpleClient extends AbstractClient {
 		}else if(ms.getMessage().equals("ExitParkingReply"))
 		{
 			EventBus.getDefault().post(new EnterParkingEvent((Message) msg));
+		}else if(ms.getMessage().equals("RegisterNewSub")){
+			EventBus.getDefault().post(new RegisterNewSubscriptionEvent((Message) msg));
 		}
 
 

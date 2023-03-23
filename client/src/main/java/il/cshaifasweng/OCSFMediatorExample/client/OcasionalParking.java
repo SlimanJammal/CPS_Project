@@ -18,6 +18,8 @@ import java.io.IOException;
 
 public class OcasionalParking {
 
+    String parkingName;
+
     @FXML // fx:id="IdNumberTF"
     private TextField IdNumberTF; // Value injected by FXMLLoader
 
@@ -40,7 +42,15 @@ public class OcasionalParking {
 
     @FXML
     void IdNumberTF(ActionEvent event) {
-
+        if(!isNumeric(IdNumberTF.getText())){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "your ID Number Should contain numbers only !"
+                );
+                alert.show();
+            });
+            IdNumberTF.clear();
+        }
     }
 
     @FXML
@@ -51,8 +61,9 @@ public class OcasionalParking {
             message.setObject2(licensePlateTF.getText());
             message.setObject3(emailTF.getText());
             message.setObject4(leavingTimeTF.getText());
-            if(parkingNameTF.getText().equals("Hanmal") || parkingNameTF.getText().equals("German_Colony") ||parkingNameTF.getText().equals("Bat-Galim")) {
-                message.setObject5(parkingNameTF.getText());
+            message.setObject5(parkingName);
+//            if(parkingNameTF.getText().equals("Hanmal") || parkingNameTF.getText().equals("German_Colony") ||parkingNameTF.getText().equals("Bat-Galim")) {
+//                message.setObject5(parkingNameTF.getText());
 
                 // Id number is saved as a string in object1
                 // license plate number is saved as a string in object2
@@ -63,13 +74,10 @@ public class OcasionalParking {
                 licensePlateTF.clear();
                 emailTF.clear();
                 leavingTimeTF.clear();
-                parkingNameTF.clear();
+//                parkingNameTF.clear();
                 SimpleClient.getClient().sendToServer(message);
 
-            } else {
 
-             parkingNameTF.setText("Wrong ParkingLot Name");
-            }
 
             //send message to the server containing the new prices
 
@@ -92,7 +100,15 @@ public class OcasionalParking {
 
     @FXML
     void licensePlateTF(ActionEvent event) {
-
+        if(!isNumeric(licensePlateTF.getText())){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "Car Number Should contain numbers only !"
+                );
+                alert.show();
+            });
+            licensePlateTF.clear();
+        }
     }
     @FXML
     void backbtn(ActionEvent event) {
@@ -115,8 +131,17 @@ public class OcasionalParking {
     }
     @FXML
     void initialize() {
+        parkingName = DataSingleton.getInstance().getDataName();
         EventBus.getDefault().register(this);
 
+    }
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
 }

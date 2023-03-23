@@ -18,7 +18,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 
 public class CpsKiosk {
-
+    String parkingLotName;
     @FXML // fx:id="CustomerBtn"
     private Button CustomerBtn; // Value injected by FXMLLoader
     @FXML
@@ -65,9 +65,10 @@ public class CpsKiosk {
 
     @FXML
     void CustomerBtn(ActionEvent event) throws IOException {
+        DataSingleton.getInstance().setDataName(parkingLotName);
       App.setRoot("ocasionalParking");
     }
-    String parkingLotName;
+
 
 
     @FXML

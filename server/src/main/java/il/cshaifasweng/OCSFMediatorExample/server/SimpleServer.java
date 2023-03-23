@@ -806,6 +806,8 @@ public class SimpleServer extends AbstractServer {
 			// 0- car number             3- Eta
 			// 1- DesiredParking         4- Etd
 			// 2- Email                  5- Id nnumber
+			// object 2 -> arrival date (LocalDate)
+			// object 3 -> departure date (LocalDate)
 			Vector<String> fields = (Vector<String>)ms.getObject1();
 			System.out.println("one time parking order in server");
 			// checking fields input if okay add the client, else return failed
@@ -821,25 +823,23 @@ public class SimpleServer extends AbstractServer {
 					System.out.println(fields3);
 					System.out.println(fields4);
 
-					//input example 22:15-2022:11:24
+					//input example 22:15
 					// hour in - 0 , minutes in - 1
-					String[] estimated_arrival_time = fields3.split("-")[0].split(":");
-					//0 - year,1 - month,2 -day
-					String[] estimated_arrival_date = fields3.split("-")[1].split(":");
+					String[] estimated_arrival_time = fields3.split(":");
 
 					// hour in - 0 , minutes in - 1
-					String[] estimated_leave_time = fields4.split("-")[0].split(":");
-					//0 - year,1 - month,2 -day
-					String[] estimated_leave_date = fields4.split("-")[1].split(":");
+					String[] estimated_leave_time = fields4.split(":");
 
 					System.out.println("one time parking order in server5543");
 //				 Initialize to a specific date using year, month, and day values
-					LocalDate arrival_date = LocalDate.of(Integer.parseInt(estimated_arrival_date[0]), Integer.parseInt(estimated_arrival_date[1]), Integer.parseInt(estimated_arrival_date[2])+1);
+					//LocalDate arrival_date = LocalDate.of(Integer.parseInt(estimated_arrival_date[0]), Integer.parseInt(estimated_arrival_date[1]), Integer.parseInt(estimated_arrival_date[2])+1);
+					LocalDate arrival_date = (LocalDate) ms.getObject2();
 					//hour , minute
 					LocalTime arrival_time = LocalTime.of(Integer.parseInt(estimated_arrival_time[0]), Integer.parseInt(estimated_arrival_time[1]),1,1);
 
 					//				 Initialize to a specific date using year, month, and day values
-					LocalDate leave_date = LocalDate.of(Integer.parseInt(estimated_leave_date[0]), Integer.parseInt(estimated_leave_date[1]), Integer.parseInt(estimated_leave_date[2]));
+//					LocalDate leave_date = LocalDate.of(Integer.parseInt(estimated_leave_date[0]), Integer.parseInt(estimated_leave_date[1]), Integer.parseInt(estimated_leave_date[2]));
+					LocalDate leave_date = (LocalDate) ms.getObject3();
 					//hour , minute
 					LocalTime leave_time = LocalTime.of(Integer.parseInt(estimated_leave_time[0]), Integer.parseInt(estimated_leave_time[1]),1,1);
 
@@ -1272,7 +1272,7 @@ public class SimpleServer extends AbstractServer {
 			System.out.println(SubscriberType);
 			String CustomerID = ms.getObject2().toString();
 			String CarNumber = ms.getObject4().toString();
-			String StartingDate = ms.getObject3().toString();
+			LocalDate StartingDate = (LocalDate) ms.getObject3();
 			String EntranceHour = ms.getObject5().toString();
 			System.out.println(StartingDate );
 			String DepartureHour = ms.getObject6().toString();
@@ -1282,12 +1282,12 @@ public class SimpleServer extends AbstractServer {
 			//Staring Date Components
 
 			System.out.println(StartingDate );
-			String[] split = StartingDate.split("/");
-			System.out.println(split[0]+split[1]+split[2] );
-			//Staring Date Components
-			int Year = Integer.parseInt(split[2]);
-			int Month = Integer.parseInt(split[1]);
-			int Day = Integer.parseInt(split[0]);
+//			//String[] split = StartingDate.split("/");
+//			System.out.println(split[0]+split[1]+split[2] );
+//			//Staring Date Components
+//			int Year = Integer.parseInt(split[2]);
+//			int Month = Integer.parseInt(split[1]);
+//			int Day = Integer.parseInt(split[0]);
 
 			//Entrance Hour Components
 			//No Need For Now
@@ -1308,8 +1308,8 @@ public class SimpleServer extends AbstractServer {
 				PartialSub input = new PartialSub(CustomerID,CarNumber);
 				input.setEmail(Email);
 				System.out.println(input.getCustomerId());
-				LocalDate Temp = LocalDate.of(Year, Month, Day);
-				input.setStartDate(Temp);
+//				LocalDate Temp = LocalDate.of(Year, Month, Day);
+				input.setStartDate(StartingDate);
 				input.setEntranceHour(EntranceHour);
 				input.setDepartureHour(DepartureHour);
 				List<PartialSub> partialSubs = getAll(PartialSub.class);
@@ -1324,7 +1324,7 @@ public class SimpleServer extends AbstractServer {
 						session.save(input);
 						session.flush();
 						session.getTransaction().commit();
-						MSG.setMessage("success");
+						MSG.setMessage("subscription created successfully");
 					}else{
 						MSG.setMessage("Customer already exists");
 					}
@@ -1346,9 +1346,9 @@ public class SimpleServer extends AbstractServer {
 
 			{   System.out.println("multi monthly");
 				MultiSub input = new MultiSub(CustomerID,CarNumber);
-				LocalDate Temp = LocalDate.of(Year,Month,Day);
-				input.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
-				input.setStartDate(Temp);
+//				LocalDate Temp = LocalDate.of(Year,Month,Day);
+				input.InsertToList(CustomerID,CarNumber,StartingDate,EntranceHour,DepartureHour);
+				input.setStartDate(StartingDate);
 				input.setEmail(Email);
 // todo here we can have a problem if we are trying to multiple cars and one of them exists
 				Boolean newCustomer = true;
@@ -1368,7 +1368,7 @@ public class SimpleServer extends AbstractServer {
 						session.getTransaction().commit();
 						MSG.setMessage("customer added successfully");
 					}else{
-						MSG.setMessage("fail");
+						MSG.setMessage("failed to create subscription");
 					}
 
 				} catch (Exception exception) {
@@ -1376,7 +1376,7 @@ public class SimpleServer extends AbstractServer {
 						session.getTransaction().rollback();
 					}
 
-					MSG.setMessage("fail");
+					MSG.setMessage("failed to create subscription");
 					exception.printStackTrace();
 				} finally {
 					client.sendToClient(MSG);
@@ -1387,8 +1387,8 @@ public class SimpleServer extends AbstractServer {
 			{
 				System.out.println("full sub");
 				FullSub input = new FullSub(CustomerID,CarNumber);
-				LocalDate Temp = LocalDate.of(Year,Month,Day);
-				input.setStartDate(Temp);
+//				LocalDate Temp = LocalDate.of(Year,Month,Day);
+				input.setStartDate(StartingDate);
 				input.setEmail(Email);
 				boolean newCustomer = true;
 				List<FullSub> fullSubs = getAll(FullSub.class);
@@ -1403,7 +1403,7 @@ public class SimpleServer extends AbstractServer {
 						session.save(input);
 						session.flush();
 						session.getTransaction().commit();
-						MSG.setMessage("success");
+						MSG.setMessage("subscription created successfully");
 					}else{
 						MSG.setMessage("fail customer exists");
 					}
@@ -1412,7 +1412,7 @@ public class SimpleServer extends AbstractServer {
 						session.getTransaction().rollback();
 					}
 
-					MSG.setMessage("fail");
+					MSG.setMessage("failed to create subscription");
 					exception.printStackTrace();
 				} finally {
 					client.sendToClient(MSG);
