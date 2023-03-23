@@ -144,7 +144,11 @@ public class RegisterNewSubscription {
 
         try
         {
+            if(isnumeric((String) msg.getObject2() )&&
+               isnumeric((String) msg.getObject4()) &&
+                isMail((String) msg.getObject7())) {
             SimpleClient.getClient().sendToServer(msg);
+        }
         }
         catch (IOException e) {
             // TODO Auto-generated catch block
@@ -272,5 +276,25 @@ public class RegisterNewSubscription {
         } catch(NumberFormatException e){
             return false;
         }
+    }
+
+    boolean isnumeric(String str)
+    {
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i)<'0'||str.charAt(i)>'9')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    boolean isMail(String str)
+    {
+        if(str.endsWith(".com")&&(str.contains("@gmail")||str.contains("@hotmail")))
+        {
+            return true;
+        }
+        return false;
     }
 }

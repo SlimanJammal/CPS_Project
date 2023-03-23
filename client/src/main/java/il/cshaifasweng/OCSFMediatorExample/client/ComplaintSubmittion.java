@@ -50,13 +50,28 @@ public class ComplaintSubmittion {
 //            System.out.println("kelhom 4nole wma gedro");
             Message message = new Message("Complaint");
             Comp newComplaint = new Comp(CustomerIdTF.getText(),ComplaintTA.getText(),emailtf.getText());
+            for(int i=0;i<CustomerIdTF.getLength();i++)
+            {
+                if(CustomerIdTF.getText().charAt(i)<'0'||CustomerIdTF.getText().charAt(i)>'9')
+                {
+                    CustomerIdTF.setText("invalidInput");
+                }
+            }
             message.setObject1(newComplaint);
+
+            if(     (!emailtf.getText().contains("@")) ||
+                    !(!emailtf.getText().endsWith("hotmail.com")&&
+                    !emailtf.getText().endsWith("gmail.com")))
+            {
+                emailtf.setText("invalidInput");
+            }
             CustomerIdTF.clear();
             ComplaintTA.clear();
             emailtf.clear();
 
-            //send message to the server containing the new prices
-            SimpleClient.getClient().sendToServer(message);
+            if(!(CustomerIdTF.getText().equals("invalidInput")||emailtf.getText().equals("invalidInput"))) {
+                SimpleClient.getClient().sendToServer(message);
+            }
 
         } catch (IOException e) {
             // TODO Auto-generated catch block

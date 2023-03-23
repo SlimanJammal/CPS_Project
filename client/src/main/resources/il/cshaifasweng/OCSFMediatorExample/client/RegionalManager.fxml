@@ -12,9 +12,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -24,7 +21,7 @@
         <tabs>
           <Tab text="Main Window">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: black;">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: WHITE;">
                      <children>
                         <TextField fx:id="requestTF" layoutX="53.0" layoutY="323.0" onAction="#requestTF" promptText="Request Number" />
                         <Button fx:id="DeclineBtn" layoutX="323.0" layoutY="323.0" mnemonicParsing="false" onAction="#DeclineBtn" text="Decline" />
@@ -67,7 +64,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <AnchorPane layoutY="-8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="661.0" prefWidth="794.0" style="-fx-background-color: black;">
+                        <AnchorPane layoutY="-8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="661.0" prefWidth="794.0">
                            <children>
                               <Text fill="#21dc75" layoutX="260.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
                                  <font>
@@ -110,7 +107,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="794.0" style="-fx-background-color: black;">
+                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="794.0">
                            <children>
                               <Text fill="#21dc75" layoutX="260.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
                                  <font>
@@ -153,7 +150,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="794.0" style="-fx-background-color: black;">
+                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="794.0">
                            <children>
                               <Text fill="#21dc75" layoutX="260.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
                                  <font>
@@ -173,91 +170,11 @@
                               <TextField fx:id="PreOrderTF2" layoutX="79.0" layoutY="167.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="FullSubsTF2" layoutX="79.0" layoutY="238.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" />
                               <TextField fx:id="PartTimeTF3" layoutX="79.0" layoutY="203.0" onAction="#PartTimeTF3" prefHeight="25.0" prefWidth="76.0" />
-                              <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:">
-                                 <fill>
-                                    <LinearGradient endX="1.0" endY="1.0">
-                                       <stops>
-                                          <Stop>
-                                             <color>
-                                                <Color red="0.29976609349250793" green="0.1994152069091797" blue="0.8684210777282715" />
-                                             </color>
-                                          </Stop>
-                                          <Stop offset="1.0">
-                                             <color>
-                                                <Color red="1.0" green="1.0" blue="1.0" />
-                                             </color>
-                                          </Stop>
-                                       </stops>
-                                    </LinearGradient>
-                                 </fill></Text>
-                              <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:">
-                                 <fill>
-                                    <LinearGradient endX="1.0" endY="1.0">
-                                       <stops>
-                                          <Stop>
-                                             <color>
-                                                <Color red="0.29976609349250793" green="0.1994152069091797" blue="0.8684210777282715" />
-                                             </color>
-                                          </Stop>
-                                          <Stop offset="1.0">
-                                             <color>
-                                                <Color red="1.0" green="1.0" blue="1.0" />
-                                             </color>
-                                          </Stop>
-                                       </stops>
-                                    </LinearGradient>
-                                 </fill></Text>
-                              <Text layoutX="11.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="58.32891845703131">
-                                 <fill>
-                                    <LinearGradient endX="1.0" endY="1.0">
-                                       <stops>
-                                          <Stop>
-                                             <color>
-                                                <Color red="0.29976609349250793" green="0.1994152069091797" blue="0.8684210777282715" />
-                                             </color>
-                                          </Stop>
-                                          <Stop offset="1.0">
-                                             <color>
-                                                <Color red="1.0" green="1.0" blue="1.0" />
-                                             </color>
-                                          </Stop>
-                                       </stops>
-                                    </LinearGradient>
-                                 </fill></Text>
-                              <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991">
-                                 <fill>
-                                    <LinearGradient endX="1.0" endY="1.0">
-                                       <stops>
-                                          <Stop>
-                                             <color>
-                                                <Color red="0.29976609349250793" green="0.1994152069091797" blue="0.8684210777282715" />
-                                             </color>
-                                          </Stop>
-                                          <Stop offset="1.0">
-                                             <color>
-                                                <Color red="1.0" green="1.0" blue="1.0" />
-                                             </color>
-                                          </Stop>
-                                       </stops>
-                                    </LinearGradient>
-                                 </fill></Text>
-                              <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple">
-                                 <fill>
-                                    <LinearGradient endX="1.0" endY="1.0">
-                                       <stops>
-                                          <Stop>
-                                             <color>
-                                                <Color red="0.29976609349250793" green="0.1994152069091797" blue="0.8684210777282715" />
-                                             </color>
-                                          </Stop>
-                                          <Stop offset="1.0">
-                                             <color>
-                                                <Color red="1.0" green="1.0" blue="1.0" />
-                                             </color>
-                                          </Stop>
-                                       </stops>
-                                    </LinearGradient>
-                                 </fill></Text>
+                              <Text layoutX="18.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:" />
+                              <Text layoutX="18.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:" />
+                              <Text layoutX="11.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="58.32891845703131" />
+                              <Text layoutX="7.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991" />
+                              <Text layoutX="18.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple" />
                               <TextField fx:id="MultiTF2" layoutX="79.0" layoutY="273.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" />
                               <Button fx:id="submitBtn3" layoutX="183.0" layoutY="306.0" mnemonicParsing="false" onAction="#submit3" text="Submit" />
                               <TextArea fx:id="SCREEN3" layoutX="513.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" />

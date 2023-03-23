@@ -180,6 +180,11 @@ public class OneTimeParkingOrder {
         System.out.println("submit pre order pressed");
         //send to server
         try{
+            if(
+                    isNumeric(fields.elementAt(0))
+                    && isNumeric(fields.elementAt(5))
+                    && isMail(fields.elementAt(2))
+            )
             SimpleClient.getClient().sendToServer(msg);
         } catch (IOException e) {
             e.printStackTrace();
@@ -333,6 +338,14 @@ public class OneTimeParkingOrder {
         } catch(NumberFormatException e){
             return false;
         }
+    }
+    boolean isMail(String str)
+    {
+        if(str.endsWith(".com")&&(str.contains("@gmail")||str.contains("@hotmail")))
+        {
+            return true;
+        }
+        return false;
     }
 
 }

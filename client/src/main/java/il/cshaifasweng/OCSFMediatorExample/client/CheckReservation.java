@@ -69,7 +69,16 @@ public class CheckReservation {
 
         try
         {
-            SimpleClient.getClient().sendToServer(temp);
+            for(int i=0;i<IdTf.getLength();i++)
+            {
+                if(IdTf.getText().charAt(i)<'0'||IdTf.getText().charAt(i)>'9')
+                {
+                    IdTf.setText("invalidInput");
+                }
+            }
+            if(!IdTf.getText().equals("invalidInput")) {
+                SimpleClient.getClient().sendToServer(temp);
+            }
         }
         catch (IOException e)
         {

@@ -123,7 +123,14 @@ public class ParkingManager {
         //MANAGER NAME/PARKING NUMBER
         msg.setObject6(DataSingleton.getInstance().getData());
 
-        SimpleClient.getClient().sendToServer(msg);
+        if(     isnumeric((String)msg.getObject1())&&
+                isnumeric((String)msg.getObject2())&&
+                isnumeric((String)msg.getObject3())&&
+                isnumeric((String)msg.getObject4())&&
+                isnumeric((String)msg.getObject5())
+        ) {
+            SimpleClient.getClient().sendToServer(msg);
+        }
     }
 
     @FXML
@@ -187,6 +194,17 @@ public class ParkingManager {
     void initialize() {
         EventBus.getDefault().register(this);
 
+    }
+    boolean isnumeric(String str)
+    {
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i)<'0'||str.charAt(i)>'9')
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

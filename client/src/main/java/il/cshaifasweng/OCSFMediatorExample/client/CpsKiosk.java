@@ -77,7 +77,26 @@ public class CpsKiosk {
         msg.setLicensePlate(LICENSE_LOGIN_TF.getText());
         msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
         msg.setObject1(parkingLotName);
-        SimpleClient.getClient().sendToServer(msg);
+        for(int i=0;i<LICENSE_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getLicensePlate().charAt(i)<'0'||msg.getLicensePlate().charAt(i)>'9')
+            {
+                LICENSE_LOGIN_TF.setText("notValid");
+            }
+        }
+        for(int i=0;i<SUBSNUM_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getSubNum().charAt(i)<'0'||msg.getSubNum().charAt(i)>'9')
+            {
+                SUBSNUM_LOGIN_TF.setText("notValid");
+            }
+        }
+
+
+        if(!LICENSE_LOGIN_TF.getText().equals("notValid")&&!SUBSNUM_LOGIN_TF.getText().equals("notValid"))
+        {
+            SimpleClient.getClient().sendToServer(msg);
+        }
     }
     @FXML
     void EnterParkingBTN(ActionEvent event) throws IOException {
@@ -85,7 +104,26 @@ public class CpsKiosk {
         msg.setLicensePlate(LICENSE_LOGIN_TF.getText());
         msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
         msg.setObject1(parkingLotName);
-        SimpleClient.getClient().sendToServer(msg);
+        for(int i=0;i<LICENSE_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getLicensePlate().charAt(i)<'0'||msg.getLicensePlate().charAt(i)>'9')
+            {
+                LICENSE_LOGIN_TF.setText("notValid");
+            }
+        }
+        for(int i=0;i<SUBSNUM_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getSubNum().charAt(i)<'0'||msg.getSubNum().charAt(i)>'9')
+            {
+                SUBSNUM_LOGIN_TF.setText("notValid");
+            }
+        }
+
+
+        if(!LICENSE_LOGIN_TF.getText().equals("notValid")&&!SUBSNUM_LOGIN_TF.getText().equals("notValid"))
+        {
+            SimpleClient.getClient().sendToServer(msg);
+        }
 
         // todo send alert
     }
@@ -114,7 +152,17 @@ public class CpsKiosk {
         Message msg= new Message("loginEmployee");
         msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
-        SimpleClient.getClient().sendToServer(msg);
+
+        for(int i=0;i<ID_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getID().charAt(i)<'0'||msg.getID().charAt(i)>'9')
+            {
+                ID_LOGIN_TF.setText("notValid");
+            }
+        }
+        if(!ID_LOGIN_TF.getText().equals("notValid")) {
+            SimpleClient.getClient().sendToServer(msg);
+        }
     }
     @Subscribe
     public void allowWorker(loginWorkerEvent allowing) throws IOException {
@@ -154,7 +202,16 @@ public class CpsKiosk {
         Message msg= new Message("loginManager_KIOSK");
         msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
-        SimpleClient.getClient().sendToServer(msg);
+        for(int i=0;i<ID_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getID().charAt(i)<'0'||msg.getID().charAt(i)>'9')
+            {
+                ID_LOGIN_TF.setText("notValid");
+            }
+        }
+        if(!ID_LOGIN_TF.getText().equals("notValid")) {
+            SimpleClient.getClient().sendToServer(msg);
+        }
     }
     @Subscribe
     public void EnterEvent(EnterParkingEvent event) throws IOException{
@@ -242,7 +299,27 @@ public class CpsKiosk {
         Message msg= new Message("RenewSub_kiosk");
         msg.setLicensePlate(LICENSE_LOGIN_TF.getText());
         msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
-        SimpleClient.getClient().sendToServer(msg);
+
+        for(int i=0;i<LICENSE_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getLicensePlate().charAt(i)<'0'||msg.getLicensePlate().charAt(i)>'9')
+            {
+                LICENSE_LOGIN_TF.setText("notValid");
+            }
+        }
+        for(int i=0;i<SUBSNUM_LOGIN_TF.getLength();i++)
+        {
+            if(msg.getSubNum().charAt(i)<'0'||msg.getSubNum().charAt(i)>'9')
+            {
+                SUBSNUM_LOGIN_TF.setText("notValid");
+            }
+        }
+
+
+        if(!LICENSE_LOGIN_TF.getText().equals("notValid")&&!SUBSNUM_LOGIN_TF.getText().equals("notValid"))
+        {
+            SimpleClient.getClient().sendToServer(msg);
+        }
     }
 
     @Subscribe
