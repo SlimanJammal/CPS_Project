@@ -17,12 +17,36 @@
    <children>
       <AnchorPane layoutX="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="668.0">
          <children>
+            <AnchorPane layoutX="42.0" layoutY="232.0" prefHeight="200.0" prefWidth="200.0">
+               <children>
+      
+                  <PasswordField fx:id="PW_LOGIN_TF" layoutX="14.0" layoutY="87.0" onAction="#PW_LOGIN_TF" promptText="password" />
+                  <TextField fx:id="ID_LOGIN_TF" layoutX="14.0" layoutY="24.0" onAction="#ID_LOGIN_TF" promptText="login id" />
+                  <Button fx:id="WorkerBtn" layoutX="14.0" layoutY="173.0" mnemonicParsing="false" onAction="#WorkerBtn" prefHeight="38.0" prefWidth="58.0" text="Worker" />
+<!--                  <ImageView fitHeight="38.0" fitWidth="41.0" layoutX="157.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">-->
+<!--&lt;!&ndash;                     <image>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <Image url="@../../../../../../../../../tie-icon-necktie-and-neckcloth-symbol-flat-vector-6577370.jpg" />&ndash;&gt;-->
+<!--&lt;!&ndash;                     </image>&ndash;&gt;-->
+<!--                  </ImageView>-->
+                  <Button fx:id="ManagerBtn" layoutX="14.0" layoutY="127.0" mnemonicParsing="false" onAction="#ManagerBtn" prefHeight="38.0" prefWidth="74.0" text="Manager" />
+                  <ImageView fitHeight="38.0" fitWidth="68.0" layoutX="88.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="38.0" fitWidth="58.0" layoutX="70.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images/tie-icon-necktie-and-neckcloth-symbol-flat-vector-6577370.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
             <AnchorPane layoutX="16.0" layoutY="93.0" prefHeight="62.0" prefWidth="568.0">
                <children>
-                  <Button fx:id="ReserveParkingBtn" layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#ReserveParkingBtn" text="Reserve Parking" textFill="WHITE" />
-                  <Button fx:id="CustomerBtn" layoutX="128.0" layoutY="19.0" mnemonicParsing="false" onAction="#CustomerBtn" text="OcasionalCustomer" textFill="WHITE" />
-                  <Button fx:id="checkReservBtn" layoutX="267.0" layoutY="19.0" mnemonicParsing="false" onAction="#checkReservBtn" text="Check-Reservation" textFill="WHITE" />
-                  <Button fx:id="createNewSubsBtn" layoutX="408.0" layoutY="19.0" mnemonicParsing="false" onAction="#createNewSubsBtn" text="Create New Subscription" textFill="WHITE" />
+                  <Button fx:id="ReserveParkingBtn" layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#ReserveParkingBtn" text="Reserve Parking" />
+                  <Button fx:id="CustomerBtn" layoutX="128.0" layoutY="19.0" mnemonicParsing="false" onAction="#CustomerBtn" text="OcasionalCustomer" />
+                  <Button fx:id="checkReservBtn" layoutX="267.0" layoutY="19.0" mnemonicParsing="false" onAction="#checkReservBtn" text="Check-Reservation" />
+                  <Button fx:id="createNewSubsBtn" layoutX="408.0" layoutY="19.0" mnemonicParsing="false" onAction="#createNewSubsBtn" text="Create New Subscription" />
                </children>
                <effect>
                   <Blend mode="RED" />
@@ -37,8 +61,8 @@
                <children>
                   <PasswordField fx:id="SUBSNUM_LOGIN_TF" layoutX="114.0" layoutY="106.0" onAction="#SUBSNUM_LOGIN_TF" promptText="Subscription Number" />
                   <TextField fx:id="LICENSE_LOGIN_TF" layoutX="114.0" layoutY="47.0" onAction="#LICENSE_LOGIN_TF" promptText="plate number" />
-                  <Button fx:id="RenewSubsBtn" layoutX="9.0" layoutY="156.0" mnemonicParsing="false" onAction="#RenewSubsBtn" prefHeight="26.0" prefWidth="134.0" text="Renew Subscription" textFill="WHITE" />
-                  <Button fx:id="EnterParkingBTN" layoutX="159.0" layoutY="156.0" mnemonicParsing="false" onAction="#EnterParkingBTN" text="Enter Parking" textFill="WHITE" />
+                  <Button fx:id="RenewSubsBtn" layoutX="9.0" layoutY="156.0" mnemonicParsing="false" onAction="#RenewSubsBtn" prefHeight="26.0" prefWidth="134.0" text="Renew Subscription" />
+                  <Button fx:id="EnterParkingBTN" layoutX="159.0" layoutY="156.0" mnemonicParsing="false" onAction="#EnterParkingBTN" text="Enter Parking" />
                   <ImageView fitHeight="30.0" fitWidth="58.0" layoutX="47.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/71GXWTdc+4L.jpg" />
@@ -49,32 +73,8 @@
                         <Image url="@images/images/lock-icon-isolated-black-background-simple-vector-logo-163369340.jpg" />
                      </image>
                   </ImageView>
-                  <Button fx:id="ExitParkingBTN" layoutX="161.0" layoutY="197.0" mnemonicParsing="false" onAction="#ExitParkingBTN" prefHeight="26.0" prefWidth="89.0" text="Exit Parking" textFill="#f2f2f2" />
-                  <Button fx:id="complaintBTN" layoutX="15.0" layoutY="194.0" mnemonicParsing="false" onAction="#complaintBTNa" style="-fx-border-color: #4ee44e;" text="Complaint Submit" textFill="#f2f2f2" />
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="42.0" layoutY="232.0" prefHeight="200.0" prefWidth="200.0">
-               <children>
-      
-                  <PasswordField fx:id="PW_LOGIN_TF" layoutX="14.0" layoutY="87.0" onAction="#PW_LOGIN_TF" promptText="password" />
-                  <TextField fx:id="ID_LOGIN_TF" layoutX="14.0" layoutY="24.0" onAction="#ID_LOGIN_TF" promptText="login id" />
-                  <Button fx:id="WorkerBtn" layoutX="14.0" layoutY="173.0" mnemonicParsing="false" onAction="#WorkerBtn" prefHeight="38.0" prefWidth="58.0" text="Worker" textFill="WHITE" />
-<!--                  <ImageView fitHeight="38.0" fitWidth="41.0" layoutX="157.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">-->
-<!--&lt;!&ndash;                     <image>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <Image url="@../../../../../../../../../tie-icon-necktie-and-neckcloth-symbol-flat-vector-6577370.jpg" />&ndash;&gt;-->
-<!--&lt;!&ndash;                     </image>&ndash;&gt;-->
-<!--                  </ImageView>-->
-                  <Button fx:id="ManagerBtn" layoutX="14.0" layoutY="127.0" mnemonicParsing="false" onAction="#ManagerBtn" prefHeight="38.0" prefWidth="74.0" text="Manager" textFill="WHITE" />
-                  <ImageView fitHeight="38.0" fitWidth="68.0" layoutX="88.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="38.0" fitWidth="58.0" layoutX="70.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/images/tie-icon-necktie-and-neckcloth-symbol-flat-vector-6577370.jpg" />
-                     </image>
-                  </ImageView>
+                  <Button fx:id="ExitParkingBTN" layoutX="161.0" layoutY="197.0" mnemonicParsing="false" onAction="#ExitParkingBTN" prefHeight="26.0" prefWidth="89.0" text="Exit Parking" />
+                  <Button fx:id="complaintBTN" layoutX="15.0" layoutY="194.0" mnemonicParsing="false" onAction="#complaintBTNa" style="-fx-border-color: #4ee44e;" text="Complaint Submit" />
                </children>
             </AnchorPane>
             <Text layoutX="471.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Login">
@@ -87,7 +87,7 @@
                   <Font size="16.0" />
                </font>
             </Text>
-            <Button fx:id="backbtn" layoutX="122.0" layoutY="448.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="30.0" prefWidth="68.0" text="back" textFill="WHITE" />
+            <Button fx:id="backbtn" layoutX="122.0" layoutY="448.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="30.0" prefWidth="68.0" text="back" />
             <ImageView fitHeight="51.0" fitWidth="52.0" layoutX="1.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />

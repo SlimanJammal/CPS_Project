@@ -24,7 +24,7 @@
                   <TextField fx:id="CustomerIdTF" layoutX="69.0" layoutY="16.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="199.0" promptText="Customer ID" style="-fx-border-color: black;" />
                   <TextArea fx:id="ComplaintTA" layoutX="69.0" layoutY="102.0" prefHeight="138.0" prefWidth="422.0" promptText="Complaint " style="-fx-background-color: BLACK; -fx-border-color: WHITE;" />
                   <Text layoutX="359.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sorry we aren't perfect but you can help us do better" wrappingWidth="150.78594970703125" />
-                  <ImageView fitHeight="32.0" fitWidth="35.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="32.0" fitWidth="35.0" layoutX="36.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
                      </image>
@@ -39,11 +39,6 @@
             </AnchorPane>
             <Button fx:id="SubmitBtn" layoutX="412.0" layoutY="339.0" mnemonicParsing="false" onAction="#SubmitBtn" prefHeight="26.0" prefWidth="72.0" style="-fx-border-color: black;" text="Submit" />
             <Button fx:id="BackBtn" layoutX="52.0" layoutY="339.0" mnemonicParsing="false" onAction="#BackBtn" prefHeight="26.0" prefWidth="72.0" style="-fx-border-color: black;" text="Back" />
-            <Text fill="WHITE" layoutX="52.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COMPALINTS">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Text>
             <ImageView fitHeight="83.0" fitWidth="123.0" layoutX="401.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/images/ab67706c0000da8402a954448e9486df539a70d3.jpg" />

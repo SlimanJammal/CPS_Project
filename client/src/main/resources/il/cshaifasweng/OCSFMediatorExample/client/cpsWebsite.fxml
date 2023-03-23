@@ -30,10 +30,10 @@
                      <children>
                         <AnchorPane layoutX="16.0" layoutY="90.0" prefHeight="62.0" prefWidth="568.0">
                            <children>
-                              <Button fx:id="ReserveParkingBtn" layoutX="135.0" layoutY="17.0" mnemonicParsing="false" onAction="#ReserveParkingBtn" style="-fx-border-color: #4ee44e;" text="Reserve Parking" />
-                              <Button fx:id="checkReservBtn" layoutX="256.0" layoutY="17.0" mnemonicParsing="false" onAction="#checkReservBtn" style="-fx-border-color: #4ee44e;" text="Check-Reservation" />
-                              <Button fx:id="createNewSubsBtn" layoutX="386.0" layoutY="17.0" mnemonicParsing="false" onAction="#createNewSubsBtn" style="-fx-border-color: #4ee44e;" text="Create New Subscription" />
-                              <Button fx:id="complaintBTN" layoutX="-11.0" layoutY="17.0" mnemonicParsing="false" onAction="#complaintBTNa" style="-fx-border-color: #4ee44e;" text="Submit A Complaint" />
+                              <Button fx:id="ReserveParkingBtn" layoutX="135.0" layoutY="17.0" mnemonicParsing="false" onAction="#ReserveParkingBtn" text="Reserve Parking" />
+                              <Button fx:id="checkReservBtn" layoutX="256.0" layoutY="17.0" mnemonicParsing="false" onAction="#checkReservBtn" text="Check-Reservation" />
+                              <Button fx:id="createNewSubsBtn" layoutX="386.0" layoutY="17.0" mnemonicParsing="false" onAction="#createNewSubsBtn" text="Create New Subscription" />
+                              <Button fx:id="complaintBTN" layoutX="-11.0" layoutY="17.0" mnemonicParsing="false" onAction="#complaintBTNa" text="Submit A Complaint" />
                            </children>
                            <effect>
                               <Blend mode="RED" />
@@ -46,9 +46,9 @@
                         </Text>
                         <AnchorPane layoutX="332.0" layoutY="232.0" prefHeight="232.0" prefWidth="278.0">
                            <children>
-                              <PasswordField fx:id="SUBSNUM_LOGIN_TF" layoutX="121.0" layoutY="116.0" onAction="#SUBSNUM_LOGIN_TF" promptText="subscription number" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
-                              <TextField fx:id="LICENSE_LOGIN_TF" layoutX="121.0" layoutY="46.0" onAction="#LICENSE_LOGIN_TF" promptText="plate number" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
-                              <Button fx:id="RenewSubsBtn" layoutX="128.0" layoutY="161.0" mnemonicParsing="false" onAction="#RenewSubsBtn" style="-fx-border-color: #4ee44e;" text="Renew Subscription" />
+                              <PasswordField fx:id="SUBSNUM_LOGIN_TF" layoutX="121.0" layoutY="116.0" onAction="#SUBSNUM_LOGIN_TF" promptText="subscription number" />
+                              <TextField fx:id="LICENSE_LOGIN_TF" layoutX="121.0" layoutY="46.0" onAction="#LICENSE_LOGIN_TF" promptText="plate number" />
+                              <Button fx:id="RenewSubsBtn" layoutX="128.0" layoutY="161.0" mnemonicParsing="false" onAction="#RenewSubsBtn" text="Renew Subscription" />
                               <ImageView fitHeight="32.0" fitWidth="102.0" layoutX="50.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/images/71GXWTdc+4L.jpg" />
@@ -63,9 +63,9 @@
                         </AnchorPane>
                         <AnchorPane layoutX="55.0" layoutY="232.0" prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <PasswordField fx:id="PW_LOGIN_TF" layoutX="-3.0" layoutY="108.0" onAction="#PW_LOGIN_TF" promptText="password" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
-                              <TextField fx:id="ID_LOGIN_TF" layoutX="-3.0" layoutY="48.0" onAction="#ID_LOGIN_TF" prefHeight="26.0" prefWidth="150.0" promptText="id number" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
-                              <Button fx:id="WorkerBtn" layoutX="100.0" layoutY="152.0" mnemonicParsing="false" onAction="#WorkerBtn" prefHeight="39.0" prefWidth="102.0" style="-fx-border-color: #4ee44e;" text="Worker">
+                              <PasswordField fx:id="PW_LOGIN_TF" layoutX="-3.0" layoutY="108.0" onAction="#PW_LOGIN_TF" promptText="password" />
+                              <TextField fx:id="ID_LOGIN_TF" layoutX="-3.0" layoutY="48.0" onAction="#ID_LOGIN_TF" prefHeight="26.0" prefWidth="150.0" promptText="id number" />
+                              <Button fx:id="WorkerBtn" layoutX="100.0" layoutY="152.0" mnemonicParsing="false" onAction="#WorkerBtn" prefHeight="39.0" prefWidth="102.0" text="Worker">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -74,12 +74,12 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Text fill="#4ee44e" layoutX="-9.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee login">
+                              <Text layoutX="-9.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee login">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Text>
-                              <Button fx:id="ManagerBtn" layoutX="-47.0" layoutY="152.0" mnemonicParsing="false" onAction="#ManagerBtn" prefHeight="32.0" prefWidth="122.0" style="-fx-border-color: #4ee44e;" text="Manager">
+                              <Button fx:id="ManagerBtn" layoutX="-47.0" layoutY="152.0" mnemonicParsing="false" onAction="#ManagerBtn" prefHeight="32.0" prefWidth="122.0" text="Manager">
                                  <graphic>
                                     <ImageView fitHeight="29.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -90,7 +90,7 @@
                               </Button>
                            </children>
                         </AnchorPane>
-                        <Text fill="#4ee44e" layoutX="429.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Login">
+                        <Text layoutX="429.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Login">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -115,7 +115,7 @@
                   </AnchorPane>
                </children>
             </GridPane>
-            <Button fx:id="backbtn" layoutX="84.0" layoutY="462.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="25.0" prefWidth="68.0" style="-fx-border-color: #4ee44e;" text="back" />
+            <Button fx:id="backbtn" layoutX="84.0" layoutY="462.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="25.0" prefWidth="68.0" text="back" />
          </children>
       </AnchorPane>
    </children>

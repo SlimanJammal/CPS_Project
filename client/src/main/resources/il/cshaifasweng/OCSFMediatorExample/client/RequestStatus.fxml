@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane style="-fx-background-color: LIGHTCYAN;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestStatus">
+<Pane style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestStatus">
    <children>
       <AnchorPane prefHeight="376.0" prefWidth="374.0">
          <children>
@@ -28,8 +28,8 @@
                       <TableColumn prefWidth="75.0" text="C2" />
                     </columns>
                   </TableView>
-                  <TextField fx:id="CustomerIdTF" layoutX="135.0" layoutY="68.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="137.0" promptText="Customer ID" style="-fx-background-color: LIGHTGRAY;" />
-                  <TextField fx:id="CarNumberTF" layoutX="147.0" layoutY="102.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="126.0" promptText="Car Number" style="-fx-background-color: LIGHTGRAY;" />
+                  <TextField fx:id="CustomerIdTF" layoutX="135.0" layoutY="68.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="137.0" promptText="Customer ID" />
+                  <TextField fx:id="CarNumberTF" layoutX="147.0" layoutY="102.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="126.0" promptText="Car Number" />
                   <Button fx:id="SendRequestBtn" layoutX="238.0" layoutY="147.0" mnemonicParsing="false" onAction="#SendRequestBtn" prefHeight="26.0" prefWidth="95.0" style="-fx-background-color: LIGHTGRAY;" text="Send Request" />
                   <Button fx:id="PreviousButton" layoutX="73.0" layoutY="147.0" mnemonicParsing="false" onAction="#OnPreviousButton" prefHeight="26.0" prefWidth="62.0" style="-fx-background-color: LIGHTGRAY;" text="back" />
                   <ImageView fitHeight="37.0" fitWidth="46.0" layoutX="87.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">

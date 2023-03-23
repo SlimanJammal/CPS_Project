@@ -9,39 +9,39 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.OcasionalParking">
+<Pane prefHeight="361.0" prefWidth="408.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.OcasionalParking">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <AnchorPane layoutX="54.0" layoutY="25.0" prefHeight="319.0" prefWidth="396.0">
+            <AnchorPane layoutY="24.0" prefHeight="319.0" prefWidth="396.0">
                <children>
-                  <TextField fx:id="leavingTimeTF" layoutX="143.0" layoutY="227.0" onAction="#leavingTimeTF" promptText="Leaving" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;" />
-                  <TextField fx:id="emailTF" layoutX="143.0" layoutY="188.0" onAction="#emailTF" promptText="Email" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;" />
-                  <TextField fx:id="IdNumberTF" layoutX="143.0" layoutY="81.0" onAction="#IdNumberTF" promptText="Id Number" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;" />
-                  <TextField fx:id="licensePlateTF" layoutX="143.0" layoutY="152.0" onAction="#licensePlateTF" promptText="License Plate" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;" />
+                  <TextField fx:id="leavingTimeTF" layoutX="143.0" layoutY="227.0" onAction="#leavingTimeTF" promptText="Leaving" />
+                  <TextField fx:id="emailTF" layoutX="143.0" layoutY="188.0" onAction="#emailTF" promptText="Email" />
+                  <TextField fx:id="IdNumberTF" layoutX="143.0" layoutY="81.0" onAction="#IdNumberTF" promptText="Id Number" />
+                  <TextField fx:id="licensePlateTF" layoutX="143.0" layoutY="152.0" onAction="#licensePlateTF" promptText="License Plate" />
                   <Text fill="BLUEVIOLET" layoutX="78.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional Parking">
                      <font>
                         <Font size="28.0" />
                      </font>
                   </Text>
-                  <Button fx:id="SubmitBTN" layoutX="266.0" layoutY="280.0" mnemonicParsing="false" onAction="#SubmitBTN" style="-fx-background-color: BLACK; -fx-border-color: BLUEVIOLET; -fx-border-width: 3;" text="Submit" textFill="BLUEVIOLET" />
-                  <Button fx:id="backbtn" layoutX="10.0" layoutY="280.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: BLACK; -fx-border-color: BLUEVIOLET; -fx-border-width: 3;" text="back" textFill="BLUEVIOLET" />
-                  <ImageView fitHeight="44.0" fitWidth="54.0" layoutX="69.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+                  <Button fx:id="SubmitBTN" layoutX="266.0" layoutY="280.0" mnemonicParsing="false" onAction="#SubmitBTN" text="Submit" />
+                  <Button fx:id="backbtn" layoutX="71.0" layoutY="280.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="25.0" prefWidth="54.0" text="back" />
+                  <ImageView fitHeight="44.0" fitWidth="54.0" layoutX="78.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="23.0" fitWidth="47.0" layoutX="72.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="23.0" fitWidth="47.0" layoutX="81.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/71GXWTdc+4L.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="37.0" fitWidth="60.0" layoutX="76.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="37.0" fitWidth="60.0" layoutX="85.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/email-icon-black-background-black-flat-style-vector-illustration-email-icon-black-background-black-flat-style-vector-168420610.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="37.0" fitWidth="45.0" layoutX="76.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="37.0" fitWidth="45.0" layoutX="85.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/clock-alarm-icon-white-contour-black-background-illustration-87708978.jpg" />
                      </image>
