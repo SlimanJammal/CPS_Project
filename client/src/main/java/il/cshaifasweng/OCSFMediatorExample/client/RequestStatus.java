@@ -8,8 +8,11 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -30,51 +33,68 @@ public class RequestStatus {
     private Button PreviousButton; // Value injected by FXMLLoader
 
     @FXML
+    private Label OutputLabel;
+
+    @FXML
+    void CarIDTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.CarIDValidation(CarNumberTF.getText().toString()))
+        {
+            OutputLabel.setText("");
+
+        }
+        else
+        {
+            if(!CarNumberTF.getText().toString().equals(""))
+            {
+
+                OutputLabel.setTextFill(Color.web("#ff0000"));
+                OutputLabel.setText("Car ID is not valid! Please try again.");
+                OutputLabel.setVisible(true);
+                CarNumberTF.setText("");
+            }
+            else
+            {
+                OutputLabel.setTextFill(Color.web("#ff0000"));
+                OutputLabel.setText("Car ID is empty, please fill it up!");
+                OutputLabel.setVisible(true);
+
+                CarNumberTF.setText("");
+            }
+        }
+    }
+
+    @FXML
+    void CustomerIDTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.CustomerIDValidation(CustomerIdTF.getText().toString()))
+        {
+            OutputLabel.setText("");
+
+        }
+        else
+        {
+            if(!CarNumberTF.getText().toString().equals(""))
+            {
+
+                OutputLabel.setTextFill(Color.web("#ff0000"));
+                OutputLabel.setText("Customer ID is not valid! Please try again.");
+                OutputLabel.setVisible(true);
+                CustomerIdTF.setText("");
+            }
+            else
+            {
+                OutputLabel.setTextFill(Color.web("#ff0000"));
+                OutputLabel.setText("Customer ID is empty, please fill it up!");
+                OutputLabel.setVisible(true);
+
+                CustomerIdTF.setText("");
+            }
+        }
+    }
+
+    @FXML
     private TableView DataTable;
-
-    @FXML
-    void CarNumberTF(ActionEvent event) {
-        String Input = CarNumberTF.getText().toString();
-        if(IsNumber(Input))
-        {
-
-        }
-        else
-        {
-            CarNumberTF.setText("Only digits allowed!");
-            try
-            {
-                wait(2000);
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-            CarNumberTF.setText("");
-        }
-    }
-
-    @FXML
-    void CustomerIdTF(ActionEvent event) {
-        String Input = CustomerIdTF.getText().toString();
-        if(IsNumber(Input))
-        {
-
-        }
-        else
-        {
-            CustomerIdTF.setText("Only digits allowed!");
-            try
-            {
-                wait(2000);
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-            CustomerIdTF.setText("");
-        }
-    }
 
     @FXML
     void SendRequestBtn(ActionEvent event) {

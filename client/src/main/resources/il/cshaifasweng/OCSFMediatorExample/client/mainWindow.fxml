@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
@@ -14,21 +15,23 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MainWindow">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MainWindow">
    <children>
-      <AnchorPane layoutY="-6.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="335.0" prefWidth="526.0">
+      <AnchorPane layoutY="-6.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="809.0" prefWidth="1277.0">
          <children>
-            <Button fx:id="WebsiteBtn" layoutX="52.0" layoutY="243.0" mnemonicParsing="false" onAction="#WebsiteBtn" prefHeight="26.0" prefWidth="97.0" style="-fx-border-color: #8A2BE2; -fx-border-width: 3;" text="Website" textFill="BLUEVIOLET">
+            <Label layoutX="82.0" layoutY="293.0" prefHeight="223.0" prefWidth="1082.0" text="T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6" textFill="#00000044" wrapText="true" />
+            <Label layoutX="82.0" layoutY="500.0" prefHeight="223.0" prefWidth="1082.0" text="T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6" textFill="#00000044" wrapText="true" />
+            <Button fx:id="WebsiteBtn" layoutX="52.0" layoutY="243.0" mnemonicParsing="false" onAction="#WebsiteBtn" prefHeight="11.0" prefWidth="258.0" style="-fx-border-color: #8A2BE2; -fx-border-width: 3;" text="Website" textFill="BLUEVIOLET" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="989.0">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Text layoutX="165.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome " wrappingWidth="195.66331481933594">
+            <Text layoutX="348.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" wrappingWidth="469.7966766357422" AnchorPane.leftAnchor="348.0" AnchorPane.rightAnchor="460.0" AnchorPane.topAnchor="27.0">
                <font>
                   <Font size="45.0" />
                </font>
             </Text>
-            <Circle fx:id="green" fill="#fffbfb" layoutX="101.0" layoutY="86.0" radius="60.0" strokeType="INSIDE" strokeWidth="3.0" style="-fx-stroke-dash-array: 15;">
+            <Circle fx:id="green" fill="#fffbfb" layoutX="110.0" layoutY="100.0" radius="60.0" strokeType="INSIDE" strokeWidth="3.0" style="-fx-stroke-dash-array: 15;" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="40.0">
                <stroke>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -56,8 +59,7 @@
                   </LinearGradient>
                </stroke>
             </Circle>
-            <Button fx:id="MagicButton" layoutX="207.0" layoutY="112.0" mnemonicParsing="false" onAction="#play" style="-fx-border-color: #8A2BE2;" text="magic button" />
-            <MenuButton fx:id="WhichKiosk1" layoutX="353.0" layoutY="243.0" mnemonicParsing="false" onAction="#WhichKiosk" style="-fx-border-color: #8A2BE2; -fx-border-width: 3;" text="Choose kiosk" textFill="BLUEVIOLET" textOverrun="WORD_ELLIPSIS">
+            <MenuButton fx:id="WhichKiosk1" layoutX="903.0" layoutY="243.0" mnemonicParsing="false" onAction="#WhichKiosk" prefHeight="14.0" prefWidth="344.0" style="-fx-border-color: #8A2BE2; -fx-border-width: 3;" text="Choose kiosk" textFill="BLUEVIOLET" textOverrun="WORD_ELLIPSIS" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="903.0" AnchorPane.rightAnchor="30.0">
               <items>
                 <MenuItem fx:id="GermanColonyItem1" mnemonicParsing="false" onAction="#GermanColonyItem" text="German_Colony" />
                 <MenuItem fx:id="HanamalItem1" mnemonicParsing="false" onAction="#HanamalItem" text="Hanmal" />
@@ -67,7 +69,7 @@
                   <Font size="14.0" />
                </font>
             </MenuButton>
-            <Circle fx:id="red" fill="WHITE" layoutX="431.0" layoutY="85.0" radius="60.0" strokeType="INSIDE" strokeWidth="3.0" style="-fx-stroke-dash-array: 15;">
+            <Circle fx:id="red" fill="WHITE" layoutX="1184.0" layoutY="101.0" radius="60.0" strokeType="INSIDE" strokeWidth="3.0" style="-fx-stroke-dash-array: 15;">
                <stroke>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -96,11 +98,23 @@
                </stroke>
             </Circle>
 
-                  <ImageView accessibleRole="BUTTON" fitHeight="153.0" fitWidth="184.0" layoutX="159.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true" visible="true">
+                  <ImageView accessibleRole="BUTTON" fitHeight="133.0" fitWidth="153.0" layoutX="557.0" layoutY="345.0" pickOnBounds="true" preserveRatio="true" visible="true" AnchorPane.leftAnchor="557.0" AnchorPane.rightAnchor="567.0">
                      <image>
                         <Image url="@images/images/large.png" />
                      </image>
                   </ImageView>
+            <Text layoutX="381.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To" textAlignment="CENTER" wrappingWidth="469.7966766357422">
+               <font>
+                  <Font size="45.0" />
+               </font>
+            </Text>
+            <Text layoutX="381.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CPS" textAlignment="RIGHT" wrappingWidth="469.7966766357422">
+               <font>
+                  <Font size="45.0" />
+               </font>
+            </Text>
+            <Label layoutX="82.0" layoutY="86.0" prefHeight="223.0" prefWidth="1082.0" text="T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6   T E A M   # 6" textFill="#00000044" wrapText="true" />
+            <Button fx:id="MagicButton" layoutX="578.0" layoutY="259.0" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="90.0" style="-fx-border-color: #bf00ff;" text="Animate" AnchorPane.leftAnchor="578.0" AnchorPane.rightAnchor="609.0" AnchorPane.topAnchor="259.0" />
 
 
 <!--            <ImageView fx:id="parkingmainwindow" fitHeight="150.0" fitWidth="200.0" layoutX="157.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">-->

@@ -4,13 +4,30 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 //Previous Buttons doesn't work just yet
-public class RegisterNewSubscription {
+public class RegisterNewSubscription implements Initializable {
+
+    static String CarsList = "";
+    static int firstRun = 0;
+
+    @FXML // fx:id="AddCarButton"
+    private Button AddCarButton; // Value injected by FXMLLoader
+
+    @FXML // fx:id="CarList"
+    private Label CarListLabel; // Value injected by FXMLLoader
 
     @FXML // fx:id="CarNumberTF"
     private TextField CarNumberTF; // Value injected by FXMLLoader
@@ -18,78 +35,54 @@ public class RegisterNewSubscription {
     @FXML // fx:id="CustomerIdTF"
     private TextField CustomerIdTF; // Value injected by FXMLLoader
 
-    @FXML // fx:id="RegisterBtn"
-    private Button RegisterBtn; // Value injected by FXMLLoader
-
-    @FXML // fx:id="EntranceHourTF"
-    private TextField EntranceHourTF; // Value injected by FXMLLoader
+    @FXML // fx:id="Date"
+    private DatePicker Date; // Value injected by FXMLLoader
 
     @FXML // fx:id="DepatureHourTF"
     private TextField DepatureHourTF; // Value injected by FXMLLoader
 
+    @FXML // fx:id="EntranceHourTF"
+    private TextField EntranceHourTF; // Value injected by FXMLLoader
+
+    @FXML // fx:id="LabelOutput"
+    private Label LabelOutput; // Value injected by FXMLLoader
+
+    @FXML // fx:id="ParkingLotOptions"
+    private ComboBox<String> ParkingLotOptions; // Value injected by FXMLLoader
+
+    @FXML // fx:id="PreviousWindow"
+    private Button PreviousWindow; // Value injected by FXMLLoader
+
+    @FXML // fx:id="Radio1"
+    private RadioButton Radio1; // Value injected by FXMLLoader
+
+    @FXML // fx:id="Radio2"
+    private RadioButton Radio2; // Value injected by FXMLLoader
+
+    @FXML // fx:id="Radio3"
+    private RadioButton Radio3; // Value injected by FXMLLoader
+
+    @FXML // fx:id="RegisterBtn"
+    private Button RegisterBtn; // Value injected by FXMLLoader
+
     @FXML // fx:id="RegularParkingTF"
-    private TextField RegularParkingTF; // Value injected by FXMLLoader
+    private TextField EmailTF; // Value injected by FXMLLoader
 
-    @FXML
-    private TextField DateTF;
+    @FXML // fx:id="RemoveCarButton"
+    private Button RemoveCarButton; // Value injected by FXMLLoader
 
-    @FXML
-    private RadioButton Radio1;
+    @FXML // fx:id="SubscriptionType"
+    private ToggleGroup SubscriptionType; // Value injected by FXMLLoader
 
-    @FXML
-    private RadioButton Radio2;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
+        ObservableList<String> options = FXCollections.observableArrayList("German_Colony", "Hanmal", "Bat-Galim");
+        ParkingLotOptions.setItems(options);
 
-    @FXML
-    private RadioButton Radio3;
+        AddCarButton.setVisible(false);
+        RemoveCarButton.setVisible(false);
 
-    @FXML
-    private Button PreviousWindow;
-
-    @FXML
-    private Label LabelOutput;
-
-    @FXML
-    void CarNumberTF(ActionEvent event) {
-        /*String Car_ID = CarNumberTF.getText();
-        //int ID = Integer.parseInt(Customer_ID);
-        boolean IsNumber = true;
-        for(char a : Car_ID.toCharArray())
-        {
-            if(a < '0' || a > '9')
-                IsNumber = false;
-        }
-        if(IsNumber)
-        {
-            //VALID NUMBER
-            LabelOutput.setVisible(false);
-        }
-        else
-        {
-            LabelOutput.setText("Invalid Car ID! Only digits allowed.");
-            LabelOutput.setVisible(true);
-        }*/
-    }
-
-    @FXML
-    void CustomerIdTF(ActionEvent event) {
-        /*String Customer_ID = CustomerIdTF.getText();
-        //int ID = Integer.parseInt(Customer_ID);
-        boolean IsNumber = true;
-        for(char a : Customer_ID.toCharArray())
-        {
-            if(a < '0' || a > '9')
-                IsNumber = false;
-        }
-        if(IsNumber)
-        {
-            //VALID NUMBER
-            LabelOutput.setVisible(false);
-        }
-        else
-        {
-            LabelOutput.setText("Invalid Customer ID! Only digits allowed.");
-            LabelOutput.setVisible(true);
-        }*/
     }
 
     @FXML
@@ -97,8 +90,8 @@ public class RegisterNewSubscription {
         //REgisterBtn.setVisible(false);
         String CustomerID = CustomerIdTF.getText();
         String CarLicense = CarNumberTF.getText();
-        String StartingDate = DateTF.getText();
-        String Email = RegularParkingTF.getText(); // this is the email adress of the customer
+        String StartingDate = Date.getValue().toString();
+        String Email = EmailTF.getText(); // this is the email adress of the customer
         String EntranceParkingTime = EntranceHourTF.getText();
         String DepartureParkingTime = DepatureHourTF.getText();
         String ParkingType = "";
@@ -151,81 +144,6 @@ public class RegisterNewSubscription {
         RegisterBtn.setVisible(false);
     }
 
-    @FXML
-    void OnEntranceHourTF(ActionEvent event) {
-        /*String input = EntranceHourTF.getText();
-        switch (input.length()) {
-            case 2:
-                EntranceHourTF.setText(input + ":");
-                break;
-            case 5:
-                //Check If Input is Legal
-            {
-                char ConvertedInput[] = input.toCharArray();
-                for (int i = 0; i < ConvertedInput.length; i++) {
-                    if (ConvertedInput[i] <= 'z' && ConvertedInput[i] >= 'a') {
-                        EntranceHourTF.setText("");
-                    }
-                }
-            }
-                break;
-            default:
-                break;
-
-        }*/
-    }
-
-    @FXML
-    void OnDepatureHourTF(ActionEvent event) {
-        /*//FORMAT INPUT HH:MM
-        String input = DepatureHourTF.getText();
-        switch (input.length()) {
-            case 2:
-                DepatureHourTF.setText(input + ":");
-                break;
-            case 5:
-                //Check If Input is Legal
-            {
-                char ConvertedInput[] = input.toCharArray();
-                for (int i = 0; i < ConvertedInput.length; i++) {
-                    if (ConvertedInput[i] <= 'z' && ConvertedInput[i] >= 'a') {
-                        DepatureHourTF.setText("");
-                    }
-                }
-            }
-            break;
-            default:
-                break;
-
-        }*/
-    }
-
-    @FXML
-    void RegularParkingTF(ActionEvent event) {
-       /* String RegularParking_ID = RegularParkingTF.getText();
-        //int ID = Integer.parseInt(Customer_ID);
-        boolean IsNumber = true;
-        for(char a : RegularParking_ID.toCharArray())
-        {
-            if(a < '0' || a > '9')
-                IsNumber = false;
-        }
-        if(IsNumber)
-        {
-            //VALID NUMBER
-            LabelOutput.setVisible(false);
-        }
-        else
-        {
-            LabelOutput.setText("Invalid Customer ID! Only digits allowed.");
-            LabelOutput.setVisible(true);
-        }
-        //check If It is available by asking the server to check the parking slot*/
-    }
-
-    @FXML
-    void DateTF(ActionEvent event) {
-    }
 
     @FXML
     void OnPreviousWindow(ActionEvent event)
@@ -244,8 +162,239 @@ public class RegisterNewSubscription {
     @FXML
     void OnRadioButton(ActionEvent event)
     {
+        if(Radio2.isSelected())
+        {
+            AddCarButton.setVisible(true);
+            RemoveCarButton.setVisible(true);
+        }
+        else
+        {
+            AddCarButton.setVisible(false);
+            RemoveCarButton.setVisible(false);
+
+            CarsList = "";
+            CarNumberTF.setText("");
+            LabelOutput.setTextFill(Color.web("#ff0000"));
+            LabelOutput.setText("Please, set Car ID again!");
+
+        }
         CarNumberTF.setText("");
     }
+
+
+    //Input Validiation!!
+    //=====================================================================================
+    @FXML
+    void AddToList(ActionEvent event){
+        String input = CarNumberTF.getText();
+        if(CarsList.contains(input))
+        {
+            LabelOutput.setTextFill(Color.web("#0000ff"));
+            //LabelOutput.setText("Car Has been removed from list!");
+            LabelOutput.setText("The Car ID is already in list!");
+
+            return;
+        }
+        if(firstRun == 0)
+        {
+            CarsList = input;
+            firstRun++;
+        }
+        else
+        {
+            CarsList = CarsList + "," + input;
+        }
+        CarListLabel.setText("The Current CarList Is " + CarsList);
+        CarNumberTF.setText("");
+        LabelOutput.setTextFill(Color.web("#00ff00"));
+        LabelOutput.setText("Car Has been added!");
+
+    }
+
+    @FXML
+    void RemoveFromList(ActionEvent event) {
+        String input = CarNumberTF.getText();
+        if(!CarsList.contains(input))
+        {
+            LabelOutput.setTextFill(Color.web("#0000ff"));
+            //LabelOutput.setText("Car Has been removed from list!");
+            LabelOutput.setText("The Car ID is not in list!");
+
+            return;
+        }
+        //Guide
+        // 1 - In Middle Between Two CAR IDs
+        // 2 - In Start of Cars List
+        // 3 - at End of Cars List
+
+        int CaseNumber = 0;
+        String temp = CarsList;
+        CarsList = CarsList.replaceAll(","+input + ",",",");
+        if(!CarsList.equals(temp))
+        {
+            CaseNumber = 1;
+            System.out.println(CaseNumber);
+        }
+        else
+        {
+            CarsList = temp;
+            CarsList = CarsList.replaceAll(","+input,"");
+            if(!CarsList.equals(temp))
+            {
+                CaseNumber = 2;
+                System.out.println(CaseNumber);
+            }
+            else
+            {
+                CarsList = temp;
+                CarsList = CarsList.replaceAll(input + ",","");
+                if(!CarsList.equals(temp))
+                {
+                    CaseNumber = 3;
+                    System.out.println(CaseNumber);
+                }
+            }
+        }
+        //CarsList = CarsList.replaceAll(","+input,"");
+
+        //CarsList = CarsList.replaceAll(",,",",");
+
+        if(CarsList.endsWith(","))
+        {
+            int length = CarsList.length();
+            CarsList = CarsList.substring(0,length - 1 - 1 /* -1 for ","*/);
+        }
+        if(CarsList.startsWith(","))
+        {
+            int length = CarsList.length();
+            CarsList = CarsList.substring(1,length - 1 /* -1 for ","*/);
+        }
+
+        LabelOutput.setTextFill(Color.web("#0000ff"));
+        LabelOutput.setText("Car Has been removed from list!");
+        CarNumberTF.setText("");
+        CarListLabel.setText("The Current CarList Is " + CarsList);
+    }
+
+    @FXML
+    void ArrivalTimeTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.TimeValidation(EntranceHourTF.getText().toString()))
+        {
+            LabelOutput.setText("");
+
+        }
+        else
+        {
+            if(!EntranceHourTF.getText().toString().equals(""))
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Entrance Time is not valid! Please try again.");
+            }
+            else
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Entrance Time is empty, please fill it up!");
+            }
+        }
+    }
+
+    @FXML
+    void CarIDTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.CarIDValidation(CarNumberTF.getText().toString()))
+        {
+            LabelOutput.setText("");
+
+        }
+        else
+        {
+            if(!CarNumberTF.getText().toString().equals(""))
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Car ID is not valid! Please try again.");
+                CarNumberTF.setText("");
+            }
+            else
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Car ID is empty, please fill it up!");
+                CarNumberTF.setText("");
+            }
+        }
+    }
+
+    @FXML
+    void CustomerIDTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.CustomerIDValidation(CustomerIdTF.getText().toString()))
+        {
+            LabelOutput.setText("");
+
+        }
+        else
+        {
+            if(!CustomerIdTF.getText().toString().equals(""))
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Customer ID is not valid! Please try again.");
+                CustomerIdTF.setText("");
+            }
+            else
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Customer ID is empty, please fill it up!");
+                CustomerIdTF.setText("");
+            }
+        }
+    }
+
+    @FXML
+    void DepartureTimeTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.TimeValidation(DepatureHourTF.getText().toString()))
+        {
+            LabelOutput.setText("");
+
+        }
+        else
+        {
+            if(!DepatureHourTF.getText().toString().equals(""))
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Departure Time is not valid! Please try again.");
+            }
+            else
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Departure Time is empty, please fill it up!");
+            }
+        }
+    }
+
+    @FXML
+    void EmailTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.EmailValidation(EmailTF.getText().toString()))
+        {
+            LabelOutput.setText("");
+
+        }
+        else
+        {
+            if(!EmailTF.getText().toString().equals(""))
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Emailis not valid! Please try again.");
+            }
+            else
+            {
+                LabelOutput.setTextFill(Color.web("#ff0000"));
+                LabelOutput.setText("Email is empty, please fill it up!");
+            }
+        }
+    }
+    //=============================================================================================
 
     public boolean IsNumber(String Input)
     {
@@ -257,8 +406,6 @@ public class RegisterNewSubscription {
         return true;
     }
 
-    public void OnStartingDate(ActionEvent event) {
-    }
 
     boolean isnumeric(String str)
     {
@@ -279,4 +426,6 @@ public class RegisterNewSubscription {
         }
         return false;
     }
+
+
 }

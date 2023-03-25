@@ -8,10 +8,8 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -57,6 +55,58 @@ public class CpsWebsite {
 
     @FXML // fx:id="createNewSubsBtn"
     private Button createNewSubsBtn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="ClientErrorLabel"
+    private Label ClientErrorLabel; // Value injected by FXMLLoader
+
+    @FXML // fx:id="EmployeeErrorLabel"
+    private Label EmployeeErrorLabel; // Value injected by FXMLLoader
+
+    @FXML
+    void ClientCarIDTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.CarIDValidation(LICENSE_LOGIN_TF.getText().toString()))
+        {
+            ClientErrorLabel.setText("");
+
+        }
+        else
+        {
+            if(!LICENSE_LOGIN_TF.getText().toString().equals(""))
+            {
+                ClientErrorLabel.setText("Car ID is not valid! Please try again.");
+                LICENSE_LOGIN_TF.setText("");
+            }
+            else
+            {
+                ClientErrorLabel.setText("Car ID is empty, please fill it up!");
+                LICENSE_LOGIN_TF.setText("");
+            }
+        }
+    }
+
+    @FXML
+    void ClientUserDTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.CustomerIDValidation(SUBSNUM_LOGIN_TF.getText().toString()))
+        {
+            ClientErrorLabel.setText("");
+
+        }
+        else
+        {
+            if(!SUBSNUM_LOGIN_TF.getText().toString().equals(""))
+            {
+                ClientErrorLabel.setText("User ID is not valid! Please try again.");
+                SUBSNUM_LOGIN_TF.setText("");
+            }
+            else
+            {
+                ClientErrorLabel.setText("User ID is empty, please fill it up!");
+                SUBSNUM_LOGIN_TF.setText("");
+            }
+        }
+    }
 
     @FXML
     void CustomerBtn(ActionEvent event) throws IOException {

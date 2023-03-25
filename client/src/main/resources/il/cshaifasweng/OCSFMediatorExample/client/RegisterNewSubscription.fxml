@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -8,83 +10,169 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="411.0" prefWidth="352.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RegisterNewSubscription">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RegisterNewSubscription">
    <children>
-      <Text fill="BLUE" layoutX="39.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register New Subscription" wrappingWidth="298.21630859375">
+      <Text fill="BLUE" layoutX="493.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register New Subscription" wrappingWidth="363.2830810546875">
          <font>
-            <Font name="System Bold" size="22.0" />
+            <Font name="Agency FB Bold" size="36.0" />
          </font>
       </Text>
-      <AnchorPane layoutX="14.0" layoutY="22.0" prefHeight="380.0" prefWidth="323.0">
-         <children>
-            <TextField fx:id="CustomerIdTF" layoutX="54.0" layoutY="108.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="166.0" promptText="Customer ID" style="-fx-font-style: blue;" />
-            <TextField fx:id="EntranceHourTF" layoutX="54.0" layoutY="187.0" onAction="#OnEntranceHourTF" prefHeight="26.0" prefWidth="82.0" promptText="HH:MM" />
-            <TextField fx:id="CarNumberTF" layoutX="53.0" layoutY="310.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="166.0" promptText="Car Number" />
-            <TextField fx:id="RegularParkingTF" layoutX="47.0" layoutY="271.0" onAction="#RegularParkingTF" prefHeight="26.0" prefWidth="166.0" promptText="Email " />
-            <Button fx:id="RegisterBtn" layoutX="180.0" layoutY="346.0" mnemonicParsing="false" onAction="#RegisterBtn" prefHeight="26.0" prefWidth="92.0" text="Register" />
-            <Label fx:id="LabelOutput" layoutX="103.0" layoutY="36.0" prefHeight="26.0" prefWidth="117.0" text="Output Label" textFill="RED" visible="false" />
-            <TextField fx:id="DepatureHourTF" layoutX="54.0" layoutY="230.0" onAction="#OnDepatureHourTF" prefHeight="26.0" prefWidth="82.0" promptText="HH:MM" />
-            <Label layoutX="-1.0" layoutY="35.0" prefHeight="26.0" prefWidth="138.0" text="Subscription Type :">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Button fx:id="PreviousWindow" layoutX="10.0" layoutY="346.0" mnemonicParsing="false" onAction="#OnPreviousWindow" prefHeight="26.0" prefWidth="110.0" text="Previous WIndow" />
-            <RadioButton fx:id="Radio1" layoutX="152.0" layoutY="41.0" mnemonicParsing="false" onAction="#OnRadioButton" selected="true" text="Single Monthly Subscription" textFill="RED">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-               <toggleGroup>
-                  <ToggleGroup fx:id="SubscriptionType" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="Radio2" layoutX="152.0" layoutY="63.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Multi Monthly Subscription" textFill="RED" toggleGroup="$SubscriptionType">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-            </RadioButton>
-            <RadioButton fx:id="Radio3" layoutX="152.0" layoutY="84.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Fully Subscription" textFill="RED" toggleGroup="$SubscriptionType">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-            </RadioButton>
-            <TextField fx:id="DateTF" layoutX="54.0" layoutY="148.0" onAction="#DateTF" prefHeight="26.0" prefWidth="166.0" promptText="Date DD/MM/YYYY" />
-            <ImageView fitHeight="36.0" fitWidth="82.0" layoutX="5.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="29.0" fitWidth="67.0" layoutX="10.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/images/download.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="36.0" fitWidth="49.0" layoutX="1.0" layoutY="182.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/images/clock-alarm-icon-white-contour-black-background-illustration-87708978.jpg" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="36.0" fitWidth="36.0" layoutX="1.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/images/clock-alarm-icon-white-contour-black-background-illustration-87708978.jpg" />
-               </image>
-            </ImageView>
-            <Text layoutX="151.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="enter" />
-            <Text layoutX="154.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="exit" />
-            <ImageView fitHeight="36.0" fitWidth="51.0" layoutX="-3.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/images/large.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="26.0" fitWidth="53.0" layoutX="-4.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/images/71GXWTdc+4L.jpg" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
+      <Label layoutX="108.0" layoutY="140.0" prefHeight="27.0" prefWidth="163.0" text="Subscription Type :">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="Radio1" layoutX="333.0" layoutY="137.0" mnemonicParsing="false" onAction="#OnRadioButton" selected="true" text="Single Monthly Subscription" textFill="RED">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <toggleGroup>
+            <ToggleGroup fx:id="SubscriptionType" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="Radio2" layoutX="333.0" layoutY="175.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Multi Monthly Subscription" textFill="RED" toggleGroup="$SubscriptionType">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="Radio3" layoutX="333.0" layoutY="215.0" mnemonicParsing="false" onAction="#OnRadioButton" text="Fully Subscription" textFill="RED" toggleGroup="$SubscriptionType">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </RadioButton>
+      <TextField fx:id="CustomerIdTF" layoutX="334.0" layoutY="268.0" onKeyTyped="#CustomerIDTextChange" prefHeight="40.0" prefWidth="250.0" style="-fx-font-style: blue;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="36.0" fitWidth="82.0" layoutX="69.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="132.0" layoutY="275.0" prefHeight="27.0" prefWidth="163.0" text="Customer ID:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="40.0" fitWidth="34.0" layoutX="69.0" layoutY="342.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/images/download.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="122.0" layoutY="346.0" prefHeight="27.0" prefWidth="50.0" text="Date:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="Date" layoutX="333.0" layoutY="339.0" prefHeight="42.0" prefWidth="254.0" />
+      <ImageView fitHeight="36.0" fitWidth="49.0" layoutX="68.0" layoutY="411.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/images/clock-alarm-icon-white-contour-black-background-illustration-87708978.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="128.0" layoutY="414.0" prefHeight="27.0" prefWidth="145.0" text="Estimated Arrival:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="36.0" fitWidth="49.0" layoutX="68.0" layoutY="468.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/images/clock-alarm-icon-white-contour-black-background-illustration-87708978.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="128.0" layoutY="471.0" prefHeight="27.0" prefWidth="167.0" text="Estimated Departure:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="EntranceHourTF" layoutX="335.0" layoutY="409.0" onKeyTyped="#ArrivalTimeTextChange" prefHeight="26.0" prefWidth="82.0" promptText="HH:MM">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="DepatureHourTF" layoutX="333.0" layoutY="464.0" onKeyTyped="#DepartureTimeTextChange" prefHeight="26.0" prefWidth="82.0" promptText="HH:MM">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Button fx:id="PreviousWindow" layoutX="30.0" layoutY="672.0" mnemonicParsing="false" onAction="#OnPreviousWindow" prefHeight="40.0" prefWidth="164.0" text="Previous Window">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <TextField fx:id="EmailTF" layoutX="968.0" layoutY="207.0" onKeyTyped="#EmailTextChange" prefHeight="40.0" prefWidth="232.0" promptText="Email ">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="36.0" fitWidth="51.0" layoutX="709.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/images/large.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="CarNumberTF" layoutX="968.0" layoutY="277.0" onKeyTyped="#CarIDTextChange" prefHeight="40.0" prefWidth="232.0" promptText="Car Number">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="41.0" fitWidth="47.0" layoutX="710.0" layoutY="278.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/images/71GXWTdc+4L.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="RegisterBtn" layoutX="1041.0" layoutY="598.0" mnemonicParsing="false" onAction="#RegisterBtn" prefHeight="50.0" prefWidth="150.0" text="Register">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="783.0" layoutY="286.0" text="Car ID:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="786.0" layoutY="213.0" text="Email:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="783.0" layoutY="138.0" text="Parking Lot:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="32.0" fitWidth="34.0" layoutX="712.0" layoutY="213.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/images/email-icon-black-background-black-flat-style-vector-illustration-email-icon-black-background-black-flat-style-vector-168420610.jpg" />
+         </image>
+      </ImageView>
+      <ComboBox fx:id="ParkingLotOptions" layoutX="972.0" layoutY="128.0" prefHeight="39.0" prefWidth="225.0" promptText="Choose Parking Lot Of The List" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e3effa" height="85.0" layoutX="66.0" layoutY="539.0" stroke="BLACK" strokeType="INSIDE" width="420.0" />
+      <Label fx:id="LabelOutput" layoutX="704.0" layoutY="410.0" prefHeight="66.0" prefWidth="498.0" text="Output" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="CarListLabel" layoutX="98.0" layoutY="549.0" text="Your CarList:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="AddCarButton" layoutX="972.0" layoutY="354.0" mnemonicParsing="false" onAction="#AddToList" prefHeight="40.0" prefWidth="62.0" text="Add" textFill="#008610">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="RemoveCarButton" layoutX="1097.0" layoutY="353.0" mnemonicParsing="false" onAction="#RemoveFromList" prefHeight="40.0" prefWidth="93.0" text="Remove" textFill="RED">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Line endX="377.4666748046875" layoutX="634.0" layoutY="93.0" startX="-354.26666259765625" />
    </children>
 </AnchorPane>

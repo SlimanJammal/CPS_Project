@@ -13,16 +13,36 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <Pane style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkingManager">
    <children>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="794.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">
          <children>
-            <Text layoutX="260.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="299.0" layoutX="999.0" layoutY="218.0" stroke="BLACK" strokeType="INSIDE" width="229.0">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.550000011920929" green="0.7858502268791199" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Rectangle>
+            <Text layoutX="521.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Screen" wrappingWidth="274.4097442626953">
                <font>
-                  <Font size="32.0" />
+                  <Font size="36.0" />
                </font>
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
@@ -46,13 +66,13 @@
                   </LinearGradient>
                </fill>
             </Text>
-            <TableView fx:id="PricesTable" layoutX="18.0" layoutY="366.0" prefHeight="243.0" prefWidth="274.0">
+            <TableView fx:id="PricesTable" layoutX="102.0" layoutY="230.0" prefHeight="243.0" prefWidth="274.0">
                <columns>
                   <TableColumn fx:id="pricetype" prefWidth="172.0" text="Price Type" />
                   <TableColumn fx:id="price" prefWidth="101.20001220703125" text="Price" />
                </columns>
             </TableView>
-            <Button fx:id="showPricesBTN" layoutX="186.0" layoutY="612.0" mnemonicParsing="false" onAction="#showPrices" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="ShowPrices">
+            <Button fx:id="showPricesBTN" layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#showPrices" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="ShowPrices">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -60,7 +80,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="ShowStatBtn" layoutX="447.0" layoutY="577.0" mnemonicParsing="false" onAction="#ShowStatBtn" prefHeight="32.0" prefWidth="133.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="Show Statistics">
+            <Button fx:id="ShowStatBtn" layoutX="1091.0" layoutY="534.0" mnemonicParsing="false" onAction="#ShowStatBtn" prefHeight="32.0" prefWidth="133.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="Show Statistics">
                <graphic>
                   <ImageView fitHeight="19.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -68,7 +88,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Text layoutX="373.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" wrappingWidth="148.623046875">
+            <Text layoutX="1019.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="statistics about parkinglot:" textAlignment="CENTER" wrappingWidth="205.8">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -90,12 +110,27 @@
                      </stops>
                   </LinearGradient>
                </fill>
+               <font>
+                  <Font name="Agency FB" size="18.0" />
+               </font>
             </Text>
-            <TextField fx:id="OcasionalTF" layoutX="99.0" layoutY="90.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
-            <TextField fx:id="PreOrderTF" layoutX="99.0" layoutY="129.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
-            <TextField fx:id="FullSubsTF" layoutX="99.0" layoutY="220.0" onAction="#FullSubsTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
-            <TextField fx:id="PartTimeTF" layoutX="99.0" layoutY="170.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
-            <Text layoutX="34.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:">
+            <TextField fx:id="OcasionalTF" layoutX="718.0" layoutY="171.0" onAction="#OcasionalTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;">
+               <font>
+                  <Font size="18.0" />
+               </font></TextField>
+            <TextField fx:id="PreOrderTF" layoutX="719.0" layoutY="229.0" onAction="#PreOrderTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;">
+               <font>
+                  <Font size="18.0" />
+               </font></TextField>
+            <TextField fx:id="FullSubsTF" layoutX="723.0" layoutY="342.0" onAction="#FullSubsTF" prefHeight="26.0" prefWidth="135.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;">
+               <font>
+                  <Font size="18.0" />
+               </font></TextField>
+            <TextField fx:id="PartTimeTF" layoutX="719.0" layoutY="287.0" onAction="#PartTimeTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;">
+               <font>
+                  <Font size="18.0" />
+               </font></TextField>
+            <Text layoutX="574.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocasional:">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -117,8 +152,11 @@
                      </stops>
                   </LinearGradient>
                </fill>
+               <font>
+                  <Font size="18.0" />
+               </font>
             </Text>
-            <Text layoutX="36.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:">
+            <Text layoutX="579.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PreOrder:">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -140,8 +178,11 @@
                      </stops>
                   </LinearGradient>
                </fill>
+               <font>
+                  <Font size="18.0" />
+               </font>
             </Text>
-            <Text layoutX="23.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="75.59999999999985">
+            <Text layoutX="572.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Part-Time Subscroption" wrappingWidth="164.1332641601561">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -163,8 +204,11 @@
                      </stops>
                   </LinearGradient>
                </fill>
+               <font>
+                  <Font size="18.0" />
+               </font>
             </Text>
-            <Text layoutX="24.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="75.59999999999991">
+            <Text layoutX="576.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Subscription" wrappingWidth="123.09994812011723">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -186,8 +230,11 @@
                      </stops>
                   </LinearGradient>
                </fill>
+               <font>
+                  <Font size="18.0" />
+               </font>
             </Text>
-            <Text layoutX="34.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple">
+            <Text layoutX="582.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Multiple">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -209,17 +256,32 @@
                      </stops>
                   </LinearGradient>
                </fill>
+               <font>
+                  <Font size="18.0" />
+               </font>
             </Text>
-            <TextField fx:id="MultiTF" layoutX="99.0" layoutY="264.0" onAction="#MultiTF" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" />
-            <Button fx:id="SubmitBtn" layoutX="128.0" layoutY="306.0" mnemonicParsing="false" onAction="#SubmitBtn" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="Submit" />
-            <Button fx:id="backbtn" layoutX="640.0" layoutY="634.0" mnemonicParsing="false" onAction="#backbtn" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="back" />
-            <TextArea fx:id="statsScreen" layoutX="380.0" layoutY="377.0" prefHeight="200.0" prefWidth="200.0" promptText="NO STATS TO SHOW" />
+            <TextField fx:id="MultiTF" layoutX="721.0" layoutY="402.0" onAction="#MultiTF" prefHeight="43.0" prefWidth="143.0" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;">
+               <font>
+                  <Font size="18.0" />
+               </font></TextField>
+            <Button fx:id="SubmitBtn" layoutX="807.0" layoutY="475.0" mnemonicParsing="false" onAction="#SubmitBtn" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="Submit">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <Button fx:id="backbtn" layoutX="997.0" layoutY="534.0" mnemonicParsing="false" onAction="#backbtn" style="-fx-background-color: GREY; -fx-border-color: AQUA; -fx-border-width: 2;" text="back" />
+            <TextArea fx:id="statsScreen" layoutX="1014.0" layoutY="290.0" prefHeight="200.0" prefWidth="200.0" promptText="NO STATS TO SHOW" />
             <AmbientLight color="CHARTREUSE" layoutX="495.0" layoutY="185.0" lightOn="true" />
-            <ImageView fitHeight="135.0" fitWidth="230.0" layoutX="260.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="135.0" fitWidth="230.0" layoutX="999.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/images/tie-anonymous-anonymous-anonymous-wallpaper-thumb.jpg" />
                </image>
             </ImageView>
+            <Line endX="-100.00003051757812" endY="373.0" layoutX="594.0" layoutY="179.0" startX="-100.0" />
+            <Text layoutX="175.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price List" textAlignment="CENTER" wrappingWidth="134.33330078124982">
+               <font>
+                  <Font name="Arial Narrow" size="24.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>

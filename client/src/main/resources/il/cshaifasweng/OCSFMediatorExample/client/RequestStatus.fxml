@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -8,40 +9,80 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane style="-fx-background-color: LIGHTCYAN;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestStatus">
+<Pane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestStatus">
    <children>
       <AnchorPane prefHeight="376.0" prefWidth="374.0">
          <children>
-            <AnchorPane prefHeight="395.0" prefWidth="374.0">
+            <AnchorPane layoutX="-1.0" layoutY="-7.0" prefHeight="720.0" prefWidth="1280.0">
                <children>
-                  <Text layoutX="71.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Status Update">
+                  <Text layoutX="528.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request Status Update">
                      <font>
-                        <Font size="23.0" />
+                        <Font name="Agency FB" size="36.0" />
                      </font>
                   </Text>
-                  <TableView fx:id="DataTable" layoutX="61.0" layoutY="198.0" prefHeight="130.0" prefWidth="252.0">
+                  <TableView fx:id="DataTable" layoutX="871.0" layoutY="198.0" prefHeight="331.0" prefWidth="301.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="150.6666259765625" text="C1" />
+                      <TableColumn minWidth="0.0" prefWidth="187.7332763671875" text="C2" />
                     </columns>
                   </TableView>
-                  <TextField fx:id="CustomerIdTF" layoutX="135.0" layoutY="68.0" onAction="#CustomerIdTF" prefHeight="26.0" prefWidth="137.0" promptText="Customer ID" style="-fx-background-color: LIGHTGRAY;" />
-                  <TextField fx:id="CarNumberTF" layoutX="147.0" layoutY="102.0" onAction="#CarNumberTF" prefHeight="26.0" prefWidth="126.0" promptText="Car Number" style="-fx-background-color: LIGHTGRAY;" />
-                  <Button fx:id="SendRequestBtn" layoutX="238.0" layoutY="147.0" mnemonicParsing="false" onAction="#SendRequestBtn" prefHeight="26.0" prefWidth="95.0" style="-fx-background-color: LIGHTGRAY;" text="Send Request" />
-                  <Button fx:id="PreviousButton" layoutX="73.0" layoutY="147.0" mnemonicParsing="false" onAction="#OnPreviousButton" prefHeight="26.0" prefWidth="62.0" style="-fx-background-color: LIGHTGRAY;" text="back" />
-                  <ImageView fitHeight="37.0" fitWidth="46.0" layoutX="87.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
+                  <TextField fx:id="CustomerIdTF" layoutX="518.0" layoutY="226.0" onKeyTyped="#CustomerIDTextChange" prefHeight="40.0" prefWidth="214.0" style="-fx-background-color: LIGHTGRAY;">
+                     <font>
+                        <Font size="18.0" />
+                     </font></TextField>
+                  <TextField fx:id="CarNumberTF" layoutX="518.0" layoutY="318.0" onKeyTyped="#CarIDTextChange" prefHeight="40.0" prefWidth="214.0" style="-fx-background-color: LIGHTGRAY;">
+                     <font>
+                        <Font size="18.0" />
+                     </font></TextField>
+                  <Button fx:id="SendRequestBtn" layoutX="581.0" layoutY="497.0" mnemonicParsing="false" onAction="#SendRequestBtn" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: LIGHTGRAY;" text="Send Request">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+                  <Button fx:id="PreviousButton" layoutX="30.0" layoutY="658.0" mnemonicParsing="false" onAction="#OnPreviousButton" prefHeight="40.0" prefWidth="178.0" style="-fx-background-color: LIGHTGRAY;" text="Previous Window">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+                  <ImageView fitHeight="37.0" fitWidth="46.0" layoutX="296.0" layoutY="231.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="31.0" fitWidth="53.0" layoutX="87.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="31.0" fitWidth="53.0" layoutX="284.0" layoutY="324.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/images/71GXWTdc+4L.jpg" />
                      </image>
                   </ImageView>
+                  <Line endX="390.666748046875" layoutX="640.0" layoutY="81.0" startX="-348.5332946777344" />
+                  <Line endX="-100.0" endY="487.5999755859375" layoutX="896.0" layoutY="147.0" startX="-100.0" />
+                  <Label layoutX="371.0" layoutY="232.0" prefHeight="27.0" prefWidth="114.0" text="Customer ID:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="379.0" layoutY="323.0" prefHeight="27.0" prefWidth="114.0" text="Car ID:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="OutputLabel" layoutX="303.0" layoutY="396.0" prefHeight="69.0" prefWidth="430.0" text="Output" visible="false" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="968.0" layoutY="127.0" prefHeight="27.0" prefWidth="114.0" text="Preview Data" textFill="#9000ff">
+                     <font>
+                        <Font name="Berlin Sans FB" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="360.0" layoutY="125.0" prefHeight="35.0" prefWidth="253.0" text="Submit Status Check!" textFill="#4400ff">
+                     <font>
+                        <Font name="Berlin Sans FB" size="24.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>

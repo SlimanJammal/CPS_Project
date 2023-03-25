@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
@@ -26,46 +27,72 @@
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="615.0">
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyTyped="#complaintBTNa" prefHeight="720.0" prefWidth="1267.0">
                      <children>
-                        <AnchorPane layoutX="16.0" layoutY="90.0" prefHeight="62.0" prefWidth="568.0">
+                        <AnchorPane layoutX="234.0" layoutY="102.0" prefHeight="61.0" prefWidth="776.0">
                            <children>
-                              <Button fx:id="ReserveParkingBtn" layoutX="135.0" layoutY="17.0" mnemonicParsing="false" onAction="#ReserveParkingBtn" style="-fx-border-color: #4ee44e;" text="Reserve Parking" />
-                              <Button fx:id="checkReservBtn" layoutX="256.0" layoutY="17.0" mnemonicParsing="false" onAction="#checkReservBtn" style="-fx-border-color: #4ee44e;" text="Check-Reservation" />
-                              <Button fx:id="createNewSubsBtn" layoutX="386.0" layoutY="17.0" mnemonicParsing="false" onAction="#createNewSubsBtn" style="-fx-border-color: #4ee44e;" text="Create New Subscription" />
-                              <Button fx:id="complaintBTN" layoutX="-11.0" layoutY="17.0" mnemonicParsing="false" onAction="#complaintBTNa" style="-fx-border-color: #4ee44e;" text="Submit A Complaint" />
+                              <Button fx:id="ReserveParkingBtn" layoutX="228.0" layoutY="9.0" mnemonicParsing="false" onAction="#ReserveParkingBtn" prefHeight="37.0" prefWidth="170.0" style="-fx-border-color: #4ee44e;" text="Reserve Parking">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font></Button>
+                              <Button fx:id="checkReservBtn" layoutX="449.0" layoutY="10.0" mnemonicParsing="false" onAction="#checkReservBtn" prefHeight="42.0" prefWidth="184.0" style="-fx-border-color: #4ee44e;" text="Check-Reservation">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font></Button>
+                              <Button fx:id="createNewSubsBtn" layoutX="669.0" layoutY="9.0" mnemonicParsing="false" onAction="#createNewSubsBtn" prefHeight="42.0" prefWidth="228.0" style="-fx-border-color: #4ee44e;" text="Create New Subscription">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font></Button>
+                              <Button fx:id="complaintBTN" layoutX="-13.0" layoutY="10.0" mnemonicParsing="false" onAction="#complaintBTNa" prefHeight="37.0" prefWidth="198.0" style="-fx-border-color: #4ee44e;" text="Submit A Complaint">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font></Button>
                            </children>
                            <effect>
                               <Blend mode="RED" />
                            </effect>
                         </AnchorPane>
-                        <Text fill="#4ee44e" layoutX="199.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CPS Website">
+                        <Text fill="#4ee44e" layoutX="589.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C P S   W e b s i t e">
                            <font>
-                              <Font size="38.0" />
+                              <Font name="Agency FB" size="48.0" />
                            </font>
                         </Text>
-                        <AnchorPane layoutX="332.0" layoutY="232.0" prefHeight="232.0" prefWidth="278.0">
+                        <AnchorPane layoutX="853.0" layoutY="269.0" prefHeight="312.0" prefWidth="389.0">
                            <children>
-                              <PasswordField fx:id="SUBSNUM_LOGIN_TF" layoutX="121.0" layoutY="116.0" onAction="#SUBSNUM_LOGIN_TF" promptText="subscription number" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
-                              <TextField fx:id="LICENSE_LOGIN_TF" layoutX="121.0" layoutY="46.0" onAction="#LICENSE_LOGIN_TF" promptText="plate number" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
-                              <Button fx:id="RenewSubsBtn" layoutX="128.0" layoutY="161.0" mnemonicParsing="false" onAction="#RenewSubsBtn" style="-fx-border-color: #4ee44e;" text="Renew Subscription" />
-                              <ImageView fitHeight="32.0" fitWidth="102.0" layoutX="50.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+                              <PasswordField fx:id="SUBSNUM_LOGIN_TF" layoutX="169.0" layoutY="116.0" onKeyTyped="#ClientUserDTextChange" prefHeight="46.0" prefWidth="198.0" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
+                              <TextField fx:id="LICENSE_LOGIN_TF" layoutX="171.0" layoutY="25.0" onKeyTyped="#ClientCarIDTextChange" prefHeight="46.0" prefWidth="198.0" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
+                              <Button fx:id="RenewSubsBtn" layoutX="178.0" layoutY="223.0" mnemonicParsing="false" onAction="#RenewSubsBtn" prefHeight="46.0" prefWidth="198.0" style="-fx-border-color: #4ee44e;" text="Renew Subscription">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font></Button>
+                              <ImageView fitHeight="32.0" fitWidth="102.0" layoutX="15.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/images/71GXWTdc+4L.jpg" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="51.0" fitWidth="63.0" layoutX="62.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true">
+                              <Label layoutX="94.0" layoutY="31.0" prefHeight="32.0" prefWidth="70.0" text="Car ID:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="92.0" layoutY="121.0" prefHeight="30.0" prefWidth="77.0" text="User ID: ">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="46.0" fitWidth="47.0" layoutX="20.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/images/lock-icon-isolated-black-background-simple-vector-logo-163369340.jpg" />
                                  </image>
                               </ImageView>
+                              <Label fx:id="ClientErrorLabel" layoutX="8.0" layoutY="189.0" prefHeight="94.0" prefWidth="143.0" textFill="RED" wrapText="true" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="55.0" layoutY="232.0" prefHeight="200.0" prefWidth="200.0">
+                        <AnchorPane layoutX="143.0" layoutY="271.0" prefHeight="322.0" prefWidth="371.0">
                            <children>
-                              <PasswordField fx:id="PW_LOGIN_TF" layoutX="-3.0" layoutY="108.0" onAction="#PW_LOGIN_TF" promptText="password" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
-                              <TextField fx:id="ID_LOGIN_TF" layoutX="-3.0" layoutY="48.0" onAction="#ID_LOGIN_TF" prefHeight="26.0" prefWidth="150.0" promptText="id number" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
-                              <Button fx:id="WorkerBtn" layoutX="100.0" layoutY="152.0" mnemonicParsing="false" onAction="#WorkerBtn" prefHeight="39.0" prefWidth="102.0" style="-fx-border-color: #4ee44e;" text="Worker">
+                              <PasswordField fx:id="PW_LOGIN_TF" layoutX="181.0" layoutY="89.0" onAction="#PW_LOGIN_TF" prefHeight="35.0" prefWidth="178.0" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
+                              <TextField fx:id="ID_LOGIN_TF" layoutX="191.0" layoutY="24.0" onAction="#ID_LOGIN_TF" prefHeight="35.0" prefWidth="167.0" style="-fx-border-width: 3; -fx-border-color: #4ee44e;" />
+                              <Button fx:id="WorkerBtn" layoutX="234.0" layoutY="168.0" mnemonicParsing="false" onAction="#WorkerBtn" prefHeight="40.0" prefWidth="134.0" style="-fx-border-color: #4ee44e;" text="Worker">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -73,13 +100,11 @@
                                        </image>
                                     </ImageView>
                                  </graphic>
-                              </Button>
-                              <Text fill="#4ee44e" layoutX="-9.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee login">
                                  <font>
-                                    <Font size="16.0" />
+                                    <Font size="18.0" />
                                  </font>
-                              </Text>
-                              <Button fx:id="ManagerBtn" layoutX="-47.0" layoutY="152.0" mnemonicParsing="false" onAction="#ManagerBtn" prefHeight="32.0" prefWidth="122.0" style="-fx-border-color: #4ee44e;" text="Manager">
+                              </Button>
+                              <Button fx:id="ManagerBtn" layoutX="189.0" layoutY="246.0" mnemonicParsing="false" onAction="#ManagerBtn" prefHeight="44.0" prefWidth="178.0" style="-fx-border-color: #4ee44e;" text="Manager">
                                  <graphic>
                                     <ImageView fitHeight="29.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -87,25 +112,48 @@
                                        </image>
                                     </ImageView>
                                  </graphic>
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
                               </Button>
+                              <Label layoutX="80.0" layoutY="27.0" prefHeight="32.0" prefWidth="128.0" text="Emplyee ID:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="81.0" layoutY="88.0" prefHeight="32.0" prefWidth="128.0" text="Password:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="37.0" fitWidth="35.0" layoutX="6.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="36.0" fitWidth="47.0" layoutX="6.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/images/lock-icon-isolated-black-background-simple-vector-logo-163369340.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="EmployeeErrorLabel" layoutX="8.0" layoutY="170.0" prefHeight="130.0" prefWidth="143.0" textFill="RED" wrapText="true" />
                            </children>
                         </AnchorPane>
-                        <Text fill="#4ee44e" layoutX="429.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Login">
+                        <Text fill="#4ee44e" layoutX="800.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Login" wrappingWidth="222.40009765624995">
                            <font>
-                              <Font size="16.0" />
+                              <Font size="36.0" />
                            </font>
                         </Text>
-                        <Text fill="#4ee44e" layoutX="14.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
-                        <ImageView fitHeight="51.0" fitWidth="58.0" layoutX="2.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="51.0" fitWidth="49.0" layoutX="-1.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/images/lock-icon-isolated-black-background-simple-vector-logo-163369340.jpg" />
-                           </image>
-                        </ImageView>
+                        <Text fill="#4ee44e" layoutX="96.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee login" wrappingWidth="252.69906616210938">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Text>
+                        <Button fx:id="backbtn" layoutX="43.0" layoutY="622.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="46.0" prefWidth="107.0" style="-fx-border-color: #4ee44e;" text="BACK">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
       <!--                  <ImageView fitHeight="129.0" fitWidth="167.0" layoutX="211.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">-->
       <!--                     <image>-->
       <!--                        <Image url="@images/images/large%20(2).png" />-->
@@ -115,7 +163,6 @@
                   </AnchorPane>
                </children>
             </GridPane>
-            <Button fx:id="backbtn" layoutX="84.0" layoutY="462.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="25.0" prefWidth="68.0" style="-fx-border-color: #4ee44e;" text="back" />
          </children>
       </AnchorPane>
    </children>
