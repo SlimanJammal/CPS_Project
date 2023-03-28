@@ -93,45 +93,53 @@ public class SimpleServer extends AbstractServer {
 
 
 		} else if(ms.getMessage().equals("CheckReservation")){
+			Message msg1 = new Message("CheckReservation");
+			try {
+				System.out.println("1111111111");
 
-			System.out.println("1111111111");
-
-			SessionFactory sessionFactory = getSessionFactory();
-			session.getSessionFactory().openSession();
-			session.beginTransaction();
-
-
-			CriteriaBuilder builder11 = session.getCriteriaBuilder();
-			CriteriaQuery<PreOrder> query11 = builder11.createQuery(PreOrder.class);
-			query11.from(PreOrder.class);
-			List<PreOrder> preOrders = session.createQuery(query11).getResultList();
+				SessionFactory sessionFactory = getSessionFactory();
+				session = sessionFactory.openSession();
+				session.beginTransaction();
 
 
+				CriteriaBuilder builder11 = session.getCriteriaBuilder();
+				CriteriaQuery<PreOrder> query11 = builder11.createQuery(PreOrder.class);
+				query11.from(PreOrder.class);
+				List<PreOrder> preOrders = session.createQuery(query11).getResultList();
 
-			System.out.println("222222222222");
-			String Id = (String) ms.getObject1();
-			String LicensePlate = (String) ms.getObject2();
 
+				System.out.println("222222222222");
+				String Id = (String) ms.getObject1();
+				String LicensePlate = (String) ms.getObject2();
 
-			System.out.println("3333333333333333");
-			for (PreOrder order : preOrders){
-				System.out.println("3.5");
-				System.out.println(order.getPreOrderId());
-				System.out.println(order.getCarNumber());
-				if(order.getPreOrderId().equals(Id)&&order.getCarNumber().equals(LicensePlate)){
-					System.out.println("aaaaa");
-//					preOrdersList.add(order);
+				Vector<PreOrder> preOrdersList = new Vector<>();
+
+				System.out.println("3333333333333333");
+				for (PreOrder order : preOrders) {
+					System.out.println("3.5");
+					System.out.println(order.getPreOrderId());
+					System.out.println(order.getCarNumber());
+					if (order.getPreOrderId().equals(Id) && order.getCarNumber().equals(LicensePlate)) {
+						System.out.println("aaaaa");
+						preOrdersList.add(order);
+					}
 				}
+
+				System.out.println("44444444444");
+				session.getTransaction().commit();
+				session.close();
+				msg1.setObject1(preOrdersList);
+
+
+			}catch (Exception R){
+
+				R.printStackTrace();
+
 			}
 
-			System.out.println("44444444444");
-			session.getTransaction().commit();
-			session.close();
-
-//			ms.setObject1(preOrdersList);
 
 			try{
-				client.sendToClient(ms);
+				client.sendToClient(msg1);
 			}catch (Exception e){
 				e.printStackTrace();
 			}
@@ -141,7 +149,7 @@ public class SimpleServer extends AbstractServer {
 		}else if(ms.getMessage().equals("CancelReservation")){
 
 			SessionFactory sessionFactory = getSessionFactory();
-			session.getSessionFactory().openSession();
+			session = sessionFactory.openSession();
 			session.beginTransaction();
 
 			CriteriaBuilder builder11 = session.getCriteriaBuilder();
@@ -243,8 +251,8 @@ public class SimpleServer extends AbstractServer {
 		}
 		else if (ms.getMessage().equals("cancelOrder")) {
             Message cancelingmsg=(Message) msg;
-            SessionFactory sessionFactory = getSessionFactory();
-			session.getSessionFactory().openSession();
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
 			session.beginTransaction();
 
 

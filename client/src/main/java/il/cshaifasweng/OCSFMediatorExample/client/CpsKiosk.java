@@ -5,6 +5,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.PreOrder;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.Vector;
 
 public class CpsKiosk {
 
@@ -316,6 +318,8 @@ public class CpsKiosk {
     }
 
 
+
+
     @FXML
     void RenewSubsBtn(ActionEvent event) throws IOException {
         Message msg= new Message("RenewSub_kiosk");
@@ -355,6 +359,7 @@ public class CpsKiosk {
             alert.show();
         });
     }
+
 
 
     @FXML

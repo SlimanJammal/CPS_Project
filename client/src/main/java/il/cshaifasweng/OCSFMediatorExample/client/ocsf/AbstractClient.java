@@ -143,6 +143,7 @@ public abstract class AbstractClient implements Runnable
     // All three of the above must be closed when there is a failure
     // to create any of them
     {
+      ex.printStackTrace();
       try
       {
         closeAll();

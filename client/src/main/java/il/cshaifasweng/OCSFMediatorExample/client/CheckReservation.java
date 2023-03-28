@@ -161,12 +161,10 @@ public class CheckReservation {
             });
         }else{
             System.out.println("inside check reserve handle");
-            Message msg = event.getMessage();
-
-            Vector<PreOrder> vec = (Vector<PreOrder>) msg.getObject1();
 
 
-//        ObservableList<PreOrder> preOrders = (ObservableList<PreOrder>) msg.getObject1();
+            Vector<PreOrder> vec = (Vector<PreOrder>) event.getMessage().getObject1();
+
 
             ObservableList<PreOrder> preOrders = FXCollections.observableArrayList();
             for (PreOrder order : vec){
