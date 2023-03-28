@@ -9,6 +9,8 @@ import il.cshaifasweng.OCSFMediatorExample.client.DataSingleton;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -91,14 +93,94 @@ public class SimpleServer extends AbstractServer {
 
 
 		} else if(ms.getMessage().equals("CheckReservation")){
+
+			System.out.println("1111111111");
+
+			SessionFactory sessionFactory = getSessionFactory();
+			session.getSessionFactory().openSession();
+			session.beginTransaction();
+
+
+			CriteriaBuilder builder11 = session.getCriteriaBuilder();
+			CriteriaQuery<PreOrder> query11 = builder11.createQuery(PreOrder.class);
+			query11.from(PreOrder.class);
+			List<PreOrder> preOrders = session.createQuery(query11).getResultList();
+
+
+
+			System.out.println("222222222222");
+			String Id = (String) ms.getObject1();
+			String LicensePlate = (String) ms.getObject2();
+
+
+			System.out.println("3333333333333333");
+			for (PreOrder order : preOrders){
+				System.out.println("3.5");
+				System.out.println(order.getPreOrderId());
+				System.out.println(order.getCarNumber());
+				if(order.getPreOrderId().equals(Id)&&order.getCarNumber().equals(LicensePlate)){
+					System.out.println("aaaaa");
+//					preOrdersList.add(order);
+				}
+			}
+
+			System.out.println("44444444444");
+			session.getTransaction().commit();
+			session.close();
+
+//			ms.setObject1(preOrdersList);
+
 			try{
-				client.sendToClient(CheckReservationStatus(ms));
+				client.sendToClient(ms);
 			}catch (Exception e){
 				e.printStackTrace();
 			}
 
 
 
+		}else if(ms.getMessage().equals("CancelReservation")){
+
+			SessionFactory sessionFactory = getSessionFactory();
+			session.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			CriteriaBuilder builder11 = session.getCriteriaBuilder();
+			CriteriaQuery<PreOrder> query11 = builder11.createQuery(PreOrder.class);
+			query11.from(PreOrder.class);
+			List<PreOrder> preOrders = session.createQuery(query11).getResultList();
+
+			PreOrder selectedOrder = (PreOrder) ms.getObject1();
+
+			for(PreOrder order : preOrders){
+				if(order.getId_() == selectedOrder.getId_()){
+					try{
+						ms.setMessage("CheckReservation");
+						ms.setObject1("cancel");
+						ms.setObject2("order canceled successfully!");
+						session.remove(order);
+						try{
+							client.sendToClient(ms);
+						}catch (Exception ex){
+							ex.printStackTrace();
+						}
+
+					} catch (Exception e) {
+						ms.setObject1("cancel");
+						ms.setObject2("order cancellation was unsuccessfull!");
+						e.printStackTrace();
+						try{
+							client.sendToClient(ms);
+						}catch (Exception ex){
+							ex.printStackTrace();
+						}
+
+					}
+
+				}
+			}
+			session.getTransaction().commit();
+			session.close();
+			//todo retun message and whatever
 		}else if(ms.getMessage().equals("RegionalManager_ShowPriceRequests")){
 			List<PricesUpdateRequest> data21 = new ArrayList<>();
 			try {
@@ -806,6 +888,8 @@ public class SimpleServer extends AbstractServer {
 			// 0- car number             3- Eta
 			// 1- DesiredParking         4- Etd
 			// 2- Email                  5- Id nnumber
+			// object 2 -> input date    object 3 -> output date
+
 			Vector<String> fields = (Vector<String>)ms.getObject1();
 			System.out.println("one time parking order in server");
 			// checking fields input if okay add the client, else return failed
@@ -823,28 +907,33 @@ public class SimpleServer extends AbstractServer {
 
 					//input example 22:15-2022:11:24
 					// hour in - 0 , minutes in - 1
-					String[] estimated_arrival_time = fields3.split("-")[0].split(":");
+					String[] estimated_arrival_time = fields3.split(":");
 					//0 - year,1 - month,2 -day
-					String[] estimated_arrival_date = fields3.split("-")[1].split(":");
+					//String[] estimated_arrival_date = fields3.split("-")[1].split(":");
 
 					// hour in - 0 , minutes in - 1
-					String[] estimated_leave_time = fields4.split("-")[0].split(":");
+					String[] estimated_leave_time = fields4.split(":");
 					//0 - year,1 - month,2 -day
-					String[] estimated_leave_date = fields4.split("-")[1].split(":");
+					//String[] estimated_leave_date = fields4.split("-")[1].split(":");
 
 					System.out.println("one time parking order in server5543");
 //				 Initialize to a specific date using year, month, and day values
-					LocalDate arrival_date = LocalDate.of(Integer.parseInt(estimated_arrival_date[0]), Integer.parseInt(estimated_arrival_date[1]), Integer.parseInt(estimated_arrival_date[2])+1);
+					//LocalDate arrival_date = LocalDate.of(Integer.parseInt(estimated_arrival_date[0]), Integer.parseInt(estimated_arrival_date[1]), Integer.parseInt(estimated_arrival_date[2])+1);
+					LocalDate arrival_date = (LocalDate) ((Message) msg).getObject2();
 					//hour , minute
 					LocalTime arrival_time = LocalTime.of(Integer.parseInt(estimated_arrival_time[0]), Integer.parseInt(estimated_arrival_time[1]),1,1);
 
 					//				 Initialize to a specific date using year, month, and day values
-					LocalDate leave_date = LocalDate.of(Integer.parseInt(estimated_leave_date[0]), Integer.parseInt(estimated_leave_date[1]), Integer.parseInt(estimated_leave_date[2]));
+					//LocalDate leave_date = LocalDate.of(Integer.parseInt(estimated_leave_date[0]), Integer.parseInt(estimated_leave_date[1]), Integer.parseInt(estimated_leave_date[2]));
+					LocalDate leave_date = (LocalDate) ((Message) msg).getObject3();
 					//hour , minute
 					LocalTime leave_time = LocalTime.of(Integer.parseInt(estimated_leave_time[0]), Integer.parseInt(estimated_leave_time[1]),1,1);
 
 //				LocalDate Eta = new LocalDateStringConverter(Integer.parseInt(parsedEta[0]), Integer.parseInt(parsedEta[1]), Integer.parseInt(parsedEta[2]), Integer.parseInt(parsedEta[3]), 0);
 //				Date Etd = new Date(Integer.parseInt(parsedEtd[0]), Integer.parseInt(parsedEtd[1]), Integer.parseInt(parsedEtd[2]), Integer.parseInt(parsedEtd[3]), 0);
+
+
+
 					tempPreOrder.setEntranceDate(arrival_date);
 					tempPreOrder.setEntranceTime(arrival_time);
 					tempPreOrder.setExitDate(leave_date);

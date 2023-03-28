@@ -6,6 +6,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import antlr.debug.MessageAdapter;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.PricesClass;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -90,15 +91,16 @@ public class OneTimeParkingOrder {
     @FXML // fx:id="cancelRes"
     private Button cancelRes; // Value injected by FXMLLoader
 
+
     //============================= Cancel Button ==================================
     @FXML
     void CancelResBtn(ActionEvent event)
     {
         Message msg = new Message("cancelOrder");
 
-        msg.setObject1(CarNumberTF.getText());
-        msg.setObject2(DesiredParkingTF.getText());
-        msg.setObject3(EmailTF.getText());
+        msg.setObject1(CancelCarID.getText());
+        msg.setObject2(CancelCustomerID.getText());
+//        msg.setObject3(EmailTF.getText());
         //hh:mm-yyyy:mm:dd
         /*{
             //Entrance
@@ -174,8 +176,8 @@ public class OneTimeParkingOrder {
         String DepartureDateFormated = sb2.reverse().toString();
         DepartureDateFormated = DepartureDateFormated.replace("/", ".");
 
-        String Entrance = EntranceHourInput.getText() + "-" + EntranceDateFormated;
-        String Departure = DepartureHourInput.getText() + "-" + DepartureDateFormated;
+        String Entrance = EntranceHourInput.getText() ;
+        String Departure = DepartureHourInput.getText() ;
 
         fields.add(CarNumberTF.getText());
         fields.add(DesiredParking);
@@ -184,6 +186,8 @@ public class OneTimeParkingOrder {
         fields.add(Departure);
         fields.add(IdNumberTF.getText());
         msg.setObject1(fields);
+        msg.setObject2(EntranceDateInput.getValue());
+        msg.setObject3(DepartureDateInput.getValue());
         System.out.println("submit pre order pressed");
         //send to server
         try{
@@ -235,7 +239,7 @@ public class OneTimeParkingOrder {
 
         } */
         {
-            CreateErrorLabel.setText("sucess!");
+           // CreateErrorLabel.setText("sucess!");
             CreateErrorLabel.setTextFill(Color.web("#00ff00"));
 
         }
