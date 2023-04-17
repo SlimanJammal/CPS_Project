@@ -18,6 +18,7 @@ import java.beans.Expression;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Vector;
 
 public class CheckReservation {
@@ -151,9 +152,21 @@ public class CheckReservation {
     }
 
     @Subscribe
-    public void complaintHandleFromServer(CheckReservationEvent event){
+    public void complaintHandleFromServer(CheckReservationEvent event) throws IOException {
 
         if(event.getMessage().getObject1().toString().equals("cancel")){
+//            if(event.getMessage().getObject2().toString().equals("order canceled successfully!")){
+//                System.out.println("inside canceled order");
+//                ObservableList<PreOrder>orders = tableView.getItems();
+//                for(PreOrder order : orders){
+//                    if(order.getId_()==tableView.getSelectionModel().getSelectedItem().getId_()){
+//                        orders.remove(order);
+//                    }
+//                }
+//                tableView.setItems(orders);
+//                tableView.refresh();
+//            }
+            tableView.getItems().clear();
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.WARNING,event.getMessage().getObject2().toString()
                 );

@@ -108,24 +108,24 @@ public class SimpleServer extends AbstractServer {
 				List<PreOrder> preOrders = session.createQuery(query11).getResultList();
 
 
-				System.out.println("222222222222");
+//				System.out.println("222222222222");
 				String Id = (String) ms.getObject1();
 				String LicensePlate = (String) ms.getObject2();
 
 				Vector<PreOrder> preOrdersList = new Vector<>();
 
-				System.out.println("3333333333333333");
+//				System.out.println("3333333333333333");
 				for (PreOrder order : preOrders) {
-					System.out.println("3.5");
-					System.out.println(order.getPreOrderId());
-					System.out.println(order.getCarNumber());
+//					System.out.println("3.5");
+//					System.out.println(order.getPreOrderId());
+//					System.out.println(order.getCarNumber());
 					if (order.getPreOrderId().equals(Id) && order.getCarNumber().equals(LicensePlate)) {
-						System.out.println("aaaaa");
+//						System.out.println("aaaaa");
 						preOrdersList.add(order);
 					}
 				}
 
-				System.out.println("44444444444");
+//				System.out.println("44444444444");
 				session.getTransaction().commit();
 				session.close();
 				msg1.setObject1(preOrdersList);

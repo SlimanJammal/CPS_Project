@@ -217,30 +217,19 @@ public class OneTimeParkingOrder {
 //                );
 //                alert.show();
 //            });
-            CarNumberTF.setText("success");
-            DesiredParkingTF.setText("success");
-            EmailTF.setText("success");
-            EtaTF.setText("success");
-            EtdTF.setText("success");
-            IdNumberTF.setText("success");
 
-            try {
-                TimeUnit.SECONDS.sleep(7);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            CarNumberTF.clear();
-            DesiredParkingTF.clear();
-            EmailTF.clear();
-            //EtaTF.clear();
-            //EtdTF.clear();
-            IdNumberTF.clear();
 
         } */
         {
            // CreateErrorLabel.setText("sucess!");
             CreateErrorLabel.setTextFill(Color.web("#00ff00"));
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING,
+                        String.format("Message: %s\n",
+                                "order placed successfully! ")
+                );
+                alert.show();
+            });
 
         }
         else if(event.getMessage().getObject1().toString().equals("fail")){

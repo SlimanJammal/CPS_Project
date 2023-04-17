@@ -130,16 +130,18 @@ public class CpsWebsite {
         Message msg= new Message("loginManager_WEBSITE");
         msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
-        for(int i=0;i<ID_LOGIN_TF.getLength();i++)
-        {
-            if(msg.getID().charAt(i)<'0'||msg.getID().charAt(i)>'9')
-            {
-                ID_LOGIN_TF.setText("notValid");
-            }
-        }
-            if(!ID_LOGIN_TF.getText().equals("notValid")) {
-                SimpleClient.getClient().sendToServer(msg);
-            }
+//        for(int i=0;i<ID_LOGIN_TF.getLength();i++)
+//        {
+//            if(msg.getID().charAt(i)<'0'||msg.getID().charAt(i)>'9')
+//            {
+//                ID_LOGIN_TF.setText("notValid");
+//            }
+//        }
+//            if(!ID_LOGIN_TF.getText().equals("notValid")) {
+//                SimpleClient.getClient().sendToServer(msg);
+//            }
+
+        SimpleClient.getClient().sendToServer(msg);
     }
 
 
@@ -200,16 +202,17 @@ public class CpsWebsite {
         msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
 
-        for(int i=0;i<ID_LOGIN_TF.getLength();i++)
-        {
-            if(msg.getID().charAt(i)<'0'||msg.getID().charAt(i)>'9')
-            {
-                ID_LOGIN_TF.setText("notValid");
-            }
-        }
-        if(!ID_LOGIN_TF.getText().equals("notValid")) {
-            SimpleClient.getClient().sendToServer(msg);
-        }
+//        for(int i=0;i<ID_LOGIN_TF.getLength();i++)
+//        {
+//            if(msg.getID().charAt(i)<'0'||msg.getID().charAt(i)>'9')
+//            {
+//                ID_LOGIN_TF.setText("notValid");
+//            }
+//        }
+//        if(!ID_LOGIN_TF.getText().equals("notValid")) {
+//
+//        }
+        SimpleClient.getClient().sendToServer(msg);
     }
     @Subscribe
     public void allowWorker(loginWorkerWebsiteEvent allowing) throws IOException {
