@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -2523,11 +2524,49 @@ public class SimpleServer extends AbstractServer {
 					List<ParkingSpot> parkingSpots = parkingLots.get(index).getSpots();
 					parking_spots_state.append("Parking Lot").append(index).append(" spots stat:");
 					for (int i = 0; i < parkingSpots.size(); i++) {
-						parking_spots_state.append(i);
-						parking_spots_state.append("  ");
-						parking_spots_state.append(parkingSpots.get(i).getCurrentState());
-						parking_spots_state.append("  ");
-						parking_spots_state.append("\n");
+						if(i == 0){
+							parking_spots_state.append("\n");
+						}
+						if(index == 0) {
+
+							parking_spots_state.append("  ");
+							parking_spots_state.append(i);
+							parking_spots_state.append("  ");
+							parking_spots_state.append(parkingSpots.get(i).getCurrentState());
+							parking_spots_state.append("  ");
+							if(i%4 == 0 && i%3 == 0 && i !=0) {
+								parking_spots_state.append("\n");
+								parking_spots_state.append("\n");
+								parking_spots_state.append("\n");
+								parking_spots_state.append("\n");
+							}
+						} else if( index == 1){
+
+							parking_spots_state.append("  ");
+							parking_spots_state.append(i);
+							parking_spots_state.append("  ");
+							parking_spots_state.append(parkingSpots.get(i).getCurrentState());
+							parking_spots_state.append("   ");
+							if(i%5 == 0 && i%3 == 0 && i !=0) {
+								parking_spots_state.append("\n");
+								parking_spots_state.append("\n");
+								parking_spots_state.append("\n");
+								parking_spots_state.append("\n");
+							}
+						}else{
+
+							parking_spots_state.append("  ");
+							parking_spots_state.append(i);
+							parking_spots_state.append("  ");
+							parking_spots_state.append(parkingSpots.get(i).getCurrentState());
+							parking_spots_state.append("  ");
+							if(i%5 == 0 && i%3 == 0 && i !=0) {
+								parking_spots_state.append("\n");
+								parking_spots_state.append("\n");
+								parking_spots_state.append("\n");
+
+							}
+						}
 
 
 					}
