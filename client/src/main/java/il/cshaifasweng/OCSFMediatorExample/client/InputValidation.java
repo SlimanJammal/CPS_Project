@@ -60,7 +60,8 @@ public class InputValidation
         return input.matches(regex);
     }
 
-    public boolean ValidateAccount(String input)
+    //validate username & password
+    public boolean ValidateAccount(String username, String Password)
     {
         return true;
     }

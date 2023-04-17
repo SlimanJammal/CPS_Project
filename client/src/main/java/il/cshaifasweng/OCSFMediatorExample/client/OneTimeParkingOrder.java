@@ -177,6 +177,8 @@ public class OneTimeParkingOrder {
         String Entrance = EntranceHourInput.getText() + "-" + EntranceDateFormated;
         String Departure = DepartureHourInput.getText() + "-" + DepartureDateFormated;
 
+        //HH:MM-YYYY.MM.DD
+        //DD/MM/YYYY
         fields.add(CarNumberTF.getText());
         fields.add(DesiredParking);
         fields.add(EmailTF.getText());
