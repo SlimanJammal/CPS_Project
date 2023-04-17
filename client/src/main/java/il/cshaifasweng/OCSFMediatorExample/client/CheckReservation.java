@@ -4,16 +4,21 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import javax.persistence.Id;
+import java.beans.Expression;
 import java.io.IOException;
 
 public class CheckReservation {
 
     @FXML
     private Button BackBtn;
+
+    @FXML
+    private TextField CarIdTB;
+
 
     @FXML
     private TextField IdTf;
@@ -34,7 +39,11 @@ public class CheckReservation {
     private RadioButton Radio3;
 
     @FXML
+    private Label ErrorLabel;
+
+    @FXML
     private Button SubmitBtn;
+
 
     @FXML
     void BackBtn(ActionEvent event) {
@@ -105,5 +114,55 @@ public class CheckReservation {
         EventBus.getDefault().register(this);
 
     }
+
+    @FXML
+    void UserIDTextChange(KeyEvent event){
+        //Validate Input!
+        InputValidation test = new InputValidation();
+        if(test.CustomerIDValidation(IdTf.getText().toString()))
+        {
+            ErrorLabel.setText("");
+
+        }
+        else
+        {
+            if(IdTf.getText().toString().equals(""))
+            {
+                ErrorLabel.setText("User ID is not valid! Please try again.");
+                IdTf.setText("");
+            }
+            else
+            {
+                ErrorLabel.setText("User ID is empty, please fill it up!");
+                IdTf.setText("");
+            }
+        }
+    }
+
+@FXML
+    void CarIDTextChange(KeyEvent event){
+        //Validate Input!
+        InputValidation test = new InputValidation();
+        if(test.CarIDValidation(CarIdTB.getText().toString()))
+        {
+            ErrorLabel.setText("");
+
+        }
+        else
+        {
+            if(!IdTf.getText().toString().equals(""))
+            {
+                ErrorLabel.setText("Car ID is not valid! Please try again.");
+                CarIdTB.setText("");
+            }
+            else
+            {
+                ErrorLabel.setText("Car ID is empty, please fill it up!");
+                CarIdTB.setText("");
+            }
+        }
+    }
+
+
 
 }

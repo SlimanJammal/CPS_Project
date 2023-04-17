@@ -8,10 +8,8 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Comp;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -22,7 +20,6 @@ public class ComplaintSubmittion {
 
     @FXML // fx:id="ComplaintTA"
     private TextArea ComplaintTA; // Value injected by FXMLLoader
-
 
     @FXML
     private TextField emailtf;
@@ -35,44 +32,36 @@ public class ComplaintSubmittion {
     @FXML // fx:id="BackBtn"
     private Button BackBtn; // Value injected by FXMLLoader
 
-    @FXML
-    void emailtf(ActionEvent event) {
-
-    }
-    @FXML
-    void CustomerIdTF(ActionEvent event) {
-
-    }
+    @FXML // fx:id="CustomerErrorLabel"
+    private Label CustomerErrorLabel; // Value injected by FXMLLoader
 
     @FXML
     void SubmitBtn(ActionEvent event) {
-        try {
+
 //            System.out.println("kelhom 4nole wma gedro");
-            Message message = new Message("Complaint");
-            Comp newComplaint = new Comp(CustomerIdTF.getText(),ComplaintTA.getText(),emailtf.getText());
-            for(int i=0;i<CustomerIdTF.getLength();i++)
+        Message message = new Message("Complaint");
+        Comp newComplaint = new Comp(CustomerIdTF.getText(), ComplaintTA.getText(), emailtf.getText());
+            /*for(int i=0;i<CustomerIdTF.getLength();i++)
             {
                 if(CustomerIdTF.getText().charAt(i)<'0'||CustomerIdTF.getText().charAt(i)>'9')
                 {
                     CustomerIdTF.setText("invalidInput");
                 }
-            }
-            message.setObject1(newComplaint);
+            }*/
+        message.setObject1(newComplaint);
 
-            if(     (!emailtf.getText().contains("@")) ||
+            /*if(     (!emailtf.getText().contains("@")) ||
                     !(!emailtf.getText().endsWith("hotmail.com")&&
                     !emailtf.getText().endsWith("gmail.com")))
             {
                 emailtf.setText("invalidInput");
-            }
-            CustomerIdTF.clear();
-            ComplaintTA.clear();
-            emailtf.clear();
+            }*/
+        CustomerIdTF.clear();
+        ComplaintTA.clear();
+        emailtf.clear();
 
-            if(!(CustomerIdTF.getText().equals("invalidInput")||emailtf.getText().equals("invalidInput"))) {
-                SimpleClient.getClient().sendToServer(message);
-            }
-
+        try {
+            SimpleClient.getClient().sendToServer(message);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -112,6 +101,50 @@ public class ComplaintSubmittion {
     void initialize() {
         EventBus.getDefault().register(this);
 
+    }
+
+    @FXML
+    void CustomerEmailTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.EmailValidation(emailtf.getText().toString()))
+        {
+            CustomerErrorLabel.setText("");
+
+        }
+        else
+        {
+            if(!emailtf.getText().toString().equals(""))
+            {
+                CustomerErrorLabel.setText("Email is not valid! Please try again.");
+            }
+            else
+            {
+                CustomerErrorLabel.setText("Email is empty, please fill it up!");
+            }
+        }
+    }
+
+    @FXML
+    void CustomerIDTextChange(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.CustomerIDValidation(CustomerIdTF.getText().toString()))
+        {
+            CustomerErrorLabel.setText("");
+
+        }
+        else
+        {
+            if(!CustomerIdTF.getText().toString().equals(""))
+            {
+                CustomerErrorLabel.setText("Customer ID is not valid! Please try again.");
+                CustomerIdTF.setText("");
+            }
+            else
+            {
+                CustomerErrorLabel.setText("Customer ID is empty, please fill it up!");
+                CustomerIdTF.setText("");
+            }
+        }
     }
 
 }

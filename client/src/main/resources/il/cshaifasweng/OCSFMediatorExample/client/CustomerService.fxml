@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CustomerService">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CustomerService">
    <children>
-      <TextField fx:id="requestTF" layoutX="63.0" layoutY="333.0" onAction="#requestTF" promptText="Request Number" />
-      <Button fx:id="DeclineBtn" layoutX="333.0" layoutY="333.0" mnemonicParsing="false" onAction="#DeclineBtn" text="Decline" />
-      <Button fx:id="AcceptBtn" layoutX="240.0" layoutY="333.0" mnemonicParsing="false" onAction="#AcceptBtn" text="Accept" />
-      <TableView fx:id="RequestsTable" layoutX="37.0" layoutY="117.0" prefHeight="200.0" prefWidth="437.0">
+      <TextField fx:id="requestTF" layoutX="252.0" layoutY="131.0" onAction="#requestTF" promptText="Request Number">
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
+      <Button fx:id="DeclineBtn" layoutX="374.0" layoutY="207.0" mnemonicParsing="false" onAction="#DeclineBtn" text="Decline" textFill="RED">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Button fx:id="AcceptBtn" depthTest="ENABLE" layoutX="235.0" layoutY="205.0" mnemonicParsing="false" onAction="#AcceptBtn" prefHeight="43.0" prefWidth="78.0" text="Accept" textFill="#005100">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <TableView fx:id="RequestsTable" layoutX="586.0" layoutY="177.0" prefHeight="349.0" prefWidth="516.0">
          <columns>
             <TableColumn fx:id="NumberColMainWin" prefWidth="75.0" text="Number" />
             <TableColumn fx:id="ManagerNameCol" prefWidth="96.39994812011719" text="Customer id" />
             <TableColumn fx:id="RequestCol" prefWidth="264.40001220703124" text="Request" />
          </columns>
       </TableView>
-      <Button fx:id="refreshRequestsBTN" layoutX="448.0" layoutY="333.0" mnemonicParsing="false" onAction="#refreshRequestsBTN" text="Refresh Requests" />
-      <AnchorPane layoutX="361.0" layoutY="366.0" prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Button fx:id="backbtn" layoutX="162.0" layoutY="135.0" mnemonicParsing="false" onAction="#backbtn" text="back" />
-         </children>
-      </AnchorPane>
-      <Text fill="#1cd712" layoutX="167.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Service">
+      <Button fx:id="refreshRequestsBTN" layoutX="994.0" layoutY="547.0" mnemonicParsing="false" onAction="#refreshRequestsBTN" text="Refresh Requests" />
+      <Text fill="#1cd712" layoutX="494.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Service">
          <font>
-            <Font size="26.0" />
+            <Font name="Agency FB Bold" size="48.0" />
          </font>
       </Text>
+      <Button fx:id="backbtn" layoutX="58.0" layoutY="636.0" mnemonicParsing="false" onAction="#backbtn" prefHeight="40.0" prefWidth="125.0" text="BACK">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="88.0" layoutY="138.0" text="Request Number:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Line endX="-100.00003051757812" endY="409.73333740234375" layoutX="630.0" layoutY="185.0" startX="-100.00003051757812" startY="-45.73333740234375" />
    </children>
 </AnchorPane>

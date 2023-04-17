@@ -8,10 +8,9 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -64,11 +63,17 @@ public class CpsKiosk {
     private Button createNewSubsBtn; // Value injected by FXMLLoader
 
     @FXML
+    private Label ClientErrorLabel;
+
+    @FXML
+    private Label EmployeeErrorLabel;
+
+    String parkingLotName;
+
+    @FXML
     void CustomerBtn(ActionEvent event) throws IOException {
       App.setRoot("ocasionalParking");
     }
-    String parkingLotName;
-
 
     @FXML
     void ExitParkingBTN(ActionEvent event) throws IOException {
@@ -133,9 +138,32 @@ public class CpsKiosk {
     }
 
     @FXML
-    void LICENSE_LOGIN_TF(ActionEvent event) {
+    void LICENSE_LOGIN_TF(KeyEvent event) {
+        InputValidation test = new InputValidation();
+        if(test.CarIDValidation(LICENSE_LOGIN_TF.getText().toString()))
+        {
+            ClientErrorLabel.setText("");
 
+        }
+        else
+        {
+            if(!LICENSE_LOGIN_TF.getText().toString().equals(""))
+            {
+                ClientErrorLabel.setTextFill(Color.web("#ff0000"));
+                ClientErrorLabel.setText("Car ID is not valid, please try again!");
+                LICENSE_LOGIN_TF.setText("");
+            }
+            else
+            {
+                ClientErrorLabel.setTextFill(Color.web("#ff0000"));
+                ClientErrorLabel.setText("Car ID is empty, please fill it up!");
+
+
+                LICENSE_LOGIN_TF.setText("");
+            }
+        }
     }
+
     @FXML
     void complaintBTNa(ActionEvent event) {
         DataSingleton data = DataSingleton.getInstance();
@@ -194,7 +222,6 @@ public class CpsKiosk {
 
         }
     }
-
 
     @FXML
     void ManagerBtn(ActionEvent event) throws IOException {
@@ -283,10 +310,6 @@ public class CpsKiosk {
     }
 
 
-
-
-
-
     @FXML
     void PW_LOGIN_TF(ActionEvent event) {
 
@@ -341,7 +364,6 @@ public class CpsKiosk {
         App.setRoot("OneTimeParkingOrder");//todo check reservation window
     }
 
-
     @FXML
     void SUBSNUM_LOGIN_TF(ActionEvent event) {
     }
@@ -369,6 +391,7 @@ public class CpsKiosk {
             e.printStackTrace();
         }
     }
+
     @FXML
     void initialize() {
         EventBus.getDefault().register(this);
