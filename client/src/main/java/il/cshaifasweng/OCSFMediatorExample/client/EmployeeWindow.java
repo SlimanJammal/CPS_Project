@@ -101,12 +101,12 @@ public class EmployeeWindow {
         msg.setObject2(worker_id);
 
 
-        if(worker_id == 0){
+        if(worker_id == 4){
             msg.setObject1(rowTF.getText());
-        }else if(worker_id == 1){
-            msg.setObject1(rowTF.getText()+36);
+        }else if(worker_id == 5){
+            msg.setObject1(addNumberToString(rowTF.getText(),36));
         }else {
-            msg.setObject1(rowTF.getText()+36);
+            msg.setObject1(addNumberToString(rowTF.getText(),36));
         }
 
 
@@ -134,12 +134,12 @@ public class EmployeeWindow {
         System.out.println("deactivate client ");
 
 
-        if(worker_id == 0){
+        if(worker_id == 4){
             msg.setObject1(rowTF.getText());
-        }else if(worker_id == 1){
-            msg.setObject1(rowTF.getText()+36);
+        }else if(worker_id == 5){
+            msg.setObject1(addNumberToString(rowTF.getText(),36));
         }else {
-            msg.setObject1(rowTF.getText()+45);
+            msg.setObject1(addNumberToString(rowTF.getText(),45));
         }
 
         try
@@ -335,6 +335,12 @@ public class EmployeeWindow {
         }
     }
 
+    public static String addNumberToString(String strNumber, int numberToAdd) {
+        int result = Integer.parseInt(strNumber) + numberToAdd; // Convert string to int and add
+        return Integer.toString(result); // Convert int to string and return
+    }
+
+
     //========================== Submit Occasion Park Saving =============================
     @FXML
     void SubmitOccasionSavingSpot(ActionEvent event) {
@@ -346,15 +352,16 @@ public class EmployeeWindow {
              msg.setObject2(DataSingleton.getInstance().getData());
 //             msg.setObject2(ParkingLotNameOccasion.getText());
         int worker_id  = (int) DataSingleton.getInstance().getData();
-
-        if(worker_id == 0){
+        System.out.println(worker_id + "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+        if(worker_id == 4){
             msg.setObject1(OccasionParkingSlot.getText());
-        }else if(worker_id == 1){
+        }else if(worker_id == 5){
 
-            msg.setObject1(OccasionParkingSlot.getText()+36);
+            msg.setObject1(addNumberToString(OccasionParkingSlot.getText(),36));
+            System.out.println(addNumberToString(OccasionParkingSlot.getText(),36));
         }else {
 
-            msg.setObject1(OccasionParkingSlot.getText()+45);
+            msg.setObject1(addNumberToString(OccasionParkingSlot.getText(),45));
         }
 
 
