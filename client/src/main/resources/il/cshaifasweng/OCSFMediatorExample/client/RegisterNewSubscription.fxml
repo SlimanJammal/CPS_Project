@@ -70,7 +70,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <DatePicker fx:id="Date" layoutX="333.0" layoutY="339.0" prefHeight="42.0" prefWidth="254.0" />
+      <DatePicker fx:id="Date" layoutX="333.0" layoutY="339.0" onAction="#Datepick" prefHeight="42.0" prefWidth="254.0" />
       <ImageView fitHeight="36.0" fitWidth="49.0" layoutX="68.0" layoutY="411.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/images/clock-alarm-icon-white-contour-black-background-illustration-87708978.jpg" />

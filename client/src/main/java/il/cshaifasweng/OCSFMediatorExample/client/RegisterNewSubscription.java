@@ -4,6 +4,7 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 //Previous Buttons doesn't work just yet
@@ -74,6 +76,19 @@ public class RegisterNewSubscription implements Initializable {
     @FXML // fx:id="SubscriptionType"
     private ToggleGroup SubscriptionType; // Value injected by FXMLLoader
 
+    @FXML
+    void Datepick(ActionEvent event) {
+        LocalDate now = LocalDate.now();
+        if(Date.getValue().isBefore(now)){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "Please use a date that is not in the past"
+                );
+                alert.show();
+            });
+            Date.setValue(now);
+        }
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -95,6 +110,9 @@ public class RegisterNewSubscription implements Initializable {
         String EntranceParkingTime = EntranceHourTF.getText();
         String DepartureParkingTime = DepatureHourTF.getText();
         String ParkingType = "";
+
+
+
 
         if(Radio1.isSelected())
         {
@@ -128,13 +146,15 @@ public class RegisterNewSubscription implements Initializable {
 
         try
         {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if(
                isnumeric((String) msg.getObject2() )&&
-               isnumeric((String) msg.getObject4()) &&
-                isMail((String) msg.getObject7())
-        ) {
+               isnumeric((String) msg.getObject4()) )
+         {
+                System.out.println("fsdfsdfdfgdaffgdgdfgsdgdfgdfgd");
             SimpleClient.getClient().sendToServer(msg);
         }
+            System.out.println("##################################");
         }
         catch (IOException e) {
             // TODO Auto-generated catch block
