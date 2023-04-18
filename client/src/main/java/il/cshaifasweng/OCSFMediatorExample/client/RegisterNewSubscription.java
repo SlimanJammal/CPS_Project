@@ -105,7 +105,7 @@ public class RegisterNewSubscription implements Initializable {
         //REgisterBtn.setVisible(false);
         String CustomerID = CustomerIdTF.getText();
         String CarLicense = CarNumberTF.getText();
-        String StartingDate = Date.getValue().toString();
+        LocalDate StartingDate = Date.getValue();
         String Email = EmailTF.getText(); // this is the email adress of the customer
         String EntranceParkingTime = EntranceHourTF.getText();
         String DepartureParkingTime = DepatureHourTF.getText();
@@ -207,14 +207,18 @@ public class RegisterNewSubscription implements Initializable {
     @FXML
     void AddToList(ActionEvent event){
         String input = CarNumberTF.getText();
-        if(CarsList.contains(input))
-        {
-            LabelOutput.setTextFill(Color.web("#0000ff"));
-            //LabelOutput.setText("Car Has been removed from list!");
-            LabelOutput.setText("The Car ID is already in list!");
+        String [] listt = CarsList.split(",");
+        for (String number : listt){
+            if(number.equals(input))
+            {
+                LabelOutput.setTextFill(Color.web("#0000ff"));
+                //LabelOutput.setText("Car Has been removed from list!");
+                LabelOutput.setText("The Car ID is already in list!");
 
-            return;
+                return;
+            }
         }
+
         if(firstRun == 0)
         {
             CarsList = input;
@@ -233,65 +237,29 @@ public class RegisterNewSubscription implements Initializable {
 
     @FXML
     void RemoveFromList(ActionEvent event) {
+        String output = "";
         String input = CarNumberTF.getText();
-        if(!CarsList.contains(input))
-        {
+        String [] listt = CarsList.split(",");
+        boolean found = false;
+        for (String number : listt){
+            if(number.equals(input))
+            {
+
+                found = true;
+                break;
+            }else{
+                output += number+",";
+            }
+        }
+        if(!found){
             LabelOutput.setTextFill(Color.web("#0000ff"));
             //LabelOutput.setText("Car Has been removed from list!");
             LabelOutput.setText("The Car ID is not in list!");
+        }
+        CarsList = output.substring(0,output.length()-1);
 
-            return;
-        }
-        //Guide
-        // 1 - In Middle Between Two CAR IDs
-        // 2 - In Start of Cars List
-        // 3 - at End of Cars List
-
-        int CaseNumber = 0;
-        String temp = CarsList;
-        CarsList = CarsList.replaceAll(","+input + ",",",");
-        if(!CarsList.equals(temp))
-        {
-            CaseNumber = 1;
-            System.out.println(CaseNumber);
-        }
-        else
-        {
-            CarsList = temp;
-            CarsList = CarsList.replaceAll(","+input,"");
-            if(!CarsList.equals(temp))
-            {
-                CaseNumber = 2;
-                System.out.println(CaseNumber);
-            }
-            else
-            {
-                CarsList = temp;
-                CarsList = CarsList.replaceAll(input + ",","");
-                if(!CarsList.equals(temp))
-                {
-                    CaseNumber = 3;
-                    System.out.println(CaseNumber);
-                }
-            }
-        }
-        //CarsList = CarsList.replaceAll(","+input,"");
-
-        //CarsList = CarsList.replaceAll(",,",",");
-
-        if(CarsList.endsWith(","))
-        {
-            int length = CarsList.length();
-            CarsList = CarsList.substring(0,length - 1 - 1 /* -1 for ","*/);
-        }
-        if(CarsList.startsWith(","))
-        {
-            int length = CarsList.length();
-            CarsList = CarsList.substring(1,length - 1 /* -1 for ","*/);
-        }
 
         LabelOutput.setTextFill(Color.web("#0000ff"));
-        LabelOutput.setText("Car Has been removed from list!");
         CarNumberTF.setText("");
         CarListLabel.setText("The Current CarList Is " + CarsList);
     }
