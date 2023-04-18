@@ -206,11 +206,7 @@ public class OneTimeParkingOrder {
         System.out.println("submit pre order pressed");
         //send to server
         try{
-            if(
-                    isnumeric(fields.elementAt(0))
-                    && isnumeric(fields.elementAt(5))
-                    && isMail(fields.elementAt(2))
-            )
+
             SimpleClient.getClient().sendToServer(msg);
         } catch (IOException e) {
             e.printStackTrace();
