@@ -139,7 +139,7 @@ public class EmployeeWindow {
         }else if(worker_id == 1){
             msg.setObject1(rowTF.getText()+36);
         }else {
-            msg.setObject1(rowTF.getText()+36);
+            msg.setObject1(rowTF.getText()+45);
         }
 
         try
@@ -354,7 +354,7 @@ public class EmployeeWindow {
             msg.setObject1(OccasionParkingSlot.getText()+36);
         }else {
 
-            msg.setObject1(OccasionParkingSlot.getText()+36);
+            msg.setObject1(OccasionParkingSlot.getText()+45);
         }
 
 
