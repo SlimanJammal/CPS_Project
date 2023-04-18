@@ -110,6 +110,7 @@ public class ParkingSpot  implements Serializable {
         this.CurrentState = "empty";
         this.Licesnes_Plate = "";
         this.Cus_ID = "";
+        this.isOccasional = false;
     }
 
     public int getSpotId_() {

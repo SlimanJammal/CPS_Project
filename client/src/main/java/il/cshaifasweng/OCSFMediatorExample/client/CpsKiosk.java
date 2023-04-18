@@ -74,7 +74,9 @@ public class CpsKiosk {
 
     @FXML
     void CustomerBtn(ActionEvent event) throws IOException {
-      App.setRoot("ocasionalParking");
+        DataSingleton data = DataSingleton.getInstance();
+        data.setData(parkingLotName);
+        App.setRoot("ocasionalParking");
     }
 
     @FXML
