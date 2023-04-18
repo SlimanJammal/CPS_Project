@@ -21,6 +21,7 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(new WarningEvent((Message) msg));
 		} else if (ms.getMessage().startsWith("AllowManager")) {
 			if(ms.getMessage().endsWith("KIOSK")) {
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
 				EventBus.getDefault().post(new loginManagerKioskEvent((Message) msg));
 			} else {
 				EventBus.getDefault().post(new loginManagerWebsitekEvent((Message) msg));

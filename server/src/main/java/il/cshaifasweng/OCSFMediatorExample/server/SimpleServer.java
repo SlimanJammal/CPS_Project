@@ -352,9 +352,12 @@ public class SimpleServer extends AbstractServer {
 				logout_by_string_debug_heleper(data);
 				//
 				System.out.println("logingMANGER IS IN SERVER");
+				int permission_check = 7;
 				Message msg1 = tryLogIn(data);
 				User user1 = (User) msg1.getObject1();
-				int permission_check = user1.getPermission();
+				if(msg1.getMessage().equals("tryLogin_UserFound")){
+					permission_check = user1.getPermission();
+				}
 				System.out.println(msg1.getMessage());
 				System.out.println(permission_check);
 				if(msg1.getMessage().equals("tryLogin_UserFound") && permission_check == 0 ){
@@ -382,9 +385,13 @@ public class SimpleServer extends AbstractServer {
 				}else {
 
 					MSG.setObject1("fail");
+					MSG.setObject2(msg1.getObject1()); // return User
+					MSG.setObject3(permission_check);
 				}
 
 				client.sendToClient(MSG);
+
+
 		}else if (ms.getMessage().equals("EmployeeLogout")){
 			ParkingWorker worker = (ParkingWorker) ms.getObject1();
 			Message returnMsg = tryLogOut(worker);
@@ -447,12 +454,15 @@ public class SimpleServer extends AbstractServer {
 				MSG = new Message("AllowEmployeeCPS");
 		}
 
+			int permission_check = 7;
 			String[] data = {ms.getID(),ms.getPassword()} ;
 			// todo remove later when logout is fixed
 			logout_by_string_debug_heleper(data);
 			Message msg1 = tryLogIn(data);
 			User user1 = (User) msg1.getObject1();
-			int permission_check = user1.getPermission();
+			if(msg1.getMessage().equals("tryLogin_UserFound")){
+				 permission_check = user1.getPermission();
+			}
 			if(msg1.getMessage().equals("tryLogin_UserFound") && (permission_check == 2 || permission_check == 3) ){
 				//parking worker
 				MSG.setObject1("success");
