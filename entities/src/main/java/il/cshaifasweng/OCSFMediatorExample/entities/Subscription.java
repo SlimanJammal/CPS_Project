@@ -44,4 +44,10 @@ public abstract class Subscription implements Serializable {
     public void setMail_sent(boolean mail_sent) {
         this.mail_sent = mail_sent;
     }
+
+    public void setEntranceHour(String entranceHour) {
+    }
+
+    public void setDepartureHour(String departureHour) {
+    }
 }

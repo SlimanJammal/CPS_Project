@@ -94,6 +94,7 @@ public class MultiSub extends Subscription  implements Serializable {
         }
     }
 
+
     public String getSubNum() {
         return getSubscriptionNumber();
     }

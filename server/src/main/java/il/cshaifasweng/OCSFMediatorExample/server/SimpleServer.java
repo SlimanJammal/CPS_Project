@@ -154,18 +154,37 @@ public class SimpleServer extends AbstractServer {
 			session.beginTransaction();
 
 			CriteriaBuilder builder11 = session.getCriteriaBuilder();
+			CriteriaBuilder builder12 = session.getCriteriaBuilder();
 			CriteriaQuery<PreOrder> query11 = builder11.createQuery(PreOrder.class);
+			CriteriaQuery<ParkingLot> query12 = builder12.createQuery(ParkingLot.class);
 			query11.from(PreOrder.class);
+			query12.from(ParkingLot.class);
 			List<PreOrder> preOrders = session.createQuery(query11).getResultList();
+			List<ParkingLot> ParkingLots = session.createQuery(query12).getResultList();
 
 			PreOrder selectedOrder = (PreOrder) ms.getObject1();
 
 			for(PreOrder order : preOrders){
 				if(order.getId_() == selectedOrder.getId_()){
 					try{
+						double price = 0;
+						String park = order.getParking_requested();
+						for (ParkingLot lot : ParkingLots){
+							if (lot.getName().equals(park)){
+								price = lot.getOccasionalPrice().getPrice();
+							}
+						}
+						LocalTime temp = order.getEntranceTime();
+						LocalTime now = LocalTime.now();
+						int timediff = now.getHour() - temp.getHour();
+						if(timediff > 3){
+							price = 0.1 * price;
+						}else if(timediff == 2){
+							price = 0.5 * price;
+						}
 						ms.setMessage("CheckReservation");
 						ms.setObject1("cancel");
-						ms.setObject2("order canceled successfully!");
+						ms.setObject2("order canceled successfully! your account was charged "+price+" shekels");
 						session.remove(order);
 						try{
 							client.sendToClient(ms);
@@ -1380,7 +1399,7 @@ public class SimpleServer extends AbstractServer {
 			System.out.println(SubscriberType);
 			String CustomerID = ms.getObject2().toString();
 			String CarNumber = ms.getObject4().toString();
-			String StartingDate = ms.getObject3().toString();
+			LocalDate StartingDate = (LocalDate) ms.getObject3();
 			String EntranceHour = ms.getObject5().toString();
 			System.out.println(StartingDate );
 			String DepartureHour = ms.getObject6().toString();
@@ -1389,13 +1408,7 @@ public class SimpleServer extends AbstractServer {
 
 			//Staring Date Components
 
-			System.out.println(StartingDate );
-			String[] split = StartingDate.split("/");
-			System.out.println(split[0]+split[1]+split[2] );
-			//Staring Date Components
-			int Year = Integer.parseInt(split[2]);
-			int Month = Integer.parseInt(split[1]);
-			int Day = Integer.parseInt(split[0]);
+			System.out.println(StartingDate.toString() );
 
 			//Entrance Hour Components
 			//No Need For Now
@@ -1416,8 +1429,8 @@ public class SimpleServer extends AbstractServer {
 				PartialSub input = new PartialSub(CustomerID,CarNumber);
 				input.setEmail(Email);
 				System.out.println(input.getCustomerId());
-				LocalDate Temp = LocalDate.of(Year, Month, Day);
-				input.setStartDate(Temp);
+//				LocalDate Temp = LocalDate.of(Year, Month, Day);
+				input.setStartDate(StartingDate);
 				input.setEntranceHour(EntranceHour);
 				input.setDepartureHour(DepartureHour);
 				List<PartialSub> partialSubs = getAll(PartialSub.class);
@@ -1454,9 +1467,11 @@ public class SimpleServer extends AbstractServer {
 
 			{   System.out.println("multi monthly");
 				MultiSub input = new MultiSub(CustomerID,CarNumber);
-				LocalDate Temp = LocalDate.of(Year,Month,Day);
-				input.InsertToList(CustomerID,CarNumber,Temp,EntranceHour,DepartureHour);
-				input.setStartDate(Temp);
+//				LocalDate Temp = LocalDate.of(Year,Month,Day);
+				input.InsertToList(CustomerID,CarNumber,StartingDate,EntranceHour,DepartureHour);
+				input.setStartDate(StartingDate);
+				input.setEntranceHour(EntranceHour);
+				input.setDepartureHour(DepartureHour);
 				input.setEmail(Email);
 // todo here we can have a problem if we are trying to multiple cars and one of them exists
 				Boolean newCustomer = true;
@@ -1495,9 +1510,11 @@ public class SimpleServer extends AbstractServer {
 			{
 				System.out.println("full sub");
 				FullSub input = new FullSub(CustomerID,CarNumber);
-				LocalDate Temp = LocalDate.of(Year,Month,Day);
-				input.setStartDate(Temp);
+//				LocalDate Temp = LocalDate.of(Year,Month,Day);
+				input.setStartDate(StartingDate);
 				input.setEmail(Email);
+				input.setEntranceHour(EntranceHour);
+				input.setDepartureHour(DepartureHour);
 				boolean newCustomer = true;
 				List<FullSub> fullSubs = getAll(FullSub.class);
 				for(FullSub fullSub : fullSubs){
