@@ -106,7 +106,7 @@ public class ParkingSpot  implements Serializable {
 
 
 
-    void reset(){
+    public void reset(){
         this.CurrentState = "empty";
         this.Licesnes_Plate = "";
         this.Cus_ID = "";
@@ -169,5 +169,12 @@ public class ParkingSpot  implements Serializable {
     {
         String Location = this.depth + "-" + this.height + "-" + this.width;
         return Location;
+    }
+
+    public void print() {
+        System.out.println("the spot_id = " + getSpotId_());
+        System.out.println("the state = " + getCurrentState());
+        System.out.println("the cus id = " + getCus_ID());
+        System.out.println("the car plate = " + getLicesnes_Plate());
     }
 }
