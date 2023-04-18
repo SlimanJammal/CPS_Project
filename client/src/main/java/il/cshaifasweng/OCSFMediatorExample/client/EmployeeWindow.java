@@ -96,9 +96,19 @@ public class EmployeeWindow {
 
         System.out.println("activate client ");
         Message msg = new Message("Activate Parking Spot");
-        msg.setObject1(rowTF.getText());
+
         int worker_id  = (int) DataSingleton.getInstance().getData();
         msg.setObject2(worker_id);
+
+
+        if(worker_id == 0){
+            msg.setObject1(rowTF.getText());
+        }else if(worker_id == 1){
+            msg.setObject1(rowTF.getText()+36);
+        }else {
+            msg.setObject1(rowTF.getText()+36);
+        }
+
 
 
         try
@@ -118,10 +128,19 @@ public class EmployeeWindow {
 
 
         Message msg = new Message("Deactivate Parking Spot");
-        msg.setObject1(rowTF.getText());
+//        msg.setObject1(rowTF.getText());
         int worker_id  = (int) DataSingleton.getInstance().getData();
         msg.setObject2(worker_id);
         System.out.println("deactivate client ");
+
+
+        if(worker_id == 0){
+            msg.setObject1(rowTF.getText());
+        }else if(worker_id == 1){
+            msg.setObject1(rowTF.getText()+36);
+        }else {
+            msg.setObject1(rowTF.getText()+45);
+        }
 
         try
         {
@@ -140,6 +159,8 @@ public class EmployeeWindow {
     void OnChangeOcassionID(ActionEvent event) {
         //Occasion ID - ON Change!
         String Input = OccasionID.getText().toString();
+
+
         if(IsNumber(Input))
         {
 
@@ -321,9 +342,20 @@ public class EmployeeWindow {
              Message msg = new Message("submit_occasion");
 
 
-             msg.setObject1(OccasionParkingSlot.getText());
+
              msg.setObject2(DataSingleton.getInstance().getData());
 //             msg.setObject2(ParkingLotNameOccasion.getText());
+        int worker_id  = (int) DataSingleton.getInstance().getData();
+
+        if(worker_id == 0){
+            msg.setObject1(OccasionParkingSlot.getText());
+        }else if(worker_id == 1){
+
+            msg.setObject1(OccasionParkingSlot.getText()+36);
+        }else {
+
+            msg.setObject1(OccasionParkingSlot.getText()+45);
+        }
 
 
         try
