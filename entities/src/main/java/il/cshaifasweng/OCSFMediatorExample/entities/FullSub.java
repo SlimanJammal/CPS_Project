@@ -52,6 +52,7 @@ public class FullSub extends Subscription implements Serializable {
         return CarNumber;
     }
 
+
     public String getFullSubId() {
         return FullSubId;
     }

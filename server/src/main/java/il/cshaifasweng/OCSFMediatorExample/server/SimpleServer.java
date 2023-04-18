@@ -1335,7 +1335,7 @@ public class SimpleServer extends AbstractServer {
 				}
 			}
 			for (MultiSub multiSub : multiSubs){
-				if (multiSub.getSubNum().equals(subNumber) && multiSub.getCarNumber().equals(CarNumber)) {
+				if (multiSub.getSubNum().equals(subNumber) && multiSub.carBelongs(CarNumber)) {
 
 					found = true;
 					sub = true;
