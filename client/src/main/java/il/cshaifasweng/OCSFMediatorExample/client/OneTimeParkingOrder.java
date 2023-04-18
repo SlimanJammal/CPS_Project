@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
@@ -92,6 +93,20 @@ public class OneTimeParkingOrder {
     private Button cancelRes; // Value injected by FXMLLoader
 
 
+    @FXML
+    void datepick(ActionEvent event) {
+
+        LocalDate now = LocalDate.now();
+        if(EntranceDateInput.getValue().isBefore(now)){
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "Please use a date that is not in the past"
+                );
+                alert.show();
+            });
+            EntranceDateInput.setValue(now);
+        }
+    }
     //============================= Cancel Button ==================================
     @FXML
     void CancelResBtn(ActionEvent event)

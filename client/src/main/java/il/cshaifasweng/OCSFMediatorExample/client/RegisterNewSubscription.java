@@ -92,6 +92,7 @@ public class RegisterNewSubscription implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        CarsList ="";
         ObservableList<String> options = FXCollections.observableArrayList("German_Colony", "Hanmal", "Bat-Galim");
         ParkingLotOptions.setItems(options);
 
@@ -139,7 +140,13 @@ public class RegisterNewSubscription implements Initializable {
         msg.setObject1(ParkingType);
         msg.setObject2(CustomerID);
         msg.setObject3(StartingDate);
-        msg.setObject4(CarLicense);
+        if(Radio2.isSelected())
+        {
+            msg.setObject4(CarsList);
+            CarLicense = "12";
+        }else {
+            msg.setObject4(CarLicense);
+        }
         msg.setObject5(EntranceParkingTime);
         msg.setObject6(DepartureParkingTime);
         msg.setObject7(Email);
@@ -148,8 +155,8 @@ public class RegisterNewSubscription implements Initializable {
         {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if(
-               isnumeric((String) msg.getObject2() )&&
-               isnumeric((String) msg.getObject4()) )
+               isnumeric(CustomerID)&&
+               isnumeric(CarLicense) )
          {
                 System.out.println("fsdfsdfdfgdaffgdgdfgsdgdfgdfgd");
             SimpleClient.getClient().sendToServer(msg);

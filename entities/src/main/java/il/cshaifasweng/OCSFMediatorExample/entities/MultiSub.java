@@ -3,8 +3,10 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 @Entity
 @Table(name = "MULTISUBS" )
@@ -13,6 +15,7 @@ public class MultiSub extends Subscription  implements Serializable {
         StartDate = startDate;
     }
 
+    String Cars="";
     public void updateEndDate(){
         LocalDate temp = LocalDate.now();
         this.EndDate = temp.plusDays(28);
@@ -74,27 +77,36 @@ public class MultiSub extends Subscription  implements Serializable {
 
     }
 
-    public void InsertToList(String CustomerID,String CarNumber )
-    {
-
-        PartialSub input = new PartialSub(CustomerID,CarNumber);
-//        cars.add(input);
-    }
+//    public void InsertToList(String CustomerID,String CarNumber )
+//    {
+//
+//        PartialSub input = new PartialSub(CustomerID,CarNumber);
+////        cars.add(input);
+//    }
     public void InsertToList(String CustomerID, String CarNumber , LocalDate Date, String EntranceHour , String DepartureHour)
     {
 
-        String CarsNumbers[] = CarNumber.split(" ");
-        for (int i =0 ; i < CarsNumbers.length ; i++)
-        {
-            PartialSub input = new PartialSub(CustomerID,CarsNumbers[i]);
-            input.setStartDate(Date);
-            input.setEntranceHour(EntranceHour);
-            input.setDepartureHour(DepartureHour);
-//            cars.add(input);
+        String[] CarsNumbers= CarNumber.split(" ");
+        for(String number : CarsNumbers){
+            Cars += number + ",";
         }
+        Cars = Cars.substring(0,Cars.length()-1);
+        System.out.println(CarNumber);
+        System.out.println(Cars);
+        this.CarNumber = Cars;
     }
 
 
+
+    public boolean carBelongs(String num){
+        String[] carArr = Cars.split(",");
+        for (String car : carArr){
+            if (car.equals(num)){
+                return true;
+            }
+        }
+        return false;
+    }
     public String getSubNum() {
         return getSubscriptionNumber();
     }
