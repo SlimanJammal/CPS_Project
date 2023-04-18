@@ -1322,9 +1322,17 @@ public class SimpleServer extends AbstractServer {
 			for (PreOrder preOrder : preOrders){
 				if (preOrder.getPreOrderId().equals(subNumber) && preOrder.getCarNumber().equals(CarNumber)) {
 					found = true;
-					session.delete(preOrder);
+					session.remove(preOrder);
+					System.out.println("pre order found");
 					break;
 				}
+			}
+			try{
+				session.getTransaction().commit();
+				session.close();
+
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			for (PartialSub partialSub : partialSubs){
 				if (partialSub.getSubNum().equals(subNumber) && partialSub.getCarNumber().equals(CarNumber)) {
@@ -1365,18 +1373,20 @@ public class SimpleServer extends AbstractServer {
 				}
 
 			}else{
+				System.out.println("inside else");
 				if(EnterCar(parkingLotName,subNumber,CarNumber,true,time)){
+					System.out.println("returned with true");
 					returnMsg.setObject1("Car Entered Successfully");
 				}else{
+					System.out.println("returned with false");
 					returnMsg.setObject1("Unable to Enter Car");
 				}
 			}
+			System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
+
+			System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$");
 			client.sendToClient(returnMsg);
-			session.getTransaction().commit();
-			session.close();
-
-
 
 		}
 
@@ -1691,21 +1701,22 @@ public class SimpleServer extends AbstractServer {
 
 
 
-	private boolean EnterCar(String parkingName,String customerID,String licencePlate, boolean isOccasional,LocalTime time){
+	private boolean EnterCar(String parkingName,String customerID,String licencePlate, boolean isOccasional,LocalTime time) {
+		try {
+			SessionFactory sessionFactory = getSessionFactory();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
 
-		SessionFactory sessionFactory = getSessionFactory();
-		session = sessionFactory.openSession();
-		session.beginTransaction();
+			System.out.println("inside enter car");
+			List<ParkingLot> parkingLots = getAll(ParkingLot.class);
 
-		List<ParkingLot> parkingLots = getAll(ParkingLot.class);
-		for(ParkingLot parkingLot : parkingLots){
-			if (parkingLot.getName().equals(parkingName)){
+			for (ParkingLot parkingLot : parkingLots) {
+				if (parkingLot.getName().equals(parkingName)) {
 
-				if(parkingLot.isFull()){
-					return false;
-				}else{
-					List<ParkingSpot> parkingSpots = parkingLot.getSpots();
-
+					if (parkingLot.isFull()) {
+						return false;
+					} else {
+						List<ParkingSpot> parkingSpots = parkingLot.getSpots();
 
 
 //					CriteriaBuilder builder1 = session.getCriteriaBuilder();
@@ -1713,61 +1724,72 @@ public class SimpleServer extends AbstractServer {
 //					query1.from(PreOrder.class);
 //					List<PreOrder> preOrders  = session.createQuery(query1).getResultList();
 
-					List<PreOrder> preOrders = getAll(PreOrder.class);
+						List<PreOrder> preOrders = getAll(PreOrder.class);
 
-					for (PreOrder preOrder : preOrders){
-						if(preOrder.getCarNumber().equals(licencePlate) && preOrder.getParking_lot_id() == parkingLot.getParking_id()){
-							preOrders.remove(preOrder);
-							parkingLot.decPreOrderNum();
+						for (PreOrder preOrder : preOrders) {
+							if (preOrder.getCarNumber().equals(licencePlate) && preOrder.getParking_lot_id() == parkingLot.getParking_id()) {
+								System.out.println("inside enter car pre order found");
+								preOrders.remove(preOrder);
+								parkingLot.decPreOrderNum();
+								System.out.println("ana 3aref");
+								break;
+							}
 						}
+//					session.getTransaction().commit();
+
+						System.out.println("12312312312312312312312");
+						System.out.println(parkingSpots.size());
+						for (ParkingSpot parkingSpot : parkingSpots) {
+							System.out.println("inside enter car looking for empty spot");
+							if (parkingSpot.getCurrentState().equals("empty")) {
+
+								//////////////////// THIS IS IRRELEVANT FOR NOW ////////////////////////
+								// instead of getting the list from the parking lot we need to update
+								// the values inside the parking lot
+								// so maybe get size and then use internal functions like getstatus and what not
+								// to get the data and update it
+								// takeSpot(cusId,Plate,Index){set spot to taken and add values }
+								parkingSpot.setCurrentState("taken");
+								parkingSpot.setCus_ID(customerID);
+								parkingSpot.setLicesnes_Plate(licencePlate);
+								LocalDateTime timeNow = LocalDateTime.now();
+								parkingSpot.setEntryDate(timeNow);
+								parkingLot.decNumberOfFreeSlots();
+								parkingSpot.setOccasional(isOccasional);
+								// todo add start time inside parking spot
+
+								parkingLot.setSpotsList(parkingSpots);
+								try {
+									session.saveOrUpdate(parkingLot);
+									session.getTransaction().commit();
+								} catch (HibernateException e) {
+									e.printStackTrace();
+								}
+								parkingLot.printParkingSpots();
+								session.close();
+								return true;
+
+							} else {
+								if (parkingSpot.getCus_ID().equals(customerID) && parkingSpot.getLicesnes_Plate().equals(licencePlate)) {
+									session.close();
+									return false;
+								}
+
+							}
+						}
+						session.close();
+						return false;
+
 					}
 
-					for(ParkingSpot parkingSpot : parkingSpots){
-						if(parkingSpot.getCurrentState().equals("empty")){
-
-							//////////////////// THIS IS IRRELEVANT FOR NOW ////////////////////////
-							// instead of getting the list from the parking lot we need to update
-							// the values inside the parking lot
-							// so maybe get size and then use internal functions like getstatus and what not
-							// to get the data and update it
-							// takeSpot(cusId,Plate,Index){set spot to taken and add values }
-							parkingSpot.setCurrentState("taken");
-							parkingSpot.setCus_ID(customerID);
-							parkingSpot.setLicesnes_Plate(licencePlate);
-							LocalDateTime timeNow = LocalDateTime.now();
-							parkingSpot.setEntryDate(timeNow);
-							parkingLot.decNumberOfFreeSlots();
-							parkingSpot.setOccasional(isOccasional);
-							// todo add start time inside parking spot
-
-							parkingLot.setSpotsList(parkingSpots);
-							try {
-								session.update(parkingLot);
-								session.getTransaction().commit();
-							}catch (HibernateException e) {
-								e.printStackTrace();
-							}
-							parkingLot.printParkingSpots();
-							session.close();
-							return true;
-
-						}
-						else{
-							if(parkingSpot.getCus_ID().equals(customerID)&&parkingSpot.getLicesnes_Plate().equals(licencePlate)){
-								return false;
-							}
-
-						}
-					}
-					session.close();
-					return false;
 
 				}
-
-
 			}
-		}
 
+			return true;
+		} catch (HibernateException t) {
+			t.printStackTrace();
+		}
 		return true;
 	}
 

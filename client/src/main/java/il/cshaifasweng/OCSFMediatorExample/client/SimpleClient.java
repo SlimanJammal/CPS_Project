@@ -67,6 +67,7 @@ public class SimpleClient extends AbstractClient {
 		}
 		else if(ms.getMessage().equals("EnterParkingReply"))
 		{
+			System.out.println("in replyyyyyyy");
 			EventBus.getDefault().post(new EnterParkingEvent((Message) msg));
 		}else if(ms.getMessage().equals("CheckReservation")){
 			System.out.println("5555555555");
