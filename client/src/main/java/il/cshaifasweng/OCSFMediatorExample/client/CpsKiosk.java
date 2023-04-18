@@ -113,26 +113,9 @@ public class CpsKiosk {
         msg.setLicensePlate(LICENSE_LOGIN_TF.getText());
         msg.setSubNum(SUBSNUM_LOGIN_TF.getText());
         msg.setObject1(parkingLotName);
-        for(int i=0;i<LICENSE_LOGIN_TF.getLength();i++)
-        {
-            if(msg.getLicensePlate().charAt(i)<'0'||msg.getLicensePlate().charAt(i)>'9')
-            {
-                LICENSE_LOGIN_TF.setText("notValid");
-            }
-        }
-        for(int i=0;i<SUBSNUM_LOGIN_TF.getLength();i++)
-        {
-            if(msg.getSubNum().charAt(i)<'0'||msg.getSubNum().charAt(i)>'9')
-            {
-                SUBSNUM_LOGIN_TF.setText("notValid");
-            }
-        }
 
-
-        if(!LICENSE_LOGIN_TF.getText().equals("notValid")&&!SUBSNUM_LOGIN_TF.getText().equals("notValid"))
-        {
             SimpleClient.getClient().sendToServer(msg);
-        }
+
 
         // todo send alert
     }
