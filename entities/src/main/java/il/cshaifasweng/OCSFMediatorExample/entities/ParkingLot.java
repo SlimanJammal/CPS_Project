@@ -159,7 +159,7 @@ public class ParkingLot implements Serializable{
 
     public ParkingLot(String name_,int width_, int dims, boolean isFull)
     {
-        slots_num = width_ *9;
+        slots_num = dims *9;
         //kept both to avoid errors
         parkingWorkers = new ArrayList<>();
         width=width_;

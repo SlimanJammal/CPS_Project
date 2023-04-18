@@ -51,31 +51,34 @@ public class OcasionalParking {
             message.setObject2(licensePlateTF.getText());
             message.setObject3(emailTF.getText());
             message.setObject4(leavingTimeTF.getText());
-            if(parkingNameTF.getText().equals("Hanmal") || parkingNameTF.getText().equals("German_Colony") ||parkingNameTF.getText().equals("Bat-Galim")) {
-                message.setObject5(parkingNameTF.getText());
+//            if(parkingNameTF.getText().equals("Hanmal") || parkingNameTF.getText().equals("German_Colony") ||parkingNameTF.getText().equals("Bat-Galim")) {
+//                message.setObject5(parkingNameTF.getText());
+//
+//                // Id number is saved as a string in object1
+//                // license plate number is saved as a string in object2
+//                // email is saved as a string in object3
+//                // leaving time is saved as a string in object4
+//
+//
+//                if(isnumeric((String)message.getObject1())
+//                   &&isnumeric((String)message.getObject2())
+//                   &&isMail((String)message.getObject3())
+//                )
+//                {
+//                    SimpleClient.getClient().sendToServer(message);
+//                }
+//
+//            } else {
+//             parkingNameTF.setText("Wrong ParkingLot Name");
+//            }
+            DataSingleton data = DataSingleton.getInstance();
+            message.setObject5(data.getData());
+            IdNumberTF.clear();
+            licensePlateTF.clear();
+            emailTF.clear();
+            leavingTimeTF.clear();
 
-                // Id number is saved as a string in object1
-                // license plate number is saved as a string in object2
-                // email is saved as a string in object3
-                // leaving time is saved as a string in object4
-
-                IdNumberTF.clear();
-                licensePlateTF.clear();
-                emailTF.clear();
-                leavingTimeTF.clear();
-                parkingNameTF.clear();
-                if(isnumeric((String)message.getObject1())
-                   &&isnumeric((String)message.getObject2())
-                   &&isMail((String)message.getObject3())
-                )
-                {
-                    SimpleClient.getClient().sendToServer(message);
-                }
-
-            } else {
-             parkingNameTF.setText("Wrong ParkingLot Name");
-            }
-
+            SimpleClient.getClient().sendToServer(message);
             //send message to the server containing the new prices
 
         } catch (IOException e) {
