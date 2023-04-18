@@ -52,7 +52,7 @@
                               <Blend mode="RED" />
                            </effect>
                         </AnchorPane>
-                        <Text fill="#4ee44e" layoutX="589.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C P S   W e b s i t e">
+                        <Text fill="#4ee44e" layoutX="493.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C P S   W e b s i t e">
                            <font>
                               <Font name="Agency FB" size="48.0" />
                            </font>

@@ -80,7 +80,11 @@ public class SimpleClient extends AbstractClient {
 		{
 			EventBus.getDefault().post(new EnterParkingEvent((Message) msg));
 		}
-
+		else if(ms.getMessage().equals("tryLogin_UserNotFound"))
+		{
+			//todonow
+			//EventBus.getDefault().post(((Message) msg));
+		}
 
 	}
 	

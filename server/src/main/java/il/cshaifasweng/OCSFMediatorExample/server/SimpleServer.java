@@ -367,8 +367,17 @@ public class SimpleServer extends AbstractServer {
 				MSG.setObject1("success");
 				MSG.setObject2(msg1.getObject1()); // return User
 				MSG.setObject3(permission_check);
-			} else{
-				MSG.setObject1("fail");
+			}
+			else{
+				if(msg1.getMessage().equals("tryLogin_UserNotFound"))
+				{	//password not correct
+					client.sendToClient(msg1);
+
+				}
+				else
+				{
+					MSG.setObject1("fail");
+				}
 			}
 
 			System.out.println("before sending to client ");
@@ -2684,7 +2693,8 @@ public class SimpleServer extends AbstractServer {
 						System.out.println(msg.getMessage());
 					}
 				}
-			} else msg.setMessage("tryLogin_UserNotFound");
+			}
+			else msg.setMessage("tryLogin_UserNotFound");
 
 		} else msg.setMessage("tryLogin_UserNotFound");
 			session.close();
