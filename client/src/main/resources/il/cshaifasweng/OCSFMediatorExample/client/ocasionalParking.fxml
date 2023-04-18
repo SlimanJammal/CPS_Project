@@ -35,22 +35,17 @@
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField fx:id="parkingNameTF" layoutX="674.0" layoutY="212.0" promptText="Parking Name" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;">
+            <TextField fx:id="licensePlateTF" layoutX="675.0" layoutY="205.0" onAction="#licensePlateTF" promptText="License Plate" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField fx:id="licensePlateTF" layoutX="675.0" layoutY="277.0" onAction="#licensePlateTF" promptText="License Plate" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;">
+            <TextField fx:id="emailTF" layoutX="672.0" layoutY="272.0" onAction="#emailTF" promptText="Email" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField fx:id="emailTF" layoutX="675.0" layoutY="348.0" onAction="#emailTF" promptText="Email" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </TextField>
-            <TextField fx:id="leavingTimeTF" layoutX="785.0" layoutY="411.0" onAction="#leavingTimeTF" prefHeight="45.0" prefWidth="119.0" promptText="Leaving" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;">
+            <TextField fx:id="leavingTimeTF" layoutX="782.0" layoutY="335.0" onAction="#leavingTimeTF" prefHeight="45.0" prefWidth="119.0" promptText="Leaving" style="-fx-border-color: BLUEVIOLET; -fx-border-width: 3;">
                <font>
                   <Font size="18.0" />
                </font>
@@ -60,47 +55,37 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="460.0" layoutY="220.0" prefHeight="27.0" prefWidth="147.0" text="Parking Lot Name:">
+            <Label layoutX="457.0" layoutY="214.0" prefHeight="27.0" prefWidth="147.0" text="Car ID:">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="458.0" layoutY="285.0" prefHeight="27.0" prefWidth="147.0" text="Car ID:">
+            <Label layoutX="455.0" layoutY="279.0" prefHeight="27.0" prefWidth="147.0" text="Email:">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="458.0" layoutY="355.0" prefHeight="27.0" prefWidth="147.0" text="Email:">
+            <Label layoutX="456.0" layoutY="341.0" prefHeight="27.0" prefWidth="147.0" text="Departure Hour:">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="459.0" layoutY="417.0" prefHeight="27.0" prefWidth="147.0" text="Departure Hour:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="409.0" layoutY="217.0" pickOnBounds="true">
-               <image>
-                  <Image url="@images/images/large.png" />
-               </image>
-            </ImageView>
             <ImageView fitHeight="34.0" fitWidth="62.0" layoutX="408.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/images/id-card-icon-on-black-background-black-flat-style-vector-25959761.jpg" />
                </image>
             </ImageView>
-            <ImageView fitHeight="42.0" fitWidth="34.0" layoutX="408.0" layoutY="279.0" pickOnBounds="true">
+            <ImageView fitHeight="42.0" fitWidth="34.0" layoutX="407.0" layoutY="207.0" pickOnBounds="true">
                <image>
                   <Image url="@images/images/71GXWTdc+4L.jpg" />
                </image>
             </ImageView>
-            <ImageView fitHeight="32.0" fitWidth="40.0" layoutX="410.0" layoutY="354.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="32.0" fitWidth="40.0" layoutX="407.0" layoutY="278.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/images/email-icon-black-background-black-flat-style-vector-illustration-email-icon-black-background-black-flat-style-vector-168420610.jpg" />
                </image>
             </ImageView>
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="411.0" layoutY="413.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="408.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/images/clock-alarm-icon-white-contour-black-background-illustration-87708978.jpg" />
                </image>

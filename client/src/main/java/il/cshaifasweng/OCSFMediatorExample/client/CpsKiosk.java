@@ -232,16 +232,8 @@ public class CpsKiosk {
         Message msg= new Message("loginManager_KIOSK");
         msg.setID(ID_LOGIN_TF.getText());
         msg.setPassword(PW_LOGIN_TF.getText());
-        for(int i=0;i<ID_LOGIN_TF.getLength();i++)
-        {
-            if(msg.getID().charAt(i)<'0'||msg.getID().charAt(i)>'9')
-            {
-                ID_LOGIN_TF.setText("notValid");
-            }
-        }
-        if(!ID_LOGIN_TF.getText().equals("notValid")) {
             SimpleClient.getClient().sendToServer(msg);
-        }
+
     }
     @Subscribe
     public void EnterEvent(EnterParkingEvent event) throws IOException{

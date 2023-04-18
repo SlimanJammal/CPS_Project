@@ -11,44 +11,6 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" tabClosingPolicy="ALL_TABS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.EmployeeWindow">
   <tabs>
-    <Tab closable="false" text="System Startup">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <Label layoutX="555.0" layoutY="24.0" prefHeight="54.0" prefWidth="182.0" text="System Startup" textFill="RED">
-                     <font>
-                        <Font name="Agency FB" size="36.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="SystemParkingID" layoutX="664.0" layoutY="163.0" onAction="#OnChangeSystemStartUp" promptText="Parking ID">
-                     <font>
-                        <Font size="18.0" />
-                     </font></TextField>
-                  <Label layoutX="462.0" layoutY="169.0" prefHeight="27.0" prefWidth="130.0" text="Parking ID :">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="461.0" layoutY="227.0" prefHeight="30.0" prefWidth="182.0" text="System Command ID :">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="SystemCommandID" layoutX="665.0" layoutY="221.0" onAction="#OnChangeSystemCommandID" promptText="System Command ID">
-                     <font>
-                        <Font size="18.0" />
-                     </font></TextField>
-                  <Button fx:id="SystemStartUpButton" layoutX="796.0" layoutY="310.0" mnemonicParsing="false" onAction="#SubmitSystemStartUp" prefHeight="31.0" prefWidth="88.0" text="Submit" />
-                  <Label fx:id="Label1" layoutX="14.0" layoutY="168.0" prefHeight="34.0" prefWidth="106.0" text="Label" textFill="RED" visible="false">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="PreviousWindowBT2" layoutX="39.0" layoutY="636.0" mnemonicParsing="false" onAction="#OnPreviousWindowButton1" prefHeight="34.0" prefWidth="135.0" text="Previous Window" />
-                  <Line endX="425.86669921875" endY="7.62939453125E-6" layoutX="640.0" layoutY="78.0" startX="-421.066650390625" startY="7.62939453125E-6" />
-               </children></AnchorPane>
-      </content>
-    </Tab>
       <Tab closable="false" text="Save Parking Spot For Ocasion">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
