@@ -2586,6 +2586,7 @@ public class SimpleServer extends AbstractServer {
 		}
 
 
+
 	private Message price_alter(Message ms, String res) {
 		//changes price with a given update price request
 		System.out.println("IN SERVER REGIONAL MANAGER PRICE ALTER FUNCTION");
