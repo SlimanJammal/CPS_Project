@@ -216,7 +216,12 @@ public class CpsWebsite {
     }
     @Subscribe
     public void allowWorker(loginWorkerWebsiteEvent allowing) throws IOException {
-        int perm_lvl = (Integer) allowing.getMsg().getObject3();
+
+        int perm_lvl = 21323;
+
+        if(allowing.getMsg().getObject1().toString().equals("success")) {
+            perm_lvl = (Integer) allowing.getMsg().getObject3();
+        }
 
         if (allowing.getMsg().getObject1().toString().equals("success") && perm_lvl == 2) {
             DataSingleton data = DataSingleton.getInstance();

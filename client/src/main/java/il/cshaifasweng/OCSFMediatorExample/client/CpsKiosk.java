@@ -200,9 +200,12 @@ public class CpsKiosk {
     @Subscribe
     public void allowWorker(loginWorkerEvent allowing) throws IOException {
 
+        int perm_lvl = 100000;
         System.out.println("Allow Worker");
         System.out.println(allowing.getMsg().getObject1());
-        int perm_lvl =  (Integer) allowing.getMsg().getObject3();
+        if(allowing.getMsg().getObject1() == "success") {
+             perm_lvl = (Integer) allowing.getMsg().getObject3();
+        }
         if(allowing.getMsg().getObject1().toString().equals("success") && perm_lvl == 2) {
             DataSingleton data = DataSingleton.getInstance();
             data.setDataName("ParkingWorker");
@@ -281,30 +284,30 @@ public class CpsKiosk {
             });
 
         }
-//
-//        if(allowing.getMsg().getMessage().equals("AllowEmployee")) {
-//            System.out.println("Allow Worker");
-//            System.out.println(allowing.getMsg().getObject1());
-//
-//            if (allowing.getMsg().getObject1().equals("success")) {
-//                DataSingleton data = DataSingleton.getInstance();
-//                data.setDataName("ParkingWorker");
-//                il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
-//                data.setData(parkingWorker.getUserID());
-//
-//                data.setCaller("cpsKiosk");
-//                System.out.println("aere wsl set root ");
-//                App.setRoot("EmployeeWindow");
-//            } else {
-//                Platform.runLater(() -> {
-//                    Alert alert = new Alert(Alert.AlertType.INFORMATION,
-//                            "UserName or PassWord Wrong"
-//                    );
-//                    alert.show();
-//                });
-//
-//            }
-//        }
+
+        if(allowing.getMsg().getMessage().equals("AllowEmployee")) {
+            System.out.println("Allow Worker");
+            System.out.println(allowing.getMsg().getObject1());
+
+            if (allowing.getMsg().getObject1().equals("success")) {
+                DataSingleton data = DataSingleton.getInstance();
+                data.setDataName("ParkingWorker");
+                il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker parkingWorker = (il.cshaifasweng.OCSFMediatorExample.entities.ParkingWorker) allowing.getMsg().getObject1();
+                data.setData(parkingWorker.getUserID());
+
+                data.setCaller("cpsKiosk");
+                System.out.println("aere wsl set root ");
+                App.setRoot("EmployeeWindow");
+            } else {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                            "UserName or PassWord Wrong"
+                    );
+                    alert.show();
+                });
+
+            }
+        }
     }
 
 
