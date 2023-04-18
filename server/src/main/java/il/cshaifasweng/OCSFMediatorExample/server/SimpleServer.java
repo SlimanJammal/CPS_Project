@@ -3287,6 +3287,7 @@ public class SimpleServer extends AbstractServer {
 
 
 	int removeCarFromParking(String carNumber,String parkingLotName){
+		int price = -1;
 		System.out.println("inside remove car from parking");
 		try {
 			SessionFactory sessionFactory = getSessionFactory();
@@ -3294,24 +3295,42 @@ public class SimpleServer extends AbstractServer {
 			session.beginTransaction();
 
 			List<ParkingLot> parkingLots = getAll(ParkingLot.class);
+			List<ParkingSpot> Spots = getAll(ParkingSpot.class);
 
 			for (ParkingLot parkingLot : parkingLots) {
 				if (parkingLot.getName().equals(parkingLotName)) {
 					System.out.println("before price calc");
-					int price = parkingLot.findAndCalcPrice(carNumber);
+					 price = parkingLot.findAndCalcPrice(carNumber);
 					System.out.println("car found and the price is" + price);
-					parkingLot.removeCar(carNumber);
+
+					for(ParkingSpot parkingSpot : Spots){
+						if(parkingSpot.getLicesnes_Plate().equals(carNumber)){
+							System.out.println("foundit");
+							parkingSpot.reset();
+							parkingSpot.print();
+							parkingLot.numberOfFreeSlots++;
+							System.out.println("inside remove car");
+							session.saveOrUpdate(parkingSpot);
+//							printParkingSpots();
+						}
+					}
+
 					session.saveOrUpdate(parkingLot);
-					session.close();
-					return price;
+					session.getTransaction().commit();
+					System.out.println("after committing ");
+
+
 				}
 			}
 		}catch(Exception e){
 			if(session != null)
 				session.getTransaction().rollback();
 			e.printStackTrace();
+		}finally {
+			assert session != null;
+			session.close();
 		}
-		session.close();
-		return -1;
+		System.out.println("before sending price ");
+		return price;
 	}
 }

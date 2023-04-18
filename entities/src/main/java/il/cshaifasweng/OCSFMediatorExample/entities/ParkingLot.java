@@ -37,7 +37,7 @@ public class ParkingLot implements Serializable{
     }
 
     private String name;
-    private int numberOfFreeSlots;
+    public int numberOfFreeSlots;
     private int numberOfFullSubs;
     private int numberOfPreOrders;
 
@@ -121,17 +121,18 @@ public class ParkingLot implements Serializable{
         }
         else return true;
     }
-    public boolean removeCar(String carNum){
+    public ParkingSpot removeCar(String carNum){
         for(ParkingSpot parkingSpot : Spots){
             if(parkingSpot.Licesnes_Plate.equals(carNum)){
                 parkingSpot.reset();
+                numberOfFreeSlots++;
                 System.out.println("inside remove car");
                 printParkingSpots();
-                return true;
+                return parkingSpot;
             }
         }
         printParkingSpots();
-        return false;
+        return null;
     }
 
     // return value is -1 if car doesnt exist
