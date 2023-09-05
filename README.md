@@ -1,4 +1,4 @@
-# Car Parking System (CPS) - OCSF Mediator Example
+# Car Parking System (CPS) - OCSF Mediator 
 
 ## Project Structure
 
