@@ -40,16 +40,8 @@ The entire system is developed using Java and managed through Maven. It operates
 
 
 
-Main Window:
-![image](https://github.com/SlimanJammal/CPS_Project/assets/100062609/9c15d044-7fdf-4d51-a0e2-254030069bb0)
 
 
-Some GUI FEATURES: 
-
-
-
-
-https://github.com/SlimanJammal/CPS_Project/assets/100062609/903e5531-e9ef-4cb1-8136-27dbb7130bb1
 
 
 
